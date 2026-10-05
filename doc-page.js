@@ -55,6 +55,16 @@ document.addEventListener("keydown", (event) => {
 
 const sidebar = document.querySelector(".docs-sidebar");
 const sidebarToggle = document.querySelector(".docs-sidebar-toggle");
+const sidebarClose = document.querySelector(".docs-sidebar-close");
+function closeSidebar() {
+  sidebar.classList.remove("is-open");
+  sidebarToggle.setAttribute("aria-expanded", "false");
+  sidebarToggle.focus();
+}
+sidebarClose.addEventListener("click", closeSidebar);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && sidebar.classList.contains("is-open")) closeSidebar();
+});
 const activeSidebarLink = sidebar.querySelector('[aria-current="page"]');
 if (activeSidebarLink) {
   const link = activeSidebarLink.getBoundingClientRect();
@@ -66,6 +76,7 @@ if (activeSidebarLink) {
 sidebarToggle.addEventListener("click", () => {
   const open = sidebar.classList.toggle("is-open");
   sidebarToggle.setAttribute("aria-expanded", String(open));
+  if (open) { sidebar.scrollTop = 0; sidebarClose.focus(); }
 });
 document.addEventListener("click", (event) => {
   if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {

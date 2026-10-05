@@ -67,4 +67,6 @@ npm run theme:sync -- --from <design-tokens-root>
 node build.mjs
 ```
 
-`vendor/design-theme`는 해시가 있는 완성본이다. 루트의 tokens.json, styles.source.css와 글꼴은 가져온 사본이며 직접 수정하지 않는다. 변경은 공통 정본에서 진행한다. 가져오기와 빌드는 사본의 해시와 일치 여부를 검사한다. 갱신 결과를 검토하고 소비자 저장소에 함께 커밋해야 반영된다. 현재 base는 다크 단일 모드이므로 라이트 요청도 같은 디자인으로 표시된다.
+`vendor/design-theme`는 해시가 있는 완성본이다. 루트의 tokens.json, styles.source.css와 글꼴은 가져온 사본이며 직접 수정하지 않는다. 변경은 공통 정본에서 진행한다. 가져오기와 빌드는 사본의 해시와 일치 여부를 검사한다. 갱신 결과를 검토하고 소비자 저장소에 함께 커밋해야 반영된다. base의 라이트·다크 디자인을 시스템 모드에 맞춰 표시한다. 본문·제목은 Pretendard, 코드는 JetBrains Mono를 쓴다.
+
+전체 페이지 검사는 `python3 scripts/check-pages.py`로 실행하며 빌드에도 포함된다. 제목·중복 ID·내부 링크·자산·공통 스타일 로드를 확인한다. 스타일과 JavaScript URL에는 내용 해시가 붙어 새 페이지와 오래된 캐시가 섞이지 않는다.

@@ -13,26 +13,28 @@ const imported = await readFile(new URL('../vendor/design-theme/tokens.json', im
 if (await readFile(new URL('../tokens.json', import.meta.url), 'utf8') !== imported) throw new Error('tokens.json differs from imported base theme');
 const original = JSON.parse(await readFile(new URL('../tokens.json', import.meta.url), 'utf8'));
 const table = new Map();
-function flatten(node, prefix = '') {
+function flatten(node, prefix = '', target = table) {
   for (const [name, child] of Object.entries(node)) {
     if (name.startsWith('$') || !child || typeof child !== 'object') continue;
     const path = prefix ? `${prefix}.${name}` : name;
     if ('$value' in child) {
       if (child.$type === 'typography') {
-        for (const [part, value] of Object.entries(child.$value)) table.set(`${path}.${part}`, { $value: value });
-      } else table.set(path, child);
+        for (const [part, value] of Object.entries(child.$value)) target.set(`${path}.${part}`, { $value: value });
+      } else target.set(path, child);
     }
-    else flatten(child, path);
+    else flatten(child, path, target);
   }
 }
 flatten(original);
+const darkTable = new Map();
+flatten(JSON.parse(await readFile(new URL('../vendor/design-theme/tokens.dark.json', import.meta.url), 'utf8')), '', darkTable);
 
-function resolve(path, seen = new Set()) {
+function resolve(path, seen = new Set(), source = table) {
   if (seen.has(path)) throw new Error(`circular token: ${path}`);
-  const token = table.get(path);
+  const token = source.get(path);
   if (!token) throw new Error(`unknown token: ${path}`);
   const match = String(token.$value).match(/^\{([\w.-]+)\}$/);
-  return match ? resolve(match[1], new Set([...seen, path])) : typeof token.$value === 'string' ? token.$value.replace(/\{([\w.-]+)\}/g, (_, reference) => resolve(reference, new Set([...seen, path]))) : token.$value;
+  return match ? resolve(match[1], new Set([...seen, path]), source) : typeof token.$value === 'string' ? token.$value.replace(/\{([\w.-]+)\}/g, (_, reference) => resolve(reference, new Set([...seen, path]), source)) : token.$value;
 }
 const outputs = new Map([
   ['theme.css', await readFile(new URL('../vendor/design-theme/theme.css', import.meta.url), 'utf8')],
@@ -56,11 +58,12 @@ async function embedAssetTokens(directory) {
     const body = source.replace(/<style data-site-tokens(?:="")?>[\s\S]*?<\/style>/g, '');
     const references = [...new Set([...body.matchAll(/var\((--[\w-]+)\)/g)].map(match => match[1]))];
     const byName = new Map([...table.keys()].map(key => ['--' + key.replaceAll('.', '-'), key]));
-    const declarations = references.map(name => {
+    const declarations = (source) => references.map(name => {
       if (!byName.has(name)) throw new Error(`unknown asset token: ${name}`);
-      return `${name}:${resolve(byName.get(name))}`;
-    });
-    const content = declarations.length ? body.replace(/<svg\b[^>]*>/, match => `${match}<style data-site-tokens="">:root{${declarations.join(';')}}</style>`) : body;
+      return `${name}:${resolve(byName.get(name), new Set(), source)}`;
+    }).join(';');
+    const embedded = `:root{${declarations(table)}}@media(prefers-color-scheme:dark){:root{${declarations(darkTable)}}}`;
+    const content = references.length ? body.replace(/<svg\b[^>]*>/, match => `${match}<style data-site-tokens="">${embedded}</style>`) : body;
     if (process.argv.includes('--check')) {
       if (source !== content) throw new Error(`stale asset tokens: ${path.pathname}`);
     } else await writeFile(path, content);
