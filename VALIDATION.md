@@ -42,7 +42,7 @@ Chrome 개발자 도구의 DOM 경계와 계산된 스타일을 읽어 비교했
 - JavaScript 구문 검사 통과.
 - 홈을 포함한 HTML 310개의 로컬 href/src 경로 검사: 누락 0개.
 - 생성 문서의 하단 페이지네이션: 0개.
-- `tokens.json`, `variables.css`, `theme.css`, `DESIGN.md`: 업로드 원본과 바이트 단위 동일.
+- 초기 구현 당시 첨부 네 파일의 원본 동일성을 확인했다. 현재 토큰 구조는 사용자 요청에 따라 `tokens.json`과 생성된 `theme.css`로 통합했으며, `DESIGN.md`만 원본을 유지한다.
 
 ## 범위
 

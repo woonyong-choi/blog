@@ -35,7 +35,13 @@ python3 -m http.server 8768 --bind 127.0.0.1
 - `pages/`, `search-index.json`: 빌드 결과
 - `assets/vendor/markdown-it.mjs`: 로컬 Markdown 렌더러. 라이선스는 `assets/vendor/markdown-it-LICENSE`에 보존
 
-제공된 `tokens.json`, `variables.css`, `theme.css`, `DESIGN.md`는 바이트 단위로 복사했고 수정하지 않았다. `styles.css`는 `variables.css`의 값을 사용한다. `theme.css`는 제공된 Tailwind 참조 파일로 보존한다. 로고, 아이콘, Manrope·Inter·Source Code Pro 글꼴은 공개 문서 사이트에서 로컬로 저장해 미리보기가 외부 정적 자산에 의존하지 않도록 했다.
+디자인 값은 `tokens.json`에서만 정의한다. `theme.css`는 이 정본에서 생성하며 홈과 모든 내부 페이지에서 직접 로드한다. `styles.source.css`는 배치와 상태를 토큰 참조로 작성하는 파일이고 `styles.css`는 반응형 기준까지 치환한 생성물이다. 이전 `variables.css`와 별도 확장 토큰 파일은 사용하지 않는다.
+
+기존 색상·간격·반지름은 먼저 재사용한다. 작은 간격은 8px 기본 단위에서 계산하고, 글자 크기와 굵기는 원본 타이포그래피 단계에 연결한다. 본문은 16px, 보조 문구는 14px, 목차와 코드 표시는 12px 척도를 사용한다. 문서 레이아웃 치수·동작 시간·외부 로고 고유색은 기존 토큰으로 표현할 수 없어 사용 근거를 정본에 기록한다. 원본에 있던 잘못된 5자리 HEX는 기존 charcoal 참조로 교정한다.
+
+Circular 폰트 파일은 제공되지 않았다. 현재 로컬 Manrope·Inter를 제목·문서 스택에 사용하고 Circular 및 시스템 글꼴을 폴백에 둔다. 폰트 파일과 등록 정보도 `tokens.json`에서 관리한다. 로고와 아이콘은 정본에서 계산한 색상 선언을 SVG 안에 삽입하므로 외부 이미지로 로드해도 동일하게 표시된다.
+
+`node build.mjs`는 토큰 생성과 하드코딩 검사 후 문서를 만든다. `python3 scripts/audit-tokens.py`는 생성물 재현성, 제삼자 배포본 보존, UI 하드코딩을 검사한다. 도형 좌표와 문서 안 코드 예제는 UI 디자인 값과 구분한다. GitHub CI도 같은 검사를 실행한다.
 
 
 ## 검증과 참조 자료

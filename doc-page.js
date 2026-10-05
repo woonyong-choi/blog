@@ -1,3 +1,4 @@
+function tokenNumber(name) { return parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)); }
 const root = document.body.dataset.root;
 const searchDialog = document.querySelector(".docs-search-dialog");
 const searchInput = searchDialog.querySelector("input");
@@ -59,7 +60,7 @@ if (activeSidebarLink) {
   const link = activeSidebarLink.getBoundingClientRect();
   const pane = sidebar.getBoundingClientRect();
   if (link.top < pane.top || link.bottom > pane.bottom) {
-    sidebar.scrollTop += link.top - pane.top - sidebar.clientHeight / 3;
+    sidebar.scrollTop += link.top - pane.top - sidebar.clientHeight / tokenNumber("--ratio-sidebar-anchor");
   }
 }
 sidebarToggle.addEventListener("click", () => {
@@ -101,7 +102,7 @@ if (toc) {
     const gridStyle = getComputedStyle(grid);
     const gap = parseFloat(gridStyle.columnGap);
     const column = parseFloat(gridStyle.gridTemplateColumns);
-    const left = article.getBoundingClientRect().right + column + gap * 2;
+    const left = article.getBoundingClientRect().right + column + gap * tokenNumber("--ratio-toc-gaps");
     const right = grid.getBoundingClientRect().right - parseFloat(gridStyle.paddingRight);
     tocPane.style.left = `${left}px`;
     tocPane.style.width = `${Math.max(0, right - left)}px`;
@@ -110,13 +111,13 @@ if (toc) {
   function updateToc() {
     pending = false;
     if (!headings.length || !links.length) return;
-    const threshold = Math.min(240, window.innerHeight * 0.3);
+    const threshold = Math.min(tokenNumber("--size-toc-threshold"), window.innerHeight * tokenNumber("--ratio-toc-viewport"));
     let current = 0;
     for (let index = 0; index < headings.length; index++) {
       if (headings[index].getBoundingClientRect().top > threshold) break;
       current = index;
     }
-    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) current = headings.length - 1;
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - tokenNumber("--size-scroll-epsilon")) current = headings.length - 1;
     let parent = current;
     while (parent > 0 && headings[parent].tagName !== "H2") parent--;
     const activeIds = new Set([headings[parent].id, headings[current].id]);
@@ -152,9 +153,9 @@ if (toc) {
   updateToc();
 }
 
-const copyIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>';
-const checkIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';
-const wrapIcon = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 6h18M3 12h14a3 3 0 0 1 0 6h-5m3-3-3 3 3 3M3 18h4"/></svg>';
+const copyIcon = '<svg viewBox="0 0 24 24" class="docs-code-icon" fill="none" stroke="currentColor"  aria-hidden="true"><rect x="8" y="8" width="12" height="13" class="docs-copy-rect"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>';
+const checkIcon = '<svg viewBox="0 0 24 24" class="docs-code-icon" fill="none" stroke="currentColor"  aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';
+const wrapIcon = '<svg viewBox="0 0 24 24" class="docs-code-icon" fill="none" stroke="currentColor"  aria-hidden="true"><path d="M3 6h18M3 12h14a3 3 0 0 1 0 6h-5m3-3-3 3 3 3M3 18h4"/></svg>';
 
 function drawCodeLines(code, source) {
   code.replaceChildren();
@@ -204,7 +205,7 @@ for (const pre of document.querySelectorAll(".docs-article-body pre")) {
     await navigator.clipboard.writeText(frame.dataset.code);
     button.innerHTML = checkIcon;
     button.setAttribute("aria-label", "Copied code");
-    setTimeout(() => { button.innerHTML = copyIcon; button.setAttribute("aria-label", "Copy code"); }, 1600);
+    setTimeout(() => { button.innerHTML = copyIcon; button.setAttribute("aria-label", "Copy code"); }, tokenNumber("--duration-feedback"));
   });
   frame.append(button);
 }
@@ -229,7 +230,7 @@ for (const prompt of document.querySelectorAll(".docs-agent-prompt")) {
     const button = event.currentTarget;
     await navigator.clipboard.writeText(prompt.dataset.prompt);
     button.innerHTML = checkIcon;
-    setTimeout(() => { button.innerHTML = copyIcon; }, 1600);
+    setTimeout(() => { button.innerHTML = copyIcon; }, tokenNumber("--duration-feedback"));
   });
 }
 document.querySelector(".docs-copy-markdown")?.addEventListener("click", async (event) => {
@@ -237,7 +238,7 @@ document.querySelector(".docs-copy-markdown")?.addEventListener("click", async (
   const response = await fetch(button.dataset.source);
   await navigator.clipboard.writeText(await response.text());
   button.textContent = "Copied";
-  setTimeout(() => { button.textContent = "Copy as Markdown"; }, 1600);
+  setTimeout(() => { button.textContent = "Copy as Markdown"; }, tokenNumber("--duration-feedback"));
 });
 document.querySelectorAll(".docs-ask-ai").forEach((button) => button.addEventListener("click", async () => {
   const provider = button.dataset.provider;
@@ -248,7 +249,7 @@ document.querySelectorAll(".docs-ask-ai").forEach((button) => button.addEventLis
   const response = await fetch(source);
   await navigator.clipboard.writeText(await response.text());
   button.textContent = "Markdown copied";
-  setTimeout(() => { button.textContent = `Ask ${provider}`; }, 1600);
+  setTimeout(() => { button.textContent = `Ask ${provider}`; }, tokenNumber("--duration-feedback"));
 }));
 document.querySelectorAll(".docs-feedback").forEach((button) => button.addEventListener("click", () => {
   button.closest(".docs-right-actions").querySelector("p").textContent = "Thanks for your feedback";
@@ -267,3 +268,5 @@ document.querySelector(".docs-skip").addEventListener("click", (event) => {
   event.preventDefault();
   document.getElementById("main").focus();
 });
+
+document.querySelector('meta[name="theme-color"]').content = getComputedStyle(document.body).backgroundColor;

@@ -11,7 +11,9 @@
 - 이슈 하나당 작업 브랜치와 PR 하나를 사용한다. 후속 변경은 기본 브랜치에 직접 커밋하거나 push하지 않는다.
 - 커밋은 `type(scope): 한글 설명` 형식으로 작성하고 기존 사용자 Git 작성자 설정을 사용한다. 작성 도구를 나타내는 메시지나 트레일러를 추가하지 않는다.
 - 사용자의 요청 없이 PR을 병합하지 않는다.
-- 제공된 `tokens.json`, `variables.css`, `theme.css`, `DESIGN.md`는 명시적 변경 요청 전까지 보존한다.
+- 디자인 값의 정본은 `tokens.json` 하나다. `theme.css`는 정본에서 생성하고 모든 페이지에서 직접 로드한다. 별도 토큰 파일을 만들지 않는다.
+- 값을 추가하기 전 기존 토큰의 동일 값, 의미에 맞는 별칭, 간격·타이포그래피 파생식을 순서대로 검토한다. 새 값에는 사용처와 기존 값으로 대체할 수 없는 이유를 기록한다.
+- `theme.css`와 `styles.css`는 생성물이다. 배치는 `styles.source.css`에서 토큰을 참조한다. `DESIGN.md`는 제공된 참고 문서로 보존한다.
 - Markdown은 `content/`, 메뉴는 `content/navigation.json`과 `content/javascript-navigation.json`에서 관리한다.
 - `pages/`와 `search-index.json`은 생성물이므로 직접 수정하거나 커밋하지 않는다.
 - `node build.mjs`와 변경한 JavaScript의 `node --check`를 실행한다. 화면 변경은 해당 내부 URL에서 브라우저로 확인한다.

@@ -1,0 +1,17 @@
+{
+  "$description": "첨부 정본과 제삼자 배포본은 해시로 보존한다. 생성물은 토큰 정본으로 재생성해 비교한다. SVG 도형 좌표와 문서 코드 예제는 UI 디자인 값이 아니다.",
+  "preserved": {
+    "DESIGN.md": "030c84b1d413d314a1b57c9682ecab7fb194b3ae5261d7da8b174afee36f5e16",
+    "assets/vendor/supabase-LICENSE": "c29468abcd629e248c2f76848155c386b733872bcabcc4cf65ef1e7c61431042",
+    "assets/vendor/prism.js": "bb1f73777e0f7a104c631461f9090b22ed854045b97cf7b252b7553638d74f8f",
+    "assets/vendor/javascript-reference-snapshot.json": "b9ae04a37aab64436d3a3cd0ab8a2ccf36de3784f0638253ce48e6d81daa52d0",
+    "assets/vendor/supabase-NOTICE.md": "c066cf10cdf4074a43c728b8b8cacb8fe31e432fc367f102d05331c458440335",
+    "assets/vendor/markdown-it-LICENSE": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+    "assets/vendor/markdown-it.mjs": "85feb50fd6ce1b7c49acb02b0337eb622ecc4fc2ed4ae0dcbb8c084556d463b6",
+    "assets/vendor/prism-LICENSE": "2b947f0901a7ffcf08a89957da9783c0e9c6e72cb6ce8e959f501ab5409e4d2b"
+  },
+  "generated": [
+    "theme.css",
+    "styles.css"
+  ]
+}

@@ -1,4 +1,3 @@
-/* styles.source.css + tokens.json: 생성물, 손으로 고치지 않음 */
 /* Supabase Docs landing page. The supplied token files remain unchanged. */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scrollbar-color: var(--color-border-strong) transparent; scrollbar-width: thin; }

@@ -1,8 +1,10 @@
+import { execFileSync } from "node:child_process";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import MarkdownIt from "./assets/vendor/markdown-it.mjs";
 
 const root = new URL(".", import.meta.url).pathname;
+execFileSync("node", ["scripts/build-tokens.mjs"], { cwd: root, stdio: "inherit" });
 const navigation = JSON.parse(await readFile(join(root, "content/navigation.json"), "utf8"));
 const javascriptNavigation = JSON.parse(await readFile(join(root, "content/javascript-navigation.json"), "utf8"));
 const home = await readFile(join(root, "index.html"), "utf8");
@@ -106,7 +108,7 @@ for (let index = 0; index < pages.length; index++) {
   const isQuickstart = page.id.startsWith("guides/getting-started/quickstarts/");
   const breadcrumb = isQuickstart ? `<a href="${pageHref(prefix, "guides/getting-started")}">Start with Supabase</a><span>›</span><span>Framework Quickstarts</span><span>›</span><span>${escapeHtml(page.navTitle || page.title)}</span>` : `<a href="${prefix}">Docs</a><span>›</span><span>${escapeHtml(page.group)}</span><span>›</span><span>${escapeHtml(page.title)}</span>`;
   const html = `<!doctype html>
-<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" content="#121212" /><title>${escapeHtml(page.title)} | Supabase Docs</title><link rel="icon" href="${prefix}assets/supabase-dark.svg" type="image/svg+xml" /><link rel="stylesheet" href="${prefix}variables.css" /><link rel="stylesheet" href="${prefix}styles.css" /><script src="${prefix}assets/vendor/prism.js" defer></script><script src="${prefix}doc-page.js" defer></script></head>
+<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" /><title>${escapeHtml(page.title)} | Supabase Docs</title><link rel="icon" href="${prefix}assets/supabase-dark.svg" type="image/svg+xml" /><link rel="stylesheet" href="${prefix}theme.css" /><link rel="stylesheet" href="${prefix}styles.css" /><script src="${prefix}assets/vendor/prism.js" defer></script><script type="module" src="${prefix}doc-page.js"></script></head>
 <body class="docs-page" data-root="${prefix}"><a class="docs-skip" href="#main">Skip to content</a>${sharedMarkup(header, prefix)}
 <main id="main" tabindex="-1"><div class="docs-document${referenceLayout ? " docs-reference" : ""}${isQuickstart ? " docs-quickstart" : ""}"><div class="docs-document-shell"><aside class="docs-sidebar" aria-label="Documentation navigation">${sidebarMarkup(page.id, prefix)}</aside><div class="docs-content-grid"><article class="docs-article"><button class="docs-sidebar-toggle" type="button" aria-expanded="false">Browse docs</button><nav class="docs-breadcrumb" aria-label="Breadcrumb">${breadcrumb}</nav><h1 class="docs-article-title">${escapeHtml(page.title)}</h1><p class="docs-article-summary">${escapeHtml(page.summary)}</p><details class="docs-mobile-toc"${headings.length ? "" : " hidden"}><summary>On this page</summary><nav>${toc}</nav></details><div class="docs-article-body">${body}</div></article><aside class="docs-toc" aria-label="On this page">${rightActions}${referenceLayout ? "" : `<span>ON THIS PAGE</span><nav>${toc}</nav>`}</aside></div></div></div></main>
 ${sharedMarkup(footer, prefix)}${sharedMarkup(dialogs, prefix)}</body></html>`;
@@ -117,3 +119,5 @@ ${sharedMarkup(footer, prefix)}${sharedMarkup(dialogs, prefix)}</body></html>`;
 }
 await writeFile(join(root, "search-index.json"), JSON.stringify(searchIndex));
 console.log(`Built ${pages.length} static documentation pages`);
+
+execFileSync("python3", ["scripts/audit-tokens.py"], { cwd: root, stdio: "inherit" });
