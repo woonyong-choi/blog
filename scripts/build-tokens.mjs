@@ -51,14 +51,14 @@ async function embedAssetTokens(directory) {
     if (entry.isDirectory()) { await embedAssetTokens(path); continue; }
     if (!entry.name.endsWith('.svg')) continue;
     const source = await readFile(path, 'utf8');
-    const body = source.replace(/<style data-site-tokens>[\s\S]*?<\/style>/g, '');
+    const body = source.replace(/<style data-site-tokens(?:="")?>[\s\S]*?<\/style>/g, '');
     const references = [...new Set([...body.matchAll(/var\((--[\w-]+)\)/g)].map(match => match[1]))];
     const byName = new Map([...table.keys()].map(key => ['--' + key.replaceAll('.', '-'), key]));
     const declarations = references.map(name => {
       if (!byName.has(name)) throw new Error(`unknown asset token: ${name}`);
       return `${name}:${resolve(byName.get(name))}`;
     });
-    const content = declarations.length ? body.replace(/<svg\b[^>]*>/, match => `${match}<style data-site-tokens>:root{${declarations.join(';')}}</style>`) : body;
+    const content = declarations.length ? body.replace(/<svg\b[^>]*>/, match => `${match}<style data-site-tokens="">:root{${declarations.join(';')}}</style>`) : body;
     if (process.argv.includes('--check')) {
       if (source !== content) throw new Error(`stale asset tokens: ${path.pathname}`);
     } else await writeFile(path, content);

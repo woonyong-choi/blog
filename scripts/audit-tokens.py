@@ -4,6 +4,7 @@ import json
 import re
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from check_tokens import load_token_info, check_file, find_segments, find_hardcoded
@@ -35,8 +36,13 @@ def audit():
             findings.append(f'{name}: unregistered generated source')
         if path.suffix in {'.svg', '.md'}:
             text = path.read_text()
+            if path.suffix == '.svg':
+                try:
+                    ET.fromstring(text)
+                except ET.ParseError as error:
+                    findings.append(f'{name}: invalid svg xml: {error}')
             # 각 SVG에 삽입한 토큰 선언은 앞의 재생성 비교로 검증한다.
-            text = re.sub(r'<style data-site-tokens>[\s\S]*?</style>', '', text)
+            text = re.sub(r'<style data-site-tokens(?:="")?>[\s\S]*?</style>', '', text)
             if path.suffix == '.md':
                 text = re.sub(r'```[^\n]*\n[\s\S]*?```', '', text)
             for offset, segment, styled in find_segments(text, '.html'):
