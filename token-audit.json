@@ -1,5 +1,5 @@
 {
-  "$description": "첨부 정본과 제삼자 배포본은 해시로 보존한다. 생성물은 토큰 정본으로 재생성해 비교한다. SVG 도형 좌표와 문서 코드 예제는 UI 디자인 값이 아니다.",
+  "$description": "\ucca8\ubd80 \uc815\ubcf8\uacfc \uc81c\uc0bc\uc790 \ubc30\ud3ec\ubcf8\uc740 \ud574\uc2dc\ub85c \ubcf4\uc874\ud55c\ub2e4. \uc0dd\uc131\ubb3c\uc740 \ud1a0\ud070 \uc815\ubcf8\uc73c\ub85c \uc7ac\uc0dd\uc131\ud574 \ube44\uad50\ud55c\ub2e4. SVG \ub3c4\ud615 \uc88c\ud45c\uc640 \ubb38\uc11c \ucf54\ub4dc \uc608\uc81c\ub294 UI \ub514\uc790\uc778 \uac12\uc774 \uc544\ub2c8\ub2e4.",
   "preserved": {
     "DESIGN.md": "030c84b1d413d314a1b57c9682ecab7fb194b3ae5261d7da8b174afee36f5e16",
     "assets/vendor/supabase-LICENSE": "c29468abcd629e248c2f76848155c386b733872bcabcc4cf65ef1e7c61431042",
@@ -12,6 +12,7 @@
   },
   "generated": [
     "theme.css",
-    "styles.css"
+    "styles.css",
+    "styles.source.css"
   ]
 }

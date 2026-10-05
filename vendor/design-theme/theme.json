@@ -1,0 +1,25 @@
+{
+  "id": "base",
+  "schemaVersion": 1,
+  "modes": [
+    "dark"
+  ],
+  "defaultMode": "dark",
+  "description": "Neutral documentation surfaces with a green accent",
+  "source": {
+    "repository": "https://github.com/woonyong-choi/design-tokens",
+    "path": "themes/base",
+    "version": "0.1.1"
+  },
+  "files": {
+    "assets/fonts/443896d591e4f761-s.p.woff2": "2c935ccea0efa74f1d034628790a2aebfe2ccb6f5d60e8f5b224366066e10188",
+    "assets/fonts/4c9affa5bc8f420e-s.p.woff2": "e310b55a7fd9677f5e3555e6c6c4d064fa1f1d24393f0ddbe217cea12a8c432f",
+    "assets/fonts/e4af272ccee01ff0-s.p.woff2": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
+    "styles.css": "9364fc63a0d9ffbc128276a526a18f8f91751c0654a96c3cc41bd145d03793e7",
+    "styles.source.css": "9364fc63a0d9ffbc128276a526a18f8f91751c0654a96c3cc41bd145d03793e7",
+    "theme.css": "67db1b920a30edd2e1eef678fce273b065f072460deb697b42b1bec23f417195",
+    "tokens.dark.json": "5fc5744fe37f35c4057dbc2470acb342bc87c2a40e434e8c272273d457ee9522",
+    "tokens.json": "5fc5744fe37f35c4057dbc2470acb342bc87c2a40e434e8c272273d457ee9522"
+  },
+  "contentHash": "938c6471df2e813bec550ed0d1ab4dd27b1bbd6925fabf581e699de3f93844b0"
+}

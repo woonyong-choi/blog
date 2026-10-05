@@ -1,6 +1,16 @@
 // 토큰 정본에서 브라우저용 참조와 스타일을 생성한다.
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 
+import { verifyTheme } from './theme-snapshot.mjs';
+
+const theme = verifyTheme();
+for (const name of Object.keys(theme.files).filter((name) => name.startsWith('assets/'))) {
+  const installed = await readFile(new URL(`../${name}`, import.meta.url));
+  const importedAsset = await readFile(new URL(`../vendor/design-theme/${name}`, import.meta.url));
+  if (!installed.equals(importedAsset)) throw new Error(`theme asset differs: ${name}`);
+}
+const imported = await readFile(new URL('../vendor/design-theme/tokens.json', import.meta.url), 'utf8');
+if (await readFile(new URL('../tokens.json', import.meta.url), 'utf8') !== imported) throw new Error('tokens.json differs from imported base theme');
 const original = JSON.parse(await readFile(new URL('../tokens.json', import.meta.url), 'utf8'));
 const table = new Map();
 function flatten(node, prefix = '') {
@@ -24,20 +34,12 @@ function resolve(path, seen = new Set()) {
   const match = String(token.$value).match(/^\{([\w.-]+)\}$/);
   return match ? resolve(match[1], new Set([...seen, path])) : typeof token.$value === 'string' ? token.$value.replace(/\{([\w.-]+)\}/g, (_, reference) => resolve(reference, new Set([...seen, path]))) : token.$value;
 }
-const header = 'tokens.json: 생성물, 손으로 고치지 않음';
-const declarations = [];
-for (const [path, token] of table) {
-  resolve(path);
-  const reference = String(token.$value).match(/^\{([\w.-]+)\}$/);
-  const unit = typeof token.$value === 'number' ? ({ dimension: 'px', duration: 'ms' }[token.$type] || '') : '';
-  let css = reference ? `var(--${reference[1].replaceAll('.', '-')})` : `${token.$value}${unit}`.replace(/\{([\w.-]+)\}/g, (_, name) => `var(--${name.replaceAll('.', '-')})`);
-  const fallback = original.$extensions.blog.fontFallbacks[path.replace('font.', '')];
-  if (fallback) css = [token.$value, ...fallback].map(name => name.includes(' ') ? JSON.stringify(name) : name).join(', ');
-  declarations.push(`  --${path.replaceAll('.', '-')}: ${css};`);
-}
-const outputs = new Map([['theme.css', `/* ${header} */\n:root {\n${declarations.join('\n')}\n}\n${original.$extensions.blog.fontFaces.join('\n')}\n`]]);
-const stylesheet = await readFile(new URL('../styles.source.css', import.meta.url), 'utf8');
-outputs.set('styles.css', `/* styles.source.css + ${header} */\n${stylesheet.replace(/breakpoint\(([\w-]+)\)/g, (_, name) => resolve(`breakpoint.${name}`))}`);
+const outputs = new Map([
+  ['theme.css', await readFile(new URL('../vendor/design-theme/theme.css', import.meta.url), 'utf8')],
+  ['styles.css', await readFile(new URL('../vendor/design-theme/styles.css', import.meta.url), 'utf8')],
+]);
+const sourceStyles = await readFile(new URL('../styles.source.css', import.meta.url), 'utf8');
+if (sourceStyles !== await readFile(new URL('../vendor/design-theme/styles.source.css', import.meta.url), 'utf8')) throw new Error('styles.source.css differs from imported base theme');
 for (const [name, content] of outputs) {
   const path = new URL(`../${name}`, import.meta.url);
   if (process.argv.includes('--check')) {

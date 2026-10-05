@@ -57,3 +57,14 @@ JavaScript 참조 메뉴의 계층은 `content/javascript-navigation.json`에서
 수정 요청은 GitHub 이슈로 만들고 완료 조건을 정합니다. 이슈별 작업 브랜치에서 수정한 뒤 빌드·화면 검증 결과를 PR에 첨부합니다. 사용자 확인 후 병합합니다. 구현 결과의 검증 범위는 `VALIDATION.md`에서 확인할 수 있습니다.
 
 토큰 이름은 특정 브랜드·프로젝트에 의존하지 않는다. 글꼴 역할은 `font.sans`·`font.mono`, 그림 색상 원본은 `illustration.paint.<색 계열>-<단계>`, SVG 참조는 `asset.paint.symbol-layer-<번호>`를 사용한다. 단계는 해당 계열 내 명도 순서이며 서로 다른 색 계열 사이의 같은 번호는 같은 밝기를 보장하지 않는다. SVG 레이어 번호는 자산의 기존 참조를 구별하는 식별자이며 색의 우선순위가 아니다. 실제 글꼴명과 자산 경로는 원래 식별자를 유지한다.
+
+## 공유 테마 갱신
+
+디자인 정본은 design-tokens의 `themes/base`다. `theme.config.json`에서 사용할 테마를 지정하고, 빌드된 저장소 경로를 전달해 가져온다.
+
+```sh
+npm run theme:sync -- --from <design-tokens-root>
+node build.mjs
+```
+
+`vendor/design-theme`는 해시가 있는 완성본이다. 루트의 tokens.json, styles.source.css와 글꼴은 가져온 사본이며 직접 수정하지 않는다. 변경은 공통 정본에서 진행한다. 가져오기와 빌드는 사본의 해시와 일치 여부를 검사한다. 갱신 결과를 검토하고 소비자 저장소에 함께 커밋해야 반영된다. 현재 base는 다크 단일 모드이므로 라이트 요청도 같은 디자인으로 표시된다.

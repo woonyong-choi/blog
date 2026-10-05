@@ -5,6 +5,7 @@
   "scripts": {
     "build": "node build.mjs",
     "tokens": "node scripts/build-tokens.mjs",
-    "check:tokens": "python3 scripts/audit-tokens.py"
+    "check:tokens": "python3 scripts/audit-tokens.py",
+    "theme:sync": "node scripts/sync-theme.mjs"
   }
 }
