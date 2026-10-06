@@ -115,6 +115,7 @@ npm run build:product
 ```ui:callout
 {
   "title": "Note",
+  "fineprint": true,
   "body": "**강조**와 [내부 링크](/things/support/)를 넣을 수 있습니다."
 }
 ```

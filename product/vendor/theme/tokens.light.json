@@ -3741,6 +3741,86 @@
         "$type": "string",
         "$value": "inset 0 0 0 1px rgba(0,20,49,.18)",
         "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-h1-margin": {
+        "$type": "string",
+        "$value": "2.0677em 0 1.0323em",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "prose-heading-line": {
+        "$type": "number",
+        "$value": 1.1,
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "prose-paragraph-gap": {
+        "$type": "dimension",
+        "$value": "1.4em",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "prose-list-inset": {
+        "$type": "dimension",
+        "$value": "1.5em",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "callout-padding": {
+        "$type": "string",
+        "$value": ".5em .75em",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "callout-title-gap": {
+        "$type": "dimension",
+        "$value": ".7em",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "callout-warning": {
+        "$type": "color",
+        "$value": "#fcf9cf",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "task-size": {
+        "$type": "dimension",
+        "$value": "1.667cap",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "task-align": {
+        "$type": "dimension",
+        "$value": "-.3335cap",
+        "$description": "원본 문서 제목·목록·알림·체크 표시 규칙"
+      },
+      "platform-nav-margin": {
+        "$type": "string",
+        "$value": ".5em 0 1em",
+        "$description": "지원 문서 플랫폼 선택 버튼의 원본 상태"
+      },
+      "platform-line": {
+        "$type": "number",
+        "$value": 1.3,
+        "$description": "지원 문서 플랫폼 선택 버튼의 원본 상태"
+      },
+      "platform-color": {
+        "$type": "color",
+        "$value": "rgba(0,6,14,.54)",
+        "$description": "지원 문서 플랫폼 선택 버튼의 원본 상태"
+      },
+      "platform-hover": {
+        "$type": "color",
+        "$value": "rgba(0,20,49,.18)",
+        "$description": "지원 문서 플랫폼 선택 버튼의 원본 상태"
+      },
+      "platform-active": {
+        "$type": "color",
+        "$value": "rgba(0,15,37,.23)",
+        "$description": "지원 문서 플랫폼 선택 버튼의 원본 상태"
+      },
+      "platform-hover-shadow": {
+        "$type": "string",
+        "$value": "0 1px 4px rgba(0,0,0,.16)",
+        "$description": "지원 문서 플랫폼 선택 버튼의 원본 상태"
+      },
+      "platform-active-shadow": {
+        "$type": "string",
+        "$value": "inset 0 1px 2px rgba(0,0,0,.1)",
+        "$description": "지원 문서 플랫폼 선택 버튼의 원본 상태"
       }
     }
   },
@@ -8228,6 +8308,70 @@
     "key-weight": {
       "$type": "number",
       "$value": "{primitive.simple.status-caption-weight}"
+    },
+    "prose-h1-margin": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-h1-margin}"
+    },
+    "prose-heading-line": {
+      "$type": "number",
+      "$value": "{primitive.simple.prose-heading-line}"
+    },
+    "prose-paragraph-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.prose-paragraph-gap}"
+    },
+    "prose-list-inset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.prose-list-inset}"
+    },
+    "callout-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.callout-padding}"
+    },
+    "callout-title-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.callout-title-gap}"
+    },
+    "callout-warning": {
+      "$type": "color",
+      "$value": "{primitive.simple.callout-warning}"
+    },
+    "task-size": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.task-size}"
+    },
+    "task-align": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.task-align}"
+    },
+    "platform-nav-margin": {
+      "$type": "string",
+      "$value": "{primitive.simple.platform-nav-margin}"
+    },
+    "platform-line": {
+      "$type": "number",
+      "$value": "{primitive.simple.platform-line}"
+    },
+    "platform-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.platform-color}"
+    },
+    "platform-hover": {
+      "$type": "color",
+      "$value": "{primitive.simple.platform-hover}"
+    },
+    "platform-active": {
+      "$type": "color",
+      "$value": "{primitive.simple.platform-active}"
+    },
+    "platform-hover-shadow": {
+      "$type": "string",
+      "$value": "{primitive.simple.platform-hover-shadow}"
+    },
+    "platform-active-shadow": {
+      "$type": "string",
+      "$value": "{primitive.simple.platform-active-shadow}"
     }
   }
 }

@@ -145,7 +145,7 @@ function component(kind, data, md, env) {
       return `<div class="app-feature-demos">${data.mediaFirst ? media + descriptions : descriptions + media}</div>`;
     }
     case 'callout':
-      return `<aside class="app-callout${data.tone === 'warning' ? ' is-warning' : ''}"><strong>${escape(data.title ?? 'Note')}</strong>${render(data.body)}</aside>`;
+      return `<aside class="app-callout${data.tone === 'warning' ? ' is-warning' : ''}${data.fineprint ? ' is-fineprint' : ''}"><strong>${escape(data.title ?? 'Note')}</strong>${render(data.body)}</aside>`;
     case 'details':
       return `<details class="app-details"${data.open ? ' open' : ''}><summary>${escape(data.title)}</summary>${render(data.body)}</details>`;
     case 'figure':

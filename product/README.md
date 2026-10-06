@@ -66,7 +66,7 @@ description: 문서의 짧은 소개
 
 | 이름 | 입력 |
 |---|---|
-| callout | title, body, tone: warning 선택 |
+| callout | title, body, tone: warning, fineprint 선택 |
 | details | title, body, open 선택 |
 | figure | src, alt, caption, wide 선택 |
 | video | src, poster, title, caption, width, height, controls, overlay 선택 |
