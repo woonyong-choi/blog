@@ -4,78 +4,51 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="description" content="Woonyong의 개인 사이트 메인 시안. 만드는 일과 쓰는 글, 쌓아가는 지식을 연결합니다." />
-  <title>Woonyong — 만드는 일, 쌓아가는 지식</title>
+  <title>Woonyong — 개발과 기록</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="/theme.css" />
   <link rel="stylesheet" href="/styles.css" />
   <script type="module" src="/preview/preview.js"></script>
 </head>
-<body class="docs-profile">
+<body>
   <a class="docs-skip" href="#main">본문으로 건너뛰기</a>
-  <header class="docs-profile-header">
-    <div class="docs-profile-shell docs-profile-header-inner">
-      <a class="docs-profile-brand" href="#resume" data-page="resume" aria-label="Woonyong 이력서">woonyong<span class="docs-profile-brand-dot">.</span></a>
-      <nav class="docs-profile-nav" aria-label="주 메뉴">
-        <a href="#work">포트폴리오</a><a href="#writing">블로그</a><a href="#knowledge">위키</a>
-      </nav>
-      <div class="docs-profile-controls">
-        <button class="docs-profile-theme" type="button" aria-label="다크 모드로 전환" data-theme-toggle>◐</button>
-        <a class="docs-profile-resume" href="#resume" data-page="resume">이력서 <span aria-hidden="true">↗</span></a>
-        <button class="docs-profile-menu" type="button" aria-expanded="false" aria-controls="mobile-menu">메뉴</button>
+  <header class="docs-header">
+    <div class="docs-header-inner">
+      <a class="docs-brand" href="#resume" data-page="resume" aria-label="Woonyong 이력서">Woonyong <span>개발과 기록</span></a>
+      <nav class="docs-nav" aria-label="주 메뉴"><a href="#resume" data-page="resume">소개</a><a href="#portfolio">포트폴리오</a><a href="#writing">블로그</a><a href="#knowledge">위키</a><a href="#languages">언어</a><a href="#platform">플랫폼</a></nav>
+      <div class="docs-header-actions">
+        <button class="docs-search-trigger" type="button" aria-label="검색"><span class="docs-search-icon" aria-hidden="true"></span><span>기록 검색...</span><kbd>⌘K</kbd></button>
+        <a class="docs-signup" href="#resume" data-page="resume">이력서</a>
+        <button class="docs-mobile-trigger" type="button" aria-label="메뉴 열기" aria-expanded="false">☰</button>
       </div>
     </div>
-    <nav class="docs-profile-mobile" id="mobile-menu" aria-label="모바일 메뉴" hidden>
-      <a href="#work">포트폴리오</a><a href="#writing">블로그</a><a href="#knowledge">위키</a><a href="#technologies">기술별 탐색</a>
-    </nav>
+    <nav class="docs-mobile-nav" aria-label="모바일 메뉴" hidden><a href="#resume" data-page="resume">소개</a><a href="#portfolio">포트폴리오</a><a href="#writing">블로그</a><a href="#knowledge">위키</a><a href="#languages">언어</a><a href="#platform">플랫폼</a></nav>
   </header>
-  <main id="main" class="docs-profile-shell" tabindex="-1">
-    <section class="docs-profile-hero" aria-labelledby="intro-title">
-      <div>
-        <h1 id="intro-title">만드는 일,<br /><span class="docs-profile-accent">쌓아가는 지식.</span></h1>
-        <p class="docs-profile-intro">백엔드와 개발 도구를 만드는 Woonyong입니다.<br />문제를 이해하고, 코드로 확인하고,<br class="docs-profile-mobile-break" /> 다시 꺼내 쓸 수 있는 기록을 남깁니다.</p>
-        <div class="docs-profile-actions"><a class="docs-profile-primary" href="#resume" data-page="resume">조금 더 알아보기 <span aria-hidden="true">↗</span></a><a class="docs-profile-text-link" href="#work">만든 것 보기 <span aria-hidden="true">↓</span></a></div>
-      </div>
-      <aside class="docs-profile-note" aria-label="사이트 소개">
-        <span class="docs-profile-note-label">이곳에 남기는 것</span>
-        <a href="#work"><span class="docs-profile-note-number">01</span><div><strong>직접 만든 것</strong><span>문제에서 구현과 검증까지</span></div><span aria-hidden="true">↗</span></a>
-        <a href="#writing"><span class="docs-profile-note-number">02</span><div><strong>과정에서 배운 것</strong><span>선택의 이유와 남은 질문</span></div><span aria-hidden="true">↗</span></a>
-        <a href="#knowledge"><span class="docs-profile-note-number">03</span><div><strong>다시 찾아볼 것</strong><span>연결하며 쌓아가는 개발 위키</span></div><span aria-hidden="true">↗</span></a>
-      </aside>
-    </section>
-    <section class="docs-profile-section" id="work" aria-labelledby="work-title">
-      <div class="docs-profile-section-head"><div><h2 id="work-title">직접 만든 것</h2><p>무엇을 만들었고, 왜 그렇게 만들었는지.</p></div><a class="docs-profile-text-link" href="#portfolio" data-page="portfolio">포트폴리오 <span aria-hidden="true">↗</span></a></div>
-      <div class="docs-profile-projects">
-        <a class="docs-profile-project" href="#clue" data-page="clue">
-          <div class="docs-profile-project-art" aria-hidden="true"><div class="docs-profile-flow"><span>Cluster</span><i>→</i><span>Evidence</span><i>→</i><span>Draft PR</span></div><div class="docs-profile-art-caption">OBSERVE · EXPLAIN · VERIFY</div></div>
-          <div class="docs-profile-project-body"><div class="docs-profile-meta">팀 프로젝트 · Kubernetes</div><h3>K8s Clue <span aria-hidden="true">↗</span></h3><p>장애의 증거를 모으고, 검토 가능한 수정안으로 연결합니다.</p><div class="docs-profile-project-tags"><span>장애 진단</span><span>변경 제안</span><span>검증</span></div></div>
+  <main id="main" tabindex="-1">
+    <section class="docs-hero docs-home" aria-labelledby="hero-title">
+      <div class="docs-shell docs-hero-inner">
+        <a class="docs-hero-copy" href="#resume" data-page="resume">
+          <div class="docs-hero-mark" aria-hidden="true"><img src="/assets/ui/user-round-lucide.svg" alt="" /></div>
+          <div><h1 id="hero-title">Woonyong</h1><p>백엔드와 개발 도구를 만듭니다.<br />직접 만든 것과 문제를 풀어간 과정, 다시 찾아볼 지식을 기록합니다.</p></div>
         </a>
-        <a class="docs-profile-project" href="#daphnis" data-page="daphnis">
-          <div class="docs-profile-project-art" aria-hidden="true"><div class="docs-profile-diagram"><span>Source</span><div class="docs-profile-diagram-branch"><span>Flow</span><span>Sequence</span><span>Chart</span></div></div><div class="docs-profile-art-caption">TEXT → DIAGRAM</div></div>
-          <div class="docs-profile-project-body"><div class="docs-profile-meta">개발 도구 · 시각화</div><h3>Daphnis <span aria-hidden="true">↗</span></h3><p>텍스트로 기술의 흐름을 그리고, 움직임으로 동작을 설명합니다.</p><div class="docs-profile-project-tags"><span>다이어그램</span><span>문서</span><span>디자인 토큰</span></div></div>
-        </a>
+        <div class="docs-command-card">
+          <div class="docs-command-head"><div class="docs-tabs" role="tablist" aria-label="소개"><button id="intro-tab" type="button" role="tab" aria-controls="command-content" aria-selected="true" data-tab="intro">소개</button><button id="interest-tab" type="button" role="tab" aria-controls="command-content" aria-selected="false" data-tab="interest">관심 분야</button></div><a class="docs-copy" href="#resume" data-page="resume" aria-label="이력서 보기">↗</a></div>
+          <div class="docs-command-body is-expanded" id="command-content" role="tabpanel" aria-labelledby="intro-tab"><p>문제를 이해하고, 코드로 확인합니다.</p><ol><li>포트폴리오에 구현과 검증을 남깁니다.</li><li>블로그에 선택의 이유와 경험을 씁니다.</li><li>위키에 다시 사용할 지식을 쌓습니다.</li></ol></div>
+        </div>
       </div>
     </section>
-    <section class="docs-profile-section" id="writing" aria-labelledby="writing-title">
-      <div class="docs-profile-section-head"><div><h2 id="writing-title">과정에서 배운 것</h2><p>해결한 문제보다, 해결해 간 과정을 씁니다.</p></div><span class="docs-profile-meta">구성을 보여주는 예시 글</span></div>
-      <div class="docs-profile-articles">
-        <a class="docs-profile-article" href="#theme-story" data-page="theme-story"><span class="docs-profile-article-kind">설계 기록</span><div><h3>웹과 다이어그램이 같은 디자인을 쓰려면</h3><p>색상 이름 대신 역할을 공유하고, 하나의 테마로 연결하기.</p></div><span class="docs-profile-arrow" aria-hidden="true">↗</span></a>
-        <a class="docs-profile-article" href="#clue-story" data-page="clue-story"><span class="docs-profile-article-kind">문제 해결</span><div><h3>장애를 고치기 전에, 증거부터 모으는 이유</h3><p>Kubernetes 진단에서 관찰과 변경의 경계를 나누는 방법.</p></div><span class="docs-profile-arrow" aria-hidden="true">↗</span></a>
-        <a class="docs-profile-article" href="#sql-story" data-page="sql-story"><span class="docs-profile-article-kind">학습 기록</span><div><h3>SQL 한 줄이 데이터에 닿기까지</h3><p>쿼리의 해석부터 저장까지, 작은 엔진으로 따라가 보기.</p></div><span class="docs-profile-arrow" aria-hidden="true">↗</span></a>
-      </div>
-    </section>
-    <section class="docs-profile-section" id="knowledge" aria-labelledby="knowledge-title">
-      <div class="docs-profile-section-head"><div><h2 id="knowledge-title">다시 찾아볼 지식</h2><p>기초에서 구현으로, 구현에서 운영으로 이어지는 위키.</p></div><a class="docs-profile-text-link" href="#wiki" data-page="wiki">위키 둘러보기 <span aria-hidden="true">↗</span></a></div>
-      <div class="docs-profile-topics" id="topic-list"></div>
-    </section>
-    <section class="docs-profile-section" id="technologies" aria-labelledby="technologies-title">
-      <div class="docs-profile-section-head"><div><h2 id="technologies-title">기술 이름으로 찾기</h2><p>익숙한 이름에서 시작해 관련 지식으로 들어갑니다.</p></div></div>
-      <div class="docs-profile-tech-group"><h3>언어</h3><div class="docs-profile-tech-list"><a href="#python" data-page="python"><img src="/assets/img/icons/python-icon.svg" alt="" />Python</a><a href="#kotlin" data-page="kotlin"><img src="/assets/img/icons/kotlin-icon.svg" alt="" />Kotlin</a></div></div>
-      <div class="docs-profile-tech-group"><h3>프레임워크</h3><div class="docs-profile-tech-list"><a href="#spring" data-page="spring"><img src="/assets/img/icons/spring-boot-icon.svg" alt="" />Spring Boot</a><a href="#react" data-page="react"><img src="/assets/img/icons/react-icon.svg" alt="" />React</a></div></div>
-      <div class="docs-profile-tech-group"><h3>데이터 · 플랫폼</h3><div class="docs-profile-tech-list"><a href="#postgres" data-page="postgres"><img src="/assets/img/icons/postgres-icon.svg" alt="" />PostgreSQL</a><a href="#kubernetes" data-page="kubernetes"><span class="docs-profile-tech-symbol" aria-hidden="true">K8s</span>Kubernetes</a></div></div>
-    </section>
+    <div class="docs-shell docs-sections docs-home">
+      <section class="docs-section" id="languages"><div class="docs-section-copy"><h2>프로그래밍 언어</h2><p>언어의 문법과 실행 원리를 정리합니다. 익숙한 기술 이름에서 위키로 들어갑니다.</p></div><div class="docs-section-content docs-link-grid" id="language-links"></div></section>
+      <section class="docs-section" id="portfolio"><div class="docs-section-copy"><h2>포트폴리오</h2><p>만들고 검증한 내용을 살펴봅니다. 프로젝트의 문제와 역할, 구현과 한계를 연결합니다.</p></div><div class="docs-section-content docs-product-grid" id="project-cards"></div></section>
+      <section class="docs-section" id="frameworks"><div class="docs-section-copy"><h2>프레임워크</h2><p>언어를 실제 애플리케이션으로 연결하는 구조와 사용법을 기록합니다.</p></div><div class="docs-section-content docs-link-grid" id="framework-links"></div></section>
+      <section class="docs-section" id="knowledge"><div class="docs-section-copy"><h2>CS와 개발 위키</h2><p>기초에서 구현과 운영까지. 같은 개념은 한곳에 정리하고 서로 연결합니다.</p></div><div class="docs-section-content docs-link-grid" id="knowledge-links"></div></section>
+      <section class="docs-section" id="platform"><div class="docs-section-copy"><h2>데이터와 플랫폼</h2><p>데이터가 저장되는 원리부터 서비스를 배포하고 운영하는 과정까지 다룹니다.</p></div><div class="docs-section-content docs-link-grid" id="platform-links"></div></section>
+      <section class="docs-section" id="writing"><div class="docs-section-copy"><h2>블로그</h2><p>문제를 해결하는 동안 내린 선택과 배운 점을 씁니다. 아래는 구성을 확인하기 위한 예시 글입니다.</p></div><div class="docs-section-content docs-resource-grid" id="article-cards"></div></section>
+      <section class="docs-section" id="learning"><div class="docs-section-copy"><h2>직접 구현하며 배우기</h2><p>작은 구현으로 내부 동작을 따라갑니다. 학습의 범위와 확인한 결과를 함께 남깁니다.</p></div><div class="docs-section-content docs-link-grid" id="learning-links"></div></section>
+    </div>
   </main>
-  <footer class="docs-profile-footer docs-profile-shell"><a href="https://github.com/woonyong-choi" target="_blank" rel="noopener noreferrer"><img src="/assets/ui/github.svg" alt="" />GitHub <span aria-hidden="true">↗</span></a></footer>
-  <dialog class="docs-profile-dialog" aria-labelledby="detail-title"><div class="docs-profile-dialog-bar"><span class="docs-profile-meta">개인 사이트 구성 시안</span><button type="button" class="docs-profile-close" aria-label="상세 닫기">닫기 ×</button></div><div class="docs-profile-detail" id="detail-content"></div></dialog>
+  <footer class="docs-footer"><div class="docs-shell"><div class="docs-social"><a href="https://github.com/woonyong-choi" target="_blank" rel="noopener noreferrer" aria-label="Woonyong GitHub"><img src="/assets/ui/github.svg" alt="" /></a></div></div></footer>
+  <dialog class="docs-privacy-dialog" id="detail-dialog" aria-labelledby="detail-title"><article class="docs-article-body" id="detail-content"></article><div><button type="button" class="docs-privacy-cancel">닫기</button></div></dialog>
+  <dialog class="docs-search-dialog" aria-label="기록 검색"><div class="docs-search-dialog-head"><span class="docs-search-icon" aria-hidden="true"></span><input type="search" placeholder="언어, 프로젝트, 글 검색..." aria-label="검색어" /><button type="button" class="docs-search-close" aria-label="검색 닫기">Esc</button></div><div class="docs-search-results" role="listbox"></div></dialog>
 </body>
 </html>

@@ -14,6 +14,10 @@ const files = [
   'assets/img/icons/python-icon.svg', 'assets/img/icons/kotlin-icon.svg',
   'assets/img/icons/react-icon.svg', 'assets/img/icons/spring-boot-icon.svg',
   'assets/img/icons/postgres-icon.svg', 'assets/ui/github.svg',
+  ...['daphnis', 'nextjs', 'kubernetes', 'redis', 'docker', 'githubactions', 'prometheus'].map(name => `assets/img/icons/${name}-icon.svg`),
+  ...['library', 'javascript', 'csharp', 'platform', 'cli', 'database', 'functions', 'integrations', 'ai-tools', 'rest-api', 'troubleshooting'].map(name => `assets/ui/${name}.svg`),
+  'assets/img/icons/simple-icons-license.txt', 'assets/ui/lucide-license.txt',
+  ...['user-round', 'cpu', 'network', 'brain', 'server', 'book-open', 'terminal', 'workflow', 'database', 'code-xml'].map(name => `assets/ui/${name}-lucide.svg`),
 ];
 for (const file of files) {
   const destination = resolve(target, file);
