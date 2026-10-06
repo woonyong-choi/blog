@@ -447,7 +447,7 @@ a:hover { text-decoration: underline; }
 .app-hero-logo { width: var(--site-reference-logo); margin: auto auto var(--site-hero-logo-gap); }
 .app-intro { max-width: var(--site-intro); margin: 0 auto; font-size: var(--site-intro-text); line-height: var(--site-line-intro); }
 .app-play { display: inline-flex; gap: var(--site-gap-xs); align-items: center; margin-block: var(--site-gap-sm); border: none; background: transparent; color: var(--site-link); font-size: var(--site-intro-text); font-weight: var(--site-weight-medium); }
-.app-play img { width: var(--site-control); }
+.app-play img { width: calc(var(--site-intro-text) * 1.5); }
 .app-hero-scene { width: 100%; height: auto; margin-top: var(--site-hero-top); }
 .app-cinema { width: 100%; max-width: var(--site-player-limit); margin: var(--site-hero-top) auto 0; }
 .app-cinema video { display: block; width: 100%; aspect-ratio: var(--site-ratio-video); background: var(--site-code); }
@@ -744,7 +744,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-landing { overflow: hidden; }
 .app-landing-hero { background: var(--site-canvas); }
 .app-hero-copy { width: var(--site-intro); max-width: var(--site-hero-max); margin: auto; padding-block: var(--site-hero-top); font-size: var(--site-intro-text); line-height: var(--site-line-intro); text-align: center; }
-.app-hero-copy .app-hero-logo { max-width: 75%; margin-bottom: var(--site-hero-logo-gap); }
+.app-hero-copy .app-hero-logo { max-width: 75%; margin-bottom: calc(var(--site-intro-text) * 1.5); }
 .app-hero-description { margin: var(--site-landing-description-margin) auto; }
 .app-hero-description .app-play { margin: 0; font-size: inherit; }
 .app-landing .app-cinema { margin-top: 0; }
@@ -1075,3 +1075,5 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-prose mark { color: inherit; background: var(--site-note); }
 .app-cancelled-task { display: inline-block; width: var(--site-gap); height: var(--site-gap); border: var(--site-border) solid var(--site-muted); line-height: var(--site-small-text); text-align: center; vertical-align: middle; }
 .task-list-item.is-cancelled { text-decoration: line-through; color: var(--site-muted); list-style: none; }
+
+.app-play { vertical-align: middle; }
