@@ -23,7 +23,7 @@
         "href": "/things/mac/",
         "image": "productcard-mac.svg",
         "requirement": "macOS 13.3 or later",
-        "price": "$49.99 (Example)",
+        "price": "$49.99 (US)",
         "badge": "appstore-mac-black.svg",
         "trial": true
       },
@@ -32,7 +32,7 @@
         "href": "/things/iphone/",
         "image": "productcard-iphone-watch.svg",
         "requirement": "iOS 16.4 or later",
-        "price": "$9.99 (Example)",
+        "price": "$9.99 (US)",
         "badge": "appstore-ios-black.svg",
         "trial": false
       },
@@ -41,7 +41,7 @@
         "href": "/things/ipad/",
         "image": "productcard-ipad.svg",
         "requirement": "iPadOS 16.4 or later",
-        "price": "$19.99 (Example)",
+        "price": "$19.99 (US)",
         "badge": "appstore-ios-black.svg",
         "trial": false
       },
@@ -50,7 +50,7 @@
         "href": "/things/vision/",
         "image": "productcard-vision.svg",
         "requirement": "visionOS 27 or later",
-        "price": "$29.99 (Example)",
+        "price": "$29.99 (US)",
         "badge": "appstore-ios-black.svg",
         "trial": false
       }

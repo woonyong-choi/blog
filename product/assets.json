@@ -1498,5 +1498,17 @@
     "file": "assets/getting-started-with-things-io55.jpg",
     "bytes": 69686,
     "sha256": "28e12c6615261e6674db3e16742c64875694fa62e6ed268bde07e4dfdf8b3db6"
+  },
+  {
+    "url": "https://culturedcode.com/status/2025-10-01/images/arrivals-planelanding.svg",
+    "file": "assets/arrivals-planelanding.svg",
+    "bytes": 2402,
+    "sha256": "c59e46479169b4cb2c86f421ca443db308c01898c242b3ffb186cc19b5659f5e"
+  },
+  {
+    "url": "https://culturedcode.com/frozen/2021/09/keycommand-keyboard-io40.png",
+    "file": "assets/keycommand-keyboard-io40.png",
+    "bytes": 324,
+    "sha256": "403e9200aecc963ee744d8f5429a1fd294a16919a835b13171d04c6d8adfb99b"
   }
 ]

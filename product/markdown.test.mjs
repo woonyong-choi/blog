@@ -31,5 +31,16 @@ test('unknown component and malformed data fail the build', () => {
 test('specimen renders every declared document component', () => {
   const source=readFileSync(new URL('./content/syntax-specimen.md',import.meta.url),'utf8').split('\n---\n').slice(1).join('\n---\n');
   const html=createMarkdown().render(source,{});
-  for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','data-tabs','data-gallery','<video','<details','<dl','<kbd','<abbr','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
+  for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','data-tabs','data-gallery','<video','<details','<dl','<kbd','popover','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
+});
+
+test('highlight and cancelled tasks preserve escaping, code and nested formatting', () => {
+  const md = createMarkdown();
+  const html = md.render('::**focus**:: and `::literal::`\n\n- [~] **cancelled**\n- [x] complete\n\n::unsafe <script>alert(1)</script>::');
+  assert.ok(html.includes('<mark><strong>focus</strong></mark>'));
+  assert.ok(html.includes('<code>::literal::</code>'));
+  assert.ok(html.includes('aria-label="취소된 작업"'));
+  assert.ok(html.includes('<strong>cancelled</strong>'));
+  assert.ok(!html.includes('<script>'));
+  assert.ok(!md.render('\\::escaped::').includes('<mark>'));
 });

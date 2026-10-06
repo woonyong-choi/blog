@@ -202,3 +202,44 @@ for (const search of document.querySelectorAll('[data-search]')) {
   search.querySelectorAll('[data-query]').forEach((button) => button.addEventListener('click', () => { input.value = button.dataset.query; update(); input.focus(); }));
   input.addEventListener('keydown', (event) => { if (event.key === 'Escape') { input.value = ''; update(); } if (event.key === 'ArrowDown') { event.preventDefault(); results.querySelector('a')?.focus(); } });
 }
+
+for (const button of document.querySelectorAll('[data-status-toggle]')) button.addEventListener('click', () => {
+  const expanded = button.getAttribute('aria-expanded') !== 'true';
+  const panel = document.getElementById(button.getAttribute('aria-controls'));
+  button.setAttribute('aria-expanded', String(expanded));
+  button.textContent = expanded ? 'Hide Past Week' : 'Show Past Week';
+  panel.inert = !expanded;
+  panel.classList.toggle('is-open', expanded);
+});
+
+for (const section of document.querySelectorAll('[data-keyboard]')) {
+  const select = section.querySelector('[data-keyboard-language]');
+  select.addEventListener('change', () => {
+    section.querySelectorAll('[data-keyboard-keys]').forEach(element => {
+      const variants = JSON.parse(element.dataset.keyboardMap);
+      const keys = variants[select.value] ?? variants['en-us'];
+      element.replaceChildren(...keys.flatMap((key,index) => {
+        const kbd = document.createElement('kbd');
+        kbd.textContent = key;
+        return index ? [document.createTextNode(' '), kbd] : [kbd];
+      }));
+    });
+  });
+}
+
+for (const button of document.querySelectorAll('[data-tooltip-trigger]')) {
+  const bubble = document.getElementById(button.getAttribute('popovertarget'));
+  const position = () => {
+    const rect = button.getBoundingClientRect();
+    const gap = parseFloat(getComputedStyle(bubble).getPropertyValue('--site-gap-xs'));
+    const width = parseFloat(getComputedStyle(bubble).width);
+    bubble.style.setProperty('--anchor-x', `${rect.left + rect.width / 2 - width / 2}px`);
+    const height = bubble.getBoundingClientRect().height;
+    const top = rect.bottom + gap + height > window.innerHeight ? rect.top - gap - height : rect.bottom + gap;
+    bubble.style.setProperty('--anchor-y', `${Math.max(gap, top)}px`);
+  };
+  button.addEventListener('click', position);
+  bubble.addEventListener('toggle', event => { if (event.newState === 'open') position(); });
+  window.addEventListener('resize', () => { if (bubble.matches(':popover-open')) position(); });
+  window.addEventListener('scroll', () => { if (bubble.matches(':popover-open')) bubble.hidePopover(); }, { passive: true });
+}

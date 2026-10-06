@@ -14,6 +14,8 @@
 
 ## Text and headings
 
+::하이라이트::와 ::**굵은 강조**::를 조합할 수 있습니다.
+
 일반 문단입니다. **굵은 글씨**, *기울임*, ***굵은 기울임***, ~~취소선~~, `inline code`와 [내부 링크](/things/support/)를 함께 사용할 수 있습니다.
 줄 끝 공백 두 개로  
 강제 줄바꿈을 만들 수 있습니다.
@@ -28,6 +30,8 @@
 문서의 페이지 제목과 별개로 Markdown의 1단계 제목도 지원합니다.
 
 ## Lists and tasks
+
+- [~] 취소된 작업도 별도 상태로 표시합니다.
 
 - 첫 번째 항목
 - 두 번째 항목
@@ -385,4 +389,155 @@ items:
     body: "변경 사항과 [관련 글](/things/blog/)을 연결합니다."
     status: Released
     date: October 6, 2026
+```
+
+## 키보드 배열별 단축키
+
+```ui:keyboard
+{
+  "languages": [
+    {
+      "value": "en-us",
+      "label": "English (US)"
+    },
+    {
+      "value": "en-gb",
+      "label": "English (Great Britain)"
+    },
+    {
+      "value": "en-int",
+      "label": "English (International)"
+    },
+    {
+      "value": "ar",
+      "label": "Arabic"
+    },
+    {
+      "value": "zh-pinyin",
+      "label": "Chinese (Pinyin)"
+    },
+    {
+      "value": "zh-zhuyin",
+      "label": "Chinese (Zhuyin)"
+    },
+    {
+      "value": "da",
+      "label": "Danish"
+    },
+    {
+      "value": "nl",
+      "label": "Dutch"
+    },
+    {
+      "value": "fi",
+      "label": "Finnish"
+    },
+    {
+      "value": "fr",
+      "label": "French"
+    },
+    {
+      "value": "fr-ch",
+      "label": "French (Swiss)"
+    },
+    {
+      "value": "fr-ca",
+      "label": "French (Canada)"
+    },
+    {
+      "value": "de",
+      "label": "German"
+    },
+    {
+      "value": "de-ch",
+      "label": "German (Swiss)"
+    },
+    {
+      "value": "hu",
+      "label": "Hungarian"
+    },
+    {
+      "value": "it",
+      "label": "Italian"
+    },
+    {
+      "value": "ja-kana",
+      "label": "Japanese (Kana)"
+    },
+    {
+      "value": "ja-romaji",
+      "label": "Japanese (Romaji)"
+    },
+    {
+      "value": "ko",
+      "label": "Korean (2-set)"
+    },
+    {
+      "value": "pt",
+      "label": "Portuguese"
+    },
+    {
+      "value": "es",
+      "label": "Spanish"
+    },
+    {
+      "value": "es-la",
+      "label": "Spanish (Latin America)"
+    },
+    {
+      "value": "ru",
+      "label": "Russian"
+    },
+    {
+      "value": "sv",
+      "label": "Swedish"
+    },
+    {
+      "value": "tr-q",
+      "label": "Turkish Q"
+    },
+    {
+      "value": "tr-f",
+      "label": "Turkish F"
+    },
+    {
+      "value": "other",
+      "label": "Other"
+    }
+  ],
+  "help": "키보드 배열에 따른 표시 전환 예시입니다. 단축키 데이터는 Markdown에서 언어별로 정의합니다.",
+  "groups": [
+    {
+      "title": "Example",
+      "rows": [
+        {
+          "label": "예시 작업 1 — 항목을 선택하고 동작합니다.",
+          "keys": {
+            "en-us": [
+              "⌘ Cmd",
+              "N"
+            ],
+            "ko": [
+              "⌘ Cmd",
+              "N (ㅜ)"
+            ],
+            "fr": [
+              "⌘ Cmd",
+              "N"
+            ]
+          }
+        },
+        {
+          "label": "예시 작업 2 — 항목을 선택하고 동작합니다.",
+          "keys": {
+            "en-us": [
+              "⌘ Cmd",
+              "Return"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
 ```

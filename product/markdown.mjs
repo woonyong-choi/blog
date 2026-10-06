@@ -31,9 +31,47 @@ function remote(id, src = '') {
 
 export function createMarkdown() {
   const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(taskLists);
+  md.inline.ruler.before('emphasis', 'highlight', (state, silent) => {
+    const start = state.pos;
+    if (state.src.slice(start, start + 2) !== '::' || /\s/.test(state.src[start + 2] ?? ' ')) return false;
+    let end = start + 2;
+    while ((end = state.src.indexOf('::', end)) !== -1) {
+      let escapes = 0;
+      for (let at = end - 1; at >= 0 && state.src[at] === String.fromCharCode(92); at -= 1) escapes += 1;
+      if (escapes % 2 === 0) break;
+      end += 2;
+    }
+    if (end < 0 || /\s/.test(state.src[end - 1]) || state.src.slice(start + 2, end).includes('\n')) return false;
+    if (!silent) {
+      state.push('mark_open', 'mark', 1);
+      const children = [];
+      state.md.inline.parse(state.src.slice(start + 2, end), state.md, state.env, children);
+      state.tokens.push(...children);
+      state.push('mark_close', 'mark', -1);
+    }
+    state.pos = end + 2;
+    return true;
+  });
+  md.core.ruler.after('github-task-lists', 'cancelled-task-lists', state => {
+    for (let index = 2; index < state.tokens.length; index += 1) {
+      const token = state.tokens[index];
+      if (token.type !== 'inline' || state.tokens[index - 1].type !== 'paragraph_open' || state.tokens[index - 2].type !== 'list_item_open' || !token.content.startsWith('[~] ')) continue;
+      state.tokens[index - 2].attrJoin('class', 'task-list-item is-cancelled');
+      token.content = token.content.slice(4);
+      token.children[0].content = token.children[0].content.slice(4);
+      const marker = new state.Token('html_inline', '', 0);
+      marker.content = '<span class="app-cancelled-task" role="img" aria-label="취소된 작업">×</span> ';
+      token.children.unshift(marker);
+    }
+  });
   const defaultImage = md.renderer.rules.image;
   md.renderer.rules.image = (tokens, index, options, env, self) => {
-    tokens[index].attrSet('loading', 'lazy');
+    const token = tokens[index];
+    token.attrSet('loading', 'lazy');
+    token.attrSet('decoding', 'async');
+    const src = token.attrGet('src');
+    const size = src?.startsWith('/things/assets/') ? IMAGE_SIZES[src.split('/').at(-1)] : undefined;
+    if (size) { token.attrSet('width', size[0]); token.attrSet('height', size[1]); }
     return defaultImage(tokens, index, options, env, self);
   };
   md.renderer.rules.table_open = () => '<div class="app-table-scroll"><table>';
@@ -129,9 +167,11 @@ function component(kind, data, md, env) {
       return `<dl class="app-definitions">${data.items.map((item) => `<dt>${escape(item.term)}</dt><dd>${render(item.body)}</dd>`).join('')}</dl>`;
     case 'speech': return `<p class="app-speech">${escape(data.body)}</p>`;
     case 'keys': return `<p>${escape(data.label ?? '')} ${data.keys.map((key) => `<kbd>${escape(key)}</kbd>`).join(' + ')}</p>`;
-    case 'tooltip': return `<p><abbr class="app-tooltip" title="${escape(data.description)}" tabindex="0">${escape(data.label)}</abbr></p>`;
+    case 'tooltip': return `<p><button class="app-tooltip" type="button" popovertarget="${id}-tip" data-tooltip-trigger>${escape(data.label)}</button></p><div class="app-tooltip-bubble" id="${id}-tip" popover>${render(data.description)}</div>`;
+    case 'keyboard':
+      return `<section class="app-keyboard" data-keyboard><div class="app-keyboard-selector">${image('keycommand-keyboard-io40.png','Keyboard')}<label class="app-sr" for="${id}-locale">Keyboard language</label><select id="${id}-locale" data-keyboard-language>${data.languages.map(item => `<option value="${escape(item.value)}">${escape(item.label)}</option>`).join('')}</select><button class="app-tooltip" type="button" popovertarget="${id}-help" data-tooltip-trigger>Help</button><div class="app-tooltip-bubble" id="${id}-help" popover>${render(data.help)}</div></div>${data.groups.map(group => `<h3>${escape(group.title)}</h3><div class="app-table-scroll"><table><tbody>${group.rows.map(row => `<tr><td>${render(row.label)}</td><td><span data-keyboard-keys data-keyboard-map="${escape(JSON.stringify(row.keys))}">${(row.keys['en-us'] ?? []).map(key=>`<kbd>${escape(key)}</kbd>`).join(' ')}</span>${row.note ? render(row.note) : ''}</td></tr>`).join('')}</tbody></table></div>`).join('')}</section>`;
     case 'status-board':
-      return `<div class="app-status-weather"><p class="app-status-date">${escape(data.updated)}</p><p class="app-status-message">${escape(data.message)}</p><details><summary>Show Past Week</summary><p>${escape(data.history)}</p></details><a href="/things/contact/form/">Report Issue</a></div><section class="app-arrivals"><h1>Arrivals</h1>${data.items.map(item => `<article><div><h2>${escape(item.title)}</h2><div class="app-arrival-caption">${render(item.body)}</div></div><div class="app-arrival-state"><p>${escape(item.status)}</p><small>${escape(item.date)}</small></div></article>`).join('')}</section>`;
+      return `<div class="app-status-weather"><div class="app-status-current"><p class="app-status-message">${escape(data.message)}</p><div class="app-status-actions"><button type="button" data-status-toggle aria-expanded="false" aria-controls="${id}-history">Show Past Week</button><a href="/things/contact/form/">Report Issue</a></div></div><div class="app-status-history" id="${id}-history" inert><div><p>${escape(data.history)}</p></div></div></div><section class="app-arrivals"><h1>Arrivals</h1>${data.items.map(item => `<article><div><h2>${escape(item.title)}</h2><div class="app-arrival-caption">${render(item.body)}</div></div><div class="app-arrival-state"><p>${escape(item.status)}</p><small>${escape(item.date)}</small></div></article>`).join('')}</section>`;
     case 'contact-form':
       return `<form class="app-contact-form" data-demo-form><div class="app-contact-field"><label for="${id}-subject">Subject</label><input id="${id}-subject" name="subject" required></div><div class="app-contact-field"><label for="${id}-message">Your message</label><textarea id="${id}-message" name="message" required></textarea><fieldset class="app-contact-choices"><legend class="app-sr">Message type</legend>${['I need help','I have a feature request','Other'].map((label,index) => `<label><input type="radio" name="kind" value="${index}"${index ? '' : ' checked'}> ${label}</label>`).join('')}</fieldset></div><div class="app-contact-field"><label for="${id}-email">Your email address</label><input id="${id}-email" name="email" type="email" autocomplete="email" required></div><fieldset class="app-contact-field app-contact-choices"><legend>What is your question about?</legend>${['Things for Mac','Things for iPad','Things for iPhone','Things for Apple Watch','Things for Apple Vision Pro','Other'].map(label => `<label><input type="checkbox" name="product" value="${escape(label)}"> ${escape(label)}</label>`).join('')}</fieldset><section class="app-contact-field"><h2>Privacy</h2><p>${escape(data.privacy)} <a href="/things/privacy/">Privacy Policy</a>.</p></section><p class="app-contact-field">${escape(data.availability)}</p><div class="app-contact-field"><strong>Input Verification</strong><label class="app-demo-verification"><input type="checkbox" data-demo-verify required> 검토용 입력 확인</label></div><button class="app-primary-action" type="submit" data-verified-submit disabled>Send Message</button><p role="status" data-form-status></p></form>`;
     case 'form': return `<form class="app-form" data-demo-form><p class="app-caption">입력 동작 예시입니다. 내용은 전송·저장되지 않습니다.</p><label for="${id}-email">Email</label><input id="${id}-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>${data.message ? `<label for="${id}-message">Message</label><textarea id="${id}-message" name="message" rows="6" required></textarea>` : ''}<button type="submit">${escape(data.label ?? 'Subscribe')}</button><p role="status" data-form-status></p></form>`;

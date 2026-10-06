@@ -3278,6 +3278,90 @@
       "status-flip-height": {
         "$type": "dimension",
         "$value": "40.5px"
+      },
+      "social-baseline": {
+        "$type": "dimension",
+        "$value": "-8.13273px"
+      },
+      "status-min-height": {
+        "$type": "dimension",
+        "$value": "1373px"
+      },
+      "status-weather-top": {
+        "$type": "dimension",
+        "$value": "151px"
+      },
+      "status-background-position": {
+        "$type": "string",
+        "$value": "center -150px"
+      },
+      "status-logo-position": {
+        "$type": "string",
+        "$value": "4px -100px"
+      },
+      "status-history-space": {
+        "$type": "string",
+        "$value": "80px 0 100px 110px"
+      },
+      "status-history-duration": {
+        "$type": "duration",
+        "$value": "400ms"
+      },
+      "status-header-icon": {
+        "$type": "dimension",
+        "$value": "33.75px"
+      },
+      "status-header-line": {
+        "$type": "dimension",
+        "$value": "35.1px"
+      },
+      "status-footer-space": {
+        "$type": "dimension",
+        "$value": "31px"
+      },
+      "status-grid-gap": {
+        "$type": "dimension",
+        "$value": "2%"
+      },
+      "status-row-border": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,.16)"
+      },
+      "status-flip-overlay": {
+        "$type": "string",
+        "$value": "linear-gradient(rgba(0,0,0,.15) 49.99%,rgba(0,0,0,.7) 50%,transparent 54%,rgba(0,0,0,.05))"
+      },
+      "status-title-sprite": {
+        "$type": "string",
+        "$value": "150px 25px"
+      },
+      "status-title-position": {
+        "$type": "string",
+        "$value": "-25px 0"
+      },
+      "keyboard-select-width": {
+        "$type": "dimension",
+        "$value": "213px"
+      },
+      "keyboard-select-padding": {
+        "$type": "string",
+        "$value": "4.005px 30px 4.005px 8.01px"
+      },
+      "keyboard-cell-padding": {
+        "$type": "string",
+        "$value": "5.4px 9px"
+      },
+      "tooltip-width": {
+        "$type": "dimension",
+        "$value": "277.5px"
+      },
+      "tooltip-padding": {
+        "$type": "string",
+        "$value": "15px 18.75px"
+      },
+      "tooltip-shadow": {
+        "$type": "string",
+        "$value": "0 2px 4px -2px rgba(0,0,0,.06),0 4px 8px -2px rgba(0,0,0,.06),0 8px 16px -2px rgba(0,0,0,.06),0 16px 32px -2px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.08)"
       }
     }
   },
@@ -7226,6 +7310,135 @@
       "$type": "dimension",
       "$value": "{primitive.simple.landing-social-x}",
       "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "social-baseline": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.social-baseline}"
+    },
+    "status-min-height": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-min-height}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-weather-top": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-weather-top}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-background-position": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-background-position}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-logo-position": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-logo-position}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-weather-font": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.header-tail}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-weather-line": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.intro-text}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-weather-action": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.tiny-text}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-history-space": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-history-space}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-history-duration": {
+      "$type": "duration",
+      "$value": "{primitive.simple.status-history-duration}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-header-icon": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-header-icon}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-header-line": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-header-line}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-footer-space": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-footer-space}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-grid-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-grid-gap}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-row-border": {
+      "$type": "color",
+      "$value": "{primitive.simple.status-row-border}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-flip-overlay": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-flip-overlay}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-title-icon": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-nav-top}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-title-sprite": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-title-sprite}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "status-title-position": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-title-position}",
+      "$description": "상태 페이지의 원본 배치와 전환 실측값"
+    },
+    "keyboard-icon": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.card-padding}",
+      "$description": "단축키 표와 언어 선택기 규격"
+    },
+    "keyboard-select-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.keyboard-select-width}",
+      "$description": "단축키 표와 언어 선택기 규격"
+    },
+    "keyboard-select-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.keyboard-select-padding}",
+      "$description": "단축키 표와 언어 선택기 규격"
+    },
+    "keyboard-cell-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.keyboard-cell-padding}",
+      "$description": "단축키 표와 언어 선택기 규격"
+    },
+    "tooltip-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.tooltip-width}",
+      "$description": "도움말 팝오버 실측 규격"
+    },
+    "tooltip-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.tooltip-padding}",
+      "$description": "도움말 팝오버 실측 규격"
+    },
+    "tooltip-shadow": {
+      "$type": "string",
+      "$value": "{primitive.simple.tooltip-shadow}",
+      "$description": "도움말 팝오버 실측 규격"
     }
   }
 }
