@@ -1115,3 +1115,13 @@ body[data-page=status] .app-header::after { border-color: var(--site-status-nav-
 body[data-page=status] .app-nav a { color: var(--site-status-nav-color); }
 body[data-page=status] .app-nav a:hover { color: var(--site-card); background: var(--site-status-nav-hover); }
 body[data-page=status] .app-nav a:active { background: var(--site-status-nav-active); }
+
+.app-cinema [role=status]:empty { display: none; }
+.app-quote-awards, .app-quote-art { line-height: var(--site-feature-body-line); }
+.app-quote-art img { display: inline; vertical-align: baseline; box-shadow: var(--site-quote-art-shadow); }
+.app-newsletter { margin-bottom: calc(var(--site-landing-review-font) * var(--site-feature-body-line)); }
+
+.app-play, .app-remote { display: inline-block; }
+.app-play img, .app-remote img, .app-hero-copy .app-play img, .app-feature-demo-description .app-remote img { display: inline-block; width: var(--site-control-icon-size); height: var(--site-control-icon-size); margin-right: var(--site-control-inset-inline); vertical-align: calc(-1 * var(--site-control-inset-inline)); }
+.app-play.is-playing img, .app-remote.is-playing img { opacity: var(--site-landing-logo-opacity); }
+.app-play:active, .app-remote:active { color: var(--site-control-active-ink); }

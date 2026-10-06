@@ -705,6 +705,8 @@
   --primitive-simple-status-nav-line: rgba(220,224,229,.25);
   --primitive-simple-status-nav-hover: rgba(255,255,255,.15);
   --primitive-simple-status-nav-active: rgba(255,255,255,.2);
+  --primitive-simple-quote-art-shadow: 0 2px 10px rgba(0,0,0,.1), 0 0 0 1px rgba(0,0,0,.05);
+  --primitive-simple-control-active-ink: #26344a;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1558,6 +1560,9 @@
   --site-status-nav-line: var(--primitive-simple-status-nav-line);
   --site-status-nav-hover: var(--primitive-simple-status-nav-hover);
   --site-status-nav-active: var(--primitive-simple-status-nav-active);
+  --site-quote-art-shadow: var(--primitive-simple-quote-art-shadow);
+  --site-control-icon-size: var(--primitive-simple-status-heading-size);
+  --site-control-active-ink: var(--primitive-simple-control-active-ink);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;
