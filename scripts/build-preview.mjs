@@ -10,6 +10,8 @@ const target = resolve(output);
 const desktopOnly = process.argv.includes('--desktop');
 const files = [
   'theme.css', 'styles.css', 'preview/preview.js',
+  'landing/landing.js',
+  ...[0, 1, 2].flatMap(index => ['mp4', 'jpg'].map(extension => `landing/assets/film-${index}.${extension}`)),
   'assets/fonts/pretendard-variable.woff2', 'assets/fonts/pretendard-license.txt',
   'assets/fonts/jetbrains-mono-regular.woff2', 'assets/fonts/jetbrains-mono-license.txt',
   'assets/img/icons/python-icon.svg', 'assets/img/icons/kotlin-icon.svg',
@@ -60,5 +62,12 @@ for (const file of ['theme.css', 'styles.css', 'preview/preview.js']) {
   html = html.replace(`/${file}"`, `/${file}?v=${hash}"`);
 }
 writeFileSync(resolve(target, 'index.html'), html);
+let landing = readFileSync(new URL('landing/index.html', root), 'utf8');
+for (const file of ['theme.css', 'styles.css', 'landing/landing.js']) {
+  const hash = createHash('sha256').update(readFileSync(resolve(target, file))).digest('hex').slice(0, 12);
+  landing = landing.replace(`/${file}"`, `/${file}?v=${hash}"`);
+}
+mkdirSync(resolve(target, 'landing'), { recursive: true });
+writeFileSync(resolve(target, 'landing/index.html'), landing);
 writeFileSync(resolve(target, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
-console.log(`Preview exported: ${files.length + 2} files`);
+console.log(`Preview exported: ${files.length + 3} files`);
