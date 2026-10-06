@@ -517,21 +517,22 @@ a:hover { text-decoration: underline; }
 .app-prose p { margin-block: var(--site-gap); }
 .app-prose a { text-decoration: underline; }
 .app-prose li { margin-block: var(--site-gap-xs); }
-.app-prose blockquote { border-left: var(--site-outline) solid var(--site-line); margin: var(--site-gap) 0; padding-left: var(--site-gap); }
+.app-prose blockquote { border: 0; margin: var(--site-prose-quote-margin); padding: 0; font-style: italic; }
 .app-prose hr { border: 0; border-top: var(--site-border) solid var(--site-line); margin-block: var(--site-gap-lg); }
-.app-prose code, .app-prose kbd { padding: 0 var(--site-gap-xs); border-radius: var(--site-button-radius); background: var(--site-soft); font-family: var(--site-font-code); font-size: var(--site-small-text); overflow-wrap: anywhere; }
-.app-prose kbd { border: var(--site-border) solid var(--site-line); white-space: nowrap; }
-.app-code { position: relative; margin-block: var(--site-gap); }
-.app-code pre { background: var(--site-code); color: var(--site-code-text); padding: var(--site-gap-lg) var(--site-gap); border-radius: var(--site-button-radius); overflow: auto; }
-.app-code code { padding: 0; background: transparent; color: inherit; white-space: pre; overflow-wrap: normal; }
-.app-code button { position: absolute; top: var(--site-gap-xs); right: var(--site-gap-xs); font-size: var(--site-tiny-text); }
+.app-prose code { padding: var(--site-prose-code-padding); border: var(--site-border) solid var(--site-prose-code-border); border-radius: var(--site-prose-code-radius); background: var(--site-prose-code-background); color: var(--site-prose-code-color); font-family: var(--site-prose-code-font); font-size: var(--site-prose-code-size); line-height: var(--site-feature-body-line); white-space: pre-wrap; overflow-wrap: break-word; }
+.app-prose kbd { display: inline-block; box-sizing: content-box; min-width: var(--site-key-size); padding: var(--site-key-padding); margin: var(--site-key-margin); border: 0; border-radius: var(--site-key-radius); background: var(--site-key-background); color: var(--site-key-color); box-shadow: var(--site-key-shadow); font-family: var(--site-key-font); font-size: var(--site-key-size); font-weight: var(--site-key-weight); font-style: normal; line-height: 1; text-align: center; vertical-align: var(--site-border); white-space: nowrap; }
+.app-code { display: flow-root; margin: 0 0 var(--site-post-paragraph-margin); }
+.app-code pre { clear: both; margin: 0; background: var(--site-prose-code-background); color: var(--site-prose-code-color); padding: var(--site-prose-pre-padding); border: var(--site-border) solid var(--site-prose-code-border); border-radius: var(--site-prose-pre-radius); font-family: var(--site-prose-code-font); font-size: var(--site-prose-code-size); line-height: var(--site-feature-body-line); white-space: pre-wrap; overflow-wrap: break-word; }
+.app-code code { padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; font: inherit; white-space: pre-wrap; overflow-wrap: break-word; }
+.app-code button { float: right; margin-bottom: var(--site-gap-xs); font-size: var(--site-tiny-text); }
 .hljs-keyword, .hljs-literal { color: var(--site-syntax-keyword); }
 .hljs-string { color: var(--site-syntax-string); }
 .hljs-number { color: var(--site-syntax-number); }
 .app-table-scroll { overflow: auto; margin-block: var(--site-gap); }
-.app-prose table { width: 100%; border-collapse: collapse; font-size: var(--site-small-text); }
-.app-prose th, .app-prose td { padding: var(--site-gap-sm); border: var(--site-border) solid var(--site-line); text-align: left; }
-.app-prose th { background: var(--site-help-bg); }
+.app-prose table { width: 100%; border-collapse: separate; border-spacing: 0; border: var(--site-border) solid var(--site-contact-input-background); border-radius: var(--site-prose-pre-radius); font-size: inherit; }
+.app-prose th, .app-prose td { padding: var(--site-prose-table-padding); border: 0; border-bottom: var(--site-border) solid var(--site-contact-input-background); text-align: left; }
+.app-prose tbody tr:last-child td { border-bottom: 0; }
+.app-prose th { background: transparent; font-weight: var(--site-weight-title); }
 .app-prose .is-center { text-align: center; }
 .app-prose .is-right { text-align: right; }
 .app-callout { padding: var(--site-gap-sm); background: var(--site-help-bg); border: var(--site-border) solid var(--site-line); border-radius: var(--site-button-radius); margin-block: var(--site-gap); }

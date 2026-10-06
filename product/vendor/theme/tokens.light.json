@@ -3651,6 +3651,96 @@
         "$type": "dimension",
         "$value": "4.5px",
         "$description": "원본 번호형 슬라이드 컨트롤의 상태와 줄 간격"
+      },
+      "prose-code-font": {
+        "$type": "fontFamily",
+        "$value": "ui-monospace, SFMono-Regular, Menlo, \"Andale Mono\", Consolas, Monaco, monospace",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-code-size": {
+        "$type": "dimension",
+        "$value": "0.85em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-code-padding": {
+        "$type": "string",
+        "$value": "0 .25em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-code-radius": {
+        "$type": "dimension",
+        "$value": ".25em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-code-color": {
+        "$type": "color",
+        "$value": "rgba(0,4,10,.69)",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-code-border": {
+        "$type": "color",
+        "$value": "rgba(0,48,111,.04)",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-code-background": {
+        "$type": "color",
+        "$value": "rgba(0,34,77,.05)",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-pre-padding": {
+        "$type": "string",
+        "$value": ".4em .8em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-pre-radius": {
+        "$type": "dimension",
+        "$value": ".5em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-quote-margin": {
+        "$type": "string",
+        "$value": "0 2em 1.4em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "prose-table-padding": {
+        "$type": "string",
+        "$value": ".3em .5em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "key-font": {
+        "$type": "fontFamily",
+        "$value": "ui-sans-serif, -apple-system, BlinkMacSystemFont, \"Apple Symbols\", Roboto, sans-serif",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "key-padding": {
+        "$type": "string",
+        "$value": ".3em .4em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "key-margin": {
+        "$type": "string",
+        "$value": "0 .05em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "key-radius": {
+        "$type": "dimension",
+        "$value": ".4em",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "key-color": {
+        "$type": "color",
+        "$value": "rgba(0,1,2,.85)",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "key-background": {
+        "$type": "color",
+        "$value": "#fcfcfd",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
+      },
+      "key-shadow": {
+        "$type": "string",
+        "$value": "inset 0 0 0 1px rgba(0,20,49,.18)",
+        "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
       }
     }
   },
@@ -6332,15 +6422,18 @@
     },
     "syntax-keyword": {
       "$type": "color",
-      "$value": "{primitive.simple.syntax-keyword}"
+      "$value": "{primitive.simple.prose-code-color}",
+      "$description": "원본 문서의 단색 코드 표현을 따르는 구문 역할"
     },
     "syntax-string": {
       "$type": "color",
-      "$value": "{primitive.simple.syntax-string}"
+      "$value": "{primitive.simple.prose-code-color}",
+      "$description": "원본 문서의 단색 코드 표현을 따르는 구문 역할"
     },
     "syntax-number": {
       "$type": "color",
-      "$value": "{primitive.simple.syntax-number}"
+      "$value": "{primitive.simple.prose-code-color}",
+      "$description": "원본 문서의 단색 코드 표현을 따르는 구문 역할"
     },
     "mobile-gutter": {
       "$type": "dimension",
@@ -8053,6 +8146,86 @@
       "$value": "{primitive.simple.landing-quote-meta}"
     },
     "gallery-weight": {
+      "$type": "number",
+      "$value": "{primitive.simple.status-caption-weight}"
+    },
+    "prose-code-font": {
+      "$type": "fontFamily",
+      "$value": "{primitive.simple.prose-code-font}"
+    },
+    "prose-code-size": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.prose-code-size}"
+    },
+    "prose-code-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-code-padding}"
+    },
+    "prose-code-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.prose-code-radius}"
+    },
+    "prose-code-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.prose-code-color}"
+    },
+    "prose-code-border": {
+      "$type": "color",
+      "$value": "{primitive.simple.prose-code-border}"
+    },
+    "prose-code-background": {
+      "$type": "color",
+      "$value": "{primitive.simple.prose-code-background}"
+    },
+    "prose-pre-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-pre-padding}"
+    },
+    "prose-pre-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.prose-pre-radius}"
+    },
+    "prose-quote-margin": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-quote-margin}"
+    },
+    "prose-table-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-table-padding}"
+    },
+    "key-font": {
+      "$type": "fontFamily",
+      "$value": "{primitive.simple.key-font}"
+    },
+    "key-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.key-padding}"
+    },
+    "key-margin": {
+      "$type": "string",
+      "$value": "{primitive.simple.key-margin}"
+    },
+    "key-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.key-radius}"
+    },
+    "key-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.key-color}"
+    },
+    "key-background": {
+      "$type": "color",
+      "$value": "{primitive.simple.key-background}"
+    },
+    "key-shadow": {
+      "$type": "string",
+      "$value": "{primitive.simple.key-shadow}"
+    },
+    "key-size": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.help-mobile-block}"
+    },
+    "key-weight": {
       "$type": "number",
       "$value": "{primitive.simple.status-caption-weight}"
     }
