@@ -138,9 +138,12 @@ function component(kind, data, md, env) {
     case 'device':
       return `<figure class="app-device" aria-label="${escape(data.title ?? 'iPhone 화면')}"><div class="app-device-screen">${data.video ? player(data, id) : image(data.src, data.title ?? '기기 화면')}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>${data.video ? `<div class="app-media-controls">${remote(id)}</div>` : ''}`;
     case 'demos':
-      return `<div class="app-feature-demos"><div>${data.items.map(item => `<section class="app-feature-demo-description"><h3>${escape(item.title)}${data.singleControl ? '' : remote(id,item.src)}</h3>${render(item.body)}</section>`).join('')}</div><div><figure class="app-device"><div class="app-device-screen">${player({ ...data, src: data.src ?? data.items[0].src }, id)}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>${data.singleControl ? `<div class="app-media-controls">${remote(id)}</div>` : ''}</div></div>${data.after ? `<div class="app-feature-demo-description">${render(data.after)}</div>` : ''}`;
-    case 'feature-pair':
-      return `<div class="app-feature-demos"><div>${data.items.map(item => `<section class="app-feature-demo-description">${item.title ? `<h3>${escape(item.title)}</h3>` : ''}${render(item.body)}</section>`).join('')}</div><div>${render(data.media)}</div></div>`;
+      return `<div class="app-feature-demos"><div>${data.items.map(item => `<section class="app-feature-demo-description"><h3>${escape(item.title)}${data.singleControl ? '' : ' ' + remote(id,item.src)}</h3>${render(item.body)}</section>`).join('')}</div><div><figure class="app-device"><div class="app-device-screen">${player({ ...data, src: data.src ?? data.items[0].src }, id)}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>${data.singleControl ? `<div class="app-media-controls">${remote(id)}</div>` : ''}</div></div>${data.after ? `<div class="app-feature-demo-description">${render(data.after)}</div>` : ''}`;
+    case 'feature-pair': {
+      const descriptions = `<div>${data.items.map(item => `<section class="app-feature-demo-description">${item.title ? `<h3>${escape(item.title)}</h3>` : ''}${render(item.body)}</section>`).join('')}</div>`;
+      const media = `<div>${render(data.media)}</div>`;
+      return `<div class="app-feature-demos">${data.mediaFirst ? media + descriptions : descriptions + media}</div>`;
+    }
     case 'callout':
       return `<aside class="app-callout${data.tone === 'warning' ? ' is-warning' : ''}"><strong>${escape(data.title ?? 'Note')}</strong>${render(data.body)}</aside>`;
     case 'details':
@@ -159,7 +162,7 @@ function component(kind, data, md, env) {
       return `<section class="app-tabs${kind === 'platform' ? ' is-platform' : ''}" data-tabs${kind === 'platform' ? ' data-platform' : ''}><div class="app-tablist" role="tablist" aria-label="${escape(data.title ?? '기기별 안내')}">${data.items.map((item, index) => `<button type="button" id="${id}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${id}-panel-${index}" tabindex="${index ? '-1' : '0'}">${escape(item.label)}</button>`).join('')}</div>${data.items.map((item, index) => `<div class="app-tabpanel" id="${id}-panel-${index}" role="tabpanel" aria-labelledby="${id}-tab-${index}" tabindex="0"${index ? ' hidden' : ''}>${render(item.body)}</div>`).join('')}</section>`;
     }
     case 'cards': {
-      const card = (item) => `<a class="app-help-card${item.compact ? ' is-compact' : ''}" href="${safeUrl(item.href)}">${item.compact ? '' : icon(item.icon)}<strong>${escape(item.title)}</strong>${item.description ? `<p>${escape(item.description)}</p>` : ''}</a>`;
+      const card = (item) => `<a class="app-help-card${item.compact ? ' is-compact' : data.horizontal ? ' is-horizontal' : ''}" href="${safeUrl(item.href)}">${item.compact || item.icon === false ? '' : icon(item.icon)}<strong>${escape(item.title)}</strong>${item.description ? `<p>${escape(item.description)}</p>` : ''}</a>`;
       if (data.split) return `<div class="app-support-split">${card(data.items[0])}<div class="app-support-links">${data.items.slice(1).map(card).join('')}</div></div>`;
       return `<div class="app-support-grid${data.columns === 2 ? ' is-pair' : ''}">${data.items.map(card).join('')}</div>`;
     }

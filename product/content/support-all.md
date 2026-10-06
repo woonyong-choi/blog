@@ -1,208 +1,257 @@
 ---
 {
-  "title": "All Support Articles",
+  "title": "Discover Great Features",
   "route": "/things/support/articles/1059358/",
   "layout": "article",
-  "icon": "question",
-  "description": "카테고리별 모든 예시 문서를 탐색합니다."
+  "icon": false,
+  "description": "기록을 정리하고 계획을 이어 가는 여러 기능의 예시를 살펴봅니다."
 }
 ---
 
 ```ui:cards
 {
-  "columns": 2,
+  "columns": 3,
+  "horizontal": false,
   "items": [
-    {
-      "title": "Getting the Apps",
-      "href": "/things/support/articles/2803552/",
-      "compact": true
-    },
-    {
-      "title": "Syncing Your To-Dos",
-      "href": "/things/support/articles/2803586/",
-      "compact": true
-    },
-    {
-      "title": "Trying Things",
-      "href": "/things/support/articles/2803551/",
-      "compact": true
-    },
-    {
-      "title": "Importing Data From Other Apps",
-      "href": "/things/support/articles/2803555/",
-      "compact": true
-    },
     {
       "title": "Scheduling To-Dos",
       "href": "/things/support/articles/2803579/",
-      "compact": true
+      "icon": "when",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
-      "title": "Using Tags",
-      "href": "/things/support/articles/2803581/",
-      "compact": true
-    },
-    {
-      "title": "Searching & Navigating with Quick Find",
-      "href": "/things/support/articles/2803584/",
-      "compact": true
-    },
-    {
-      "title": "Repeating To-Dos",
+      "title": "Repeating To-dos & Projects",
       "href": "/things/support/articles/2803564/",
-      "compact": true
+      "icon": "repeating",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Connect Your Calendars",
+      "href": "/things/support/articles/2803583/",
+      "icon": "calendar",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Creating To-dos From Other Apps",
+      "href": "/things/support/articles/2803569/",
+      "icon": "add",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Setting a Reminder",
+      "href": "/things/support/articles/2803585/",
+      "icon": "notifications",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Quick Find",
+      "href": "/things/support/articles/2803584/",
+      "icon": "search",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
       "title": "Writing Notes in Things",
       "href": "/things/support/articles/4438545/",
-      "compact": true
+      "icon": "notes",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
-      "title": "Getting Productive with Things",
-      "href": "/things/support/articles/6378414/",
-      "compact": true
-    },
-    {
-      "title": "Change Password",
-      "href": "/things/support/articles/2803588/",
-      "compact": true
-    },
-    {
-      "title": "Change Username",
-      "href": "/things/support/articles/2803589/",
-      "compact": true
-    },
-    {
-      "title": "Troubleshooting Things Cloud",
-      "href": "/things/support/articles/2803590/",
-      "compact": true
-    },
-    {
-      "title": "Delete Account & Data",
-      "href": "/things/support/articles/2803591/",
-      "compact": true
-    },
-    {
-      "title": "Calendar Integration",
-      "href": "/things/support/articles/2803583/",
-      "compact": true
-    },
-    {
-      "title": "Keyboard Shortcuts",
-      "href": "/things/support/articles/2785159/",
-      "compact": true
+      "title": "Using Tags",
+      "href": "/things/support/articles/2803581/",
+      "icon": "tags",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
       "title": "Gestures",
       "href": "/things/support/articles/2803582/",
-      "compact": true
+      "icon": "gestures",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
-      "title": "Talk to Siri",
-      "href": "/things/support/articles/2877019/",
-      "compact": true
-    },
-    {
-      "title": "Write Notes with Markdown",
-      "href": "/things/support/articles/4651820/",
-      "compact": true
-    },
-    {
-      "title": "Apple Shortcuts",
-      "href": "/things/support/articles/2955145/",
-      "compact": true
-    },
-    {
-      "title": "Things URL Scheme",
-      "href": "/things/support/articles/2803573/",
-      "compact": true
-    },
-    {
-      "title": "Use Natural Language to Set Dates",
+      "title": "Natural Language Input",
       "href": "/things/support/articles/9780167/",
-      "compact": true
+      "icon": "when",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Move to-dos like a pro",
+      "href": "/things/support/articles/9651894/",
+      "icon": false,
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
       "title": "Using Things on Apple Watch",
       "href": "/things/support/articles/2157909/",
-      "compact": true
+      "icon": "applewatch",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
-      "title": "Prioritizing To-Dos",
-      "href": "/things/support/articles/3289315/",
-      "compact": true
+      "title": "Mail to Things",
+      "href": "/things/support/articles/2908262/",
+      "icon": "mailtothings",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
-      "title": "Understanding the Default Lists",
-      "href": "/things/support/articles/4001304/",
-      "compact": true
+      "title": "Style Notes with Markdown",
+      "href": "/things/support/articles/4651820/",
+      "icon": "markdown",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     },
     {
-      "title": "Dealing with Waiting To-Dos",
-      "href": "/things/support/articles/2237050/",
-      "compact": true
-    },
-    {
-      "title": "How to Get To-Dos Unstuck",
-      "href": "/things/support/articles/8491676/",
-      "compact": true
-    },
-    {
-      "title": "How to Work With Templates",
-      "href": "/things/support/articles/2693493/",
-      "compact": true
-    },
-    {
-      "title": "Run into a problem?",
-      "href": "/things/support/articles/3614435/",
-      "compact": true
-    },
-    {
-      "title": "App Store Issues",
-      "href": "/things/support/articles/4522602/",
-      "compact": true
-    },
-    {
-      "title": "Reinstalling Things",
-      "href": "/things/support/articles/2803593/",
-      "compact": true
-    },
-    {
-      "title": "Calendar Integration",
-      "href": "/things/support/articles/2978194/",
-      "compact": true
-    },
-    {
-      "title": "Create a Cloud Account",
-      "href": "/things/support/articles/1481195/",
-      "compact": true
-    },
-    {
-      "title": "Log In on a New Device",
-      "href": "/things/support/articles/2997514/",
-      "compact": true
-    },
-    {
-      "title": "Using Keychain",
-      "href": "/things/support/articles/2953349/",
-      "compact": true
-    },
-    {
-      "title": "Supported Devices",
-      "href": "/things/support/articles/5571307/",
-      "compact": true
-    },
-    {
-      "title": "Security & Privacy",
-      "href": "/things/support/articles/2803605/",
-      "compact": true
-    },
-    {
-      "title": "Syncing Apple Watch",
-      "href": "/things/support/articles/4481378/",
-      "compact": true
+      "title": "Quick Entry (with Autofill)",
+      "href": "/things/support/articles/2249437/",
+      "icon": "add",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
     }
   ]
 }
 ```
 
+```ui:cards
+{
+  "columns": 2,
+  "horizontal": true,
+  "items": [
+    {
+      "title": "Apple Shortcuts",
+      "href": "/things/support/articles/2955145/",
+      "icon": "shortcuts",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Talk to Siri",
+      "href": "/things/support/articles/2877019/",
+      "icon": "siri",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Keyboard Shortcuts",
+      "href": "/things/support/articles/2785159/",
+      "icon": "keyboard",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Headings",
+      "href": "/things/support/articles/2803577/",
+      "icon": false,
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Widgets",
+      "href": "/things/support/articles/2803567/",
+      "icon": "widgets",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Things URL Scheme",
+      "href": "/things/support/articles/2803573/",
+      "icon": "urlscheme",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Adding To-Dos via Apple Reminders",
+      "href": "/things/support/articles/2803561/",
+      "icon": "reminders",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    },
+    {
+      "title": "Adding To-Dos via Microsoft To-Do",
+      "href": "/things/support/articles/7597548/",
+      "icon": "add",
+      "compact": false,
+      "description": "기본 흐름과 화면의 선택 항목을 예시와 함께 살펴봅니다."
+    }
+  ]
+}
+```
+
+```ui:cards
+{
+  "columns": 2,
+  "horizontal": false,
+  "items": [
+    {
+      "title": "Using Multiple Things Windows",
+      "href": "/things/support/articles/2803580/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Third-Party AI Tools and Things",
+      "href": "/things/support/articles/5510170/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Automation with Apple Shortcuts",
+      "href": "/things/support/articles/8085279/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Changing Things’ Language",
+      "href": "/things/support/articles/2538669/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Show and Hide Things’ Sidebar",
+      "href": "/things/support/articles/3238254/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Apple Shortcuts Technical Documentation",
+      "href": "/things/support/articles/9596775/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Looking Up the Creation Date for To-Dos",
+      "href": "/things/support/articles/8453951/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Using AppleScript (Mac only)",
+      "href": "/things/support/articles/2803572/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Using Apple’s Share Feature With Things",
+      "href": "/things/support/articles/2803566/",
+      "icon": false,
+      "compact": true
+    },
+    {
+      "title": "Creating To-Dos With a Launcher",
+      "href": "/things/support/articles/2803574/",
+      "icon": false,
+      "compact": true
+    }
+  ]
+}
+```

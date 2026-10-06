@@ -156,6 +156,20 @@ if (reviewNext) {
   window.addEventListener('resize', resizeReviews);
   resizeReviews();
 }
+function appendSearchHighlight(target, text, query) {
+  const terms = query.split(/\s+/).filter(Boolean);
+  const lower = text.toLocaleLowerCase();
+  let offset = 0;
+  while (offset < text.length) {
+    const next = terms.map(term => ({ term, at: lower.indexOf(term, offset) })).filter(item => item.at >= 0).sort((a,b) => a.at - b.at || b.term.length - a.term.length)[0];
+    if (!next) { target.append(document.createTextNode(text.slice(offset))); break; }
+    target.append(document.createTextNode(text.slice(offset, next.at)));
+    const mark = document.createElement('mark');
+    mark.textContent = text.slice(next.at, next.at + next.term.length);
+    target.append(mark);
+    offset = next.at + next.term.length;
+  }
+}
 for (const search of document.querySelectorAll('[data-search]')) {
   const input = search.querySelector('input');
   const results = search.querySelector('[data-results]');
@@ -185,9 +199,9 @@ for (const search of document.querySelectorAll('[data-search]')) {
         icon.className = `app-article-icon app-icon-${entry.icon}`;
         icon.setAttribute('aria-hidden', 'true');
         const title = document.createElement('strong');
-        title.textContent = entry.title;
+        appendSearchHighlight(title, entry.title, query);
         const description = document.createElement('span');
-        description.textContent = entry.description;
+        appendSearchHighlight(description, entry.description, query);
         link.append(icon, title, description);
         results.append(link);
       }
