@@ -3935,6 +3935,19 @@
         "$type": "color",
         "$value": "rgba(255,255,255,.1)",
         "$description": "어두운 상태 화면 로고의 hover 배경"
+      },
+      "primary-hover": {
+        "$type": "color",
+        "$value": "#649fff",
+        "$description": "원본 주요 버튼 hover 배경"
+      },
+      "search-suggestion-color": {
+        "$type": "color",
+        "$value": "rgba(0,5,11,.64)"
+      },
+      "search-suggestion-hover": {
+        "$type": "color",
+        "$value": "#000000"
       }
     }
   },
@@ -8598,6 +8611,26 @@
     "status-logo-hover": {
       "$type": "color",
       "$value": "{primitive.simple.status-logo-hover}"
+    },
+    "description-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.body}"
+    },
+    "primary-hover": {
+      "$type": "color",
+      "$value": "{primitive.simple.primary-hover}"
+    },
+    "search-suggestion-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.key-margin}"
+    },
+    "search-suggestion-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.search-suggestion-color}"
+    },
+    "search-suggestion-hover": {
+      "$type": "color",
+      "$value": "{primitive.simple.search-suggestion-hover}"
     }
   }
 }

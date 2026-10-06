@@ -793,6 +793,9 @@
   --primitive-simple-nav-active-color: rgba(4,15,26,.7);
   --primitive-simple-nav-active-background: rgba(4,15,26,.1);
   --primitive-simple-status-logo-hover: rgba(255,255,255,.1);
+  --primitive-simple-primary-hover: #649fff;
+  --primitive-simple-search-suggestion-color: rgba(0,5,11,.64);
+  --primitive-simple-search-suggestion-hover: #000000;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1751,6 +1754,11 @@
   --site-nav-active-color: var(--primitive-simple-nav-active-color);
   --site-nav-active-background: var(--primitive-simple-nav-active-background);
   --site-status-logo-hover: var(--primitive-simple-status-logo-hover);
+  --site-description-color: var(--primitive-simple-body);
+  --site-primary-hover: var(--primitive-simple-primary-hover);
+  --site-search-suggestion-padding: var(--primitive-simple-key-margin);
+  --site-search-suggestion-color: var(--primitive-simple-search-suggestion-color);
+  --site-search-suggestion-hover: var(--primitive-simple-search-suggestion-hover);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;

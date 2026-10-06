@@ -753,7 +753,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-landing-hero { background: var(--site-canvas); }
 .app-hero-copy { width: var(--site-intro); max-width: var(--site-hero-max); margin: auto; padding-block: var(--site-hero-top); font-size: var(--site-intro-text); line-height: var(--site-line-intro); text-align: center; }
 .app-hero-copy .app-hero-logo { max-width: 75%; margin-bottom: calc(var(--site-intro-text) * 1.5); }
-.app-hero-description { margin: var(--site-landing-description-margin) auto; }
+.app-hero-description { color: var(--site-description-color); margin: var(--site-landing-description-margin) auto; }
 .app-hero-description .app-play { margin: 0; font-size: inherit; }
 .app-landing .app-cinema { margin-top: 0; }
 .app-hero-panorama { position: relative; }
@@ -764,7 +764,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-landing-heading { width: var(--site-landing-heading-width); max-width: var(--site-landing-heading-max); margin: var(--site-landing-heading-space) auto; text-align: center; }
 .app-landing-heading :is(h1,h2) { margin: var(--site-landing-heading-margin) 0; font-size: var(--site-section-title); line-height: var(--site-landing-title-line); font-weight: var(--site-weight-title); color: var(--site-ink); }
 .app-landing-heading :is(h1,h2) img { display: inline-block; width: var(--site-landing-icon); height: auto; margin-left: var(--site-landing-icon-left); margin-bottom: var(--site-landing-icon-bottom); margin-right: var(--site-landing-icon-right); }
-.app-landing-heading > p { margin: var(--site-landing-description-margin) auto; font-size: var(--site-landing-intro); line-height: var(--site-feature-line); }
+.app-landing-heading > p { color: var(--site-description-color); margin: var(--site-landing-description-margin) auto; font-size: var(--site-landing-intro); line-height: var(--site-feature-line); }
 .app-landing-action { display: inline-block; padding: var(--site-platform-button-gap) var(--site-platform-button-y); border-radius: var(--site-tab-button-inset); font-weight: var(--site-weight-medium); color: var(--site-control-link); }
 .app-landing-action::after { content: ''; display: inline-block; width: var(--site-help-mobile-block); height: var(--site-landing-review-font); margin-left: var(--site-platform-button-gap); background: url('../assets/fancysection-chevron.svg') center / contain no-repeat; }
 .app-landing-action:hover { text-decoration: none; background: var(--site-control-hover); }
@@ -880,7 +880,9 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-newsletter-note { text-align: left; margin-top: var(--site-landing-panel-gap); }
 .app-newsletter-note a { color: inherit; text-decoration: underline; }
 .app-newsletter button { font-size: var(--site-newsletter-button-font); font-weight: var(--site-weight-title); line-height: normal; padding: var(--site-newsletter-button-padding); margin-bottom: var(--site-newsletter-button-margin); border: 0; border-radius: var(--site-newsletter-button-radius); background: var(--site-newsletter-button-color); }
-.app-newsletter button:hover { opacity: var(--site-player-opacity); }
+.app-newsletter button:hover, .app-primary-action:hover { background: var(--site-primary-hover); box-shadow: var(--site-action-shadow); text-decoration: none; }
+.app-newsletter button:active, .app-primary-action:active { background: var(--site-feature-tab-selected); }
+.app-newsletter button:focus, .app-primary-action:focus { outline: 0; box-shadow: var(--site-action-focus); }
 .app-quote-credit { margin-top: var(--site-quote-credit-gap); }
 
 .app-header a { font-size: var(--site-nav-text); }
@@ -1241,3 +1243,10 @@ body[data-page=about] .app-header::before { content: ""; position: absolute; ins
 .app-canvas[data-page=home] > .app-shell .app-logo:hover { background-position: var(--site-nav-position); opacity: 1; }
 
 body[data-page=status] .app-logo:hover { background-color: var(--site-status-logo-hover); }
+
+body[data-page=features] { background: var(--site-feature-hero-background); }
+body[data-page=features] > main { background: var(--site-card); }
+
+.app-search-frequent { color: var(--site-search-suggestion-color); }
+.app-search-frequent button { display: inline-block; padding: var(--site-search-suggestion-padding); }
+.app-search-frequent button:hover { color: var(--site-search-suggestion-hover); }
