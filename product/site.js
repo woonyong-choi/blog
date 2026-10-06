@@ -205,7 +205,11 @@ for (const search of document.querySelectorAll('[data-search]')) {
         link.append(icon, title, description);
         results.append(link);
       }
-    } catch { indexPromise = undefined; results.textContent = '검색 색인을 불러오지 못했습니다. 다시 입력해 주세요.'; }
+    } catch {
+      indexPromise = undefined;
+      if (request !== revision) return;
+      results.textContent = '검색 색인을 불러오지 못했습니다. 다시 입력해 주세요.';
+    }
   };
   input.addEventListener('input', () => {
     clearTimeout(searchTimer);
