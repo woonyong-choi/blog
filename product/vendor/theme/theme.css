@@ -593,9 +593,9 @@
   --primitive-simple-feature-tab-background: rgba(0,25,61,.1);
   --primitive-simple-feature-tab-selected: #3c84f3;
   --primitive-simple-feature-tab-shadow: 0 2px 4px rgba(0,28,70,.12),0 2px 16px rgba(0,28,70,.12);
-  --primitive-simple-search-input-padding: 11.9531px 46px 11.9531px 42px;
+  --primitive-simple-search-input-padding: 0.5em 46px 0.5em 42px;
   --primitive-simple-search-input-radius: 9.5625px;
-  --primitive-simple-search-input-font: 23.9062px;
+  --primitive-simple-search-input-font: 23.90625px;
   --primitive-simple-help-title-gap: 2.25px;
   --primitive-simple-help-title-color: #3d4856;
   --primitive-simple-help-copy-color: rgba(0,1,2,.77);

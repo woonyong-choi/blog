@@ -430,7 +430,7 @@ button { background: var(--site-soft); padding: var(--site-gap-xs) var(--site-ga
 a { color: var(--site-link); }
 a:hover { text-decoration: underline; }
 :focus-visible { outline: var(--site-outline) solid var(--site-link); outline-offset: var(--site-outline); }
-.app-shell { width: var(--site-shell-width); max-width: var(--site-page); margin: auto; padding-inline: 0; }
+.app-shell { box-sizing: content-box; width: auto; max-width: var(--site-page); margin: auto; padding-left: calc(env(safe-area-inset-left) + (100% - var(--site-shell-width)) / 2); padding-right: calc(env(safe-area-inset-right) + (100% - var(--site-shell-width)) / 2); }
 .app-body { max-width: var(--site-body-width); margin-inline: auto; }
 .app-header { display: flex; align-items: center; justify-content: space-between; position: relative; height: var(--site-header); padding-inline: 0; }
 .app-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: var(--site-header-tail); border-bottom: var(--site-border) solid var(--site-line); }
