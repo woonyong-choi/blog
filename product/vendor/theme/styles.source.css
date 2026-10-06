@@ -485,7 +485,11 @@ a:hover { text-decoration: underline; }
 .app-search-field { position: relative; }
 .app-search-input { width: 100%; padding: var(--site-gap-sm) var(--site-gap-lg); background: var(--site-search-bg); border: 0; font-size: var(--site-intro-text); line-height: var(--site-line-intro); }
 .app-search-icon { position: absolute; left: var(--site-gap-sm); top: 50%; width: var(--site-icon); transform: translateY(-50%); }
-.app-search-clear { position: absolute; right: var(--site-gap-xs); top: 50%; transform: translateY(-50%); padding: 0; border: 0; background: transparent; }
+.app-search-clear { position: absolute; top: var(--site-tab-inset); right: var(--site-tab-inset); bottom: var(--site-tab-inset); display: grid; place-items: center; width: var(--site-search-clear-width); padding: 0; border: 0; border-radius: var(--site-article-search-radius); background: transparent; cursor: pointer; }
+.app-search-clear:hover { background: var(--site-search-clear-hover); }
+.app-search-clear:active { background: var(--site-search-clear-active); }
+.app-support-shell .app-search-clear { width: var(--site-search-clear-article-width); }
+.app-support-shell .app-search-clear img { width: var(--site-icon); }
 .app-search-clear img { width: var(--site-icon); }
 .app-search-frequent { line-height: var(--site-line-intro); text-align: center; margin-top: var(--site-gap-sm); font-size: var(--site-small-text); }
 .app-search-frequent button { padding: 0; border: 0; background: none; text-decoration: underline; }
@@ -1250,3 +1254,10 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-search-frequent { color: var(--site-search-suggestion-color); }
 .app-search-frequent button { display: inline-block; padding: var(--site-search-suggestion-padding); }
 .app-search-frequent button:hover { color: var(--site-search-suggestion-hover); }
+
+.app-search-results a + a { border-top: var(--site-border) solid var(--site-search-result-line); }
+.app-search-results a:hover, .app-search-results a:focus-visible { border-radius: var(--site-search-result-radius); border-color: transparent; }
+.app-search-results a:hover + a, .app-search-results a:focus-visible + a { border-color: transparent; }
+.app-search-results a::after { content: ''; position: absolute; top: 0; bottom: 0; right: var(--site-search-results-padding); width: var(--site-gap-sm); background: url('../assets/quickfind-chevron.svg') center / var(--site-help-grouped-chevron) no-repeat; opacity: var(--site-help-chevron-opacity); }
+.app-search-message { box-sizing: content-box; max-width: var(--site-search-message-width); margin: 0 auto; padding: var(--site-search-message-padding); color: var(--site-search-message-color); line-height: var(--site-search-message-line); text-align: center; }
+.app-search-message-symbol { display: block; font-size: var(--site-search-message-symbol); }

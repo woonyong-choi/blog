@@ -177,21 +177,34 @@ for (const search of document.querySelectorAll('[data-search]')) {
   let indexPromise;
   let revision = 0;
   let searchTimer;
+  const showMessage = (text, symbol = '') => {
+    const message = document.createElement('p');
+    message.className = 'app-search-message';
+    if (symbol) {
+      const icon = document.createElement('span');
+      icon.className = 'app-search-message-symbol';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.textContent = symbol;
+      message.append(icon);
+    }
+    message.append(document.createTextNode(text));
+    results.replaceChildren(message);
+  };
   const update = async () => {
     const request = ++revision;
     const query = input.value.trim().toLocaleLowerCase();
     clear.hidden = !query;
     if (!query) { results.hidden = true; results.replaceChildren(); return; }
     results.hidden = false;
-    if (query.length < 2) { results.textContent = 'Keep typing…'; return; }
-    results.textContent = 'Searching…';
+    if (query.length < 2) { showMessage('Keep typing…', '⌨️'); return; }
+    showMessage('Searching…');
     try {
       indexPromise ??= fetch('/things/search-index.json').then((response) => { if (!response.ok) throw new Error('search'); return response.json(); });
       const entries = await indexPromise;
       if (request !== revision) return;
       const matches = entries.filter((entry) => query.split(/\s+/).every((part) => `${entry.title} ${entry.keywords} ${entry.text}`.toLocaleLowerCase().includes(part))).slice(0, 12);
       results.replaceChildren();
-      if (!matches.length) results.textContent = 'No matching articles. Try “Markdown”, “Cloud”, or “Siri”.';
+      if (!matches.length) showMessage('No matching articles. Try “Markdown”, “Cloud”, or “Siri”.', '🤷🏽‍♂️');
       for (const entry of matches) {
         const link = document.createElement('a');
         link.href = entry.route;
@@ -208,7 +221,7 @@ for (const search of document.querySelectorAll('[data-search]')) {
     } catch {
       indexPromise = undefined;
       if (request !== revision) return;
-      results.textContent = '검색 색인을 불러오지 못했습니다. 다시 입력해 주세요.';
+      showMessage('검색 색인을 불러오지 못했습니다. 다시 입력해 주세요.');
     }
   };
   input.addEventListener('input', () => {
