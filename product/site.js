@@ -45,7 +45,7 @@ for (const tabs of document.querySelectorAll('[data-tabs]')) {
       if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
       const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
-      select(next); buttons[next].focus();
+      buttons[next].click(); buttons[next].focus();
     });
   });
 }

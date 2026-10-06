@@ -145,6 +145,18 @@ npm run build:product
 }
 ```
 
+위에서 선택한 기기는 아래 안내에도 반영됩니다. 아래 블록만 전환하면 위쪽 선택은 유지됩니다.
+
+```ui:platform
+{
+  "title": "이어서 확인할 기기별 안내",
+  "items": [
+    {"label": "Mac", "body": "**Mac 후속 안내**입니다. 메뉴에서 다음 단계를 선택합니다."},
+    {"label": "iPhone & iPad", "body": "**모바일 후속 안내**입니다. 화면에서 다음 단계를 선택합니다."}
+  ]
+}
+```
+
 ## Numbered slideshow
 
 ```ui:gallery

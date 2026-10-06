@@ -85,7 +85,7 @@ description: 문서의 짧은 소개
 | feature | title, icon, description, body, left, right |
 | feature-pair | media, items: [{title, body}], mediaFirst 선택 |
 
-body는 다시 Markdown으로 해석한다. gallery의 label을 생략하면 번호 버튼이 되고, 지정하면 Before/Now처럼 비교 버튼이 된다. src와 poster에는 assets 폴더의 파일명을 쓴다. 다수의 탭과 슬라이드는 서로의 상태를 변경하지 않는다.
+body는 다시 Markdown으로 해석한다. gallery의 label을 생략하면 번호 버튼이 되고, 지정하면 Before/Now처럼 비교 버튼이 된다. src와 poster에는 assets 폴더의 파일명을 쓴다. 일반 탭과 슬라이드는 독립적이다. 플랫폼 탭은 클릭과 방향키·Home·End 모두 선택한 기기를 뒤쪽 플랫폼 블록에 전달하며, 앞쪽 블록은 변경하지 않는다.
 
 ## 검증
 
