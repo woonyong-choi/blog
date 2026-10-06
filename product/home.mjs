@@ -9,8 +9,12 @@ export function socialLinks() {
   return `<p class="app-landing-social">${['bluesky','x','threads','instagram','mastodon'].map(name => `<a href="/things/follow/${name}/" aria-label="${name}"><svg aria-hidden="true"><use href="/things/assets/symbols-social.svg#${name}"></use></svg></a>`).join(' ')}</p>`;
 }
 
+export function productCards(items, minimal = false) {
+  return `<div class="app-product-grid">${items.map(item => `<article class="app-product-card"><div><a href="${safeUrl(item.href)}">${image(item.image,item.title,'app-product-symbol')}</a><h3>${escape(item.title)}</h3>${minimal ? '' : `<p>${escape(item.requirement)}<br>${escape(item.price)}<br><a href="/things/pricing/">view in your currency</a></p>`}</div><div class="app-product-actions">${!minimal && item.trial ? `<a href="/things/assets/preview-trial.zip" download="preview-trial.zip" aria-label="Download Free Trial — 검토용 예시 파일">${image('appstore-trial.svg','Download Free Trial','app-product-badge')}</a>` : ''}<a href="${safeUrl(item.href)}">${image(item.badge,'Download on the App Store','app-product-badge')}</a></div></article>`).join('')}</div>`;
+}
+
 export function products(items, heading) {
-  return `<section class="app-landing-section app-landing-products"><div class="app-shell">${sectionHeader(heading)}<div class="app-product-grid">${items.map(item => `<article class="app-product-card"><div><a href="${safeUrl(item.href)}">${image(item.image,item.title,'app-product-symbol')}</a><h3>${escape(item.title)}</h3><p>${escape(item.requirement)}<br>${escape(item.price)}<br><a href="/things/pricing/">view in your currency</a></p></div><div class="app-product-actions">${item.trial ? `<a href="/things/trial/">${image('appstore-trial.svg','Download Free Trial','app-product-badge')}</a>` : ''}<a href="${safeUrl(item.href)}">${image(item.badge,'Download on the App Store','app-product-badge')}</a></div></article>`).join('')}</div></div></section>`;
+  return `<section class="app-landing-section app-landing-products"><div class="app-shell">${sectionHeader(heading)}${productCards(items)}</div></section>`;
 }
 
 export function reviews(items) {

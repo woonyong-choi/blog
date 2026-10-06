@@ -111,7 +111,7 @@ npm run build
 - `plain`: 문의 양식과 긴 문서를 렌더링한다. `variant: document`는 일반 안내 문서의 상단 여백을 적용한다.
 - `about`: `panels`의 제목·ID·Markdown 본문을 배경 위의 패널로 렌더링한다.
 - `contact`, `newsletter`, `status`: 문의 입구, 구독 입력, 상태 안내의 고유 화면을 렌더링한다.
-- `redirect`: `target`에 지정한 내부 정적 페이지로 이동한다. 가이드의 본문은 지원 문서 한 곳에 둔다.
+- `redirect`: `target`에 지정한 정적 페이지 또는 외부 스토어로 이동한다. 가이드의 본문은 지원 문서 한 곳에 둔다.
 - `ui:feature-pair`, `ui:feature-list`: 설명과 미디어 또는 두 열의 설명 목록을 구성한다.
 - `ui:syntax-examples`: 입력 문법과 렌더링 설명을 연결한다.
 - `ui:contact-form`, `ui:status-board`: 검토용 입력 양식과 상태·출시 목록을 만든다.
@@ -123,3 +123,5 @@ npm run build
 `ui:tooltip`은 버튼으로 도움말을 열고 Escape 또는 바깥 클릭으로 닫는다. 본문은 Markdown으로 작성하며, 팝오버는 화면 경계를 기준으로 위아래 위치를 선택한다.
 
 기본 Markdown 외에 `::하이라이트::`와 `- [~] 취소된 작업`을 지원한다. 코드 안과 이스케이프된 구분자는 문자 그대로 표시한다. 원시 HTML 실행은 허용하지 않는다.
+
+`pricing`은 홈과 제품 카드 데이터를 공유하며 가격·요구사항·체험 버튼을 생략한 간단한 카드를 표시한다. `plain`의 `variant: actions`는 내려받기와 문의 같은 동작 링크의 버튼 스타일을 적용한다. 무료 체험과 보도 자료 다운로드는 실행 파일이 없는 검토용 ZIP을 사용한다.

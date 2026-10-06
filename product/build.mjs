@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
 import { createMarkdown, escape, image } from './markdown.mjs';
-import { socialProof, socialLinks, newsletter } from './home.mjs';
+import { socialProof, socialLinks, newsletter, productCards } from './home.mjs';
 import { layout, article, blogPost, home, search, products } from './layout.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
@@ -34,7 +34,7 @@ for (const name of readdirSync(join(ROOT, 'content')).filter((name) => name.ends
   const match = source.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!match) throw new Error(`Missing frontmatter: ${name}`);
   const page = parse(match[1], { maxAliasCount: 0 });
-  if (!['home','support','features','article','post','blog','plain','contact','newsletter','about','status','redirect'].includes(page.layout)) throw new Error(`Invalid layout: ${name}`);
+  if (!['home','support','features','article','post','blog','plain','contact','newsletter','about','status','redirect','pricing'].includes(page.layout)) throw new Error(`Invalid layout: ${name}`);
   if (page.layout === 'post' && (typeof page.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(page.date) || !Number.isFinite(Date.parse(page.date)))) throw new Error(`Invalid post date: ${name}`);
   page.body = match[2]; page.source = source; page.id = name.slice(0, -3);
   if (!/^\/things\/(?:[a-z0-9-]+\/)*$/.test(page.route) || !page.title) throw new Error(`Invalid page: ${name}`);
@@ -52,10 +52,11 @@ for (const page of pages) {
     case 'home': body = home(page, page.html); break;
     case 'support': body = `<div class="app-shell">${search(true)}<main id="main" class="app-body"><h1 class="app-sr">Support</h1>${page.html}<div class="app-contact-prompt"><p>Didn’t find what you were looking for?</p><a href="/things/contact/">Contact Us →</a></div></main></div>`; break;
     case 'redirect': body = `<main id="main" class="app-shell"><a href="${escape(page.target)}">${escape(page.title)}</a></main>`; break;
+    case 'pricing': body = `<main id="main" class="app-pricing"><div class="app-shell"><div class="app-landing-heading"><h1>${image(page.image, '')} ${escape(page.title)}</h1>${page.html}</div>${productCards(pages.find(entry => entry.layout === 'home').home.products, true)}</div></main>`; break;
     case 'status': body = `<main id="main" class="app-status"><div class="app-shell">${page.html}</div></main>`; break;
     case 'about': body = `<main id="main" class="app-office"><div class="app-shell">${page.panels.map((panel,index) => `<section class="app-office-panel" id="${escape(panel.id)}"><h${index ? '2' : '1'}>${escape(panel.title)}</h${index ? '2' : '1'}><div class="app-prose">${md.render(panel.body)}</div></section>`).join('')}</div></main>`; break;
     case 'newsletter': body = `<main id="main">${newsletter(page, true)}</main>`; break;
-    case 'plain': body = `<main id="main" class="app-shell"><article class="app-body app-plain${page.variant === 'document' ? ' is-document' : ''}"><h1>${page.image ? image(page.image, '', 'app-plain-icon') : ''}${escape(page.title)}</h1><div class="app-prose">${page.html}</div></article></main>`; break;
+    case 'plain': body = `<main id="main" class="app-shell"><article class="app-body app-plain${['document','actions'].includes(page.variant) ? ' is-document' + (page.variant === 'actions' ? ' has-actions' : '') : ''}"><h1>${page.image ? image(page.image, '', 'app-plain-icon') : ''}${escape(page.title)}</h1><div class="app-prose">${page.html}</div></article></main>`; break;
     case 'contact': body = `<main id="main" class="app-contact"><div class="app-shell"><div class="app-contact-intro"><h1>Contact</h1><p>${escape(page.description)} <a href="/things/support/">support pages</a></p><p class="app-contact-action"><a href="/things/contact/form/">${image('envelope.svg','Contact')}</a><a class="app-primary-action" href="/things/contact/form/">Write Email</a></p><p>${escape(page.socialDescription)}</p>${socialLinks()}<div class="app-contact-other"><p>Anything else?</p><a href="/things/contact/form/">Press inquiries</a><br><a href="/things/contact/form/">General inquiries</a></div></div><div class="app-contact-details">${page.html}</div></div></main>`; break;
     case 'post': body = `<main id="main" class="app-blog-feed"><div class="app-shell">${blogPost(page,page.html)}</div></main>`; break;
     case 'blog': {

@@ -1510,5 +1510,11 @@
     "file": "assets/keycommand-keyboard-io40.png",
     "bytes": 324,
     "sha256": "403e9200aecc963ee744d8f5429a1fd294a16919a835b13171d04c6d8adfb99b"
+  },
+  {
+    "url": "https://culturedcode.com/things/2024-01-20/images/fancysection-icon-appstore-io70.png",
+    "file": "assets/fancysection-icon-appstore-io70.png",
+    "bytes": 1862,
+    "sha256": "478c5e73d4729dbebede9700693dd99eb317aad42ad1c08d79f1142f897922a8"
   }
 ]
