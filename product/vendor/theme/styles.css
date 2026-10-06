@@ -1204,3 +1204,19 @@ body[data-page=status] .app-nav a:active { background: var(--site-status-nav-act
 .app-icon-ipad { background-position: var(--site-sprite-ipad); }
 .app-icon-vision { background-position: var(--site-sprite-vision); }
 .app-icon-iphone-and-watch { background-position: var(--site-sprite-iphone-and-watch); }
+
+.app-support-grid > .app-help-card.is-centered:not(.is-compact) { min-height: 0; padding: var(--site-help-centered-padding); text-align: center; }
+.app-help-card.is-centered .app-article-icon { width: var(--site-icon-lg); height: var(--site-icon-lg); top: var(--site-help-mobile-block); left: calc(50% - var(--site-icon-lg) / 2); }
+.app-support-grid > .app-help-card.is-grouped:not(.is-compact) { min-height: 0; padding: var(--site-help-grouped-padding); font-size: var(--site-help-grouped-text); line-height: var(--site-line-compact); font-weight: var(--site-weight-medium); border-radius: var(--site-compact-inset); background: transparent; border-color: transparent; }
+.app-help-card.is-grouped .app-article-icon { width: var(--site-icon); height: var(--site-icon); top: var(--site-gap-xs); left: var(--site-gap-xs); }
+.app-help-card.is-grouped::after { width: var(--site-gap-sm); background-size: var(--site-help-grouped-chevron); }
+.app-support-grid > .app-help-card.is-grouped:hover { background: var(--site-help-hover); border-color: var(--site-help-hover-border); }
+.app-support-grid > .app-help-card.is-grouped:active { background: var(--site-help-active); }
+.app-support-grid > .app-help-card.is-grouped.has-no-icon { padding-left: var(--site-compact-inset); }
+.app-help-card.is-grouped strong { font-weight: inherit; margin: 0; }
+.app-inline-links { margin-bottom: var(--site-prose-paragraph-gap); }
+.app-help-card.is-inline { display: inline-block; min-height: 0; padding: var(--site-help-inline-padding); margin: var(--site-help-inline-margin); font-size: var(--site-help-inline-text); font-weight: var(--site-weight-medium); line-height: inherit; border-radius: var(--site-help-inline-no-icon); }
+.app-help-card.is-inline strong { display: inline; margin: 0; font-weight: inherit; color: inherit; }
+.app-help-card.is-inline .app-article-icon { width: var(--site-help-inline-icon); height: var(--site-help-inline-icon); left: var(--site-help-inline-icon-inset); top: var(--site-help-inline-icon-inset); }
+.app-help-card.is-inline::after { right: var(--site-help-inline-chevron-inset); width: var(--site-compact-inset); background-size: var(--site-help-inline-chevron); opacity: var(--site-help-inline-opacity); }
+.app-help-card.is-inline.has-no-icon { padding-left: var(--site-help-inline-no-icon); }

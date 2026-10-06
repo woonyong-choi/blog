@@ -3856,6 +3856,51 @@
         "$type": "string",
         "$value": "62.5% 87.5%",
         "$description": "원본 지원 아이콘 스프라이트 좌표"
+      },
+      "help-centered-padding": {
+        "$type": "string",
+        "$value": "68px 36px 18px",
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-grouped-padding": {
+        "$type": "string",
+        "$value": "10px 25px 10px 38px",
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-inline-padding": {
+        "$type": "string",
+        "$value": "1px 20px 1px 25px",
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-inline-margin": {
+        "$type": "string",
+        "$value": "-1px 2px -1px 0",
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-inline-text": {
+        "$type": "dimension",
+        "$value": ".9em",
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-grouped-text": {
+        "$type": "dimension",
+        "$value": ".95em",
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-inline-chevron": {
+        "$type": "string",
+        "$value": "10px 15px",
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-inline-opacity": {
+        "$type": "number",
+        "$value": 0.3,
+        "$description": "원본 지원 카드 변형 규칙"
+      },
+      "help-grouped-chevron": {
+        "$type": "string",
+        "$value": "12px 18px",
+        "$description": "원본 지원 카드 변형 규칙"
       }
     }
   },
@@ -8435,6 +8480,58 @@
     "sprite-iphone-and-watch": {
       "$type": "string",
       "$value": "{primitive.simple.sprite-iphone-and-watch}"
+    },
+    "help-centered-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.help-centered-padding}"
+    },
+    "help-grouped-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.help-grouped-padding}"
+    },
+    "help-inline-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.help-inline-padding}"
+    },
+    "help-inline-margin": {
+      "$type": "string",
+      "$value": "{primitive.simple.help-inline-margin}"
+    },
+    "help-inline-text": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.help-inline-text}"
+    },
+    "help-grouped-text": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.help-grouped-text}"
+    },
+    "help-inline-icon": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-review-font}"
+    },
+    "help-inline-icon-inset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.tab-inset}"
+    },
+    "help-inline-chevron": {
+      "$type": "string",
+      "$value": "{primitive.simple.help-inline-chevron}"
+    },
+    "help-inline-chevron-inset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.outline}"
+    },
+    "help-inline-opacity": {
+      "$type": "number",
+      "$value": "{primitive.simple.help-inline-opacity}"
+    },
+    "help-inline-no-icon": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.tab-button-inset}"
+    },
+    "help-grouped-chevron": {
+      "$type": "string",
+      "$value": "{primitive.simple.help-grouped-chevron}"
     }
   }
 }

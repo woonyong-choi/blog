@@ -165,7 +165,16 @@ function component(kind, data, md, env) {
       return `<section class="app-tabs${kind === 'platform' ? ' is-platform' : ''}" data-tabs${kind === 'platform' ? ' data-platform' : ''}><div class="app-tablist" role="tablist" aria-label="${escape(data.title ?? '기기별 안내')}">${data.items.map((item, index) => `<button type="button" id="${id}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${id}-panel-${index}" tabindex="${index ? '-1' : '0'}">${escape(item.label)}</button>`).join('')}</div>${data.items.map((item, index) => `<div class="app-tabpanel" id="${id}-panel-${index}" role="tabpanel" aria-labelledby="${id}-tab-${index}" tabindex="0"${index ? ' hidden' : ''}>${render(item.body)}</div>`).join('')}</section>`;
     }
     case 'cards': {
-      const card = (item) => `<a class="app-help-card${item.compact ? ' is-compact' : data.horizontal ? ' is-horizontal' : ''}" href="${safeUrl(item.href)}">${item.compact || item.icon === false ? '' : icon(item.icon)}<strong>${escape(item.title)}</strong>${item.description ? `<p>${escape(item.description)}</p>` : ''}</a>`;
+      const variants = ['centered', 'grouped', 'inline'];
+      if (data.variant && !variants.includes(data.variant)) throw new Error(`Unknown card variant: ${data.variant}`);
+      const card = (item) => {
+        const variant = item.variant ?? data.variant;
+        if (variant && !variants.includes(variant)) throw new Error(`Unknown card variant: ${variant}`);
+        const classes = variant ? ` is-${variant}` : item.compact ? ' is-compact' : data.horizontal ? ' is-horizontal' : '';
+        const noIcon = item.icon === false || (item.compact && !variant);
+        return `<a class="app-help-card${classes}${noIcon ? ' has-no-icon' : ''}" href="${safeUrl(item.href)}">${noIcon ? '' : icon(item.icon)}<strong>${escape(item.title)}</strong>${item.description ? `<p>${escape(item.description)}</p>` : ''}</a>`;
+      };
+      if (data.variant === 'inline') return `<div class="app-inline-links">${data.items.map(card).join(' ')}</div>`;
       if (data.split) return `<div class="app-support-split">${card(data.items[0])}<div class="app-support-links">${data.items.slice(1).map(card).join('')}</div></div>`;
       return `<div class="app-support-grid${data.columns === 2 ? ' is-pair' : ''}">${data.items.map(card).join('')}</div>`;
     }

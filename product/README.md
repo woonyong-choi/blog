@@ -130,3 +130,5 @@ npm run build
 `pricing`은 홈과 제품 카드 데이터를 공유하며 가격·요구사항·체험 버튼을 생략한 간단한 카드를 표시한다. `plain`의 `variant: actions`는 내려받기와 문의 같은 동작 링크의 버튼 스타일을 적용한다. 무료 체험과 보도 자료 다운로드는 실행 파일이 없는 검토용 ZIP을 사용한다.
 
 `ui:feature-pair`의 `mediaFirst: true`는 미디어를 설명보다 먼저 배치한다. 기기마다 설명 수가 다르면 `ui:tabs`의 각 항목 안에 `ui:feature-pair`를 둔다. `ui:cards`의 `horizontal: true`는 아이콘이 왼쪽에 오는 카드를 만들며, `icon: false`는 아이콘을 생략한다. 기사 메타데이터의 `icon: false`도 제목 아이콘을 생략한다.
+
+`cards.variant`는 `centered`, `grouped`, `inline`을 지원한다. 개별 항목의 `variant`로도 지정할 수 있다. `inline` 묶음은 문장 높이의 링크를 나란히 배치한다. `icon: false`로 아이콘을 생략한다.

@@ -26,13 +26,15 @@ test('unknown component and malformed data fail the build', () => {
   const md = createMarkdown();
   assert.throws(()=>md.render(fence('unknown',{body:'text'})));
   assert.throws(()=>md.render(fence('gallery',{slides:[]})));
+  assert.throws(()=>md.render(fence('cards',{variant:'unknown',items:[]})));
+  assert.throws(()=>md.render(fence('cards',{items:[{variant:'unknown',title:'Invalid',href:'/things/'}]})));
   assert.throws(()=>md.render('```ui:tabs\nitems: [\n```'));
 });
 test('specimen renders every declared document component', () => {
   const source=readFileSync(new URL('./content/syntax-specimen.md',import.meta.url),'utf8').split('\n---\n').slice(1).join('\n---\n');
   const html=createMarkdown().render(source,{});
   for (const kind of ['group','feature','syntax-examples','feature-list','device','demos','feature-pair','callout','details','figure','video','gallery','platform','tabs','cards','definitions','speech','keys','tooltip','keyboard','status-board','contact-form','form']) assert.ok(source.includes('ui:' + kind), 'missing specimen: ' + kind);
-  for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','data-tabs','data-gallery','<video','<details','<dl','<kbd','popover','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
+  for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','app-help-card is-centered','app-help-card is-grouped','app-inline-links','data-tabs','data-gallery','<video','<details','<dl','<kbd','popover','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
 });
 
 test('highlight and cancelled tasks preserve escaping, code and nested formatting', () => {

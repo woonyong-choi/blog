@@ -776,3 +776,22 @@ items:
   ]
 }
 ```
+
+
+## Centered cards
+
+```ui:cards
+{"variant":"centered","columns":2,"items":[{"title":"기기에서 시작하기","icon":"mac","description":"아이콘과 설명을 가운데에 배치합니다.","href":"/things/support/"},{"title":"함께 살펴보기","icon":"faq","description":"관련 안내를 같은 형태로 연결합니다.","href":"/things/support/"}]}
+```
+
+## Grouped links
+
+```ui:cards
+{"variant":"grouped","columns":2,"items":[{"title":"일정 안내","icon":"calendar","href":"/things/support/"},{"title":"아이콘 없는 안내","icon":false,"href":"/things/support/"}]}
+```
+
+## Inline links
+
+```ui:cards
+{"variant":"inline","items":[{"title":"Mac","icon":"mac","href":"/things/support/"},{"title":"iPhone","icon":"iphone","href":"/things/support/"},{"title":"지원 문서","icon":false,"href":"/things/support/"}]}
+```
