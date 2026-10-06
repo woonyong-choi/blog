@@ -67,6 +67,7 @@ description: 문서의 짧은 소개
 | details | title, body, open 선택 |
 | figure | src, alt, caption, wide 선택 |
 | video | src, poster, title, caption 선택 |
+| device | src, title, video: true와 poster 선택 |
 | gallery | slides: [{src, alt, label 선택}], wide 선택 |
 | tabs | items: [{label, body}], title 선택 |
 | cards | items: [{title, href, icon, description, compact 선택}], columns, split 선택 |

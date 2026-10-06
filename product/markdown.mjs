@@ -1,10 +1,12 @@
 // Markdown과 명시적인 문서 구성 요소를 정적 HTML로 변환한다.
+import { readFileSync } from 'node:fs';
 import MarkdownIt from '../assets/vendor/markdown-it.mjs';
 import footnote from 'markdown-it-footnote';
 import taskLists from 'markdown-it-task-lists';
 import hljs from 'highlight.js';
 import { parse } from 'yaml';
 
+const IMAGE_SIZES = JSON.parse(readFileSync(new URL('./image-sizes.json', import.meta.url)));
 export const escape = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 export function safeUrl(value) {
   if (typeof value !== 'string' || /[\u0000-\u0020\\]/u.test(value) || !/^(?:https?:\/\/|mailto:|\/things\/|#)/.test(value)) throw new Error(`Unsupported URL: ${value}`);
@@ -16,7 +18,8 @@ export function asset(name) {
 }
 export const icon = (name = 'question') => `<span class="app-article-icon app-icon-${escape(name)}" aria-hidden="true"></span>`;
 export function image(name, alt = '', className = '') {
-  return `<img class="${className}" src="${asset(name)}" alt="${escape(alt)}" loading="lazy" decoding="async">`;
+  const size = IMAGE_SIZES[name];
+  return `<img${size ? ` width="${size[0]}" height="${size[1]}"` : ''} class="${className}" src="${asset(name)}" alt="${escape(alt)}" loading="lazy" decoding="async">`;
 }
 
 export function createMarkdown() {
@@ -82,7 +85,9 @@ function component(kind, data, md, env) {
     case 'group':
       return `<section class="app-support-group"><h2>${escape(data.title)}</h2>${render(data.body)}</section>`;
     case 'feature':
-      return `<section class="app-feature"><div class="app-shell">${image(data.icon, '', 'app-section-icon')}<h2 class="app-section-title">${escape(data.title)}</h2><p class="app-intro">${escape(data.description)}</p><div class="app-feature-media">${render(data.body)}</div><div class="app-feature-description"><p>${escape(data.left)}</p><p>${escape(data.right)}</p></div></div></section>`;
+      return `<section class="app-feature${data.split ? ' is-split' : ''}"><div class="app-shell"><h2 class="app-section-title app-feature-title">${image(data.icon, '', 'app-section-icon')}<span>${escape(data.title)}</span></h2><p class="app-intro">${escape(data.description)}</p><div class="app-feature-workspace"><div class="app-feature-media">${render(data.body)}</div><div class="app-feature-description"><div><h3>${escape(data.leftTitle ?? 'A clear beginning')}</h3><p>${escape(data.left)}</p></div><div><h3>${escape(data.rightTitle ?? 'Room for the details')}</h3><p>${escape(data.right)}</p></div></div></div></div></section>`;
+    case 'device':
+      return `<figure class="app-device" aria-label="${escape(data.title ?? 'iPhone 화면')}"><div class="app-device-screen">${data.video ? `<video controls playsinline preload="none" poster="${asset(data.poster)}" aria-label="${escape(data.title ?? '기기 동작 영상')}"><source src="${asset(data.src)}" type="video/mp4"></video>` : image(data.src, data.title ?? '기기 화면')}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>`;
     case 'callout':
       return `<aside class="app-callout${data.tone === 'warning' ? ' is-warning' : ''}"><strong>${escape(data.title ?? 'Note')}</strong>${render(data.body)}</aside>`;
     case 'details':

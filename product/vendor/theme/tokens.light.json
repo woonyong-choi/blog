@@ -2345,6 +2345,41 @@
         "$type": "dimension",
         "$value": "15px",
         "$description": "동일 화면 크기 비교에서 확인한 지원 화면 scrollbar 값"
+      },
+      "device-width": {
+        "$type": "dimension",
+        "$value": "371px",
+        "$description": "원본 iPhone 프레임과 내부 화면 치수의 비율"
+      },
+      "device-pad-top": {
+        "$type": "string",
+        "$value": "21.4117%",
+        "$description": "원본 iPhone 프레임과 내부 화면 치수의 비율"
+      },
+      "device-pad-inline": {
+        "$type": "string",
+        "$value": "12.121%",
+        "$description": "원본 iPhone 프레임과 내부 화면 치수의 비율"
+      },
+      "device-pad-bottom": {
+        "$type": "string",
+        "$value": "26.6636%",
+        "$description": "원본 iPhone 프레임과 내부 화면 치수의 비율"
+      },
+      "device-ratio": {
+        "$type": "string",
+        "$value": "500 / 889",
+        "$description": "원본 iPhone 프레임과 내부 화면 치수의 비율"
+      },
+      "tab-inset": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "원본 기기 선택 탭의 38px 높이를 구성하는 여백"
+      },
+      "tab-button-inset": {
+        "$type": "dimension",
+        "$value": "6px",
+        "$description": "원본 기기 선택 탭의 38px 높이를 구성하는 여백"
       }
     }
   },
@@ -5111,6 +5146,34 @@
     "scrollbar": {
       "$type": "dimension",
       "$value": "{primitive.simple.scrollbar}"
+    },
+    "device-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.device-width}"
+    },
+    "device-pad-top": {
+      "$type": "string",
+      "$value": "{primitive.simple.device-pad-top}"
+    },
+    "device-pad-inline": {
+      "$type": "string",
+      "$value": "{primitive.simple.device-pad-inline}"
+    },
+    "device-pad-bottom": {
+      "$type": "string",
+      "$value": "{primitive.simple.device-pad-bottom}"
+    },
+    "device-ratio": {
+      "$type": "string",
+      "$value": "{primitive.simple.device-ratio}"
+    },
+    "tab-inset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.tab-inset}"
+    },
+    "tab-button-inset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.tab-button-inset}"
     }
   }
 }

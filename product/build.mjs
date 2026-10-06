@@ -22,10 +22,13 @@ if (digest(JSON.stringify(MANIFEST.files, null, 2) + '\n') !== MANIFEST.contentH
 const md = createMarkdown();
 const pages = [];
 for (const name of readdirSync(join(ROOT, 'content')).filter((name) => name.endsWith('.md')).sort()) {
+  if (!/^[a-z0-9-]+\.md$/.test(name)) throw new Error(`Invalid content filename: ${name}`);
   const source = readFileSync(join(ROOT, 'content', name), 'utf8');
   const match = source.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!match) throw new Error(`Missing frontmatter: ${name}`);
   const page = parse(match[1], { maxAliasCount: 0 });
+  if (!['home','support','features','article','post','blog'].includes(page.layout)) throw new Error(`Invalid layout: ${name}`);
+  if (page.layout === 'post' && (typeof page.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(page.date) || !Number.isFinite(Date.parse(page.date)))) throw new Error(`Invalid post date: ${name}`);
   page.body = match[2]; page.source = source; page.id = name.slice(0, -3);
   if (!/^\/things\/(?:[a-z0-9-]+\/)*$/.test(page.route) || !page.title) throw new Error(`Invalid page: ${name}`);
   if (pages.some((existing) => existing.route === page.route)) throw new Error(`Duplicate route: ${page.route}`);
@@ -33,6 +36,7 @@ for (const name of readdirSync(join(ROOT, 'content')).filter((name) => name.ends
   page.html = md.render(page.body, env); page.headings = env.headings;
   pages.push(page);
 }
+if (!pages.length) throw new Error('No Markdown pages found');
 const blog = pages.filter((page) => page.layout === 'post').sort((a,b) => b.date.localeCompare(a.date));
 const htmlOutputs = new Map();
 for (const page of pages) {
@@ -58,7 +62,13 @@ for (const [route, html] of htmlOutputs) {
   for (const [,url] of html.matchAll(/(?:href|src|poster)="([^"]+)"/g)) {
     if (url.startsWith('/things/assets/') && !assets.has(url.split('/').at(-1).split('#')[0])) throw new Error(`Missing asset ${url} in ${route}`);
     if (url.startsWith('#') && !ids.includes(url.slice(1))) throw new Error(`Broken anchor ${url} in ${route}`);
-    if (url.startsWith('/things/') && url.endsWith('/') && !validRoutes.has(url)) throw new Error(`Broken link ${url} in ${route}`);
+    if (url.startsWith('/things/')) {
+      const [target, fragment] = url.split('#');
+      const pathname = target.split('?')[0];
+      const knownFile = pathname === '/things/site.js' || pathname === '/things/blog/feed.xml' || pathname.startsWith('/things/assets/') && assets.has(pathname.split('/').at(-1)) || pathname.startsWith('/things/theme/') && pathname.slice('/things/theme/'.length) in MANIFEST.files || pages.some((page) => pathname === `/things/sources/${page.id}.md`);
+      if (!validRoutes.has(pathname) && !knownFile) throw new Error(`Broken link ${url} in ${route}`);
+      if (fragment && validRoutes.has(pathname) && !htmlOutputs.get(pathname).includes(`id="${fragment}"`)) throw new Error(`Broken cross-page anchor ${url} in ${route}`);
+    }
   }
 }
 mkdirSync(OUTPUT, { recursive: true });

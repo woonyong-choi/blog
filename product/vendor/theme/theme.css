@@ -451,6 +451,13 @@
   --primitive-simple-line-compact: 1.2;
   --primitive-simple-nav-color: #9299a4;
   --primitive-simple-scrollbar: 15px;
+  --primitive-simple-device-width: 371px;
+  --primitive-simple-device-pad-top: 21.4117%;
+  --primitive-simple-device-pad-inline: 12.121%;
+  --primitive-simple-device-pad-bottom: 26.6636%;
+  --primitive-simple-device-ratio: 500 / 889;
+  --primitive-simple-tab-inset: 4px;
+  --primitive-simple-tab-button-inset: 6px;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -985,6 +992,13 @@
   --site-line-compact: var(--primitive-simple-line-compact);
   --site-nav-color: var(--primitive-simple-nav-color);
   --site-scrollbar: var(--primitive-simple-scrollbar);
+  --site-device-width: var(--primitive-simple-device-width);
+  --site-device-pad-top: var(--primitive-simple-device-pad-top);
+  --site-device-pad-inline: var(--primitive-simple-device-pad-inline);
+  --site-device-pad-bottom: var(--primitive-simple-device-pad-bottom);
+  --site-device-ratio: var(--primitive-simple-device-ratio);
+  --site-tab-inset: var(--primitive-simple-tab-inset);
+  --site-tab-button-inset: var(--primitive-simple-tab-button-inset);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;

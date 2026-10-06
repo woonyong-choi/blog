@@ -631,3 +631,28 @@ html { scrollbar-width: auto; }
 html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-support-grid.is-pair > .app-help-card:not(.is-compact) { min-height: var(--site-support-card-min); }
 .app-social-icon { display: inline-block; width: var(--site-small-text); height: var(--site-small-text); vertical-align: middle; margin-right: var(--site-gap-xs); }
+.app-feature-title { display: block; }
+.app-feature-title .app-section-icon { display: inline-block; vertical-align: middle; margin: 0 var(--site-gap-xs) 0 0; }
+.app-feature-description > div { background: var(--site-canvas); border-radius: var(--site-card-radius); padding: var(--site-gap); }
+.app-feature-description h3 { font-size: var(--site-body-text); margin: 0 0 var(--site-gap-xs); }
+.app-feature .app-figure img { border-radius: 0; }
+.app-feature.is-split .app-feature-workspace { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--site-card-inset); margin-top: var(--site-gap-lg); }
+.app-feature.is-split .app-feature-media, .app-feature.is-split .app-tabs { display: contents; }
+.app-feature.is-split .app-tablist { grid-column: 1 / -1; grid-row: 1; width: var(--site-tab-width); max-width: 100%; }
+.app-feature.is-split .app-tabpanel { grid-column: 2; grid-row: 2; }
+.app-feature.is-split .app-feature-description { display: flex; flex-direction: column; justify-content: center; grid-column: 1; grid-row: 2; gap: var(--site-card-inset); margin: 0; }
+.app-feature.is-split .app-figure { margin: 0; }
+.app-device { position: relative; width: min(100%, var(--site-device-width)); margin: var(--site-gap) auto; background: url('../assets/bezel-iphone6-shadow-io80.png') center / 100% 100% no-repeat; }
+.app-device-screen { padding: var(--site-device-pad-top) var(--site-device-pad-inline) var(--site-device-pad-bottom); }
+.app-device-screen img, .app-device-screen video { display: block; width: 100%; height: auto; aspect-ratio: var(--site-device-ratio); }
+.app-device-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+@media (max-width: 560px) {
+  .app-feature.is-split .app-feature-workspace { grid-template-columns: minmax(0,1fr); }
+  .app-feature.is-split .app-tabpanel { grid-column: 1; grid-row: 2; }
+  .app-feature.is-split .app-feature-description { grid-column: 1; grid-row: 3; }
+}
+
+.app-tablist { padding: var(--site-tab-inset); }
+.app-tablist button { font-size: var(--site-small-text); line-height: var(--site-line-compact); padding: var(--site-tab-button-inset) var(--site-gap-sm); }
+.app-feature.is-split .app-tablist { margin: 0 auto; }
+.app-feature .app-device { margin: 0 auto; }
