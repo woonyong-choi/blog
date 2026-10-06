@@ -796,6 +796,7 @@
   --primitive-simple-primary-hover: #649fff;
   --primitive-simple-search-suggestion-color: rgba(0,5,11,.64);
   --primitive-simple-search-suggestion-hover: #000000;
+  --primitive-simple-nav-line: rgba(38,52,74,.15);
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1759,6 +1760,7 @@
   --site-search-suggestion-padding: var(--primitive-simple-key-margin);
   --site-search-suggestion-color: var(--primitive-simple-search-suggestion-color);
   --site-search-suggestion-hover: var(--primitive-simple-search-suggestion-hover);
+  --site-nav-line: var(--primitive-simple-nav-line);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;

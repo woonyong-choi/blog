@@ -433,7 +433,7 @@ a:hover { text-decoration: underline; }
 .app-shell { box-sizing: content-box; width: auto; max-width: var(--site-page); margin: auto; padding-left: calc(env(safe-area-inset-left) + (100% - var(--site-shell-width)) / 2); padding-right: calc(env(safe-area-inset-right) + (100% - var(--site-shell-width)) / 2); }
 .app-body { max-width: var(--site-body-width); margin-inline: auto; }
 .app-header { display: flex; align-items: center; justify-content: space-between; position: relative; height: var(--site-header); padding-inline: 0; }
-.app-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: var(--site-header-tail); border-bottom: var(--site-border) solid var(--site-line); }
+.app-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: calc(var(--site-header-tail) - var(--site-border)); border-bottom: var(--site-border) solid var(--site-nav-line); }
 .app-canvas[data-page=home] > .app-shell .app-logo { background-position: var(--site-nav-muted-position); }
 .app-header a { color: var(--site-nav-color); font-size: var(--site-small-text); font-weight: var(--site-weight-medium); }
 .app-header a:hover { color: var(--site-ink); }
