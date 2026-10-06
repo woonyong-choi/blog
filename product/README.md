@@ -66,9 +66,11 @@ description: 문서의 짧은 소개
 | callout | title, body, tone: warning 선택 |
 | details | title, body, open 선택 |
 | figure | src, alt, caption, wide 선택 |
-| video | src, poster, title, caption 선택 |
+| video | src, poster, title, caption, width, height, controls, overlay 선택 |
+| demos | poster, title, items: [{title, body, src}] |
 | device | src, title, video: true와 poster 선택 |
 | gallery | slides: [{src, alt, label 선택}], wide 선택 |
+| platform | items: [{label, body}], 아래쪽 플랫폼 선택 동기화와 ?platform= 지원 |
 | tabs | items: [{label, body}], title 선택 |
 | cards | items: [{title, href, icon, description, compact 선택}], columns, split 선택 |
 | definitions | items: [{term, body}] |
@@ -90,3 +92,5 @@ npm run build
 ```
 
 폼은 브라우저 입력 형식 검사와 확인 메시지만 제공한다. 구독·문의·구매·계정 변경은 외부로 전송하지 않는다. 소셜 계정과 플랫폼 페이지도 검토용 더미 페이지다. 원본 사이트의 전체 아카이브 내용이나 서버 기능을 구현했다는 의미는 아니다.
+
+영상은 재생 전 포스터를 유지하고 Play 버튼으로 제어합니다. controls: true는 재생 후 기본 컨트롤을 표시합니다. demos는 하나의 기기 영상에 여러 재생 버튼을 연결합니다. 갤러리는 숨긴 패널도 높이 계산에 포함해 전환 시 문서가 흔들리지 않게 합니다.

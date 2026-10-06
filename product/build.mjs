@@ -82,7 +82,7 @@ for (const page of pages) {
   writeFileSync(destination, htmlOutputs.get(page.route));
   writeFileSync(join(OUTPUT,'sources',page.id+'.md'), page.source);
 }
-const searchIndex = pages.filter((page) => !['home','features','blog','support'].includes(page.layout)).map((page) => ({ title: page.title, route: page.route, keywords: page.keywords ?? '', text: page.body.replace(/```[\s\S]*?```/g,' ').slice(0,6000) }));
+const searchIndex = pages.filter((page) => !['home','features','blog','support'].includes(page.layout)).map((page) => ({ title: page.title, description: page.description ?? '', icon: page.icon ?? 'question', route: page.route, keywords: page.keywords ?? '', text: page.body.replace(/```[\s\S]*?```/g,' ').slice(0,6000) }));
 writeFileSync(join(OUTPUT,'search-index.json'), JSON.stringify(searchIndex));
 writeFileSync(join(OUTPUT,'build-report.json'), JSON.stringify({ theme: CONFIG.theme, themeHash: MANIFEST.contentHash, pages: pages.length, assets: assets.size, routes: [...validRoutes] }, null, 2));
 writeFileSync(join(OUTPUT,'blog/feed.xml'), `<?xml version="1.0" encoding="utf-8"?><rss version="2.0"><channel><title>Preview Blog</title><link>/things/blog/</link><description>예시 글</description>${blog.map((post)=>`<item><title>${escape(post.title)}</title><link>${post.route}</link><guid isPermaLink="false">${post.id}</guid><description>${escape(post.description)}</description></item>`).join('')}</channel></rss>`);

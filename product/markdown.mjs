@@ -22,6 +22,13 @@ export function image(name, alt = '', className = '') {
   return `<img${size ? ` width="${size[0]}" height="${size[1]}"` : ''} class="${className}" src="${asset(name)}" alt="${escape(alt)}" loading="lazy" decoding="async">`;
 }
 
+export function player(data, id, controls = false) {
+  return `<div class="app-player${data.wide ? ' is-wide' : ''}${controls ? ' has-controls' : ''}" data-player id="${id}"><video${data.width ? ` width="${Number(data.width)}"` : ''}${data.height ? ` height="${Number(data.height)}"` : ''} playsinline${controls ? '' : ' muted'} preload="none" poster="${asset(data.poster)}" aria-label="${escape(data.title ?? '기능 소개 영상')}"${controls ? ' data-native-controls' : ''}><source src="${asset(data.src)}" type="video/mp4"></video>${data.overlay || controls ? '<button class="app-player-button" type="button" data-player-play aria-label="Play video"></button>' : ''}<span class="app-sr" role="status"></span></div>`;
+}
+function remote(id, src = '') {
+  return `<button class="app-remote" type="button" data-remote="${id}"${src ? ` data-video-src="${asset(src)}"` : ''} aria-label="Play video">${image('remotecontrol-play.svg')}<span>Play</span></button>`;
+}
+
 export function createMarkdown() {
   const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(taskLists);
   const defaultImage = md.renderer.rules.image;
@@ -85,9 +92,11 @@ function component(kind, data, md, env) {
     case 'group':
       return `<section class="app-support-group"><h2>${escape(data.title)}</h2>${render(data.body)}</section>`;
     case 'feature':
-      return `<section class="app-feature${data.split ? ' is-split' : ''}"><div class="app-shell"><h2 class="app-section-title app-feature-title">${image(data.icon, '', 'app-section-icon')}<span>${escape(data.title)}</span></h2><p class="app-intro">${escape(data.description)}</p><div class="app-feature-workspace"><div class="app-feature-media">${render(data.body)}</div><div class="app-feature-description"><div><h3>${escape(data.leftTitle ?? 'A clear beginning')}</h3><p>${escape(data.left)}</p></div><div><h3>${escape(data.rightTitle ?? 'Room for the details')}</h3><p>${escape(data.right)}</p></div></div></div></div></section>`;
+      return `<section class="app-feature app-feature-${['canvas','lightest','light','medium'].includes(data.tone) ? data.tone : 'canvas'}${data.split ? ' is-split' : ''}"><div class="app-shell"><h2 class="app-section-title app-feature-title">${image(data.icon, '', 'app-section-icon')}<span>${escape(data.title)}</span></h2><p class="app-intro">${escape(data.description)}</p><div class="app-feature-workspace"><div class="app-feature-media">${render(data.body)}</div>${data.left || data.right ? `<div class="app-feature-description"><div><h3>${escape(data.leftTitle ?? 'A clear beginning')}</h3><p>${escape(data.left)}</p></div><div><h3>${escape(data.rightTitle ?? 'Room for the details')}</h3><p>${escape(data.right)}</p></div></div>` : ''}</div></div></section>`;
     case 'device':
-      return `<figure class="app-device" aria-label="${escape(data.title ?? 'iPhone 화면')}"><div class="app-device-screen">${data.video ? `<video controls playsinline preload="none" poster="${asset(data.poster)}" aria-label="${escape(data.title ?? '기기 동작 영상')}"><source src="${asset(data.src)}" type="video/mp4"></video>` : image(data.src, data.title ?? '기기 화면')}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>`;
+      return `<figure class="app-device" aria-label="${escape(data.title ?? 'iPhone 화면')}"><div class="app-device-screen">${data.video ? player(data, id) : image(data.src, data.title ?? '기기 화면')}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>${data.video ? `<div class="app-media-controls">${remote(id)}</div>` : ''}`;
+    case 'demos':
+      return `<div class="app-feature-demos"><div>${data.items.map(item => `<section class="app-feature-demo-description"><h3>${escape(item.title)}</h3>${render(item.body)}${remote(id, item.src)}</section>`).join('')}</div><figure class="app-device"><div class="app-device-screen">${player({ ...data, src: data.items[0].src }, id)}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure></div>`;
     case 'callout':
       return `<aside class="app-callout${data.tone === 'warning' ? ' is-warning' : ''}"><strong>${escape(data.title ?? 'Note')}</strong>${render(data.body)}</aside>`;
     case 'details':
@@ -95,14 +104,15 @@ function component(kind, data, md, env) {
     case 'figure':
       return `<figure class="app-figure${data.wide ? ' app-breakout' : ''}">${image(data.src, data.alt)}<figcaption>${escape(data.caption)}</figcaption></figure>`;
     case 'video':
-      return `<figure class="app-figure"><video class="app-video" controls playsinline preload="none" poster="${asset(data.poster)}" aria-label="${escape(data.title ?? '영상')}"><source src="${asset(data.src)}" type="video/mp4"><a href="${asset(data.src)}">영상 다운로드</a></video><figcaption>${escape(data.caption ?? '화면 동작을 보여주는 참고 영상')}</figcaption></figure>`;
+      return `<figure class="app-figure">${player(data, id, data.controls === true)}<figcaption>${escape(data.caption ?? '')}<div class="app-media-controls">${remote(id)}</div></figcaption></figure>`;
     case 'gallery': {
       if (!Array.isArray(data.slides) || !data.slides.length) throw new Error('Gallery requires slides');
-      return `<section class="app-gallery${data.wide ? ' app-breakout' : ''}" data-gallery aria-label="${escape(data.title ?? '이미지 슬라이드')}">${data.slides.map((slide, index) => `<div id="${id}-${index}" data-slide${index ? ' hidden' : ''}>${image(slide.src, slide.alt ?? slide.label)}</div>`).join('')}<div class="app-gallery-controls">${data.slides.map((slide, index) => `<button type="button" data-slide-index="${index}" aria-controls="${id}-${index}" aria-pressed="${index === 0}" aria-label="${escape(slide.label ?? `슬라이드 ${index + 1}`)}">${escape(slide.label ?? index + 1)}</button>`).join('')}</div></section>`;
+      return `<section class="app-gallery${data.wide ? ' app-breakout' : ''}" data-gallery aria-label="${escape(data.title ?? '이미지 슬라이드')}"><div class="app-gallery-frame">${data.slides.map((slide, index) => `<div id="${id}-${index}" class="app-gallery-slide${index ? '' : ' is-selected'}" data-slide aria-hidden="${index !== 0}">${image(slide.src, slide.alt ?? slide.label)}</div>`).join('')}</div><div class="app-gallery-controls">${data.slides.map((slide, index) => `<button type="button" data-slide-index="${index}" aria-controls="${id}-${index}" aria-pressed="${index === 0}" aria-label="${escape(slide.label ?? `슬라이드 ${index + 1}`)}">${escape(slide.label ?? index + 1)}</button>`).join('')}</div></section>`;
     }
+    case 'platform':
     case 'tabs': {
       if (!Array.isArray(data.items) || !data.items.length) throw new Error('Tabs require items');
-      return `<section class="app-tabs" data-tabs><div class="app-tablist" role="tablist" aria-label="${escape(data.title ?? '기기별 안내')}">${data.items.map((item, index) => `<button type="button" id="${id}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${id}-panel-${index}" tabindex="${index ? '-1' : '0'}">${escape(item.label)}</button>`).join('')}</div>${data.items.map((item, index) => `<div class="app-tabpanel" id="${id}-panel-${index}" role="tabpanel" aria-labelledby="${id}-tab-${index}" tabindex="0"${index ? ' hidden' : ''}>${render(item.body)}</div>`).join('')}</section>`;
+      return `<section class="app-tabs${kind === 'platform' ? ' is-platform' : ''}" data-tabs${kind === 'platform' ? ' data-platform' : ''}><div class="app-tablist" role="tablist" aria-label="${escape(data.title ?? '기기별 안내')}">${data.items.map((item, index) => `<button type="button" id="${id}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${id}-panel-${index}" tabindex="${index ? '-1' : '0'}">${escape(item.label)}</button>`).join('')}</div>${data.items.map((item, index) => `<div class="app-tabpanel" id="${id}-panel-${index}" role="tabpanel" aria-labelledby="${id}-tab-${index}" tabindex="0"${index ? ' hidden' : ''}>${render(item.body)}</div>`).join('')}</section>`;
     }
     case 'cards': {
       const card = (item) => `<a class="app-help-card${item.compact ? ' is-compact' : ''}" href="${safeUrl(item.href)}">${item.compact ? '' : icon(item.icon)}<strong>${escape(item.title)}</strong>${item.description ? `<p>${escape(item.description)}</p>` : ''}</a>`;
