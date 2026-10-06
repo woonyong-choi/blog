@@ -8,15 +8,15 @@ const args = process.argv.slice(2);
 const option = (name, fallback) => args.includes(name) ? args[args.indexOf(name) + 1] : fallback;
 const port = Number(option('--port', '8794'));
 const host = option('--host', '127.0.0.1');
-const root = fileURLToPath(new URL('../dist/', import.meta.url));
+const root = resolve(option('--root', fileURLToPath(new URL('../dist/', import.meta.url))));
 const mime = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.mp4':'video/mp4', '.woff2':'font/woff2', '.md':'text/plain; charset=utf-8', '.xml':'application/xml' };
 createServer((request, response) => {
   try {
     if (!['GET','HEAD'].includes(request.method)) { response.writeHead(405); response.end(); return; }
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    if (pathname === '/') { response.writeHead(302, { location:'/things/' }); response.end(); return; }
+    if (pathname === '/' && !args.includes('--root')) { response.writeHead(302, { location:'/things/' }); response.end(); return; }
     let path = resolve(root, '.' + pathname);
-    if (!path.startsWith(resolve(root) + sep)) throw new Error('path');
+    if (path !== root && !path.startsWith(root + sep)) throw new Error('path');
     let stat = statSync(path);
     if (stat.isDirectory()) { path = resolve(path, 'index.html'); stat = statSync(path); }
     if (!stat.isFile()) throw new Error('file');

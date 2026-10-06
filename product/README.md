@@ -18,6 +18,8 @@ npm run dev -- --host 127.0.0.1 --port 8794
 
 `dist/things/`을 정적 서버의 `/things/`에 배치한다. 기존 문서 사이트 빌드인 `npm run build`와 출력 위치를 분리한다.
 
+외부 미리보기도 영상 탐색을 위해 HTTP Range 요청을 지원해야 한다. 여러 미리보기를 담은 기존 폴더를 제공할 때는 `node product/serve.mjs --port 8792 --root /absolute/preview-root`를 사용한다. `--root`를 지정하면 루트의 기존 `index.html`도 유지한다.
+
 ## 정본
 
 | 경로 | 역할 |
@@ -73,7 +75,7 @@ description: 문서의 짧은 소개
 | gallery | slides: [{src, alt, label 선택}], wide 선택 |
 | platform | items: [{label, body}], 아래쪽 플랫폼 선택 동기화와 ?platform= 지원 |
 | tabs | items: [{label, body}], title 선택 |
-| cards | items: [{title, href, icon, description, compact 선택}], columns, split 선택 |
+| cards | items: [{title, href, icon, description, compact 선택}], columns, split, horizontal 선택. icon: false는 아이콘 생략 |
 | definitions | items: [{term, body}] |
 | speech | body |
 | keys | label, keys: 문자열 배열 |
@@ -81,6 +83,7 @@ description: 문서의 짧은 소개
 | form | label, message: true 선택 |
 | group | title, body |
 | feature | title, icon, description, body, left, right |
+| feature-pair | media, items: [{title, body}], mediaFirst 선택 |
 
 body는 다시 Markdown으로 해석한다. gallery의 label을 생략하면 번호 버튼이 되고, 지정하면 Before/Now처럼 비교 버튼이 된다. src와 poster에는 assets 폴더의 파일명을 쓴다. 다수의 탭과 슬라이드는 서로의 상태를 변경하지 않는다.
 
@@ -92,7 +95,7 @@ npm run build:product
 npm run build
 ```
 
-폼은 브라우저 입력 형식 검사와 확인 메시지만 제공한다. 구독·문의·구매·계정 변경은 외부로 전송하지 않는다. 소셜 계정과 플랫폼 페이지도 검토용 더미 페이지다. 원본 사이트의 전체 아카이브 내용이나 서버 기능을 구현했다는 의미는 아니다.
+폼은 브라우저 입력 형식 검사와 확인 메시지만 제공한다. 구독·문의·구매·계정 변경은 외부로 전송하지 않는다. 소셜·플랫폼 링크는 원본의 외부 이동 경로에 연결한다. 체험판·보도 자료 다운로드는 실행 파일이 없는 검토용 파일이다. 원본 사이트의 전체 아카이브 내용이나 서버 기능을 구현했다는 의미는 아니다.
 
 영상은 재생 전 포스터를 유지하고 Play 버튼으로 제어합니다. controls: true는 재생 후 기본 컨트롤을 표시합니다. demos는 하나의 기기 영상에 여러 재생 버튼을 연결합니다. 갤러리는 숨긴 패널도 높이 계산에 포함해 전환 시 문서가 흔들리지 않게 합니다.
 

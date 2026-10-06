@@ -214,7 +214,6 @@ for (const search of document.querySelectorAll('[data-search]')) {
   });
   clear.addEventListener('click', () => { input.value = ''; update(); input.focus(); });
   search.querySelectorAll('[data-query]').forEach((button) => button.addEventListener('click', () => { input.value = button.dataset.query; update(); input.focus(); }));
-  input.addEventListener('keydown', (event) => { if (event.key === 'Escape') { input.value = ''; update(); } if (event.key === 'ArrowDown') { event.preventDefault(); results.querySelector('a')?.focus(); } });
 }
 
 for (const button of document.querySelectorAll('[data-status-toggle]')) button.addEventListener('click', () => {
