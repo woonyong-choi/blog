@@ -10,26 +10,26 @@
   <link rel="stylesheet" href="/styles.css" />
   <script type="module" src="/preview/preview.js"></script>
 </head>
-<body>
+<body class="docs-personal-home">
   <a class="docs-skip" href="#main">본문으로 건너뛰기</a>
   <header class="docs-header">
     <div class="docs-header-inner">
       <a class="docs-brand" href="#resume" data-page="resume" aria-label="Woonyong 이력서">Woonyong <span>개발과 기록</span></a>
-      <nav class="docs-nav" aria-label="주 메뉴"><a href="#resume" data-page="resume">소개</a><a href="#portfolio">포트폴리오</a><a href="#writing">블로그</a><a href="#knowledge">위키</a><a href="#languages">언어</a><a href="#platform">플랫폼</a></nav>
+      <nav class="docs-nav" aria-label="주 메뉴"><a href="#resume" data-page="resume">소개</a><a href="#writing">블로그</a><a href="#portfolio">프로젝트</a><a href="#languages">언어</a><a href="#frameworks">프레임워크</a><a href="#wiki" data-page="wiki">위키</a></nav>
       <div class="docs-header-actions">
         <button class="docs-search-trigger" type="button" aria-label="검색"><span class="docs-search-icon" aria-hidden="true"></span><span>기록 검색...</span><kbd>⌘K</kbd></button>
         <a class="docs-signup" href="#resume" data-page="resume">이력서</a>
         <button class="docs-mobile-trigger" type="button" aria-label="메뉴 열기" aria-expanded="false">☰</button>
       </div>
     </div>
-    <nav class="docs-mobile-nav" aria-label="모바일 메뉴" hidden><a href="#resume" data-page="resume">소개</a><a href="#portfolio">포트폴리오</a><a href="#writing">블로그</a><a href="#knowledge">위키</a><a href="#languages">언어</a><a href="#platform">플랫폼</a></nav>
+    <nav class="docs-mobile-nav" aria-label="모바일 메뉴" hidden><a href="#resume" data-page="resume">소개</a><a href="#writing">블로그</a><a href="#portfolio">프로젝트</a><a href="#languages">언어</a><a href="#frameworks">프레임워크</a><a href="#wiki" data-page="wiki">위키</a></nav>
   </header>
   <main id="main" tabindex="-1">
     <section class="docs-hero docs-home" aria-labelledby="hero-title">
       <div class="docs-shell docs-hero-inner">
         <a class="docs-hero-copy" href="#resume" data-page="resume">
           <div class="docs-hero-mark" aria-hidden="true"><img src="/assets/ui/user-round-lucide.svg" alt="" /></div>
-          <div><h1 id="hero-title">Woonyong</h1><p>백엔드와 개발 도구를 만듭니다.<br />직접 만든 것과 문제를 풀어간 과정, 다시 찾아볼 지식을 기록합니다.</p></div>
+          <div><h1 id="hero-title">Woonyong</h1><p>백엔드와 개발 도구를 만듭니다.<br />경험은 블로그에, 구현은 프로젝트에, 배운 지식은 위키에 담습니다.</p></div>
         </a>
         <div class="docs-command-card">
           <div class="docs-command-head"><div class="docs-tabs" role="tablist" aria-label="소개"><button id="intro-tab" type="button" role="tab" aria-controls="command-content" aria-selected="true" data-tab="intro">소개</button><button id="interest-tab" type="button" role="tab" aria-controls="command-content" aria-selected="false" data-tab="interest">관심 분야</button></div><a class="docs-copy" href="#resume" data-page="resume" aria-label="이력서 보기">↗</a></div>
@@ -37,14 +37,11 @@
         </div>
       </div>
     </section>
-    <div class="docs-shell docs-sections docs-home">
-      <section class="docs-section" id="languages"><div class="docs-section-copy"><h2>프로그래밍 언어</h2><p>언어의 문법과 실행 원리를 정리합니다. 익숙한 기술 이름에서 위키로 들어갑니다.</p></div><div class="docs-section-content docs-link-grid" id="language-links"></div></section>
-      <section class="docs-section" id="portfolio"><div class="docs-section-copy"><h2>포트폴리오</h2><p>만들고 검증한 내용을 살펴봅니다. 프로젝트의 문제와 역할, 구현과 한계를 연결합니다.</p></div><div class="docs-section-content docs-product-grid" id="project-cards"></div></section>
-      <section class="docs-section" id="frameworks"><div class="docs-section-copy"><h2>프레임워크</h2><p>언어를 실제 애플리케이션으로 연결하는 구조와 사용법을 기록합니다.</p></div><div class="docs-section-content docs-link-grid" id="framework-links"></div></section>
-      <section class="docs-section" id="knowledge"><div class="docs-section-copy"><h2>CS와 개발 위키</h2><p>기초에서 구현과 운영까지. 같은 개념은 한곳에 정리하고 서로 연결합니다.</p></div><div class="docs-section-content docs-link-grid" id="knowledge-links"></div></section>
-      <section class="docs-section" id="platform"><div class="docs-section-copy"><h2>데이터와 플랫폼</h2><p>데이터가 저장되는 원리부터 서비스를 배포하고 운영하는 과정까지 다룹니다.</p></div><div class="docs-section-content docs-link-grid" id="platform-links"></div></section>
-      <section class="docs-section" id="writing"><div class="docs-section-copy"><h2>블로그</h2><p>문제를 해결하는 동안 내린 선택과 배운 점을 씁니다. 아래는 구성을 확인하기 위한 예시 글입니다.</p></div><div class="docs-section-content docs-resource-grid" id="article-cards"></div></section>
-      <section class="docs-section" id="learning"><div class="docs-section-copy"><h2>직접 구현하며 배우기</h2><p>작은 구현으로 내부 동작을 따라갑니다. 학습의 범위와 확인한 결과를 함께 남깁니다.</p></div><div class="docs-section-content docs-link-grid" id="learning-links"></div></section>
+    <div class="docs-shell docs-sections docs-home docs-personal-sections">
+      <section class="docs-section" id="writing"><div class="docs-section-copy"><h2>블로그에 경험을 기록합니다.</h2><p>개발하며 마주한 문제와 해결 과정, 그 과정에서 배운 점을 글로 남깁니다.</p><a class="docs-more-link" href="#blog" data-page="blog">전체 글 보기 →</a></div><div class="docs-section-content docs-resource-grid" id="article-cards"></div></section>
+      <section class="docs-section" id="portfolio"><div class="docs-section-copy"><h2>프로젝트를 만들고 개선합니다.</h2><p>아이디어를 도구와 서비스로 구현합니다. 각 프로젝트에서 맡은 역할과 설계, 구현 과정을 소개합니다.</p></div><div class="docs-section-content docs-project-list" id="project-links"></div></section>
+      <section class="docs-section" id="languages"><div class="docs-section-copy"><h2>언어별 위키에 지식을 정리합니다.</h2><p>문법과 실행 원리, 코드 예제를 언어별로 모읍니다. 언어를 선택하면 해당 위키를 살펴볼 수 있습니다.</p></div><div class="docs-section-content docs-link-grid" id="language-links"></div></section>
+      <section class="docs-section" id="frameworks"><div class="docs-section-copy"><h2>프레임워크 사용법을 정리합니다.</h2><p>설정부터 애플리케이션 구조까지 학습한 내용을 위키에 쌓습니다. 필요한 기술을 선택해 찾아봅니다.</p></div><div class="docs-section-content docs-link-grid" id="framework-links"></div></section>
     </div>
   </main>
   <footer class="docs-footer"><div class="docs-shell"><div class="docs-social"><a href="https://github.com/woonyong-choi" target="_blank" rel="noopener noreferrer" aria-label="Woonyong GitHub"><img src="/assets/ui/github.svg" alt="" /></a></div></div></footer>

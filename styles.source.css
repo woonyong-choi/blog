@@ -101,6 +101,25 @@ img, svg { display: block; }
 .docs-resource-description { grid-column: 1 / var(--size-grid-end); color: var(--color-muted); }
 #self-hosted { grid-template-columns: repeat(var(--size-pair-columns), minmax(0, 1fr)); }
 
+/* 글 표지와 프로젝트 목록은 기존 문서 메인의 토큰을 공유한다. */
+.docs-story-card { display: flex; flex-direction: column; gap: var(--spacing-16); min-width: 0; }
+.docs-story-cover { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-24); min-height: calc(var(--spacing-128) + var(--spacing-32)); padding: var(--spacing-32); overflow: hidden; color: var(--color-fg); background: color-mix(in srgb, var(--color-page) var(--size-card-canvas-mix), var(--color-surface-raised)); border: var(--border-thin) solid var(--color-border); border-radius: var(--radius-inputs); }
+.docs-story-cover-copy { display: grid; gap: var(--spacing-16); }
+.docs-story-cover-label { font-family: var(--font-mono); font-size: var(--text-caption); color: var(--color-accent); }
+.docs-story-cover-title { font-size: var(--text-heading-sm); font-weight: var(--font-weight-medium); line-height: var(--leading-heading-sm); letter-spacing: var(--tracking-heading); }
+.docs-story-cover-icon { flex: none; width: var(--spacing-64); height: var(--spacing-64); object-fit: contain; }
+.docs-story-body { display: grid; gap: var(--spacing-8); }
+.docs-story-title { font-size: var(--text-body); font-weight: var(--font-weight-medium); line-height: var(--leading-body); }
+.docs-story-summary { font-size: var(--text-body-sm); line-height: var(--leading-body-sm); color: var(--color-muted); }
+.docs-story-meta { font-size: var(--text-caption); color: var(--color-muted); }
+.docs-story-card:hover .docs-story-title, .docs-project-link:hover .docs-product-title { color: var(--color-accent); }
+.docs-project-list { display: grid; grid-template-columns: repeat(var(--size-pair-columns), minmax(0, 1fr)); gap: var(--spacing-24); }
+.docs-project-link { display: flex; align-items: center; gap: var(--spacing-16); min-width: 0; padding-block: var(--spacing-8); }
+.docs-project-info { display: grid; gap: var(--spacing-8); min-width: 0; }
+.docs-personal-home .docs-item-icon img { width: var(--spacing-24); height: var(--spacing-24); }
+.docs-personal-sections { padding-top: var(--spacing-24); }
+.docs-personal-sections .docs-section { padding-block: var(--spacing-40); }
+
 .docs-footer { margin-top: var(--spacing-64); }
 .docs-footer .docs-shell { max-width: calc(var(--page-max-width) - var(--spacing-96)); }
 .docs-footer-help { display: grid; gap: var(--spacing-8); padding: var(--spacing-64) 0 var(--spacing-24); border-bottom: var(--border-thin) solid var(--color-border); font-size: var(--text-caption); color: var(--color-muted); }

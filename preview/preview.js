@@ -25,18 +25,33 @@ for (const [target, entries] of Object.entries(groups)) {
     const link = document.createElement('a');
     link.className = 'docs-item-link'; link.href = `#${id}`; link.dataset.page = id;
     link.innerHTML = `<span class="docs-item-icon"><img src="${iconUrl(icon)}" alt="" /></span>`;
-    link.append(document.createTextNode(title)); container.append(link);
+    link.append(document.createTextNode(title)); container?.append(link);
     pages[id] ??= [title, '위키 탐색 예시', `<p>${description}</p><p>이 항목은 해당 기술이나 개념의 위키로 연결할 자리입니다. 시안에서는 탐색 구성을 보여주며, 실제 위키 본문이나 비공개 자료를 가져오지 않습니다.</p>`];
   }
 }
-for (const [target, type, entries] of [['project-cards','product',projects],['article-cards','resource',articles]]) {
-  for (const [title,id,description,icon] of entries) {
-    const a=document.createElement('a');a.className=`docs-${type}-card`;a.href=`#${id}`;a.dataset.page=id;
-    const image=`<img src="${iconUrl(icon)}" alt="" />`;
-    a.innerHTML=type==='product' ? `<span class="docs-product-title">${image}${title}</span><span class="docs-product-description">${description}</span>` : `<span class="docs-resource-mark">${image}</span><span class="docs-resource-title">${title}</span><span class="docs-resource-description">${description}</span>`;
-    document.getElementById(target).append(a);
-  }
+for (const [title, id, description] of articles.slice(0, 2)) {
+  const card = document.createElement('a');
+  card.className = 'docs-story-card'; card.href = `#${id}`; card.dataset.page = id;
+  const theme = id === 'theme-story';
+  const coverIcon = theme ? 'daphnis' : 'kubernetes';
+  const coverTitle = theme ? '하나의 테마,<br />일관된 경험' : '관찰에서<br />진단까지';
+  card.innerHTML = `<span class="docs-story-cover" aria-hidden="true"><span class="docs-story-cover-copy"><span class="docs-story-cover-label">${theme ? 'DESIGN SYSTEM' : 'KUBERNETES'}</span><span class="docs-story-cover-title">${coverTitle}</span></span><img class="docs-story-cover-icon" src="${iconUrl(coverIcon)}" alt="" /></span><span class="docs-story-body"><span class="docs-story-meta">${theme ? '설계 기록' : '문제 해결'} · 예시 글</span><span class="docs-story-title">${title}</span><span class="docs-story-summary">${description.replace('예시 글 · ', '')}</span></span>`;
+  document.querySelector('#article-cards').append(card);
 }
+pages.blog = ['블로그', '글 목록 시안', `<ul>${articles.map(([title, id]) => `<li><a href="#${id}" data-page="${id}">${title}</a></li>`).join('')}</ul>`];
+// 프로젝트도 기존 아이콘 목록으로 표시한다.
+for (const [title, id, description, icon] of projects) {
+  const link = document.createElement('a');
+  link.className = 'docs-project-link';
+  link.href = `#${id}`;
+  link.dataset.page = id;
+  const summary = id === 'clue' ? 'Kubernetes 장애 진단' : '텍스트 기반 다이어그램';
+  link.innerHTML = `<span class="docs-item-icon"><img src="${iconUrl(icon)}" alt="" /></span><span class="docs-project-info"><span class="docs-product-title">${title}</span><span class="docs-product-description">${summary}</span></span>`;
+  document.querySelector('#project-links').append(link);
+}
+pages.wiki = ['위키', '분야별 지식 탐색',
+  [['기초와 개발', groups['knowledge-links']], ['데이터와 플랫폼', groups['platform-links']], ['학습 구현', groups['learning-links']]]
+    .map(([heading, items]) => `<h3>${heading}</h3><ul>${items.map(([title, id]) => `<li><a href="#${id}" data-page="${id}">${title}</a></li>`).join('')}</ul>`).join('')];
 const dialog=document.querySelector('#detail-dialog');
 const search=document.querySelector('.docs-search-dialog');
 let returnFocus;
@@ -53,7 +68,7 @@ const mobile=document.querySelector('.docs-mobile-nav');
 function closeMenu(){mobile.hidden=true;trigger.setAttribute('aria-expanded','false');}
 trigger.addEventListener('click',()=>{mobile.hidden=!mobile.hidden;trigger.setAttribute('aria-expanded',String(!mobile.hidden));});
 mobile.addEventListener('click',closeMenu);
-const intro='<p>문제를 이해하고, 코드로 확인합니다.</p><ol><li>포트폴리오에 구현과 검증을 남깁니다.</li><li>블로그에 선택의 이유와 경험을 씁니다.</li><li>위키에 다시 사용할 지식을 쌓습니다.</li></ol>';
+const intro='<p>만들고 배우는 과정을 남깁니다.</p><ol><li>블로그에 경험과 생각을 기록합니다.</li><li>프로젝트로 구현과 결과를 보여줍니다.</li><li>언어와 프레임워크별 위키를 정리합니다.</li></ol>';
 const interest='<p>백엔드와 개발 도구에 관심이 있습니다.</p><ol><li>API와 데이터 처리, 서비스의 동작</li><li>Kubernetes의 장애 증거와 진단</li><li>문서·지식·다이어그램을 연결하는 도구</li></ol>';
 function selectTab(button){document.querySelectorAll('[role="tab"]').forEach(tab=>{tab.setAttribute('aria-selected',String(tab===button));tab.tabIndex=tab===button?0:-1;});const panel=document.querySelector('#command-content');panel.innerHTML=button.dataset.tab==='intro'?intro:interest;panel.setAttribute('aria-labelledby',button.id);}
 const tabs=[...document.querySelectorAll('[role="tab"]')];
