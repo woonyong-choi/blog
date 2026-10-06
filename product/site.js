@@ -53,6 +53,7 @@ for (const button of document.querySelectorAll('[data-copy]')) button.addEventLi
   try { await navigator.clipboard.writeText(button.parentElement.querySelector('code').textContent); button.textContent = 'Copied'; }
   catch { button.textContent = '복사 실패 — 코드를 선택하세요'; }
 });
+for (const check of document.querySelectorAll('[data-demo-verify]')) check.addEventListener('change', () => { check.form.querySelector('[data-verified-submit]').disabled = !check.checked; });
 for (const form of document.querySelectorAll('[data-demo-form]')) form.addEventListener('submit', (event) => {
   event.preventDefault();
   if (!form.reportValidity()) return;

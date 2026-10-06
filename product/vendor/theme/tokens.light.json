@@ -3129,6 +3129,155 @@
         "$type": "number",
         "$value": 1.15,
         "$description": "원본 블로그 제목 줄 높이"
+      },
+      "article-search-top": {
+        "$type": "dimension",
+        "$value": "35px",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "article-search-font": {
+        "$type": "dimension",
+        "$value": "21.25px",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "article-search-radius": {
+        "$type": "dimension",
+        "$value": "8.5px",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "article-search-padding": {
+        "$type": "string",
+        "$value": "10.625px 40px 10.625px 36px",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "article-media-compact": {
+        "$type": "dimension",
+        "$value": "600px",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "syntax-example-padding": {
+        "$type": "string",
+        "$value": "9px 13.5px",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "syntax-example-background": {
+        "$type": "color",
+        "$value": "rgba(2,21,48,.02)",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "syntax-example-border": {
+        "$type": "color",
+        "$value": "rgba(0,7,17,.09)",
+        "$description": "지원 상세 문서 실측값"
+      },
+      "quote-highlight-color": {
+        "$type": "color",
+        "$value": "rgba(113,153,209,.25)",
+        "$description": "홈 인용문의 원본 강조 표시 실측값"
+      },
+      "plain-title-gap": {
+        "$type": "dimension",
+        "$value": "37.1628px",
+        "$description": "문의 화면 원본 실측값"
+      },
+      "contact-input-font": {
+        "$type": "dimension",
+        "$value": "16.56px",
+        "$description": "문의 화면 원본 실측값"
+      },
+      "contact-input-height": {
+        "$type": "dimension",
+        "$value": "34.9062px",
+        "$description": "문의 화면 원본 실측값"
+      },
+      "contact-message-height": {
+        "$type": "dimension",
+        "$value": "264.953px",
+        "$description": "문의 화면 원본 실측값"
+      },
+      "contact-input-padding": {
+        "$type": "string",
+        "$value": "6.9552px 8.28px",
+        "$description": "문의 화면 원본 실측값"
+      },
+      "contact-input-radius": {
+        "$type": "dimension",
+        "$value": "6.624px",
+        "$description": "문의 화면 원본 실측값"
+      },
+      "contact-input-background": {
+        "$type": "color",
+        "$value": "#eceef0",
+        "$description": "문의 화면 원본 실측값"
+      },
+      "form-choice-size": {
+        "$type": "dimension",
+        "$value": "21.1406px",
+        "$description": "원본 문의 양식 선택 컨트롤 표시 크기"
+      },
+      "office-background-width": {
+        "$type": "dimension",
+        "$value": "1100px"
+      },
+      "office-top": {
+        "$type": "dimension",
+        "$value": "80px"
+      },
+      "office-panel-width": {
+        "$type": "dimension",
+        "$value": "610px"
+      },
+      "office-paper": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,0.9)"
+      },
+      "office-shadow": {
+        "$type": "string",
+        "$value": "0 0 1px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.05)"
+      },
+      "status-weather-width": {
+        "$type": "dimension",
+        "$value": "400px"
+      },
+      "status-background": {
+        "$type": "color",
+        "$value": "#fcfeff"
+      },
+      "status-board": {
+        "$type": "color",
+        "$value": "#333333"
+      },
+      "status-caption": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,.5)"
+      },
+      "status-board-shadow": {
+        "$type": "string",
+        "$value": "0 4px 16px rgba(0,0,0,.25)"
+      },
+      "status-row-padding": {
+        "$type": "string",
+        "$value": "17px 22.5px"
+      },
+      "status-header-padding": {
+        "$type": "string",
+        "$value": "15px 22.5px"
+      },
+      "status-flip-background": {
+        "$type": "string",
+        "$value": "linear-gradient(to bottom, #212121 50%, #262626 100%)"
+      },
+      "status-flip-shadow": {
+        "$type": "string",
+        "$value": "inset 0 2px 4px 2px rgba(0,0,0,.25), inset 0 -2px 0 rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.1)"
+      },
+      "status-state": {
+        "$type": "color",
+        "$value": "#add6eb"
+      },
+      "status-flip-height": {
+        "$type": "dimension",
+        "$value": "40.5px"
       }
     }
   },
@@ -6817,6 +6966,266 @@
       "$type": "number",
       "$value": "{primitive.simple.post-title-line}",
       "$description": "블로그 제목 줄 높이"
+    },
+    "article-search-top": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.article-search-top}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-search-bottom": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.help-mobile-left}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-search-font": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.article-search-font}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-search-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.article-search-radius}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-search-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.article-search-padding}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-title-line": {
+      "$type": "number",
+      "$value": "{primitive.simple.line-compact}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-title-padding": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-quote-award-text}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-title-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.subtitle}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "article-media-compact": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.article-media-compact}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "syntax-example-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.syntax-example-padding}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "syntax-example-background": {
+      "$type": "color",
+      "$value": "{primitive.simple.syntax-example-background}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "syntax-example-border": {
+      "$type": "color",
+      "$value": "{primitive.simple.syntax-example-border}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "syntax-example-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.quote-credit-gap}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "syntax-example-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-quote-meta}",
+      "$description": "지원 문서와 작성 예시 역할"
+    },
+    "quote-highlight-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.quote-highlight-color}",
+      "$description": "인용문 강조 역할"
+    },
+    "quote-highlight-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-nav-inset}",
+      "$description": "인용문 강조 역할"
+    },
+    "plain-top": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-quote-meta-height}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "plain-title-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.plain-title-gap}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-input-font": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.contact-input-font}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-input-height": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.contact-input-height}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-message-height": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.contact-message-height}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-input-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.contact-input-padding}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-input-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.contact-input-radius}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-input-background": {
+      "$type": "color",
+      "$value": "{primitive.simple.contact-input-background}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-icon": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-quote-meta-height}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-details-top": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-logo-wirecutter}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "contact-detail-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.intro}",
+      "$description": "문의 안내·입력 화면 역할"
+    },
+    "form-choice-size": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.form-choice-size}",
+      "$description": "문의 양식 라디오·체크박스 크기"
+    },
+    "office-background-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.office-background-width}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "office-top": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.office-top}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "office-panel-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.office-panel-width}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "office-panel-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.section}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "office-paper": {
+      "$type": "color",
+      "$value": "{primitive.simple.office-paper}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "office-shadow": {
+      "$type": "string",
+      "$value": "{primitive.simple.office-shadow}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "office-blur": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.gap-xs}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "office-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.card-inset}",
+      "$description": "소개 페이지 배경과 반투명 패널 역할"
+    },
+    "status-top": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.nav-sprite}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-bottom": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-logo-wired}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-weather-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-weather-width}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-icon-inset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-logo-macstories}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-background": {
+      "$type": "color",
+      "$value": "{primitive.simple.status-background}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-board": {
+      "$type": "color",
+      "$value": "{primitive.simple.status-board}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-caption": {
+      "$type": "color",
+      "$value": "{primitive.simple.status-caption}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-board-shadow": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-board-shadow}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-row-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-row-padding}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-header-padding": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-header-padding}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-flip-background": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-flip-background}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-flip-shadow": {
+      "$type": "string",
+      "$value": "{primitive.simple.status-flip-shadow}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-state": {
+      "$type": "color",
+      "$value": "{primitive.simple.status-state}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-caption-size": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-quote-award-text}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-flip-height": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.status-flip-height}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
+    },
+    "status-flip-inset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-social-x}",
+      "$description": "상태 안내와 출시 목록의 시각 역할"
     }
   }
 }

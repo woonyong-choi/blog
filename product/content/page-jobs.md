@@ -1,26 +1,14 @@
 ---
 {
-  "title": "Jobs",
+  "title": "Working Here",
   "route": "/things/jobs/",
-  "layout": "article",
-  "icon": "question",
-  "description": "내부 페이지와 Markdown 작성 구조의 예시입니다."
+  "layout": "about",
+  "panels": [
+    {
+      "id": "working-here",
+      "title": "Working Here",
+      "body": "함께 배우고 제품을 다듬는 환경을 만들어 갑니다.\n\n작은 팀에서 각자의 전문성을 나누고, 더 나은 해결 방법을 함께 찾아갑니다. 집중할 수 있는 시간을 존중하며, 문제를 명확하게 설명하고 결과를 확인하는 과정을 소중히 여깁니다. 아래 버튼은 예시 문의 화면으로 연결됩니다.\n\n[Send Email](/things/contact/form/)"
+    }
+  ]
 }
 ---
-이 페이지는 내비게이션과 문서 레이아웃을 확인하기 위한 더미 콘텐츠입니다. 실제 약관, 채용 공고, 서비스 상태를 나타내지 않습니다.
-
-## Overview
-
-내용의 요약을 이곳에 작성합니다.
-
-## Details
-
-자세한 설명을 문단과 목록으로 정리합니다.
-
-- 첫 번째 항목
-- 두 번째 항목
-
-## Learn more
-
-[지원 문서](/things/support/) · [모든 문법 보기](/things/support/articles/4651820/)
-

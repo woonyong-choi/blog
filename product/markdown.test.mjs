@@ -29,7 +29,7 @@ test('unknown component and malformed data fail the build', () => {
   assert.throws(()=>md.render('```ui:tabs\nitems: [\n```'));
 });
 test('specimen renders every declared document component', () => {
-  const source=readFileSync(new URL('./content/support-4651820.md',import.meta.url),'utf8').split('\n---\n').slice(1).join('\n---\n');
+  const source=readFileSync(new URL('./content/syntax-specimen.md',import.meta.url),'utf8').split('\n---\n').slice(1).join('\n---\n');
   const html=createMarkdown().render(source,{});
   for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','data-tabs','data-gallery','<video','<details','<dl','<kbd','<abbr','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
 });

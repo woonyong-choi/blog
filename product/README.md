@@ -13,7 +13,7 @@ npm run dev -- --host 127.0.0.1 --port 8794
 - 홈: `/things/`
 - 기능: `/things/features/`
 - 지원: `/things/support/`
-- 전체 문법: `/things/support/articles/4651820/`
+- 전체 문법: `/things/style-guide/`
 - 블로그: `/things/blog/`
 
 `dist/things/`을 정적 서버의 `/things/`에 배치한다. 기존 문서 사이트 빌드인 `npm run build`와 출력 위치를 분리한다.
@@ -60,7 +60,7 @@ description: 문서의 짧은 소개
 
 기본 문법은 제목 1–6, 문단, 줄바꿈, 강조, 취소선, 인용, 목록·중첩 목록, 정적 체크 목록, 링크·참조 링크·자동 링크, 이미지, 구분선, 정렬 표, 코드·구문 강조, 각주다. HTML과 스크립트는 실행하지 않는다.
 
-구성 요소는 `ui:이름` 코드 펜스에 YAML 또는 JSON으로 작성한다. `syntax: true`인 페이지는 구성 요소 아래에 작성 문법과 복사 버튼을 함께 표시한다. 실제 전체 예시는 `content/support-4651820.md`다.
+구성 요소는 `ui:이름` 코드 펜스에 YAML 또는 JSON으로 작성한다. `syntax: true`인 페이지는 구성 요소 아래에 작성 문법과 복사 버튼을 함께 표시한다. 실제 전체 예시는 `content/syntax-specimen.md`다.
 
 | 이름 | 입력 |
 |---|---|
@@ -103,3 +103,17 @@ npm run build
 `ui:feature`는 선택적 `icon`, `href`, `link`를 받는다. 아이콘이 없는 섹션도 같은 제목·본문 폭을 따른다. `ui:feature-list`의 `items`는 `title`과 Markdown `body`로 기능 설명을 나열한다.
 
 스타일 링크에는 내보낸 테마 해시를, 동작 스크립트에는 파일 해시를 붙인다. 내용이 변경되면 브라우저가 새 파일을 받는다. 빌드는 사용하는 `--site-*` 변수가 내보낸 테마에 모두 정의되어 있는지도 확인한다.
+
+일반 문서는 자동 목차를 표시하지 않는다. 메타데이터에 `toc: true`를 설정한 문서만 두 번째 단계 제목의 목차를 표시한다. `ui:syntax-examples`은 `title`, `source`, Markdown `body`를 가진 항목을 작성 형태 아래에 설명을 표시한다.
+
+## 추가 페이지 유형
+
+- `plain`: 문의 양식과 긴 문서를 렌더링한다. `variant: document`는 일반 안내 문서의 상단 여백을 적용한다.
+- `about`: `panels`의 제목·ID·Markdown 본문을 배경 위의 패널로 렌더링한다.
+- `contact`, `newsletter`, `status`: 문의 입구, 구독 입력, 상태 안내의 고유 화면을 렌더링한다.
+- `redirect`: `target`에 지정한 내부 정적 페이지로 이동한다. 가이드의 본문은 지원 문서 한 곳에 둔다.
+- `ui:feature-pair`, `ui:feature-list`: 설명과 미디어 또는 두 열의 설명 목록을 구성한다.
+- `ui:syntax-examples`: 입력 문법과 렌더링 설명을 연결한다.
+- `ui:contact-form`, `ui:status-board`: 검토용 입력 양식과 상태·출시 목록을 만든다.
+
+문의·구독은 입력 형식을 확인한 뒤 화면에 결과만 표시한다. 개인정보 전송과 실제 구독은 실행하지 않는다. 전체 구성 요소는 `/things/style-guide/`에서 작성 문법과 함께 확인한다.

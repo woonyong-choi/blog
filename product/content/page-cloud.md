@@ -22,5 +22,5 @@
 
 ## Learn more
 
-[지원 문서](/things/support/) · [모든 문법 보기](/things/support/articles/4651820/)
+[지원 문서](/things/support/) · [모든 문법 보기](/things/style-guide/)
 

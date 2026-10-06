@@ -1450,5 +1450,53 @@
     "file": "assets/meettheallnewthings2-ext-right-io50.jpg",
     "bytes": 18157,
     "sha256": "062a25c398cb0d8053965d1e1ea4850a18fce4e2fccdf82b1c2e6726538bfa8c"
+  },
+  {
+    "url": "https://culturedcode.com/contact/2025-10-07/images/envelope.svg",
+    "file": "assets/envelope.svg",
+    "bytes": 7058,
+    "sha256": "59a34c75003461f59e2a54a7710a1196b51bde2342daf12ad2058bd1389225b0"
+  },
+  {
+    "url": "https://culturedcode.com/about/2022-12-13/images/office-illustration-1.5x-io50.jpg",
+    "file": "assets/office-illustration-1.5x-io50.jpg",
+    "bytes": 147868,
+    "sha256": "2b974daa671e08a472c5d0cd3a5850d8cb93bae7dc3bd1f3c2a9581cf773df37"
+  },
+  {
+    "url": "https://culturedcode.com/status/2025-10-01/images/abovetheclouds-io75.jpg",
+    "file": "assets/abovetheclouds-io75.jpg",
+    "bytes": 104580,
+    "sha256": "27af2f9daa6857c9650e657185460766394888c36c87f9263c9b419ce44c0539"
+  },
+  {
+    "url": "https://culturedcode.com/status/2025-10-01/images/weather-icon-sunny-io70.png",
+    "file": "assets/weather-icon-sunny-io70.png",
+    "bytes": 1647,
+    "sha256": "c5e470f107872eeca4c3c8f27d2dbc471476774b6f8f2727d5c0dd86723f58f2"
+  },
+  {
+    "url": "https://culturedcode.com/status/2025-10-01/images/weather-timeline-sunny-io70.png",
+    "file": "assets/weather-timeline-sunny-io70.png",
+    "bytes": 1066,
+    "sha256": "37cc59b9a3dc72378c26e9fbe6f1b8ca713d4a1479006b6c637a1591b893c5be"
+  },
+  {
+    "url": "https://culturedcode.com/status/2025-10-01/images/arrivals-backgroundnoise.png",
+    "file": "assets/arrivals-backgroundnoise.png",
+    "bytes": 3442,
+    "sha256": "363502f0b78092c9d049dfeb6c555cfd8775179542d8d2317e15420381a58c95"
+  },
+  {
+    "url": "https://culturedcode.com/status/2025-10-01/images/arrivals-thingsicons.png",
+    "file": "assets/arrivals-thingsicons.png",
+    "bytes": 6490,
+    "sha256": "b4d2d1db3b93d951249fed87ee42a68a77e979c63ee02f0d9320bf31e1ca2cd6"
+  },
+  {
+    "url": "https://culturedcode.com/frozen/2021/09/getting-started-with-things-io55.jpg",
+    "file": "assets/getting-started-with-things-io55.jpg",
+    "bytes": 69686,
+    "sha256": "28e12c6615261e6674db3e16742c64875694fa62e6ed268bde07e4dfdf8b3db6"
   }
 ]
