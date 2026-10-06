@@ -22,16 +22,19 @@
 
 ```ui:gallery
 {
+  "selected": 1,
   "slides": [
     {
-      "src": "things-os26-appicon-old-io85.jpg",
+      "src": "repeating-comparison-1-io80.png",
       "label": "Before",
-      "alt": "이전 아이콘"
+      "alt": "변경 전 반복 작업",
+      "caption": "변경 전에는 반복 작업의 표시가 달랐습니다."
     },
     {
-      "src": "things-os26-appicon-new-io85.jpg",
+      "src": "repeating-comparison-2-io80.png",
       "label": "Now",
-      "alt": "새 아이콘"
+      "alt": "변경 후 반복 작업",
+      "caption": "변경 후에는 체크 상자가 함께 표시됩니다."
     }
   ]
 }

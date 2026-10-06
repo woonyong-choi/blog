@@ -72,7 +72,7 @@ description: 문서의 짧은 소개
 | video | src, poster, title, caption, width, height, controls, overlay 선택 |
 | demos | poster, title, items: [{title, body, src}] |
 | device | src, title, video: true와 poster 선택 |
-| gallery | slides: [{src, alt, label 선택}], wide 선택 |
+| gallery | slides: [{src, alt, label, caption 선택}], wide, selected 선택 (0부터 시작) |
 | platform | items: [{label, body}], 아래쪽 플랫폼 선택 동기화와 ?platform= 지원 |
 | tabs | items: [{label, body}], title 선택 |
 | cards | items: [{title, href, icon, description, compact 선택}], columns, split, horizontal 선택. icon: false는 아이콘 생략 |

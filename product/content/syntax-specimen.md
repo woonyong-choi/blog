@@ -179,16 +179,19 @@ npm run build:product
 
 ```ui:gallery
 {
+  "selected": 1,
   "slides": [
     {
-      "src": "things-os26-appicon-old-io85.jpg",
+      "src": "repeating-comparison-1-io80.png",
       "label": "Before",
-      "alt": "이전 아이콘"
+      "alt": "변경 전 반복 작업",
+      "caption": "변경 전에는 반복 작업의 표시가 달랐습니다."
     },
     {
-      "src": "things-os26-appicon-new-io85.jpg",
+      "src": "repeating-comparison-2-io80.png",
       "label": "Now",
-      "alt": "새 아이콘"
+      "alt": "변경 후 반복 작업",
+      "caption": "변경 후에는 체크 상자가 함께 표시됩니다."
     }
   ]
 }
@@ -537,6 +540,137 @@ items:
           }
         }
       ]
+    }
+  ]
+}
+```
+
+## Icon catalog
+
+지원 문서와 카드에서 사용하는 아이콘 전체입니다. 아이콘 이름으로 같은 자산을 재사용합니다.
+
+```ui:cards
+{
+  "items": [
+    {
+      "title": "add",
+      "icon": "add",
+      "href": "/things/support/"
+    },
+    {
+      "title": "applewatch",
+      "icon": "applewatch",
+      "href": "/things/support/"
+    },
+    {
+      "title": "appstore",
+      "icon": "appstore",
+      "href": "/things/support/"
+    },
+    {
+      "title": "calendar",
+      "icon": "calendar",
+      "href": "/things/support/"
+    },
+    {
+      "title": "cloud",
+      "icon": "cloud",
+      "href": "/things/support/"
+    },
+    {
+      "title": "download",
+      "icon": "download",
+      "href": "/things/support/"
+    },
+    {
+      "title": "firstaid",
+      "icon": "firstaid",
+      "href": "/things/support/"
+    },
+    {
+      "title": "gestures",
+      "icon": "gestures",
+      "href": "/things/support/"
+    },
+    {
+      "title": "idea",
+      "icon": "idea",
+      "href": "/things/support/"
+    },
+    {
+      "title": "keyboard",
+      "icon": "keyboard",
+      "href": "/things/support/"
+    },
+    {
+      "title": "mailtothings",
+      "icon": "mailtothings",
+      "href": "/things/support/"
+    },
+    {
+      "title": "markdown",
+      "icon": "markdown",
+      "href": "/things/support/"
+    },
+    {
+      "title": "notes",
+      "icon": "notes",
+      "href": "/things/support/"
+    },
+    {
+      "title": "notifications",
+      "icon": "notifications",
+      "href": "/things/support/"
+    },
+    {
+      "title": "question",
+      "icon": "question",
+      "href": "/things/support/"
+    },
+    {
+      "title": "reminders",
+      "icon": "reminders",
+      "href": "/things/support/"
+    },
+    {
+      "title": "repeating",
+      "icon": "repeating",
+      "href": "/things/support/"
+    },
+    {
+      "title": "search",
+      "icon": "search",
+      "href": "/things/support/"
+    },
+    {
+      "title": "shortcuts",
+      "icon": "shortcuts",
+      "href": "/things/support/"
+    },
+    {
+      "title": "siri",
+      "icon": "siri",
+      "href": "/things/support/"
+    },
+    {
+      "title": "tags",
+      "icon": "tags",
+      "href": "/things/support/"
+    },
+    {
+      "title": "urlscheme",
+      "icon": "urlscheme",
+      "href": "/things/support/"
+    },
+    {
+      "title": "when",
+      "icon": "when",
+      "href": "/things/support/"
+    },
+    {
+      "title": "widgets",
+      "icon": "widgets",
+      "href": "/things/support/"
     }
   ]
 }

@@ -154,7 +154,10 @@ function component(kind, data, md, env) {
       return `<figure class="app-figure">${player(data, id, data.controls === true)}<figcaption>${escape(data.caption ?? '')}<div class="app-media-controls">${remote(id)}</div></figcaption></figure>`;
     case 'gallery': {
       if (!Array.isArray(data.slides) || !data.slides.length) throw new Error('Gallery requires slides');
-      return `<section class="app-gallery${data.wide ? ' app-breakout' : ''}" data-gallery aria-label="${escape(data.title ?? '이미지 슬라이드')}"><div class="app-gallery-frame">${data.slides.map((slide, index) => `<div id="${id}-${index}" class="app-gallery-slide${index ? '' : ' is-selected'}" data-slide aria-hidden="${index !== 0}">${image(slide.src, slide.alt ?? slide.label)}</div>`).join('')}</div><div class="app-gallery-controls">${data.slides.map((slide, index) => `<button type="button" data-slide-index="${index}" aria-controls="${id}-${index}" aria-pressed="${index === 0}" aria-label="${escape(slide.label ?? `슬라이드 ${index + 1}`)}">${escape(slide.label ?? index + 1)}</button>`).join('')}</div></section>`;
+      const selected = data.selected ?? 0;
+      if (!Number.isInteger(selected) || selected < 0 || selected >= data.slides.length) throw new Error('Gallery selected index is out of range');
+      const labeled = data.slides.every(slide => typeof slide.label === 'string');
+      return `<section class="app-gallery${labeled ? ' is-labeled' : ''}${data.wide ? ' app-breakout' : ''}" data-gallery aria-label="${escape(data.title ?? '이미지 슬라이드')}"><div class="app-gallery-frame">${data.slides.map((slide, index) => `<figure id="${id}-${index}" class="app-gallery-slide${index === selected ? ' is-selected' : ''}" data-slide aria-hidden="${index !== selected}">${image(slide.src, slide.alt ?? slide.label)}${slide.caption ? `<figcaption>${escape(slide.caption)}</figcaption>` : ''}</figure>`).join('')}</div><div class="app-gallery-controls">${data.slides.map((slide, index) => `<button type="button" data-slide-index="${index}" aria-controls="${id}-${index}" aria-pressed="${index === selected}" aria-label="${escape(slide.label ?? `슬라이드 ${index + 1}`)}">${escape(slide.label ?? index + 1)}</button>`).join('')}</div></section>`;
     }
     case 'platform':
     case 'tabs': {

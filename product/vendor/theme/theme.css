@@ -728,6 +728,9 @@
   --primitive-simple-support-link-chevron: 9px 13.5px;
   --primitive-simple-help-chevron-size: 14px 21px;
   --primitive-simple-help-chevron-opacity: 0.2;
+  --primitive-simple-quote-tip-default: 160px;
+  --primitive-simple-quote-tip-wide: 180px;
+  --primitive-simple-caption-line: 1.36;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1607,6 +1610,13 @@
   --site-support-link-chevron: var(--primitive-simple-support-link-chevron);
   --site-help-chevron-size: var(--primitive-simple-help-chevron-size);
   --site-help-chevron-opacity: var(--primitive-simple-help-chevron-opacity);
+  --site-quote-tip-compact: var(--primitive-simple-landing-quote-seal);
+  --site-quote-tip-short: var(--primitive-simple-section);
+  --site-quote-tip-narrow: var(--primitive-simple-landing-logo-wirecutter);
+  --site-quote-tip-medium: var(--primitive-simple-product-mobile-inset);
+  --site-quote-tip-default: var(--primitive-simple-quote-tip-default);
+  --site-quote-tip-wide: var(--primitive-simple-quote-tip-wide);
+  --site-caption-line: var(--primitive-simple-caption-line);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;

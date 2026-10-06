@@ -44,3 +44,14 @@ test('highlight and cancelled tasks preserve escaping, code and nested formattin
   assert.ok(!html.includes('<script>'));
   assert.ok(!md.render('\\::escaped::').includes('<mark>'));
 });
+
+test('gallery preserves selected slide, captions and validates its initial index', () => {
+  const md = createMarkdown();
+  const slides = [{src:'repeating-comparison-1-io80.png',label:'Before',caption:'<before>'},{src:'repeating-comparison-2-io80.png',label:'Now',caption:'after'}];
+  const html = md.render(fence('gallery',{selected:1,slides}));
+  assert.match(html, /is-labeled/);
+  assert.match(html, /class="app-gallery-slide is-selected" data-slide aria-hidden="false"><img[^>]*repeating-comparison-2/);
+  assert.ok(html.includes('<figcaption>&lt;before&gt;</figcaption>'));
+  assert.throws(() => md.render(fence('gallery',{selected:2,slides})));
+  assert.throws(() => md.render(fence('gallery',{selected:-1,slides})));
+});

@@ -156,7 +156,8 @@
         "kind": "apple",
         "logo": "nicequote-logo-apple.svg",
         "award": "Design Review Example",
-        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다."
+        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다.",
+        "tail": "compact"
       },
       {
         "art": "fb5a81a7-appledesignaward-graphic-new-io70.png"
@@ -166,7 +167,8 @@
         "author": "Example reviewer 2",
         "publication": "Example Review",
         "kind": "plain",
-        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다."
+        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다.",
+        "tail": "default"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. ",
@@ -174,7 +176,8 @@
         "publication": "Example Review",
         "kind": "wirecutter",
         "logo": "nicequote-logo-wirecutter.svg",
-        "highlight": "충분한 공간을 남깁니다."
+        "highlight": "충분한 공간을 남깁니다.",
+        "tail": "default"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. 작은 프로젝트와 긴 여정을 같은 방식으로 정리할 수 있습니다. 필요한 정보는 언제든 다시 확인할 수 있습니다.다음에 할 일도 쉽게 찾을 수 있습니다.",
@@ -182,7 +185,8 @@
         "publication": "Example Review",
         "kind": "wired",
         "logo": "nicequote-logo-wired.svg",
-        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다."
+        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다.",
+        "tail": "medium"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. 작은 프로젝트와 긴 여정을 같은 방식으로 정리할 수 있습니다. ",
@@ -192,7 +196,8 @@
         "logo": "nicequote-logo-macstories.svg",
         "award": "Design Review Example",
         "seal": "macstories-bestnewfeature-2023-io70.png",
-        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다."
+        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다.",
+        "tail": "default"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. 작은 프로젝트와 긴 여정을 같은 방식으로 정리할 수 있습니다. ",
@@ -200,14 +205,16 @@
         "publication": "Example Review",
         "kind": "imore",
         "logo": "nicequote-logo-imore.svg",
-        "highlight": "충분한 공간을 남깁니다."
+        "highlight": "충분한 공간을 남깁니다.",
+        "tail": "short"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. ",
         "author": "Example reviewer 7",
         "publication": "Example Review",
         "kind": "plain",
-        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다."
+        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다.",
+        "tail": "default"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. 작은 프로젝트와 긴 여정을 같은 방식으로 정리할 수 있습니다. ",
@@ -215,28 +222,32 @@
         "publication": "Example Review",
         "kind": "macstories",
         "logo": "nicequote-logo-macstories.svg",
-        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다."
+        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다.",
+        "tail": "default"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. ",
         "author": "Example reviewer 9",
         "publication": "Example Review",
         "kind": "plain",
-        "highlight": "충분한 공간을 남깁니다."
+        "highlight": "충분한 공간을 남깁니다.",
+        "tail": "default"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. 작은 프로젝트와 긴 여정을 같은 방식으로 정리할 수 있습니다. 필요한 정보는 언제든 다시 확인할 수 있습니다.",
         "author": "Example reviewer 10",
         "publication": "Example Review",
         "kind": "plain",
-        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다."
+        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다.",
+        "tail": "wide"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. 작은 프로젝트와 긴 여정을 같은 방식으로 정리할 수 있습니다. 매일 반복해서 사용하는 도구에서는 작은 선택이 큰 차이를 만듭니다. 현재 하는 일과 앞으로 할 일을 구분하고, 언제든 다시 돌아와 맥락을 이어 갈 수 있습니다. ",
         "author": "Example reviewer 11",
         "publication": "Example Review",
         "kind": "plain",
-        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다."
+        "highlight": "필요한 정보를 적절한 위치에서 보여 줍니다.",
+        "tail": "default"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. 작은 프로젝트와 긴 여정을 같은 방식으로 정리할 수 있습니다. 필요한 정보는 언제든 다시 확인할 수 있습니다.",
@@ -245,7 +256,8 @@
         "kind": "apple",
         "logo": "nicequote-logo-apple.svg",
         "award": "Design Review Example",
-        "highlight": "충분한 공간을 남깁니다."
+        "highlight": "충분한 공간을 남깁니다.",
+        "tail": "compact"
       },
       {
         "body": "기록을 시작하는 순간부터 다음 행동을 고르는 과정까지 자연스럽게 이어집니다. 화면을 복잡하게 채우기보다 필요한 정보를 적절한 위치에서 보여 줍니다. 익숙한 일은 빠르게 처리하고, 오래 생각해야 하는 일에는 충분한 공간을 남깁니다. ",
@@ -255,7 +267,8 @@
         "logo": "nicequote-logo-macstories.svg",
         "award": "Design Review Example",
         "seal": "macstories-best-app-update.3x.png",
-        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다."
+        "highlight": "다음 행동을 고르는 과정까지 자연스럽게 이어집니다.",
+        "tail": "default"
       }
     ],
     "newsletterHeading": {
