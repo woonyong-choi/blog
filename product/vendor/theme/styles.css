@@ -747,8 +747,8 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-canvas[data-page=home] > .app-shell .app-logo { opacity: var(--site-landing-logo-opacity); }
 .app-nav { gap: var(--site-landing-nav-gap); margin-right: var(--site-help-mobile-icon-inset); }
 .app-nav a { padding: var(--site-underline) var(--site-landing-nav-inset); margin: var(--site-underline) calc(-1 * var(--site-landing-nav-inset)); line-height: var(--site-icon); border-radius: var(--site-tab-button-inset); }
-.app-nav a:hover { background: var(--site-landing-nav-hover); text-decoration: none; transition: background var(--site-landing-nav-motion) var(--site-icon-easing); }
-.app-nav a:active { transform: scale(var(--site-landing-nav-scale)); }
+.app-nav a:hover { color: var(--site-nav-hover-color); background: var(--site-landing-nav-hover); text-decoration: none; transition: background var(--site-landing-nav-motion) var(--site-icon-easing); }
+.app-nav a:active { color: var(--site-nav-active-color); background: var(--site-nav-active-background); transform: scale(var(--site-landing-nav-scale)); }
 .app-landing { overflow: hidden; }
 .app-landing-hero { background: var(--site-canvas); }
 .app-hero-copy { width: var(--site-intro); max-width: var(--site-hero-max); margin: auto; padding-block: var(--site-hero-top); font-size: var(--site-intro-text); line-height: var(--site-line-intro); text-align: center; }
@@ -1235,3 +1235,9 @@ body[data-page=status] .app-nav a:active { background: var(--site-status-nav-act
 
 body[data-page=about] .app-header { isolation: isolate; }
 body[data-page=about] .app-header::before { content: ""; position: absolute; inset: 0 0 var(--site-header-tail); background: var(--site-office-nav-background); z-index: var(--site-layer-background); }
+
+.app-logo { border-radius: var(--site-tab-button-inset); }
+.app-logo:hover { background-color: var(--site-landing-nav-hover); }
+.app-canvas[data-page=home] > .app-shell .app-logo:hover { background-position: var(--site-nav-position); opacity: 1; }
+
+body[data-page=status] .app-logo:hover { background-color: var(--site-status-logo-hover); }

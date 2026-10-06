@@ -2338,7 +2338,7 @@
       },
       "nav-color": {
         "$type": "color",
-        "$value": "#9299a4",
+        "$value": "rgba(38,52,74,.5)",
         "$description": "동일 화면 크기 비교에서 확인한 지원 화면 nav-color 값"
       },
       "scrollbar": {
@@ -3915,6 +3915,26 @@
       "layer-background": {
         "$type": "number",
         "$value": -1
+      },
+      "nav-hover-color": {
+        "$type": "color",
+        "$value": "rgba(38,52,74,.7)",
+        "$description": "원본 내비게이션 상태 색"
+      },
+      "nav-active-color": {
+        "$type": "color",
+        "$value": "rgba(4,15,26,.7)",
+        "$description": "원본 내비게이션 상태 색"
+      },
+      "nav-active-background": {
+        "$type": "color",
+        "$value": "rgba(4,15,26,.1)",
+        "$description": "원본 내비게이션 상태 색"
+      },
+      "status-logo-hover": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,.1)",
+        "$description": "어두운 상태 화면 로고의 hover 배경"
       }
     }
   },
@@ -6165,7 +6185,7 @@
     },
     "body": {
       "$type": "color",
-      "$value": "{primitive.simple.body}",
+      "$value": "{primitive.simple.ink}",
       "$description": "첨부 토큰과 원본 화면의 body 역할. simple에서만 적용"
     },
     "muted": {
@@ -8562,6 +8582,22 @@
     "layer-background": {
       "$type": "number",
       "$value": "{primitive.simple.layer-background}"
+    },
+    "nav-hover-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.nav-hover-color}"
+    },
+    "nav-active-color": {
+      "$type": "color",
+      "$value": "{primitive.simple.nav-active-color}"
+    },
+    "nav-active-background": {
+      "$type": "color",
+      "$value": "{primitive.simple.nav-active-background}"
+    },
+    "status-logo-hover": {
+      "$type": "color",
+      "$value": "{primitive.simple.status-logo-hover}"
     }
   }
 }

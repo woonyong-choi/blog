@@ -449,7 +449,7 @@
   --primitive-simple-support-title-gap: 23.0625px;
   --primitive-simple-support-card-min: 180.25px;
   --primitive-simple-line-compact: 1.2;
-  --primitive-simple-nav-color: #9299a4;
+  --primitive-simple-nav-color: rgba(38,52,74,.5);
   --primitive-simple-scrollbar: 15px;
   --primitive-simple-device-width: 371px;
   --primitive-simple-device-pad-top: 21.4117%;
@@ -789,6 +789,10 @@
   --primitive-simple-search-focus: 0 0 0 3px rgb(100,159,255);
   --primitive-simple-office-nav-background: rgba(255,255,255,.6);
   --primitive-simple-layer-background: -1;
+  --primitive-simple-nav-hover-color: rgba(38,52,74,.7);
+  --primitive-simple-nav-active-color: rgba(4,15,26,.7);
+  --primitive-simple-nav-active-background: rgba(4,15,26,.1);
+  --primitive-simple-status-logo-hover: rgba(255,255,255,.1);
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1209,7 +1213,7 @@
   --site-canvas: var(--primitive-simple-canvas);
   --site-card: var(--color-gray-0);
   --site-ink: var(--primitive-simple-ink);
-  --site-body: var(--primitive-simple-body);
+  --site-body: var(--primitive-simple-ink);
   --site-muted: var(--primitive-simple-muted);
   --site-line: var(--primitive-simple-line);
   --site-link: var(--primitive-simple-link);
@@ -1743,6 +1747,10 @@
   --site-search-focus: var(--primitive-simple-search-focus);
   --site-office-nav-background: var(--primitive-simple-office-nav-background);
   --site-layer-background: var(--primitive-simple-layer-background);
+  --site-nav-hover-color: var(--primitive-simple-nav-hover-color);
+  --site-nav-active-color: var(--primitive-simple-nav-active-color);
+  --site-nav-active-background: var(--primitive-simple-nav-active-background);
+  --site-status-logo-hover: var(--primitive-simple-status-logo-hover);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;
