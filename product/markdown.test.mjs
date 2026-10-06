@@ -31,6 +31,7 @@ test('unknown component and malformed data fail the build', () => {
 test('specimen renders every declared document component', () => {
   const source=readFileSync(new URL('./content/syntax-specimen.md',import.meta.url),'utf8').split('\n---\n').slice(1).join('\n---\n');
   const html=createMarkdown().render(source,{});
+  for (const kind of ['group','feature','syntax-examples','feature-list','device','demos','feature-pair','callout','details','figure','video','gallery','platform','tabs','cards','definitions','speech','keys','tooltip','keyboard','status-board','contact-form','form']) assert.ok(source.includes('ui:' + kind), 'missing specimen: ' + kind);
   for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','data-tabs','data-gallery','<video','<details','<dl','<kbd','popover','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
 });
 

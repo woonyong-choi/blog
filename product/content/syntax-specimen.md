@@ -675,3 +675,68 @@ items:
   ]
 }
 ```
+
+## Independent tabs
+
+다른 탭의 선택과 연결되지 않는 일반 탭입니다.
+
+```ui:tabs
+{
+  "title": "일반 탭 예제",
+  "items": [
+    {
+      "label": "Overview",
+      "body": "### 개요\n\n**일반 탭**의 첫 번째 내용입니다. [지원 문서](/things/support/)로 이어집니다."
+    },
+    {
+      "label": "Details",
+      "body": "### 상세\n\n1. 내용을 선택합니다.\n2. 필요한 정보를 확인합니다."
+    }
+  ]
+}
+```
+
+## Card variants
+
+아이콘과 설명이 나란히 놓인 카드입니다.
+
+```ui:cards
+{
+  "horizontal": true,
+  "columns": 2,
+  "items": [
+    {
+      "title": "일정",
+      "icon": "calendar",
+      "description": "아이콘과 설명을 가로로 배치합니다.",
+      "href": "/things/support/"
+    },
+    {
+      "title": "기록",
+      "icon": "notes",
+      "description": "같은 크기와 간격을 유지합니다.",
+      "href": "/things/support/"
+    }
+  ]
+}
+```
+
+아이콘을 생략한 링크와 간단한 항목입니다.
+
+```ui:cards
+{
+  "columns": 2,
+  "items": [
+    {
+      "title": "아이콘 없는 항목",
+      "icon": false,
+      "href": "/things/support/"
+    },
+    {
+      "title": "간단한 항목",
+      "compact": true,
+      "href": "/things/support/"
+    }
+  ]
+}
+```

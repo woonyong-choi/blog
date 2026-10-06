@@ -543,10 +543,10 @@ a:hover { text-decoration: underline; }
 .app-figure img { width: 100%; border-radius: var(--site-media-radius); }
 .app-figure figcaption { margin-top: var(--site-gap-sm); font-size: var(--site-small-text); color: var(--site-muted); }
 .app-breakout { width: var(--site-reference-width); max-width: none; margin-left: var(--site-gallery-outset); }
-.app-gallery { margin-block: var(--site-gap); }
+.app-gallery { margin: 0 0 var(--site-gallery-bottom); }
 .app-gallery img { display: block; width: 100%; border-radius: var(--site-media-radius); height: auto; }
-.app-gallery-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--site-gap-sm); margin-top: var(--site-gap-sm); }
-.app-gallery-controls button { min-width: var(--site-control); height: var(--site-control); border: 0; border-radius: var(--site-pill); padding: 0 var(--site-gap-xs); line-height: 1; }
+.app-gallery-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--site-gallery-row-gap) var(--site-gallery-gap); margin: 0 auto var(--site-gallery-frame-gap); }
+.app-gallery-controls button { min-width: var(--site-control); height: var(--site-control); border: 0; border-radius: var(--site-pill); padding: 0 var(--site-quote-credit-gap); line-height: var(--site-control); font-weight: var(--site-gallery-weight); color: var(--site-ink); background: var(--site-gallery-background); }
 .app-gallery-controls button[aria-pressed=true] { color: var(--site-card); background: var(--site-ink); }
 .app-tabs { margin-block: var(--site-gap); }
 .app-tablist { display: flex; max-width: var(--site-tab-width); margin: var(--site-gap) auto; padding: var(--site-gap-xs); border-radius: var(--site-button-radius); background: var(--site-soft); }
@@ -646,12 +646,12 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-player-button:hover { opacity: var(--site-player-hover-opacity); }
 .app-player.is-playing .app-player-button, .app-player.has-controls.has-played .app-player-button { display: none; }
 .app-media-controls { margin-block: var(--site-gap-sm); text-align: center; }
-.app-gallery-frame { display: grid; grid-template-columns: 100%; }
+.app-gallery-frame { display: grid; grid-template-columns: 100%; margin-bottom: var(--site-gallery-frame-gap); }
 .app-gallery-slide { grid-area: 1 / 1; visibility: hidden; }
 .app-gallery-slide.is-selected { visibility: visible; }
-.app-gallery-controls { gap: var(--site-gallery-gap); }
-.app-gallery-controls button:hover { background: var(--site-line); }
-.app-gallery-controls button[aria-pressed=true] { background: var(--site-ink); }
+.app-gallery-controls button:hover { background: var(--site-gallery-hover); }
+.app-gallery-controls button:active { background: var(--site-gallery-active); }
+.app-gallery-controls button[aria-pressed=true] { background: var(--site-gallery-selected); cursor: default; }
 .app-product { position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: var(--site-gap); border-radius: var(--site-card-radius); background: var(--site-canvas); }
 .app-product > img { transition: transform var(--site-icon-motion) var(--site-icon-easing); }
 .app-product > img:hover { transform: scale(var(--site-icon-scale)); }
@@ -1170,8 +1170,8 @@ body[data-page=status] .app-nav a:active { background: var(--site-status-nav-act
 
 .app-gallery-slide { margin: 0; }
 .app-gallery-slide figcaption { margin-top: var(--site-post-caption-margin); color: var(--site-muted); font-size: var(--site-post-date-size); text-align: center; }
-.app-gallery.is-labeled { margin: 0 0 var(--site-gap-lg); }
-.app-gallery.is-labeled .app-gallery-frame { margin-bottom: var(--site-feature-tab-font); }
+.app-gallery.is-labeled { margin-bottom: var(--site-gallery-bottom); }
+.app-gallery.is-labeled .app-gallery-frame { margin-bottom: var(--site-post-paragraph-margin); }
 .app-gallery.is-labeled .app-gallery-controls { width: var(--site-feature-tab-width); max-width: 100%; margin: 0 auto var(--site-feature-tab-font); gap: 0; padding: var(--site-feature-tab-inset); border-radius: var(--site-feature-tab-radius); background: var(--site-feature-tab-background); }
 .app-gallery.is-labeled .app-gallery-controls button { flex: 1; min-width: 0; height: auto; padding: 0; font-size: var(--site-feature-tab-font); font-weight: var(--site-weight-medium); line-height: var(--site-feature-tab-height); border-radius: var(--site-feature-tab-button-radius); background: transparent; }
 .app-gallery.is-labeled .app-gallery-controls button[aria-pressed=true] { background: var(--site-feature-tab-selected); box-shadow: var(--site-feature-tab-shadow); }

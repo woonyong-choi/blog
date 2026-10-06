@@ -731,6 +731,11 @@
   --primitive-simple-quote-tip-default: 160px;
   --primitive-simple-quote-tip-wide: 180px;
   --primitive-simple-caption-line: 1.36;
+  --primitive-simple-gallery-background: rgba(0,23,57,.09);
+  --primitive-simple-gallery-hover: rgba(0,28,70,.12);
+  --primitive-simple-gallery-active: rgba(0,10,24,.34);
+  --primitive-simple-gallery-selected: rgba(0,3,7,.9);
+  --primitive-simple-gallery-row-gap: 4.5px;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1617,6 +1622,14 @@
   --site-quote-tip-default: var(--primitive-simple-quote-tip-default);
   --site-quote-tip-wide: var(--primitive-simple-quote-tip-wide);
   --site-caption-line: var(--primitive-simple-caption-line);
+  --site-gallery-background: var(--primitive-simple-gallery-background);
+  --site-gallery-hover: var(--primitive-simple-gallery-hover);
+  --site-gallery-active: var(--primitive-simple-gallery-active);
+  --site-gallery-selected: var(--primitive-simple-gallery-selected);
+  --site-gallery-row-gap: var(--primitive-simple-gallery-row-gap);
+  --site-gallery-bottom: var(--primitive-simple-control);
+  --site-gallery-frame-gap: var(--primitive-simple-landing-quote-meta);
+  --site-gallery-weight: var(--primitive-simple-status-caption-weight);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;
