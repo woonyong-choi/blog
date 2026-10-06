@@ -31,6 +31,18 @@ function remote(id, src = '') {
 
 export function createMarkdown() {
   const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(taskLists);
+  md.inline.ruler.before('emphasis', 'interface-label', (state, silent) => {
+    const match = /^:(kbd|menu)\[([^\]\n]+)\]/.exec(state.src.slice(state.pos));
+    if (!match) return false;
+    if (!silent) {
+      const token = state.push('html_inline', '', 0);
+      token.content = match[1] === 'kbd'
+        ? `<kbd>${escape(match[2])}</kbd>`
+        : `<b class="app-menu-label">${escape(match[2])}</b>`;
+    }
+    state.pos += match[0].length;
+    return true;
+  });
   md.inline.ruler.before('emphasis', 'highlight', (state, silent) => {
     const start = state.pos;
     if (state.src.slice(start, start + 2) !== '::' || /\s/.test(state.src[start + 2] ?? ' ')) return false;

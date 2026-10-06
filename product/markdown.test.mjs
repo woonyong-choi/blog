@@ -58,3 +58,13 @@ test('gallery preserves selected slide, captions and validates its initial index
   assert.throws(() => md.render(fence('gallery',{selected:2,slides})));
   assert.throws(() => md.render(fence('gallery',{selected:-1,slides})));
 });
+
+test('inline interface labels escape HTML and preserve code and literal syntax', () => {
+  const md = createMarkdown();
+  const html = md.render('Press :kbd[⌘ Cmd] :kbd[I] in :menu[Edit]. :kbd[<script>] `:kbd[literal]`');
+  assert.ok(html.includes('<kbd>⌘ Cmd</kbd> <kbd>I</kbd>'));
+  assert.ok(html.includes('<b class="app-menu-label">Edit</b>'));
+  assert.ok(html.includes('<kbd>&lt;script&gt;</kbd>'));
+  assert.ok(html.includes('<code>:kbd[literal]</code>'));
+  assert.ok(!md.render(String.raw`\:kbd[literal]`).includes('<kbd>'));
+});

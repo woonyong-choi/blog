@@ -3901,6 +3901,11 @@
         "$type": "string",
         "$value": "12px 18px",
         "$description": "원본 지원 카드 변형 규칙"
+      },
+      "search-focus": {
+        "$type": "string",
+        "$value": "0 0 0 3px rgb(100,159,255)",
+        "$description": "원본 quickfind 입력 초점 표시"
       }
     }
   },
@@ -8532,6 +8537,10 @@
     "help-grouped-chevron": {
       "$type": "string",
       "$value": "{primitive.simple.help-grouped-chevron}"
+    },
+    "search-focus": {
+      "$type": "string",
+      "$value": "{primitive.simple.search-focus}"
     }
   }
 }

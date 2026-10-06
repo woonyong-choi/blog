@@ -132,3 +132,5 @@ npm run build
 `ui:feature-pair`의 `mediaFirst: true`는 미디어를 설명보다 먼저 배치한다. 기기마다 설명 수가 다르면 `ui:tabs`의 각 항목 안에 `ui:feature-pair`를 둔다. `ui:cards`의 `horizontal: true`는 아이콘이 왼쪽에 오는 카드를 만들며, `icon: false`는 아이콘을 생략한다. 기사 메타데이터의 `icon: false`도 제목 아이콘을 생략한다.
 
 `cards.variant`는 `centered`, `grouped`, `inline`을 지원한다. 개별 항목의 `variant`로도 지정할 수 있다. `inline` 묶음은 문장 높이의 링크를 나란히 배치한다. `icon: false`로 아이콘을 생략한다.
+
+문장 안 키캡은 `:kbd[⌘ Cmd]`, 메뉴 이름은 `:menu[Edit]`로 작성한다. 대괄호 안 내용은 일반 텍스트로 이스케이프하며 코드 구간에서는 변환하지 않는다.

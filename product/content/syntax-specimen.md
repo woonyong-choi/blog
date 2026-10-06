@@ -795,3 +795,13 @@ items:
 ```ui:cards
 {"variant":"inline","items":[{"title":"Mac","icon":"mac","href":"/things/support/"},{"title":"iPhone","icon":"iphone","href":"/things/support/"},{"title":"지원 문서","icon":false,"href":"/things/support/"}]}
 ```
+
+
+## Inline interface labels
+
+문장 안에서 :kbd[⌘ Cmd] :kbd[I]를 눌러 기울임을 적용하거나 :menu[Edit] → :menu[Markdown] 메뉴를 선택합니다.
+
+```text
+문장 안에서 :kbd[⌘ Cmd] :kbd[I]를 누릅니다.
+:menu[Edit] → :menu[Markdown] 메뉴를 선택합니다.
+```

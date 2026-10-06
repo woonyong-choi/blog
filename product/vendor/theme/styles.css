@@ -1220,3 +1220,7 @@ body[data-page=status] .app-nav a:active { background: var(--site-status-nav-act
 .app-help-card.is-inline .app-article-icon { width: var(--site-help-inline-icon); height: var(--site-help-inline-icon); left: var(--site-help-inline-icon-inset); top: var(--site-help-inline-icon-inset); }
 .app-help-card.is-inline::after { right: var(--site-help-inline-chevron-inset); width: var(--site-compact-inset); background-size: var(--site-help-inline-chevron); opacity: var(--site-help-inline-opacity); }
 .app-help-card.is-inline.has-no-icon { padding-left: var(--site-help-inline-no-icon); }
+
+.app-prose .app-menu-label { font-weight: var(--site-weight-medium); color: var(--site-ink); }
+
+.app-search-input:focus { outline: 0; box-shadow: var(--site-search-focus); }
