@@ -672,6 +672,41 @@ items:
       "title": "widgets",
       "icon": "widgets",
       "href": "/things/support/"
+    },
+    {
+      "title": "warning",
+      "icon": "warning",
+      "href": "/things/support/"
+    },
+    {
+      "title": "faq",
+      "icon": "faq",
+      "href": "/things/support/"
+    },
+    {
+      "title": "mac",
+      "icon": "mac",
+      "href": "/things/support/"
+    },
+    {
+      "title": "iphone",
+      "icon": "iphone",
+      "href": "/things/support/"
+    },
+    {
+      "title": "ipad",
+      "icon": "ipad",
+      "href": "/things/support/"
+    },
+    {
+      "title": "vision",
+      "icon": "vision",
+      "href": "/things/support/"
+    },
+    {
+      "title": "iphone-and-watch",
+      "icon": "iphone-and-watch",
+      "href": "/things/support/"
     }
   ]
 }

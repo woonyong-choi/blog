@@ -1196,3 +1196,11 @@ body[data-page=status] .app-nav a:active { background: var(--site-status-nav-act
 .app-prose .task-list-item { list-style: none; }
 .app-prose .task-list-item-checkbox { appearance: none; display: inline-block; width: var(--site-task-size); height: var(--site-task-size); margin: 0; border: 0; border-radius: 0; vertical-align: var(--site-task-align); background: url('../assets/checkbox-blank-disabled.svg') center / contain no-repeat; }
 .app-prose .task-list-item-checkbox:checked { background-image: url('../assets/checkbox-checked-disabled.svg'); }
+
+.app-icon-warning { background-position: var(--site-sprite-warning); }
+.app-icon-faq { background-position: var(--site-sprite-faq); }
+.app-icon-mac { background-position: var(--site-sprite-mac); }
+.app-icon-iphone { background-position: var(--site-sprite-iphone); }
+.app-icon-ipad { background-position: var(--site-sprite-ipad); }
+.app-icon-vision { background-position: var(--site-sprite-vision); }
+.app-icon-iphone-and-watch { background-position: var(--site-sprite-iphone-and-watch); }

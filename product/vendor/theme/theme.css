@@ -402,7 +402,7 @@
   --primitive-simple-video-width: 1536px;
   --primitive-simple-hero-scene: 500px;
   --primitive-simple-hero-scene-mobile: 200px;
-  --primitive-simple-search-bottom: 128px;
+  --primitive-simple-search-bottom: 122.1875px;
   --primitive-simple-search-bg: #edeef1;
   --primitive-simple-help-bg: #f6f7fa;
   --primitive-simple-help-border: #ebecef;
@@ -770,6 +770,13 @@
   --primitive-simple-platform-active: rgba(0,15,37,.23);
   --primitive-simple-platform-hover-shadow: 0 1px 4px rgba(0,0,0,.16);
   --primitive-simple-platform-active-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  --primitive-simple-sprite-warning: 25% 0%;
+  --primitive-simple-sprite-faq: 50% 0%;
+  --primitive-simple-sprite-mac: 0% 87.5%;
+  --primitive-simple-sprite-iphone: 12.5% 87.5%;
+  --primitive-simple-sprite-ipad: 25% 87.5%;
+  --primitive-simple-sprite-vision: 50% 87.5%;
+  --primitive-simple-sprite-iphone-and-watch: 62.5% 87.5%;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1700,6 +1707,13 @@
   --site-platform-active: var(--primitive-simple-platform-active);
   --site-platform-hover-shadow: var(--primitive-simple-platform-hover-shadow);
   --site-platform-active-shadow: var(--primitive-simple-platform-active-shadow);
+  --site-sprite-warning: var(--primitive-simple-sprite-warning);
+  --site-sprite-faq: var(--primitive-simple-sprite-faq);
+  --site-sprite-mac: var(--primitive-simple-sprite-mac);
+  --site-sprite-iphone: var(--primitive-simple-sprite-iphone);
+  --site-sprite-ipad: var(--primitive-simple-sprite-ipad);
+  --site-sprite-vision: var(--primitive-simple-sprite-vision);
+  --site-sprite-iphone-and-watch: var(--primitive-simple-sprite-iphone-and-watch);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;
