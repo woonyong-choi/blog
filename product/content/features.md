@@ -10,12 +10,14 @@
 {
   "title": "All-New Design",
   "icon": "fancysection-icon-design-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
+  "description": "새로운 화면은 보이는 모습뿐 아니라 사용하는 흐름까지 바꿉니다. 목록의 질서를 살펴보고, 작은 동작에 따라 화면이 어떻게 변하는지 확인하세요. 필요한 정보가 선명해지고, 다음 행동이 자연스럽게 이어집니다.",
   "body": "\n```ui:video\n{\n  \"src\": \"1-design-hotels-3-mac-2.mp4\",\n  \"poster\": \"1-design-hotels-3-mac-2.png\",\n  \"title\": \"기능 소개 영상\",\n  \"width\": 640,\n  \"height\": 480\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "left": "작업 하나를 열면 생각을 적을 수 있는 공간이 펼쳐집니다. 제목과 메모를 먼저 정리한 다음 필요한 세부 정보를 추가해 보세요. 태그, 체크리스트, 시작 날짜와 마감일은 필요할 때 선택할 수 있습니다. 화면의 위계를 유지하면서도 긴 내용을 충분히 담을 수 있습니다. 작은 항목을 편집할 때와 여러 작업을 살펴볼 때의 전환도 직접 확인해 보세요. 지금 해야 할 일에 집중하며 전체 계획을 이어갑니다.",
+  "right": "좋은 작업 흐름은 작은 선택에서 만들어집니다. 정보를 어디에 놓고, 어떤 순서로 보여 주며, 다음 행동을 어떻게 안내하는지 살펴보세요. 여러 기능이 같은 화면에 있어도 필요한 순간에 자연스럽게 찾을 수 있어야 합니다. 이 예시에서는 목록, 편집 화면, 기기별 전환의 관계를 확인할 수 있습니다. 반복해서 사용하는 동작이 익숙해지는 과정을 천천히 경험해 보세요.",
   "split": false,
-  "tone": "canvas"
+  "tone": "canvas",
+  "leftTitle": "Beautiful To-Dos",
+  "rightTitle": "Design Is Not an Afterthought"
 }
 ```
 
@@ -23,12 +25,14 @@
 {
   "title": "Today and This Evening",
   "icon": "fancysection-icon-today-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"2-today-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iPhone & iPad\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"2-today-iphone.png\\\",\\n  \\\"title\\\": \\\"기기 화면\\\"\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "description": "하루를 시작하며 오늘 해야 할 일을 살펴봅니다. 일정과 작업을 같은 흐름 안에서 확인하고, 지금 할 일과 저녁에 할 일을 나누어 보세요. 목록을 열었을 때 오늘의 계획이 자연스럽게 보이도록 구성합니다. 기기별 화면을 전환하며 같은 내용을 확인해 보세요.",
+  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"2-today-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iOS\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"2-today-iphone.png\\\",\\n  \\\"title\\\": \\\"기기 화면\\\"\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
+  "left": "필요한 정보를 한곳에서 확인하고 다음 행동을 정합니다. 목록을 살펴보며 현재 작업의 맥락을 유지해 보세요. 자주 사용하는 동작을 가까이 두면 화면 사이를 오가는 과정도 간단해집니다. 기기별 화면에서도 같은 계획이 어떻게 이어지는지 확인할 수 있습니다.",
+  "right": "작업을 정리하는 방법은 상황에 따라 달라질 수 있습니다. 항목을 나누거나 다시 모으고, 순서를 바꾸면서 자신에게 맞는 흐름을 찾아보세요. 작은 조정으로 전체 계획을 더 쉽게 이해할 수 있습니다. 영상과 화면 전환을 통해 각 동작을 직접 살펴봅니다.",
   "split": true,
-  "tone": "lightest"
+  "tone": "lightest",
+  "leftTitle": "Calendar Events",
+  "rightTitle": "This Evening"
 }
 ```
 
@@ -36,12 +40,14 @@
 {
   "title": "Upcoming",
   "icon": "fancysection-icon-upcoming-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:video\\n{\\n  \\\"src\\\": \\\"3-upcoming-mac-2.mp4\\\",\\n  \\\"poster\\\": \\\"3-upcoming-mac-2.png\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"width\\\": 500,\\n  \\\"height\\\": 650\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iPhone & iPad\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"3-upcoming-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"3-upcoming-iphone.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "description": "앞으로의 일정을 한곳에서 확인합니다. 예정된 작업과 반복되는 일, 마감일과 캘린더의 약속을 날짜별로 살펴보세요. 계획이 바뀌면 항목을 옮겨 다시 정리합니다. 가까운 일정부터 천천히 준비할 일을 나누는 화면 예시입니다.",
+  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:video\\n{\\n  \\\"src\\\": \\\"3-upcoming-mac-2.mp4\\\",\\n  \\\"poster\\\": \\\"3-upcoming-mac-2.png\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"width\\\": 500,\\n  \\\"height\\\": 650\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iOS\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"3-upcoming-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"3-upcoming-iphone.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
+  "left": "",
+  "right": "",
   "split": false,
-  "tone": "canvas"
+  "tone": "canvas",
+  "leftTitle": "",
+  "rightTitle": ""
 }
 ```
 
@@ -49,12 +55,14 @@
 {
   "title": "Headings",
   "icon": "fancysection-icon-headings-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"4-headings-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iPhone & iPad\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"4-headings-ios.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"4-headings-ios.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "description": "큰 프로젝트를 작은 단위로 나눠 보세요. 단계마다 제목을 붙이면 해야 할 일이 더 선명해집니다. 필요한 항목을 같은 제목 아래에 모으며 계획의 구조를 정리합니다.",
+  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"4-headings-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iOS\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"4-headings-ios.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"4-headings-ios.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
+  "left": "필요한 정보를 한곳에서 확인하고 다음 행동을 정합니다. 목록을 살펴보며 현재 작업의 맥락을 유지해 보세요. 자주 사용하는 동작을 가까이 두면 화면 사이를 오가는 과정도 간단해집니다. 기기별 화면에서도 같은 계획이 어떻게 이어지는지 확인할 수 있습니다.",
+  "right": "작업을 정리하는 방법은 상황에 따라 달라질 수 있습니다. 항목을 나누거나 다시 모으고, 순서를 바꾸면서 자신에게 맞는 흐름을 찾아보세요. 작은 조정으로 전체 계획을 더 쉽게 이해할 수 있습니다. 영상과 화면 전환을 통해 각 동작을 직접 살펴봅니다.",
   "split": true,
-  "tone": "medium"
+  "tone": "medium",
+  "leftTitle": "Divide and Conquer",
+  "rightTitle": "Keep It Together"
 }
 ```
 
@@ -62,12 +70,14 @@
 {
   "title": "Checklists",
   "icon": "fancysection-icon-checklists-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"5-checklists-mac-2.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iPhone & iPad\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"5-checklists-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"5-checklists-iphone.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "description": "하나의 작업에도 여러 단계가 필요할 수 있습니다. 별도의 프로젝트를 만들기에는 작지만 빠뜨리지 않고 확인하고 싶은 내용을 체크리스트로 정리해 보세요. 준비할 물건, 검토 순서, 반복하는 절차를 작은 목록으로 기록하며 하나씩 확인합니다.",
+  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"5-checklists-mac-2.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iOS\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"5-checklists-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"5-checklists-iphone.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
+  "left": "",
+  "right": "",
   "split": true,
-  "tone": "light"
+  "tone": "light",
+  "leftTitle": "",
+  "rightTitle": ""
 }
 ```
 
@@ -75,12 +85,14 @@
 {
   "title": "Magic Plus",
   "icon": "fancysection-icon-magicplus-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
+  "description": "새로운 항목을 원하는 위치에 추가합니다. 버튼을 눌러 작업을 만들거나 목록 안에서 필요한 곳으로 끌어 보세요. 프로젝트의 제목 아래, 오늘의 계획 사이, 앞으로의 일정에 새 항목이 들어가는 모습을 확인할 수 있습니다. 아래의 버튼을 눌러 서로 다른 세 가지 동작을 같은 화면에서 비교해 보세요.",
   "body": "```ui:demos\n{\n  \"poster\": \"6-magicplus-1.png\",\n  \"title\": \"Magic Plus\",\n  \"items\": [\n    {\n      \"title\": \"Create To-Dos\",\n      \"src\": \"6-magicplus-1.mp4\",\n      \"body\": \"목록의 원하는 위치에 항목을 추가하는 동작 예시입니다.\"\n    },\n    {\n      \"title\": \"Create Headings\",\n      \"src\": \"6-magicplus-2.mp4\",\n      \"body\": \"목록의 원하는 위치에 항목을 추가하는 동작 예시입니다.\"\n    },\n    {\n      \"title\": \"Drop to Inbox\",\n      \"src\": \"6-magicplus-3.mp4\",\n      \"body\": \"목록의 원하는 위치에 항목을 추가하는 동작 예시입니다.\"\n    }\n  ]\n}\n```",
   "left": "",
   "right": "",
   "split": false,
-  "tone": "medium"
+  "tone": "medium",
+  "leftTitle": "",
+  "rightTitle": ""
 }
 ```
 
@@ -88,12 +100,14 @@
 {
   "title": "Quick Find",
   "icon": "fancysection-icon-quickfind-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"7-quickfind-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iPhone & iPad\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"7-quickfind-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"7-quickfind-iphone-a.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "description": "찾고 싶은 프로젝트나 작업의 이름을 입력해 보세요. 목록을 하나씩 열지 않아도 관련된 항목을 빠르게 확인할 수 있습니다. 글자를 더 입력하면 결과의 범위가 좁아집니다. 기록이 많아져도 필요한 내용으로 바로 돌아오는 흐름을 보여 줍니다.",
+  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"7-quickfind-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iOS\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"7-quickfind-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"7-quickfind-iphone-a.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
+  "left": "필요한 정보를 한곳에서 확인하고 다음 행동을 정합니다. 목록을 살펴보며 현재 작업의 맥락을 유지해 보세요. 자주 사용하는 동작을 가까이 두면 화면 사이를 오가는 과정도 간단해집니다. 기기별 화면에서도 같은 계획이 어떻게 이어지는지 확인할 수 있습니다.",
+  "right": "작업을 정리하는 방법은 상황에 따라 달라질 수 있습니다. 항목을 나누거나 다시 모으고, 순서를 바꾸면서 자신에게 맞는 흐름을 찾아보세요. 작은 조정으로 전체 계획을 더 쉽게 이해할 수 있습니다. 영상과 화면 전환을 통해 각 동작을 직접 살펴봅니다.",
   "split": true,
-  "tone": "canvas"
+  "tone": "canvas",
+  "leftTitle": "Quick Indeed",
+  "rightTitle": "App-Wide Tag Search"
 }
 ```
 
@@ -101,25 +115,29 @@
 {
   "title": "Jump Start",
   "icon": "fancysection-icon-when-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"8-jumpstart-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iPhone & iPad\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"8-jumpstart-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"8-jumpstart-iphone.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "description": "계획을 다음 행동으로 이어갑니다. 날짜를 선택하고 언제 시작할지 정하는 간단한 흐름을 살펴보세요.",
+  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"8-jumpstart-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iOS\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"8-jumpstart-iphone.mp4\\\",\\n  \\\"title\\\": \\\"기능 소개 영상\\\",\\n  \\\"poster\\\": \\\"8-jumpstart-iphone.png\\\",\\n  \\\"video\\\": true\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
+  "left": "필요한 정보를 한곳에서 확인하고 다음 행동을 정합니다. 목록을 살펴보며 현재 작업의 맥락을 유지해 보세요. 자주 사용하는 동작을 가까이 두면 화면 사이를 오가는 과정도 간단해집니다. 기기별 화면에서도 같은 계획이 어떻게 이어지는지 확인할 수 있습니다.",
+  "right": "작업을 정리하는 방법은 상황에 따라 달라질 수 있습니다. 항목을 나누거나 다시 모으고, 순서를 바꾸면서 자신에게 맞는 흐름을 찾아보세요. 작은 조정으로 전체 계획을 더 쉽게 이해할 수 있습니다. 영상과 화면 전환을 통해 각 동작을 직접 살펴봅니다.",
   "split": true,
-  "tone": "medium"
+  "tone": "medium",
+  "leftTitle": "Just a Swipe Away",
+  "rightTitle": "Natural Date Input"
 }
 ```
 
 ```ui:feature
 {
-  "title": "List Editing",
+  "title": "Desktop-Class List Editing on iOS",
   "icon": "fancysection-icon-listediting-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
+  "description": "작은 화면에서도 목록을 자유롭게 정리합니다. 항목을 원하는 곳에 넣고, 여러 작업을 한 번에 선택하고, 순서를 바꾸며 전체 흐름을 조정해 보세요. 기기 안에서 자연스럽게 이어지는 편집 동작을 영상으로 확인할 수 있습니다.",
   "body": "```ui:demos\n{\"poster\": \"9-desktopclass.png\", \"title\": \"List Editing\", \"items\": [{\"title\": \"Edit Your List\", \"body\": \"### Select\\n\\n목록에서 편집할 항목을 선택합니다.\\n\\n### Move\\n\\n선택한 항목을 원하는 위치로 이동합니다.\\n\\n### Arrange\\n\\n항목 순서를 바꾸며 전체 흐름을 정리합니다.\", \"src\": \"9-desktopclass.mp4\"}]}\n```",
   "left": "",
   "right": "",
   "split": false,
-  "tone": "canvas"
+  "tone": "canvas",
+  "leftTitle": "",
+  "rightTitle": ""
 }
 ```
 
@@ -127,12 +145,14 @@
 {
   "title": "Timely Reminders",
   "icon": "fancysection-icon-reminders-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"10-reminders-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iPhone & iPad\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"10-reminders-iphone.png\\\",\\n  \\\"title\\\": \\\"기기 화면\\\"\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "description": "놓치고 싶지 않은 작업에는 알림을 더합니다. 정해진 시간이 되면 확인할 수 있도록 날짜와 시간을 함께 선택해 보세요. 화면에서 직접 선택하거나 입력하는 흐름을 비교할 수 있습니다. 필요한 순간에 다시 떠올릴 수 있도록 계획을 마무리합니다.",
+  "body": "\n```ui:tabs\n{\n  \"items\": [\n    {\n      \"label\": \"Mac\",\n      \"body\": \"\\n```ui:figure\\n{\\n  \\\"src\\\": \\\"10-reminders-mac.png\\\",\\n  \\\"alt\\\": \\\"\\\",\\n  \\\"caption\\\": \\\"\\\",\\n  \\\"wide\\\": false\\n}\\n```\\n\"\n    },\n    {\n      \"label\": \"iOS\",\n      \"body\": \"\\n```ui:device\\n{\\n  \\\"src\\\": \\\"10-reminders-iphone.png\\\",\\n  \\\"title\\\": \\\"기기 화면\\\"\\n}\\n```\\n\"\n    }\n  ]\n}\n```\n",
+  "left": "필요한 정보를 한곳에서 확인하고 다음 행동을 정합니다. 목록을 살펴보며 현재 작업의 맥락을 유지해 보세요. 자주 사용하는 동작을 가까이 두면 화면 사이를 오가는 과정도 간단해집니다. 기기별 화면에서도 같은 계획이 어떻게 이어지는지 확인할 수 있습니다.",
+  "right": "작업을 정리하는 방법은 상황에 따라 달라질 수 있습니다. 항목을 나누거나 다시 모으고, 순서를 바꾸면서 자신에게 맞는 흐름을 찾아보세요. 작은 조정으로 전체 계획을 더 쉽게 이해할 수 있습니다. 영상과 화면 전환을 통해 각 동작을 직접 살펴봅니다.",
   "split": true,
-  "tone": "medium"
+  "tone": "medium",
+  "leftTitle": "Click",
+  "rightTitle": "Type"
 }
 ```
 
@@ -140,12 +160,14 @@
 {
   "title": "Slim Mode",
   "icon": "fancysection-icon-slimmode-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
+  "description": "현재 하는 일에 조금 더 집중해 보세요. 사이드바를 접으면 작업 목록을 위한 공간이 넓어집니다. 다른 창과 나란히 사용할 때나 화면의 여유가 필요할 때에도 편리합니다. 창을 줄이고 다시 펼치며 같은 작업을 다른 크기로 살펴보는 예시입니다.",
   "body": "\n```ui:video\n{\n  \"src\": \"11-slimmode-mac.mp4\",\n  \"poster\": \"11-slimmode-mac.jpg\",\n  \"title\": \"기능 소개 영상\",\n  \"wide\": true,\n  \"width\": 1354,\n  \"height\": 1127\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "left": "필요한 정보를 한곳에서 확인하고 다음 행동을 정합니다. 목록을 살펴보며 현재 작업의 맥락을 유지해 보세요. 자주 사용하는 동작을 가까이 두면 화면 사이를 오가는 과정도 간단해집니다. 기기별 화면에서도 같은 계획이 어떻게 이어지는지 확인할 수 있습니다.",
+  "right": "작업을 정리하는 방법은 상황에 따라 달라질 수 있습니다. 항목을 나누거나 다시 모으고, 순서를 바꾸면서 자신에게 맞는 흐름을 찾아보세요. 작은 조정으로 전체 계획을 더 쉽게 이해할 수 있습니다. 영상과 화면 전환을 통해 각 동작을 직접 살펴봅니다.",
   "split": false,
-  "tone": "canvas"
+  "tone": "canvas",
+  "leftTitle": "Slim but Powerful",
+  "rightTitle": "Collapsible Sidebar on iPad"
 }
 ```
 
@@ -153,25 +175,40 @@
 {
   "title": "Multiple Windows",
   "icon": "fancysection-icon-multiplewindows-io70.png",
-  "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
+  "description": "여러 프로젝트를 서로 다른 창에서 확인합니다. 두 목록을 나란히 놓고 필요한 작업을 옮기거나, 각 화면에 다른 계획을 열어 둘 수 있습니다. 하나의 작업에 집중하는 화면과 전체 계획을 비교하는 화면을 자유롭게 구성해 보세요. 사용하는 화면의 크기와 현재 업무에 맞게 공간을 나누고, 필요한 맥락을 가까운 곳에서 이어갑니다.",
   "body": "\n```ui:figure\n{\n  \"src\": \"12-multiplewindows-mac-3.png\",\n  \"alt\": \"\",\n  \"caption\": \"\",\n  \"wide\": false\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "left": "",
+  "right": "",
   "split": false,
-  "tone": "medium"
+  "tone": "medium",
+  "leftTitle": "",
+  "rightTitle": ""
 }
 ```
 
 ```ui:feature
 {
-  "title": "All the Small Things",
+  "title": "All the Small Things…",
   "icon": "fancysection-icon-littlethings-io70.png",
   "description": "작업을 정리하는 또 하나의 방법. 기기별 화면과 동작을 직접 살펴보세요.",
-  "body": "\n```ui:cards\n{\n  \"columns\": 3,\n  \"items\": [\n    {\n      \"title\": \"Keyboard Shortcuts\",\n      \"href\": \"/things/support/articles/2785159/\",\n      \"icon\": \"keyboard\",\n      \"description\": \"키보드로 자주 사용하는 동작을 실행하는 예시입니다.\"\n    },\n    {\n      \"title\": \"Using Tags\",\n      \"href\": \"/things/support/articles/2803581/\",\n      \"icon\": \"tags\",\n      \"description\": \"작업에 태그를 붙여 필요한 맥락만 찾아봅니다.\"\n    },\n    {\n      \"title\": \"Write Notes with Markdown\",\n      \"href\": \"/things/support/articles/4651820/\",\n      \"icon\": \"markdown\",\n      \"description\": \"모든 지원 문법과 화면 구성 요소의 실제 예제를 확인합니다.\"\n    }\n  ]\n}\n```\n",
-  "left": "하나의 화면 안에서 필요한 정보를 찾습니다. 제목, 메모, 목록의 위계를 구분해 현재 작업에 집중하는 모습을 보여줍니다.",
-  "right": "작은 동작이 다음 단계로 이어집니다. 이 설명은 원문 복제 대신 작성한 예시이며, 화면과 상호작용을 검토하기 위한 내용입니다.",
+  "body": "```ui:feature-list\n{\"items\": [{\"title\": \"Progress Pies\", \"body\": \"프로젝트의 진행 상황을 작은 원으로 확인합니다. 마친 일과 남은 일을 한눈에 비교할 수 있습니다.\"}, {\"title\": \"Sidebar Structure\", \"body\": \"관련된 프로젝트를 같은 영역 아래에 모읍니다. 목록이 길어져도 전체 구조를 쉽게 이해할 수 있습니다.\"}, {\"title\": \"Quick Move\", \"body\": \"항목을 선택하고 다른 프로젝트로 옮깁니다. 이름을 입력하면 원하는 목적지를 빠르게 찾습니다.\"}, {\"title\": \"Touch Bar Support\", \"body\": \"자주 쓰는 명령을 가까운 곳에서 실행합니다. 현재 작업에 필요한 동작을 바로 선택합니다.\"}, {\"title\": \"Updated Watch App\", \"body\": \"이동 중에도 목록과 체크리스트를 확인합니다. 작은 화면에서도 필요한 정보를 이어 봅니다.\"}, {\"title\": \"New Core\", \"body\": \"여러 기기에서 같은 작업 흐름을 유지합니다. 기록한 정보가 익숙한 구조로 나타납니다.\"}, {\"title\": \"Beautiful Animations\", \"body\": \"항목이 이동하는 과정을 자연스럽게 보여 줍니다. 작은 움직임으로 현재 위치와 변화의 방향을 알 수 있습니다.\"}, {\"title\": \"Fully integrated with macOS and iOS\", \"body\": \"기기의 기본 기능과 연결하여 사용합니다. 화면을 나누거나 다른 기기로 이동해도 하던 일을 이어갑니다.\"}]}\n```",
+  "left": "",
+  "right": "",
   "split": false,
   "tone": "canvas"
 }
 ```
 
+
+```ui:feature
+{
+  "title": "It keeps getting better",
+  "description": "처음의 간단한 목록에서 시작해 매일의 작업을 돕는 기능이 이어집니다. 화면 모드와 글자 크기, 위젯과 단축 동작, 메일로 작업을 추가하는 흐름을 살펴보세요. 키보드와 트랙패드, Markdown 메모, 다른 도구와 연결하는 링크까지 다양한 사용 방식을 한곳에서 확인할 수 있습니다. 앞으로의 변화도 블로그에서 만나보세요.",
+  "href": "/things/blog/",
+  "link": "Check out our blog",
+  "body": "```ui:figure\n{\"src\": \"hero-shortcuts-reloaded-io70.png\", \"alt\": \"\\uc0c8\\ub85c\\uc6b4 \\uc5f0\\uacb0 \\uae30\\ub2a5\\uc758 \\ud654\\uba74 \\uc608\\uc2dc\"}\n```",
+  "tone": "medium",
+  "left": "",
+  "right": ""
+}
+```

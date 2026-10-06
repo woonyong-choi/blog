@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
 import { createMarkdown, escape, image } from './markdown.mjs';
+import { socialProof } from './home.mjs';
 import { layout, article, blogPost, home, search, products } from './layout.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
@@ -19,6 +20,12 @@ for (const [name, hash] of Object.entries(MANIFEST.files)) {
   if (digest(readFileSync(join(THEME, name))) !== hash) throw new Error(`Theme snapshot modified: ${name}`);
 }
 if (digest(JSON.stringify(MANIFEST.files, null, 2) + '\n') !== MANIFEST.contentHash) throw new Error('Theme manifest modified');
+const themeCss = readFileSync(join(THEME, 'theme.css'), 'utf8');
+const stylesCss = readFileSync(join(THEME, 'styles.css'), 'utf8');
+const definitions = new Set([...themeCss.matchAll(/(--[\w-]+)\s*:/g)].map(match => match[1]));
+for (const [,name] of stylesCss.matchAll(/var\((--site-[\w-]+)/g)) {
+  if (!definitions.has(name)) throw new Error(`Undefined theme variable: ${name}`);
+}
 const md = createMarkdown();
 const pages = [];
 for (const name of readdirSync(join(ROOT, 'content')).filter((name) => name.endsWith('.md')).sort()) {
@@ -49,7 +56,7 @@ for (const page of pages) {
       const entries = page.archive ? blog.slice(2) : blog.slice(0,2);
       body = `<main id="main" class="app-shell"><h1 class="app-sr">Blog</h1>${entries.map((post) => blogPost(post,post.html,true)).join('')}<nav class="app-body app-pagination" aria-label="Blog pages">${page.archive ? '<a href="/things/blog/">← Recent posts</a>' : '<a href="/things/blog/archive/">Older posts →</a>'}<a href="/things/blog/feed.xml">RSS</a></nav></main>`; break;
     }
-    case 'features': body = `<main id="main"><header class="app-feature-hero"><div class="app-shell"><h1 class="app-section-title">All the features.<br>Thoughtfully connected.</h1><p class="app-intro">차분한 화면부터 작은 상호작용까지.<br>기기별 탭과 영상을 직접 눌러 확인하세요.</p>${image('whatsnew-collage-io60.png','기능 화면 모음','app-collage')}</div></header>${page.html}${products()}</main>`; break;
+    case 'features': body = `<main id="main"><header class="app-feature-hero"><div class="app-shell"><div class="app-landing-heading"><h1>What’s new in<br>the <em>all-new</em> Things?</h1><p>매일 사용하는 화면의 작은 차이를 만나보세요. 생각을 기록하고, 계획을 정리하고, 다음 행동으로 이어가는 과정을 새로운 화면과 부드러운 상호작용으로 살펴봅니다.</p></div>${image('whatsnew-collage-io60.png','기능 화면 모음','app-collage')}</div></header>${page.html}${products(pages.find(entry => entry.layout === 'home').home.products, pages.find(entry => entry.layout === 'home').home.productsHeading)}${socialProof(pages.find(entry => entry.layout === 'home').home)}</main>`; break;
     default: body = article(page, page.html, page.headings);
   }
   htmlOutputs.set(page.route, layout(page, body));

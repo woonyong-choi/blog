@@ -1444,5 +1444,11 @@
     "file": "assets/meettheallnewthings.mp4",
     "bytes": 38138589,
     "sha256": "4818de99957269e8b1447d3ce979e30f5e3eca158c16cde87a06b41b74409b48"
+  },
+  {
+    "url": "https://culturedcode.com/things/2024-01-20/images/meettheallnewthings2-ext-right-io50.jpg",
+    "file": "assets/meettheallnewthings2-ext-right-io50.jpg",
+    "bytes": 18157,
+    "sha256": "062a25c398cb0d8053965d1e1ea4850a18fce4e2fccdf82b1c2e6726538bfa8c"
   }
 ]

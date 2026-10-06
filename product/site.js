@@ -141,6 +141,7 @@ if (reviewNext) {
     previous.disabled = selected === 0;
     reviewNext.disabled = selected === pages.length - 1;
     reviewNext.textContent = append ? 'Show More Posts' : 'Next Posts →';
+    reviewNext.setAttribute('aria-label', append ? 'Show More Posts' : 'Next Posts');
     document.querySelector('[data-review-status]').textContent = `${selected + 1} / ${pages.length}`;
   }
   function resizeReviews() {
