@@ -914,9 +914,10 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-help-card p { margin: 0; color: var(--site-help-copy-color); }
 .app-help-card.is-compact strong { margin: 0; }
 .app-search-frequent button + button { margin-left: 0; }
-@media (max-width: breakpoint(intro-compact)) { .app-header a { font-size: var(--site-nav-text); } }
 
-.app-nav { gap: var(--site-icon); }
+.app-nav { display: block; font-size: var(--site-small-text); font-weight: var(--site-weight-medium); line-height: var(--site-border); text-align: right; margin-right: 0; }
+.app-nav-item { display: inline-block; margin: 0 var(--site-help-mobile-icon-inset); white-space: nowrap; }
+.app-nav a { display: block; font-size: inherit; }
 .app-search-frequent { width: var(--site-search-suggestion-width); margin: var(--site-landing-product-copy) auto; font-size: var(--site-landing-product-copy); line-height: var(--site-feature-body-line); }
 
 .app-blog-post { padding: var(--site-post-padding); margin: 0 auto; color: var(--site-ink); }
@@ -1224,3 +1225,9 @@ body[data-page=status] .app-nav a:active { background: var(--site-status-nav-act
 .app-prose .app-menu-label { font-weight: var(--site-weight-medium); color: var(--site-ink); }
 
 .app-search-input:focus { outline: 0; box-shadow: var(--site-search-focus); }
+
+@media (max-width: breakpoint(nav-compact)) { .app-nav { font-size: var(--site-nav-text); } }
+@media (max-width: breakpoint(nav-narrow)) {
+  .app-nav { font-size: var(--site-tiny-text); }
+  .app-nav-item { margin-inline: var(--site-underline); }
+}

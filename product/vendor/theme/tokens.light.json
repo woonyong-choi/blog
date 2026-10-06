@@ -3968,6 +3968,10 @@
     "status-compact": {
       "$type": "dimension",
       "$value": "420px"
+    },
+    "nav-narrow": {
+      "$type": "dimension",
+      "$value": "340px"
     }
   },
   "size": {
