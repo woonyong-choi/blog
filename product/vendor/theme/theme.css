@@ -787,6 +787,8 @@
   --primitive-simple-help-inline-opacity: 0.3;
   --primitive-simple-help-grouped-chevron: 12px 18px;
   --primitive-simple-search-focus: 0 0 0 3px rgb(100,159,255);
+  --primitive-simple-office-nav-background: rgba(255,255,255,.6);
+  --primitive-simple-layer-background: -1;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1739,6 +1741,8 @@
   --site-help-inline-no-icon: var(--primitive-simple-tab-button-inset);
   --site-help-grouped-chevron: var(--primitive-simple-help-grouped-chevron);
   --site-search-focus: var(--primitive-simple-search-focus);
+  --site-office-nav-background: var(--primitive-simple-office-nav-background);
+  --site-layer-background: var(--primitive-simple-layer-background);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;

@@ -112,7 +112,7 @@ npm run build
 ## 추가 페이지 유형
 
 - `plain`: 문의 양식과 긴 문서를 렌더링한다. `variant: document`는 일반 안내 문서의 상단 여백을 적용한다.
-- `about`: `panels`의 제목·ID·Markdown 본문을 배경 위의 패널로 렌더링한다.
+- `about`: `panels`의 제목·ID·Markdown 본문을 배경 위의 패널로 렌더링한다. `lead: false`인 패널은 첫 문단도 일반 본문 크기로 표시한다.
 - `contact`, `newsletter`, `status`: 문의 입구, 구독 입력, 상태 안내의 고유 화면을 렌더링한다.
 - `redirect`: `target`에 지정한 정적 페이지 또는 외부 스토어로 이동한다. 가이드의 본문은 지원 문서 한 곳에 둔다.
 - `ui:feature-pair`, `ui:feature-list`: 설명과 미디어 또는 두 열의 설명 목록을 구성한다.

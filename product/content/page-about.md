@@ -16,6 +16,7 @@
     },
     {
       "id": "contact",
+      "lead": false,
       "title": "Contact Us",
       "body": "Example Studio\\\nExample Street 12\\\n12345 Example City\\\nExample Country\n\n[Send Email](/things/contact/form/)\n\n[Press inquiries](/things/contact/)\n[Business inquiries](/things/contact/)\n\n이 주소와 회사 정보는 레이아웃 검토를 위한 더미입니다. 실제 연락처나 법적 고지로 사용하지 않습니다.\n\n[Privacy Policy](/things/privacy/) · [Terms](/things/terms/)"
     }
