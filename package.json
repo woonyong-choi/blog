@@ -6,6 +6,16 @@
     "build": "node build.mjs",
     "tokens": "node scripts/build-tokens.mjs",
     "check:tokens": "python3 scripts/audit-tokens.py",
-    "theme:sync": "node scripts/sync-theme.mjs"
+    "theme:sync": "node scripts/sync-theme.mjs",
+    "build:product": "node product/build.mjs",
+    "check:product": "node --test product/*.test.mjs",
+    "dev": "npm run build:product && node product/serve.mjs",
+    "theme:product": "node product/sync-theme.mjs"
+  },
+  "devDependencies": {
+    "highlight.js": "^11.12.0",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-task-lists": "^2.1.1",
+    "yaml": "^2.9.1"
   }
 }

@@ -25,7 +25,7 @@ def audit():
         if not path.is_file():
             continue
         name = path.relative_to(ROOT).as_posix()
-        if any(part in {'.git', 'node_modules', 'scripts', 'test', 'vendor'} for part in path.relative_to(ROOT).parts):
+        if any(part in {'.git', 'node_modules', 'scripts', 'test', 'vendor', 'dist'} for part in path.relative_to(ROOT).parts):
             continue
         if name in CONFIG['preserved'] or name in CONFIG['generated']:
             continue

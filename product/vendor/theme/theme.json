@@ -1,0 +1,27 @@
+{
+  "id": "simple",
+  "schemaVersion": 1,
+  "extends": "base",
+  "modes": [
+    "light"
+  ],
+  "defaultMode": "light",
+  "description": "개인 소개, 프로젝트와 긴 문서를 위한 밝고 여백이 넉넉한 기본 테마의 변형",
+  "source": {
+    "repository": "https://github.com/woonyong-choi/design-tokens",
+    "path": "themes/base/simple",
+    "version": "0.1.1"
+  },
+  "files": {
+    "assets/fonts/jetbrains-mono-license.txt": "c8d5fa5b71c563a50b2645296729024e4503f626319baf1e09c2bcde0ea79d33",
+    "assets/fonts/jetbrains-mono-regular.woff2": "bceff0710e3a7fe5b3622265c48b6fbc055cf071df80ef5f36ffc69550296664",
+    "assets/fonts/pretendard-license.txt": "b04538c9abec39a3db75108cf0af0fd9c77032fe8aa2cf38345b4d250e98e38e",
+    "assets/fonts/pretendard-variable.woff2": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
+    "styles.css": "a7479b5d526e161d5a14d642afdaded59d3e0dd8e98485926b344f53e7254e8b",
+    "styles.source.css": "b8fe9ee07df763ad3fd7b474f3210ec427fce5472618b31d100d080ded1ca03b",
+    "theme.css": "0a16390abbc4ecd7ef30f31ace3585f5392cab44b743edbcb914ecafe014286f",
+    "tokens.json": "1a66c5adafd1e9715d732cd4de906e816a2e99ba6fcbccf1fbfbe178ef1a1efd",
+    "tokens.light.json": "1a66c5adafd1e9715d732cd4de906e816a2e99ba6fcbccf1fbfbe178ef1a1efd"
+  },
+  "contentHash": "09f781114edd72d2f838df33e26aa3448ddc8b3e1be10107f3cccab13dfb7513"
+}
