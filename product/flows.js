@@ -2,23 +2,16 @@
 for (const rail of document.querySelectorAll('[data-flow-rail]')) {
   const viewport = rail.querySelector('[data-flow-viewport]');
   const group = rail.querySelector('[data-flow-group]');
-  const controls = rail.querySelector('[data-flow-controls]');
-  const toggle = rail.querySelector('[data-flow-toggle]');
   const direction = rail.dataset.flowDirection === 'right' ? -1 : 1;
-  const label = rail.dataset.flowLabel;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let clones = []; let distance = 0; let position = 0; let frame; let last;
-  let paused = false; let hovering = false; let focused = false; let visible = false;
+  let hovering = false; let focused = false; let visible = false;
   const durationValue = getComputedStyle(rail).getPropertyValue('--site-motion-rail').trim();
   const duration = parseFloat(durationValue) * (durationValue.endsWith('ms') ? 1 : 1000) * 2;
 
   function update() {
     cancelAnimationFrame(frame); last = undefined;
-    toggle.disabled = reduced.matches;
-    toggle.setAttribute('aria-label', `${label} ${reduced.matches ? '자동 흐름 꺼짐' : paused ? '흐름 다시 시작' : '흐름 멈추기'}`);
-    toggle.querySelector('[data-flow-symbol]').textContent = reduced.matches || paused ? '▷' : 'Ⅱ';
-    toggle.querySelector('[data-flow-state]').textContent = reduced.matches ? '자동 흐름 꺼짐' : paused ? '흐름 다시 시작' : '흐름 멈추기';
-    if (distance && !paused && !hovering && !focused && visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
+    if (distance && !hovering && !focused && visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
   }
   function tick(now) {
     if (last !== undefined) {
@@ -32,43 +25,24 @@ for (const rail of document.querySelectorAll('[data-flow-rail]')) {
     clones.forEach(clone => clone.remove()); clones = [];
     const gap = parseFloat(getComputedStyle(viewport).columnGap) || 0;
     distance = group.children.length > 1 ? group.getBoundingClientRect().width + gap : 0;
-    controls.hidden = !distance;
     viewport.classList.toggle('has-flow', !!distance);
     if (distance) {
       const count = Math.ceil(viewport.clientWidth / distance);
       for (let index = 0; index < count; index++) {
         const clone = group.cloneNode(true); clone.removeAttribute('data-flow-group');
-        clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
+        clone.setAttribute('aria-hidden', 'true');
+        clone.querySelectorAll('a').forEach(link => { link.tabIndex = -1; });
         viewport.append(clone); clones.push(clone);
       }
-      position = paused || reduced.matches ? Math.floor(progress * group.children.length) * distance / group.children.length : progress * distance;
+      position = reduced.matches ? Math.floor(progress * group.children.length) * distance / group.children.length : progress * distance;
       viewport.scrollLeft = position;
     }
     update();
   }
-  function stop() { paused = true; position = viewport.scrollLeft; update(); }
-  function step(direction) {
-    if (!distance) return;
-    stop();
-    const cards = group.children;
-    const width = cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : group.clientWidth;
-    const current = viewport.scrollLeft / width;
-    const index = direction > 0 ? Math.floor(current) + 1 : Math.ceil(current) - 1;
-    position = ((index + cards.length) % cards.length) * width;
-    viewport.scrollTo({ left: position, behavior: 'instant' });
-  }
-  toggle.addEventListener('click', () => { paused = !paused; position = viewport.scrollLeft % distance; update(); });
-  rail.querySelector('[data-flow-prev]')?.addEventListener('click', () => step(-1));
-  rail.querySelector('[data-flow-next]')?.addEventListener('click', () => step(1));
   viewport.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; update(); } });
   viewport.addEventListener('pointerleave', () => { hovering = false; update(); });
-  viewport.addEventListener('pointerdown', stop);
-  viewport.addEventListener('wheel', stop, { passive: true });
-  viewport.addEventListener('focusin', () => { focused = true; update(); });
+  viewport.addEventListener('focusin', () => { focused = !!viewport.querySelector(':focus-visible') || viewport.matches(':focus-visible'); update(); });
   viewport.addEventListener('focusout', () => { focused = false; position = distance ? viewport.scrollLeft % distance : 0; update(); });
-  viewport.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); step(event.key === 'ArrowLeft' ? -1 : 1); }
-  });
   reduced.addEventListener('change', update);
   document.addEventListener('visibilitychange', update);
   window.addEventListener('pagehide', () => { cancelAnimationFrame(frame); last = undefined; });

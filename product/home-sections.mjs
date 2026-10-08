@@ -1,10 +1,6 @@
 // 홈의 영상, 기술 목록과 연락을 발행 설정에서 조합한다.
 import { escape } from './markdown.mjs';
 
-export function flowControls(label, { navigation = true } = {}) {
-  return `<div class="app-flow-controls" data-flow-controls hidden>${navigation ? `<button type="button" data-flow-prev aria-label="이전 ${label}"><span aria-hidden="true">‹</span></button>` : ''}<button type="button" data-flow-toggle aria-label="${label} 흐름 멈추기"><span data-flow-symbol aria-hidden="true">Ⅱ</span><span class="app-sr" data-flow-state>흐름 멈추기</span></button>${navigation ? `<button type="button" data-flow-next aria-label="다음 ${label}"><span aria-hidden="true">›</span></button>` : ''}</div>`;
-}
-
 function mediaUrl(value) {
   if (/^\/media\/[a-zA-Z0-9_./-]+$/.test(value) && !value.includes('..')) return value;
   if (new URL(value).protocol !== 'https:') throw new Error('project media requires HTTPS or a local media path');
@@ -26,9 +22,9 @@ export function technologySection(ids = [], brands = []) {
   const items = ids.map(id => {
     const brand = brands.find(item => item.name === id);
     if (!brand) throw new Error(`unknown technology: ${id}`);
-    return `<li class="app-technology"><img src="/theme/assets/icons/brands/${escape(brand.file)}" alt="" decoding="async"><span class="app-sr">${escape(brand.label)}</span></li>`;
+    return `<li class="app-technology"><a href="/tags/${encodeURIComponent(id)}/" aria-label="${escape(brand.label)} 태그 글 보기"><img src="/theme/assets/icons/brands/${escape(brand.file)}" alt="" decoding="async"><span class="app-sr">${escape(brand.label)}</span></a></li>`;
   }).join('');
-  return `<section class="app-technologies" aria-label="사용하는 기술" data-flow-rail data-flow-direction="right" data-flow-label="기술"><div class="app-home-rail"><div class="app-flow-viewport" data-flow-viewport tabindex="0" role="region" aria-label="기술 아이콘"><ul class="app-flow-group" data-flow-group>${items}</ul></div></div><div class="app-home-rail-footer">${flowControls('기술', { navigation: false })}</div></section>`;
+  return `<section class="app-technologies" aria-label="사용하는 기술" data-flow-rail data-flow-direction="right" data-flow-label="기술"><div class="app-home-rail"><div class="app-flow-viewport" data-flow-viewport tabindex="0" role="region" aria-label="기술 아이콘"><ul class="app-flow-group" data-flow-group>${items}</ul></div></div></section>`;
 }
 
 export function contactSection(contact) {

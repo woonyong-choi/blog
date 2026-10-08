@@ -185,5 +185,47 @@
       "프로젝트"
     ],
     "article": "projects"
+  },
+  "c": {
+    "label": "C",
+    "field": "languages",
+    "icon": "c",
+    "aliases": []
+  },
+  "csharp": {
+    "label": "C#",
+    "field": "languages",
+    "icon": "csharp",
+    "aliases": []
+  },
+  "typescript": {
+    "label": "TypeScript",
+    "field": "languages",
+    "icon": "typescript",
+    "aliases": []
+  },
+  "kotlin": {
+    "label": "Kotlin",
+    "field": "languages",
+    "icon": "kotlin",
+    "aliases": []
+  },
+  "postgresql": {
+    "label": "PostgreSQL",
+    "field": "infrastructure",
+    "icon": "postgresql",
+    "aliases": []
+  },
+  "docker": {
+    "label": "Docker",
+    "field": "infrastructure",
+    "icon": "docker",
+    "aliases": []
+  },
+  "git": {
+    "label": "Git",
+    "field": "infrastructure",
+    "icon": "git",
+    "aliases": []
   }
 }

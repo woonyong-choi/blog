@@ -20,6 +20,8 @@ test('home_flow_preserves_order_and_uses_one_optional_client', () => {
   assert.ok(positions.every((value, index) => value >= 0 && (!index || value > positions[index - 1])));
   assert.doesNotMatch(html, /<h2[^>]*>인터뷰/);
   assert.match(html, /data-flow-direction="right"/);
+  assert.match(html, /href="\/tags\/python\/" aria-label="Python 태그 글 보기"/);
+  assert.doesNotMatch(html, /data-flow-(?:controls|toggle|prev|next)/);
   assert.deepEqual(clientEntrypoints(html), ['flows.js']);
   assert.throws(() => technologySection(['missing'], []), /unknown technology/);
   assert.throws(() => technologySection(['python', 'python'], []), /duplicate/);
