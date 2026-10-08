@@ -4,9 +4,10 @@ import { readFileSync, readdirSync, writeFileSync, mkdirSync, cpSync, rmSync, ex
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { readDocument, publicDocuments, searchEntry, FIELDS } from './content-model.mjs';
+import { readDocument, publicDocuments, searchEntry, FIELDS, blogDocuments, PAGE_SIZES } from './content-model.mjs';
 import { createMarkdown, escape } from './markdown.mjs';
 import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, resultRow } from './publication-layout.mjs';
+import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -20,22 +21,26 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   if (origin && !/^https?:\/\/[^/?#]+$/.test(origin)) throw new Error('invalid site origin');
   if (!preview && !origin.startsWith('https://')) throw new Error('production build requires SITE_ORIGIN');
   verifyTheme();
-  const documents = publicDocuments(readdirSync(join(ROOT, 'publication')).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, 'publication', name), 'utf8'), TOPICS)));
+  const folders = ['publication', ...(preview && existsSync(join(ROOT, 'examples')) ? ['examples'] : [])];
+  const documents = publicDocuments(folders.flatMap(folder => readdirSync(join(ROOT, folder)).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, folder, name), 'utf8'), TOPICS))));
+  const posts = blogDocuments(documents);
   renderDocuments(documents);
   const context = { config: CONFIG, topics: TOPICS, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest(readFileSync(join(ROOT, 'publication.js'))) };
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
-  add('/', CONFIG.name, personalHome(documents, context));
-  add('/wiki/', 'Wiki', wikiLanding(documents, context));
+  add('/', CONFIG.name, personalHome(documents, context, recentBlog(posts, TOPICS)));
+  add('/wiki/', 'Wiki', wikiLanding(documents, context, undefined, recentBlog(posts, TOPICS)));
   for (const field of FIELDS) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
-  for (const page of documents) add(page.route, page.title, articlePage(page, documents, context), page);
+  for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, page.comments ? '<section class="app-comments" id="comments"><h2>댓글</h2><p class="app-comments-status">댓글을 불러옵니다.</p></section>' : ''), page);
   for (const [tag, topic] of Object.entries(TOPICS)) {
     const entries = documents.filter(page => page.tags.includes(tag));
     add(`/tags/${tag}/`, topic.label, `<main class="app-shell app-body" id="main">${searchBox()}<h1 class="app-page-heading">${escape(topic.label)}</h1><div data-search-page data-tag="${tag}"><nav class="app-type-filters" aria-label="문서 유형"></nav><div data-full-results>${entries.map(page => resultRow(page, TOPICS)).join('')}</div></div></main>`);
   }
   add('/search/', '검색', `<main class="app-shell app-body" id="main">${searchBox({ large: true })}<h1 class="app-page-heading">검색</h1><div data-search-page><nav class="app-type-filters" aria-label="문서 유형"></nav><div class="app-filter-summary" data-filter-summary></div><div data-full-results><p class="app-empty">검색어를 입력하거나 위키에서 주제를 선택해 주세요.</p></div><nav class="app-page-links" data-result-pages aria-label="검색 페이지"></nav></div></main>`);
-  for (const route of ['/blog/', '/blog/all/']) add(route, 'Blog', `<main id="main" class="app-shell"><h1 class="app-page-heading">Blog</h1><p class="app-empty">아직 발행한 글이 없습니다. <a href="/wiki/">위키에서 기록 읽기</a></p></main>`);
+  for (const [base, size, render] of [['/blog/', PAGE_SIZES.feed, blogFeed], ['/blog/all/', PAGE_SIZES.cards, blogArchive]]) {
+    for (let page = 1; page <= Math.max(1, Math.ceil(posts.length / size)); page++) add(page === 1 ? base : `${base}page/${page}/`, 'Blog', render(posts, TOPICS, page), { type: 'blog' });
+  }
   writeSite(output, documents, context);
   return { pages: output.size, documents: documents.length, themeHash: MANIFEST.contentHash };
 }
@@ -96,7 +101,8 @@ function writeSite(output, documents, context) {
   }
   writeFileSync(join(OUTPUT, 'search-index.json'), JSON.stringify({ entries: documents.map(page => searchEntry(page, TOPICS)), tags: TOPICS }));
   mkdirSync(join(OUTPUT, 'blog'), { recursive: true });
-  writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description></channel></rss>`);
+  const posts = blogDocuments(documents).filter(page => !page.example);
+  writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description>${posts.map(page => `<item><title>${escape(page.title)}</title><link>${escape(context.origin + page.route)}</link><guid isPermaLink="false">${page.id}</guid><pubDate>${new Date(page.publishedAt).toUTCString()}</pubDate><description>${escape(page.description)}</description></item>`).join('')}</channel></rss>`);
   writeFileSync(join(OUTPUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...output.keys()].filter(route => route !== '/search/').map(route => `<url><loc>${escape(context.origin + route)}</loc></url>`).join('')}</urlset>`);
   validateOutput(output);
   writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, themeHash: context.themeHash, routes: [...output.keys()] }, null, 2));
