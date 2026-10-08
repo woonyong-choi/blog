@@ -1,9 +1,11 @@
 // 읽기와 직접 탐색을 우선하고 화면 안에서만 카드 흐름을 진행한다.
-for (const rail of document.querySelectorAll('[data-interview-rail]')) {
-  const viewport = rail.querySelector('[data-interview-viewport]');
-  const group = rail.querySelector('[data-interview-group]');
-  const controls = rail.querySelector('[data-interview-controls]');
-  const toggle = rail.querySelector('[data-interview-toggle]');
+for (const rail of document.querySelectorAll('[data-flow-rail]')) {
+  const viewport = rail.querySelector('[data-flow-viewport]');
+  const group = rail.querySelector('[data-flow-group]');
+  const controls = rail.querySelector('[data-flow-controls]');
+  const toggle = rail.querySelector('[data-flow-toggle]');
+  const direction = rail.dataset.flowDirection === 'right' ? -1 : 1;
+  const label = rail.dataset.flowLabel;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let clone; let distance = 0; let position = 0; let frame; let last;
   let paused = false; let hovering = false; let focused = false; let visible = false;
@@ -13,12 +15,13 @@ for (const rail of document.querySelectorAll('[data-interview-rail]')) {
   function update() {
     cancelAnimationFrame(frame); last = undefined;
     toggle.disabled = reduced.matches;
+    toggle.setAttribute('aria-label', `${label} ${reduced.matches ? '자동 흐름 꺼짐' : paused ? '흐름 다시 시작' : '흐름 멈추기'}`);
     toggle.textContent = reduced.matches ? '자동 흐름 꺼짐' : paused ? '흐름 다시 시작' : '흐름 멈추기';
     if (distance && !paused && !hovering && !focused && visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
   }
   function tick(now) {
     if (last !== undefined) {
-      position = (position + (now - last) * distance / duration) % distance;
+      position = ((position + direction * (now - last) * distance / duration) % distance + distance) % distance;
       viewport.scrollLeft = position;
     }
     last = now; frame = requestAnimationFrame(tick);
@@ -30,7 +33,7 @@ for (const rail of document.querySelectorAll('[data-interview-rail]')) {
     distance = group.scrollWidth > viewport.clientWidth ? group.getBoundingClientRect().width + gap : 0;
     controls.hidden = !distance;
     if (distance) {
-      clone = group.cloneNode(true); clone.removeAttribute('data-interview-group');
+      clone = group.cloneNode(true); clone.removeAttribute('data-flow-group');
       clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
       viewport.append(clone);
       position = paused || reduced.matches ? Math.floor(progress * group.children.length) * distance / group.children.length : progress * distance;
@@ -50,8 +53,8 @@ for (const rail of document.querySelectorAll('[data-interview-rail]')) {
     viewport.scrollTo({ left: position, behavior: 'instant' });
   }
   toggle.addEventListener('click', () => { paused = !paused; position = viewport.scrollLeft % distance; update(); });
-  rail.querySelector('[data-interview-prev]').addEventListener('click', () => step(-1));
-  rail.querySelector('[data-interview-next]').addEventListener('click', () => step(1));
+  rail.querySelector('[data-flow-prev]').addEventListener('click', () => step(-1));
+  rail.querySelector('[data-flow-next]').addEventListener('click', () => step(1));
   viewport.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; update(); } });
   viewport.addEventListener('pointerleave', () => { hovering = false; update(); });
   viewport.addEventListener('pointerdown', stop);

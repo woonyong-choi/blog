@@ -4,6 +4,7 @@ import { escape } from './markdown.mjs';
 import { contentIcon } from './content-icons.mjs';
 import { FIELDS } from './content-model.mjs';
 import { clientEntrypoints } from './publication-assets.mjs';
+import { projectVideo, technologySection, contactSection } from './home-sections.mjs';
 import { interviewSection } from './interviews.mjs';
 
 const BRANDS = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons;
@@ -58,10 +59,9 @@ export function knowledgeFields(documents, topics, field) {
   }).join('');
 }
 
-export function personalHome(documents, context, recent = '') {
-  const { config, topics } = context;
-  const portfolio = config.portfolio.map(slug => documents.find(page => page.slug === slug)).filter(Boolean);
-  return `<main id="main"><section class="app-personal-hero app-shell"><p class="app-eyebrow">Backend Engineer · Knowledge Workflow Systems</p><h1>${escape(config.description)}</h1><p class="app-personal-intro">${escape(config.introduction)}</p><a class="app-hero-link" href="#portfolio">대표 작업 보기 <span aria-hidden="true">→</span></a></section><div class="app-shell"><section class="app-knowledge-section" id="portfolio"><div class="app-section-heading"><h2>대표 작업</h2><a href="/projects/">프로젝트 보기 <span aria-hidden="true">→</span></a></div><div class="app-portfolio-grid">${portfolio.slice(0, 2).map(page => wikiCard(page)).join('')}</div><div class="app-supporting-links">${portfolio.slice(2).map(page => `<a href="${page.route}">${escape(page.title)} <span aria-hidden="true">→</span></a>`).join('')}</div></section>${interviewSection(context.interviews)}${knowledgeFields(documents, topics)}${recent}${projectSection(config.projects.slice(0, 1), config.projects.length > 1)}</div></main>`;
+export function personalHome(context) {
+  const { config } = context;
+  return `<main id="main"><section class="app-personal-hero app-shell"><p class="app-eyebrow">Backend Engineer · Knowledge Workflow Systems</p><h1>${escape(config.description)}</h1><p class="app-personal-intro">${escape(config.introduction)}</p><a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a></section><div class="app-shell app-home-flow">${projectVideo(config.projectVideo)}${technologySection(config.technologies, BRANDS)}${interviewSection(context.interviews)}${contactSection(config.contact)}</div></main>`;
 }
 
 export function wikiLanding(documents, context, field, recent = '') {

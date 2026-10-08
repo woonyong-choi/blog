@@ -20,7 +20,7 @@ const TOPICS = JSON.parse(readFileSync(join(ROOT, 'topics.json')));
 const THEME = join(ROOT, 'vendor/theme');
 const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
 const digest = value => createHash('sha256').update(value).digest('hex');
-const CLIENT_FILES = ['publication.js', 'document.js', 'search-model.mjs', 'search-view.mjs', 'search-client.mjs', 'search-worker.mjs', 'comments.js', 'interviews.js'];
+const CLIENT_FILES = ['publication.js', 'document.js', 'search-model.mjs', 'search-view.mjs', 'search-client.mjs', 'search-worker.mjs', 'comments.js', 'flows.js'];
 
 export function buildPublication({ origin = '', preview = true } = {}) {
   if (origin && !/^https?:\/\/[^/?#]+$/.test(origin)) throw new Error('invalid site origin');
@@ -34,7 +34,7 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   context.interviews = publicInterviews(CONFIG.interviews?.length ? CONFIG.interviews : preview ? JSON.parse(readFileSync(join(ROOT, 'interview-examples.json'))) : [], preview);
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
-  add('/', CONFIG.name, personalHome(documents, context, recentBlog(posts, TOPICS)));
+  add('/', CONFIG.name, personalHome(context));
   add('/wiki/', 'Wiki', wikiLanding(documents, context, undefined, recentBlog(posts, TOPICS)));
   for (const field of FIELDS) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
