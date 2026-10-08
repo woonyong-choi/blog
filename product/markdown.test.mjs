@@ -48,6 +48,16 @@ test('highlight and cancelled tasks preserve escaping, code and nested formattin
   assert.ok(!md.render('\\::escaped::').includes('<mark>'));
 });
 
+test('task_labels_preserve_inline_content_and_exclude_nested_tasks', () => {
+  const source = '- [ ] **상위** [링크](#target) `<code>`\n  - [x] 하위 & <script>\n- [~] 취소\n';
+  const html = createMarkdown().render(source);
+  assert.match(html, /<label><input[^>]*disabled=""[^>]*> <strong>상위<\/strong> <a href="#target">링크<\/a> <code>&lt;code&gt;<\/code><\/label>\n<ul/);
+  assert.match(html, /<label><input[^>]*checked=""[^>]*disabled=""[^>]*> 하위 &amp; &lt;script&gt;<\/label>/);
+  assert.equal((html.match(/<label>/g) ?? []).length, 2);
+  assert.match(html, /aria-label="취소된 작업"/);
+  assert.equal(html, createMarkdown().render(source));
+});
+
 test('gallery preserves selected slide, captions and validates its initial index', () => {
   const md = createMarkdown();
   const slides = [{src:'repeating-comparison-1-io80.png',label:'Before',caption:'<before>'},{src:'repeating-comparison-2-io80.png',label:'Now',caption:'after'}];

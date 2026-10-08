@@ -40,7 +40,7 @@ export function tagLinks(page, tags, limit = Infinity) {
   const link = id => `<a class="app-tag" href="/tags/${id}/">${escape(tags[id].label)}</a>`;
   const visible = page.tags.slice(0, limit).map(link).join('');
   const remaining = page.tags.slice(limit);
-  return `<div class="app-tags" aria-label="태그">${visible}${remaining.length ? `<details class="app-tags-more"><summary>+${remaining.length}</summary><div class="app-tags">${remaining.map(link).join('')}</div></details>` : ''}</div>`;
+  return `<div class="app-tags" role="group" aria-label="태그">${visible}${remaining.length ? `<details class="app-tags-more"><summary>+${remaining.length}</summary><div class="app-tags">${remaining.map(link).join('')}</div></details>` : ''}</div>`;
 }
 
 export function wikiCard(page, title = page.title) {

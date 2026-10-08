@@ -40,7 +40,7 @@ function remote(id, src = '') {
 }
 
 export function createMarkdown() {
-  const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(taskLists);
+  const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(taskLists, { label: true });
   md.inline.ruler.before('emphasis', 'interface-label', (state, silent) => {
     const match = /^:(kbd|menu)\[([^\]\n]+)\]/.exec(state.src.slice(state.pos));
     if (!match) return false;
