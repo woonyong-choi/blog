@@ -1,5 +1,6 @@
 // 본문 조작은 정적 HTML 위에서 필요한 기능만 점진적으로 활성화한다.
 import './document.js';
+import './comments.js';
 import { prepareIndex, readSearchState, searchDocuments, searchUrl, suggestions } from './search-model.mjs';
 import { renderResults, renderSuggestions, showSearchError } from './search-view.mjs';
 

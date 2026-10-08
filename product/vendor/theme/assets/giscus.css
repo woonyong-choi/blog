@@ -1,0 +1,58 @@
+/* iframe 내부에서도 개인 사이트와 같은 역할 토큰을 사용한다. */
+main {
+  --color-fg-default: #303336;
+  --color-fg-muted: #55606e;
+  --color-fg-subtle: #55606e;
+  --color-canvas-default: #ffffff;
+  --color-canvas-overlay: #ffffff;
+  --color-canvas-inset: #e9edf2;
+  --color-canvas-subtle: #e9edf2;
+  --color-border-default: #dfe3e8;
+  --color-border-muted: #dfe3e8;
+  --color-neutral-muted: #dfe3e8;
+  --color-accent-fg: #2576eb;
+  --color-accent-emphasis: #2576eb;
+  --color-accent-muted: #dde9ff;
+  --color-accent-subtle: #ebf1ff;
+  --color-btn-text: #303336;
+  --color-btn-bg: #e9edf2;
+  --color-btn-border: #dfe3e8;
+  --color-btn-hover-bg: #ebf1ff;
+  --color-btn-hover-border: #dde9ff;
+  --color-btn-active-bg: #e2ebff;
+  --color-btn-active-border: #dde9ff;
+  --color-btn-selected-bg: #ebf1ff;
+  --color-btn-primary-text: #ffffff;
+  --color-btn-primary-bg: #2576eb;
+  --color-btn-primary-border: #2576eb;
+  --color-btn-primary-hover-bg: #2576eb;
+  --color-btn-primary-hover-border: #2576eb;
+  --color-btn-primary-selected-bg: #2576eb;
+  --color-btn-primary-disabled-text: #55606e;
+  --color-btn-primary-disabled-bg: #e9edf2;
+  --color-btn-primary-disabled-border: #dfe3e8;
+  --color-action-list-item-default-hover-bg: #ebf1ff;
+  --color-segmented-control-bg: #e9edf2;
+  --color-segmented-control-button-bg: #ffffff;
+  --color-segmented-control-button-selected-border: #dfe3e8;
+  --color-prettylights-syntax-comment: #55606e;
+  --color-prettylights-syntax-constant: rgba(0,4,10,.69);
+  --color-prettylights-syntax-entity: rgba(0,4,10,.69);
+  --color-prettylights-syntax-keyword: rgba(0,4,10,.69);
+  --color-prettylights-syntax-string: rgba(0,4,10,.69);
+  --color-prettylights-syntax-storage-modifier-import: #303336;
+  --color-prettylights-syntax-variable: #303336;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+}
+.gsc-main { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; color: #303336; }
+.gsc-comment-box, .gsc-comment { border-radius: 12px; border-color: #dfe3e8; }
+.gsc-comment-box-textarea { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; border-radius: 8px; }
+.gsc-comment-box-buttons button, .gsc-comment-box-bottom button { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; border-radius: 8px; box-shadow: none; }
+.gsc-comment-content { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; }
+.gsc-comment-content code { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+.gsc-comment-header { color: #55606e; font-size: 15px; }
+.gsc-comment-box-tabs { border-color: #dfe3e8; }
+.gsc-main a { text-decoration: none; }
+.gsc-main a:hover { text-decoration: underline; }

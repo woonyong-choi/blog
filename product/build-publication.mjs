@@ -8,6 +8,7 @@ import { readDocument, publicDocuments, searchEntry, FIELDS, blogDocuments, PAGE
 import { createMarkdown, escape } from './markdown.mjs';
 import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, resultRow, iconUrl } from './publication-layout.mjs';
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
+import { commentsSection } from './comments.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -32,7 +33,8 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   add('/wiki/', 'Wiki', wikiLanding(documents, context, undefined, recentBlog(posts, TOPICS)));
   for (const field of FIELDS) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
-  for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, page.comments ? '<section class="app-comments" id="comments"><h2>댓글</h2><p class="app-comments-status">댓글을 불러옵니다.</p></section>' : ''), page);
+  const commentTheme = CONFIG.comments.themeUrl || `${origin || 'http://127.0.0.1:8796'}/theme/assets/giscus.css?v=${MANIFEST.contentHash}`;
+  for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, commentsSection(page, CONFIG.comments, commentTheme)), page);
   for (const [tag, topic] of Object.entries(TOPICS)) {
     const entries = documents.filter(page => page.tags.includes(tag));
     add(`/tags/${tag}/`, topic.label, `<main class="app-shell app-body" id="main">${searchBox()}<h1 class="app-page-heading">${escape(topic.label)}</h1><div data-search-page data-tag="${tag}"><nav class="app-type-filters" aria-label="문서 유형"></nav><div data-full-results>${entries.map(page => resultRow(page, TOPICS)).join('')}</div></div></main>`);
@@ -84,7 +86,7 @@ function writeSite(output, documents, context) {
   mkdirSync(OUTPUT, { recursive: true });
   cpSync(THEME, join(OUTPUT, 'theme'), { recursive: true });
   cpSync(join(ROOT, 'publication.js'), join(OUTPUT, 'publication.js'));
-  for (const file of ['search-model.mjs', 'search-view.mjs']) cpSync(join(ROOT, file), join(OUTPUT, file));
+  for (const file of ['search-model.mjs', 'search-view.mjs', 'comments.js']) cpSync(join(ROOT, file), join(OUTPUT, file));
   cpSync(join(ROOT, 'site.js'), join(OUTPUT, 'document.js'));
   const assets = new Set();
   const css = readFileSync(join(THEME, 'styles.css'), 'utf8');

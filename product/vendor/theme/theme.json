@@ -17,6 +17,7 @@
     "assets/fonts/jetbrains-mono-regular.woff2": "bceff0710e3a7fe5b3622265c48b6fbc055cf071df80ef5f36ffc69550296664",
     "assets/fonts/pretendard-license.txt": "b04538c9abec39a3db75108cf0af0fd9c77032fe8aa2cf38345b4d250e98e38e",
     "assets/fonts/pretendard-variable.woff2": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
+    "assets/giscus.css": "1303a810483d217d8b5875ec8b3015c660595837e62ca1a1a8e8f0ec6c817d08",
     "assets/icons/administrator.svg": "6e20318f04e551fbec6d99dddc93d4802f4f008222e163cd1b87f51a33e990c9",
     "assets/icons/algorithm.svg": "d3de738dcc36c59b754ed85ae4b8650aec1be400ca4b35dfec3e1d3c58be9492",
     "assets/icons/architecture.svg": "0c19739988140bf7f78b981c085a216993479d87af5ae78164a1343dbdad39ed",
@@ -198,11 +199,11 @@
     "assets/icons/team.svg": "c385f53132d6b038f7603c981e52faf6688f242eb9aab845a9f48b51e84be8ed",
     "assets/icons/terminal.svg": "6b693572610ad42f784f2b418526b7a0f9c51fa41b6aa1135fa514b0d556d5c0",
     "assets/icons/testing.svg": "65bfbd772e91ac871acc3ecf0f8c190b32a1563fa4bbed46280292c373566984",
-    "styles.css": "9981d5aa2e85e6f53ef5668b0d5140e6e639f6b4936e368f0192042d11c5b89a",
-    "styles.source.css": "9c5bdab56d1e617536c7fa1962ed6b04d2e5376df1480c6fe86878addc3f168c",
+    "styles.css": "df5641b59f7a2ed144c70fb2adfc141989590891b1d47fc3b9c73f4f36a7bd66",
+    "styles.source.css": "b64cf7ae2047d5f3a5508afaad366fa9d7e6c47321efc7b761a8a4628b6ee952",
     "theme.css": "b85d29bc19845e4eac7eb2a988fd74e4524d9c30156e92edbf13ff43d0429d5f",
     "tokens.json": "af0806ece9fdd500b30d95396861735bf29875bc85737d73ea91156193f7da06",
     "tokens.light.json": "af0806ece9fdd500b30d95396861735bf29875bc85737d73ea91156193f7da06"
   },
-  "contentHash": "537ff14618173d5aa72d5c8e326c7d52e45dfa2e078caad1311e283c7bc76fc9"
+  "contentHash": "307d6d6721ec3e8f8051eeedb3e29b9678938d3b5b7dbc77145ecefd2205b665"
 }

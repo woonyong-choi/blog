@@ -1401,7 +1401,7 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-page-links [aria-current=page] { background: var(--site-help-hover); color: var(--site-ink); }
 .app-type-filters { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); margin-block: var(--site-gap); }
 .app-type-filters a, .app-type-filters button { padding: var(--site-gap-xs) var(--site-gap-sm); border: 0; border-radius: var(--site-button-radius); background: transparent; color: var(--site-muted); }
-.app-type-filters [aria-current=true] { background: var(--site-help-hover); color: var(--site-link); }
+.app-type-filters [aria-current=page] { background: var(--site-help-hover); color: var(--site-link); }
 .app-filter-summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--site-gap-sm); margin-bottom: var(--site-gap); font-size: var(--site-small-text); }
 .app-comments { padding-top: var(--site-gap-lg); margin-top: var(--site-support-gap); border-top: var(--site-border) solid var(--site-line); }
 .app-comments-status { font-size: var(--site-small-text); color: var(--site-muted); }
