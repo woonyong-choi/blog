@@ -1822,6 +1822,10 @@
   --site-article-section-border: var(--primitive-simple-platform-hover);
   --site-related-background: var(--primitive-simple-blue-alpha-4);
   --site-related-border: var(--primitive-simple-navy-alpha-6);
+  --site-toc-background: var(--primitive-simple-syntax-example-background);
+  --site-toc-border: var(--primitive-simple-syntax-example-border);
+  --site-toc-marker: var(--primitive-simple-landing-footer-ink);
+  --site-toc-underline: var(--primitive-simple-newsletter-button-color);
   --icon-paper: var(--color-gray-0);
   --icon-outline: var(--primitive-simple-icon-outline);
   --icon-detail: var(--primitive-simple-icon-detail);

@@ -6,6 +6,7 @@ import { FIELDS } from './content-model.mjs';
 import { clientEntrypoints } from './publication-assets.mjs';
 import { projectVideo, technologySection, contactSection } from './home-sections.mjs';
 import { interviewSection } from './interviews.mjs';
+import { articleToc } from './article-toc.mjs';
 
 const BRANDS = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons;
 const FIELD_NAMES = Object.freeze({ languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
@@ -77,7 +78,7 @@ export function projectSection(projects, hasMore = false) {
 
 export function articlePage(page, documents, context, comments = '') {
   const related = documents.filter(other => other.id !== page.id && other.tags.some(tag => page.tags.includes(tag))).slice(0, 3);
-  return `<main id="main" class="app-shell app-document-shell">${searchBox()}<div class="app-document-layout">${topicNavigation(page, context)}<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : ''}</div>${tableOfContents(page)}<div class="app-prose app-document-body">${page.html}</div>${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="https://github.com/woonyong-choi/blog/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2><div class="app-related-grid">${related.map(other => relatedCard(other, context.topics)).join('')}</div></section>` : ''}</article></div></main>`;
+  return `<main id="main" class="app-shell app-document-shell">${searchBox()}<div class="app-document-layout">${topicNavigation(page, context)}<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : ''}</div>${articleToc(page.headings)}<div class="app-prose app-document-body">${page.html}</div>${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="https://github.com/woonyong-choi/blog/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2><div class="app-related-grid">${related.map(other => relatedCard(other, context.topics)).join('')}</div></section>` : ''}</article></div></main>`;
 }
 
 export function relatedCard(page, tags) {
@@ -97,12 +98,6 @@ export function dateLine(page) {
   const published = page.publishedAt ? `<time datetime="${page.publishedAt}">${page.publishedAt}</time>` : '';
   const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? `<span>수정 <time datetime="${page.updatedAt}">${page.updatedAt}</time></span>` : '';
   return published || updated ? `<p class="app-document-dates">${published}${updated}</p>` : '';
-}
-
-function tableOfContents(page) {
-  const headings = page.headings.filter(heading => heading.level === 2);
-  if (headings.length < 2) return '';
-  return `<nav class="app-toc" aria-label="이 글의 목차"><strong>이 글에서</strong><ul>${headings.map(heading => `<li><a href="#${heading.id}">${escape(heading.title)}</a></li>`).join('')}</ul></nav>`;
 }
 
 function topicNavigation(page, context) {
