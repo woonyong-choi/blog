@@ -4,18 +4,7 @@
   "introduction": "시스템의 동작을 공부하고, 기록을 다시 찾고 활용하는 도구를 만듭니다.",
   "github": "https://github.com/woonyong-choi",
   "profileSource": "https://github.com/woonyong-choi/woonyong-kr",
-  "features": {
-    "panorama": false,
-    "appFeatures": false,
-    "newsletter": false
-  },
   "interviews": [],
-  "portfolio": [
-    "pintos",
-    "lrn-sql",
-    "k8s-clue",
-    "woon-core"
-  ],
   "projects": [
     {
       "title": "Manta",
@@ -46,7 +35,6 @@
     }
   ],
   "comments": {
-    "repo": "woonyong-choi/blog",
     "repoId": "R_kgDOU8zFrQ",
     "category": "Comments",
     "categoryId": "DIC_kwDOU8zFrc4DHTnu",
@@ -79,5 +67,6 @@
     "eyebrow": "Backend Engineer",
     "title": "기록을 연결하고,\n도구로 만듭니다.",
     "description": "흩어진 지식을 연결해, 다시 꺼내 쓸 수 있는 도구를 만듭니다."
-  }
+  },
+  "repository": "woonyong-choi/blog"
 }

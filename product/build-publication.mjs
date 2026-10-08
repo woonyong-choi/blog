@@ -16,6 +16,7 @@ import { publicationAssets } from './publication-assets.mjs';
 import { publicInterviews } from './interviews.mjs';
 import { createTopicTrees } from './topic-navigation.mjs';
 import { browserScripts } from './browser-scripts.mjs';
+import { repositoryUrl } from './repository-links.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -35,7 +36,7 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   const topicTrees = createTopicTrees(documents);
   renderDocuments(documents);
   const scripts = browserScripts(ROOT);
-  const context = { config: CONFIG, topics: TOPICS, topicTrees, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')) };
+  const context = { config: CONFIG, repositoryUrl: repositoryUrl(CONFIG.repository), topics: TOPICS, topicTrees, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')) };
   context.interviews = publicInterviews(CONFIG.interviews?.length ? CONFIG.interviews : preview ? JSON.parse(readFileSync(join(ROOT, 'interview-examples.json'))) : [], preview);
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
@@ -45,7 +46,8 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
   if (preview) for (const page of iconAuditPages()) add(page.route, '아이콘 검증', page.body);
   const commentTheme = CONFIG.comments.themeUrl || `${origin || 'http://127.0.0.1:8796'}/theme/assets/giscus.css?v=${MANIFEST.contentHash}`;
-  for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, commentsSection(page, CONFIG.comments, commentTheme)), page);
+  const commentConfig = { ...CONFIG.comments, repo: CONFIG.repository };
+  for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, commentsSection(page, commentConfig, commentTheme)), page);
   for (const [tag, topic] of Object.entries(TOPICS)) {
     const entries = documents.filter(page => page.tags.includes(tag));
     add(`/tags/${tag}/`, topic.label, tagPage(tag, entries, TOPICS));
