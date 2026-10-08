@@ -18,6 +18,8 @@ import { createTopicTrees } from './topic-navigation.mjs';
 import { browserScripts } from './browser-scripts.mjs';
 import { repositoryUrl } from './repository-links.mjs';
 import { publicationStyles } from './publication-styles.mjs';
+import { siteOrigin, SITE_ICON } from './publication-metadata.mjs';
+import { siteIdentity } from './site-identity.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -28,8 +30,7 @@ const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
 const digest = value => createHash('sha256').update(value).digest('hex');
 
 export async function buildPublication({ origin = '', preview = true } = {}) {
-  if (origin && !/^https?:\/\/[^/?#]+$/.test(origin)) throw new Error('invalid site origin');
-  if (!preview && !origin.startsWith('https://')) throw new Error('production build requires SITE_ORIGIN');
+  origin = siteOrigin(origin, preview);
   verifyTheme();
   const folders = ['publication', ...(preview && existsSync(join(ROOT, 'examples')) ? ['examples'] : [])];
   const documents = publicDocuments(folders.flatMap(folder => readdirSync(join(ROOT, folder)).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, folder, name), 'utf8'), TOPICS))), { includeExamples: preview });
@@ -37,7 +38,8 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const topicTrees = createTopicTrees(documents);
   renderDocuments(documents);
   const scripts = browserScripts(ROOT);
-  const context = { config: CONFIG, repositoryUrl: repositoryUrl(CONFIG.repository), topics: TOPICS, topicTrees, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')) };
+  const identity = siteIdentity(readFileSync(join(THEME, SITE_ICON.slice('/theme/'.length))), readFileSync(join(THEME, 'assets/controls/LICENSE')));
+  const context = { config: CONFIG, repositoryUrl: repositoryUrl(CONFIG.repository), topics: TOPICS, topicTrees, origin, preview, identity, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')) };
   context.interviews = publicInterviews(CONFIG.interviews?.length ? CONFIG.interviews : preview ? JSON.parse(readFileSync(join(ROOT, 'interview-examples.json'))) : [], preview);
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
@@ -109,7 +111,7 @@ async function writeSite(output, documents, context, scripts) {
     writeFileSync(join(OUTPUT, file), source);
   }
   const index = { entries: documents.map(page => ({ ...searchEntry(page, TOPICS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TOPICS };
-  const assets = publicationAssets(output, index.entries, path => path === stylePath ? Buffer.from(styles.css) : readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path)));
+  const assets = new Map([...context.identity.assets, ...publicationAssets(output, index.entries, path => context.identity.assets.get(path) ?? (path === stylePath ? Buffer.from(styles.css) : readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path))))]);
   for (const [path, content] of assets) {
     const destination = join(OUTPUT, path);
     mkdirSync(dirname(destination), { recursive: true });
