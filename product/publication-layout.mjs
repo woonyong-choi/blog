@@ -109,5 +109,5 @@ function topicNavigation(page, context) {
     if (!node.children.length) return `<li>${link}</li>`;
     return `<li><details open><summary>${escape(parent.title)}</summary><ul><li>${link}</li>${node.children.map(children).join('')}</ul></details></li>`;
   }
-  return `<details class="app-document-nav" open><summary>문서 목록 · ${escape(context.topics[page.topic].label)}</summary><nav aria-label="${escape(context.topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Wiki</a><ul>${roots.map(children).join('')}</ul></nav></details>`;
+  return `<details class="app-document-nav"><summary>문서 목록 · ${escape(context.topics[page.topic].label)}</summary><nav aria-label="${escape(context.topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Wiki</a><ul>${roots.map(children).join('')}</ul></nav></details>`;
 }

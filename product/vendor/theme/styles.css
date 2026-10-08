@@ -1094,7 +1094,7 @@ body[data-page=features] > main { background: var(--site-card); }
 @media (min-width: 1002px) {
   .app-document-shell { max-width: var(--site-wide); }
   .app-document-layout:has(.app-document-nav) { display: grid; grid-template-columns: var(--site-sidebar-width) minmax(0,var(--site-body-width)); justify-content: center; gap: var(--site-gap-lg); }
-  .app-document-nav > summary { display: none; }
+  .app-document-nav[open] > summary { display: none; }
   .app-document-nav { position: sticky; top: var(--site-gap); max-height: calc(100dvh - var(--site-gap-lg)); overflow-y: auto; align-self: start; }
 }
 @media (prefers-reduced-motion: reduce) {

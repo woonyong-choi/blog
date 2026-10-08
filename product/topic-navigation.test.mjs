@@ -30,6 +30,7 @@ test('createTopicTrees_keeps_external_roots_order_and_blog_identity_once', () =>
   assert.strictEqual(tree[0].children[0].children[0].page, pages[2]);
   const html = articlePage(pages[1], pages, { topicTrees, topics: { python: { label: 'Python' } } });
   const navigation = html.match(/<details class="app-document-nav"[\s\S]*?<\/nav><\/details>/)[0];
+  assert.match(navigation, /^<details class="app-document-nav">/);
   assert.deepEqual([...navigation.matchAll(/href="\/articles\/([^/]+)\/"/g)].map(match => match[1]), ['a', 'b', 'c', 'd', 'e', 'f']);
   assert.equal((navigation.match(/aria-current="page"/g) ?? []).length, 1);
   assert.equal(pages[2].type, 'blog');
