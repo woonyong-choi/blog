@@ -12,10 +12,12 @@ import { documentShell, personalHome, wikiLanding, articlePage, projectSection, 
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
 import { iconAuditPages } from './icon-audit.mjs';
-import { publicationAssets } from './publication-assets.mjs';
+import { publicationAssets, clientEntrypoints } from './publication-assets.mjs';
 import { loadHomeConfig } from './home-config.mjs';
 import { createTopicTrees } from './topic-navigation.mjs';
 import { browserScripts } from './browser-scripts.mjs';
+import { mermaidScripts } from './mermaid-scripts.mjs';
+import { mathAssets } from './math-assets.mjs';
 import { repositoryUrl } from './repository-links.mjs';
 import { publicationStyles } from './publication-styles.mjs';
 import { siteOrigin, SITE_ICON } from './publication-metadata.mjs';
@@ -39,8 +41,10 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const topicTrees = createTopicTrees(documents);
   renderDocuments(documents);
   const scripts = browserScripts(ROOT);
+  // 도표 렌더러는 도표가 있는 글이 있을 때만 만들고, 없으면 산출물에도 넣지 않는다.
+  const diagrams = documents.some(page => (page.leadHtml + page.html).includes('data-mermaid')) ? mermaidScripts(ROOT) : { files: new Map(), hashes: {} };
   const identity = siteIdentity(readFileSync(join(THEME, SITE_ICON.slice('/theme/'.length))), readFileSync(join(THEME, 'assets/controls/LICENSE')));
-  const context = { config: CONFIG, repositoryUrl: repositoryUrl(CONFIG.repository), topics: TOPICS, topicTrees, origin, preview, identity, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')) };
+  const context = { config: CONFIG, repositoryUrl: repositoryUrl(CONFIG.repository), topics: TOPICS, topicTrees, origin, preview, identity, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
   context.home = loadHomeConfig(new Set(BRAND_NAMES));
   context.interviewExamples = JSON.parse(readFileSync(join(ROOT, 'interview-examples.json')));
   const output = new Map();
@@ -61,7 +65,7 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   for (const [base, size, render] of [['/blog/', PAGE_SIZES.feed, blogFeed], ['/blog/all/', PAGE_SIZES.cards, blogArchive]]) {
     for (let page = 1; page <= Math.max(1, Math.ceil(posts.length / size)); page++) add(page === 1 ? base : `${base}page/${page}/`, 'Blog', render(posts, TOPICS, page), { type: 'blog' });
   }
-  await writeSite(output, documents, context, scripts);
+  await writeSite(output, documents, context, scripts, diagrams.files);
   return { pages: output.size, documents: documents.length, themeHash: MANIFEST.contentHash };
 }
 
@@ -99,7 +103,7 @@ function verifyTheme() {
   for (const [, name] of css.matchAll(/var\((--(?:site|icon)-[\w-]+)/g)) if (!definitions.has(name)) throw new Error(`undefined theme token: ${name}`);
 }
 
-async function writeSite(output, documents, context, scripts) {
+async function writeSite(output, documents, context, scripts, diagramFiles) {
   const sourceStyles = readFileSync(join(THEME, 'styles.css'), 'utf8');
   const styles = await publicationStyles(sourceStyles, output, scripts);
   const stylePath = '/theme/publication.css';
@@ -112,8 +116,15 @@ async function writeSite(output, documents, context, scripts) {
   for (const [file, source] of scripts) {
     writeFileSync(join(OUTPUT, file), source);
   }
+  if ([...output.values()].some(html => clientEntrypoints(html).includes('mermaid-loader.js'))) {
+    for (const [file, source] of diagramFiles) {
+      mkdirSync(dirname(join(OUTPUT, file)), { recursive: true });
+      writeFileSync(join(OUTPUT, file), source);
+    }
+    writeFileSync(join(OUTPUT, 'mermaid/LICENSE'), readFileSync(join(ROOT, '../node_modules/mermaid/LICENSE')));
+  }
   const index = { entries: documents.map(page => ({ ...searchEntry(page, TOPICS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TOPICS };
-  const assets = new Map([...context.identity.assets, ...publicationAssets(output, index.entries, path => context.identity.assets.get(path) ?? (path === stylePath ? Buffer.from(styles.css) : readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path))))]);
+  const assets = new Map([...context.identity.assets, ...publicationAssets(output, index.entries, path => context.identity.assets.get(path) ?? context.math.assets.get(path) ?? (path === stylePath ? Buffer.from(styles.css) : readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path))))]);
   for (const [path, content] of assets) {
     const destination = join(OUTPUT, path);
     mkdirSync(dirname(destination), { recursive: true });

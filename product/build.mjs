@@ -69,6 +69,10 @@ for (const page of pages) {
   }
   htmlOutputs.set(page.route, layout(page, body));
 }
+// 복각 검토 빌드는 수식·도표 자산을 싣지 않는다. 쓰면 깨진 화면이 되므로 발행 빌드(build:site)를 쓰게 막는다.
+for (const [route, html] of htmlOutputs) {
+  if (/<span class="katex|\sdata-mermaid[\s=>]/.test(html)) throw new Error(`Math or diagram content needs the publication build: ${route}`);
+}
 const validRoutes = new Set(pages.map((page) => page.route));
 const assets = new Set(readdirSync(join(ROOT, 'assets')));
 for (const [route, html] of htmlOutputs) {

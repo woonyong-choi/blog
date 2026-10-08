@@ -1,10 +1,4 @@
 // 정적 문서의 독립적인 상호작용을 연결한다.
-for (const navigation of document.querySelectorAll('.app-document-nav')) {
-  const breakpoint = getComputedStyle(document.body).getPropertyValue('--breakpoint-review-wide').trim();
-  const desktop = matchMedia(`(min-width: ${breakpoint})`);
-  const update = () => { navigation.open = desktop.matches; };
-  desktop.addEventListener('change', update); update();
-}
 for (const gallery of document.querySelectorAll('[data-gallery]')) {
   const buttons = [...gallery.querySelectorAll('[data-slide-index]')];
   const slides = [...gallery.querySelectorAll('[data-slide]')];
@@ -56,17 +50,21 @@ for (const tabs of document.querySelectorAll('[data-tabs]')) {
   });
 }
 for (const button of document.querySelectorAll('[data-copy]')) {
-  const status = button.parentElement.querySelector('[data-copy-status]');
+  const block = button.closest('.app-code');
+  const status = block.querySelector('[data-copy-status]');
   const label = button.getAttribute('aria-label');
+  const idle = button.textContent;
   let copying = false;
+  let reset;
   button.hidden = false;
   button.addEventListener('click', async () => {
     if (copying) return;
     copying = true;
+    clearTimeout(reset);
     button.setAttribute('aria-disabled', 'true');
     status.textContent = `${label} 중입니다.`;
     try {
-      await navigator.clipboard.writeText(button.parentElement.querySelector('code').textContent);
+      await navigator.clipboard.writeText(block.querySelector('code').textContent);
       button.textContent = '복사됨';
       button.setAttribute('aria-label', `${label}됨`);
       status.textContent = `${label}를 완료했습니다.`;
@@ -77,6 +75,7 @@ for (const button of document.querySelectorAll('[data-copy]')) {
     } finally {
       copying = false;
       button.removeAttribute('aria-disabled');
+      reset = setTimeout(() => { button.textContent = idle; button.setAttribute('aria-label', label); }, 2400);
     }
   });
 }

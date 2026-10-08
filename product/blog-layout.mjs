@@ -2,6 +2,7 @@
 import { escape } from './markdown.mjs';
 import { subjectIcon, tagLinks, dateLine, searchBox } from './publication-layout.mjs';
 import { PAGE_SIZES, paginate } from './content-model.mjs';
+import { postArticle } from './post-article.mjs';
 
 export function blogCard(page, tags, level = 3) {
   const heading = level === 2 ? 'h2' : 'h3';
@@ -37,8 +38,8 @@ export function pagination(result, route, feed = false) {
 }
 
 function feedArticle(post, tags) {
-  const body = post.html.replace(/<(\/?)h([1-5])([^>]*)>/g, (_, end, level, attrs) => `<${end}h${Number(level) + 1}${!end ? ` class="app-heading-${level}"` : ''}${attrs}>`);
-  return `<article class="app-blog-post" aria-labelledby="post-${post.id}"><header class="app-post-header"><time class="app-post-date" datetime="${post.publishedAt}">${post.publishedAt}${post.example ? ' · 예시 글' : ''}</time><h2 class="app-post-title" id="post-${post.id}"><a href="${post.route}">${escape(post.title)}</a></h2></header><div class="app-prose app-feed-body"><p class="app-article-lead">${post.leadHtml ?? escape(post.description)}</p>${body}</div><footer class="app-post-footer">${tagLinks(post, tags)}${post.updatedAt && post.updatedAt !== post.publishedAt ? dateLine({ updatedAt: post.updatedAt }) : ''}<p class="app-caption"><a href="${post.route}">글 상세</a> · <a href="${post.route}#comments">댓글 보기·작성</a></p></footer></article>`;
+  const updated = post.updatedAt && post.updatedAt !== post.publishedAt ? dateLine({ updatedAt: post.updatedAt }) : '';
+  return postArticle(post, { footer: `${tagLinks(post, tags)}${updated}<p class="app-caption"><a href="${post.route}">글 상세</a> · <a href="${post.route}#comments">댓글 보기·작성</a></p>` });
 }
 
 function emptyBlog() {

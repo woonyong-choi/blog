@@ -8,7 +8,9 @@ import { FIELDS } from './content-model.mjs';
 import { clientEntrypoints } from './publication-assets.mjs';
 import { heroSection, projectsSection, technologySection, interviewsSection, contactSection } from './home-sections.mjs';
 import { articleToc } from './article-toc.mjs';
+import { postArticle, shiftHeadings, detailLevels } from './post-article.mjs';
 import { publicationMetadata } from './publication-metadata.mjs';
+import { usesMath, MATH_STYLESHEET } from './math-assets.mjs';
 
 const BRANDS = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons;
 const FIELD_NAMES = Object.freeze({ languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
@@ -26,14 +28,15 @@ export function subjectIcon(spec, size = 'card') {
 }
 
 export function documentShell(page, body, context) {
-  const { config, themeHash, scriptHash } = context;
+  const { config, themeHash, scriptHash, scriptHashes = {}, math } = context;
+  const hashOf = file => scriptHashes[file] ?? scriptHash;
   const navigation = [['Notes', '/wiki/'], ['Blog', '/blog/']];
   const active = page.type === 'blog' ? '/blog/' : page.type === 'wiki' ? '/wiki/' : page.route;
   const footer = personalFooter(config);
   const entries = clientEntrypoints(body + footer);
-  const searchScript = entries.includes('publication.js') ? `<script type="module" async src="/publication.js?v=${scriptHash}"></script>` : '';
-  const scripts = entries.filter(file => file !== 'publication.js').map(file => `<script type="module" src="/${file}?v=${scriptHash}"></script>`).join('');
-  return `<!doctype html><html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">${publicationMetadata(page, context)}<link rel="alternate" type="application/rss+xml" title="Blog" href="/blog/feed.xml"><link rel="stylesheet" href="/theme/theme.css?v=${themeHash}"><link rel="stylesheet" href="/theme/styles.css?v=${themeHash}">${scripts}</head><body class="app-publication${page.route === '/' ? ' app-canvas' : ''}"><a class="app-skip" href="#main">본문으로 이동</a><div class="app-shell"><header class="app-header"><a class="app-logo" href="/" aria-label="홈 · Things 임시 로고"><span class="app-sr">홈</span></a><nav class="app-nav" aria-label="주요 메뉴">${navigation.map(([name, route]) => `<span class="app-nav-item"><a href="${route}"${active.startsWith(route) ? ' aria-current="page"' : ''}>${name}</a></span>`).join('')}</nav></header></div>${body}${footer}${searchScript}</body></html>`;
+  const searchScript = entries.includes('publication.js') ? `<script type="module" async src="/publication.js?v=${hashOf('publication.js')}"></script>` : '';
+  const scripts = entries.filter(file => file !== 'publication.js').map(file => `<script type="module" src="/${file}?v=${hashOf(file)}"></script>`).join('');
+  return `<!doctype html><html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">${publicationMetadata(page, context)}<link rel="alternate" type="application/rss+xml" title="Blog" href="/blog/feed.xml"><link rel="stylesheet" href="/theme/theme.css?v=${themeHash}"><link rel="stylesheet" href="/theme/styles.css?v=${themeHash}">${usesMath(body) && math ? `<link rel="stylesheet" href="${MATH_STYLESHEET}?v=${math.hash}">` : ''}${scripts}</head><body class="app-publication${page.route === '/' ? ' app-canvas' : ''}"><a class="app-skip" href="#main">본문으로 이동</a><div class="app-shell"><header class="app-header"><a class="app-logo" href="/" aria-label="홈 · Things 임시 로고"><span class="app-sr">홈</span></a><nav class="app-nav" aria-label="주요 메뉴">${navigation.map(([name, route]) => `<span class="app-nav-item"><a href="${route}"${active.startsWith(route) ? ' aria-current="page"' : ''}>${name}</a></span>`).join('')}</nav></header></div>${body}${footer}${searchScript}</body></html>`;
 }
 
 export function searchBox({ large = false, query = '' } = {}) {
@@ -91,7 +94,13 @@ export function projectSection(projects, hasMore = false) {
 
 export function articlePage(page, documents, context, comments = '') {
   const related = documents.filter(other => other.id !== page.id && other.tags.some(tag => page.tags.includes(tag))).slice(0, 3);
-  return `<main id="main" class="app-shell app-document-shell">${searchBox()}<div class="app-document-layout">${topicNavigation(page, context)}<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : ''}</div>${articleToc(page.headings)}<div class="app-prose app-document-body">${page.html}</div>${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="${context.repositoryUrl}/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2><div class="app-related-grid">${related.map(other => relatedCard(other, context.topics)).join('')}</div></section>` : ''}</article></div></main>`;
+  const tail = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="${context.repositoryUrl}/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2><div class="app-related-grid">${related.map(other => relatedCard(other, context.topics)).join('')}</div></section>` : ''}`;
+  const example = page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : '';
+  if (page.type === 'blog') {
+    const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? dateLine({ updatedAt: page.updatedAt }) : '';
+    return `<main id="main" class="app-shell">${postArticle(page, { detail: true, footer: `${tagLinks(page, context.topics)}${updated}${example}`, after: tail })}</main>`;
+  }
+  return `<main id="main" class="app-shell app-document-shell">${searchBox()}<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${example}</div>${topicNavigation(page, context)}${articleToc(page.headings)}<div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${tail}</article></main>`;
 }
 
 export function relatedCard(page, tags) {
@@ -115,7 +124,8 @@ export function dateLine(page) {
 
 function topicNavigation(page, context) {
   if (page.type !== 'wiki') return '';
-  const roots = context.topicTrees.get(page.topic);
+  const roots = context.topicTrees?.get(page.topic);
+  if (!roots) return '';
   function children(node) {
     const parent = node.page;
     const link = `<a href="${parent.route}"${parent.id === page.id ? ' aria-current="page"' : ''}>${escape(parent.title)}</a>`;

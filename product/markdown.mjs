@@ -3,6 +3,9 @@ import { controlImage } from './controls.mjs';
 import { readFileSync } from 'node:fs';
 import MarkdownIt from '../assets/vendor/markdown-it.mjs';
 import footnote from 'markdown-it-footnote';
+import deflist from 'markdown-it-deflist';
+import mathPlugin from '@vscode/markdown-it-katex';
+import katex from 'katex';
 import taskLists from 'markdown-it-task-lists';
 import hljs from 'highlight.js';
 import { parse } from 'yaml';
@@ -18,8 +21,17 @@ export function asset(name) {
   if (typeof name !== 'string' || !/^[\w.-]+$/.test(name)) throw new Error(`Invalid asset: ${name}`);
   return `/things/assets/${name}`;
 }
-function codeBlock(code, label = '코드 복사') {
-  return `<div class="app-code"><button type="button" data-copy aria-label="${escape(label)}" hidden>복사</button><pre>${code}</pre><span class="app-sr" data-copy-status role="status" aria-live="polite" aria-atomic="true"></span></div>`;
+const LANGUAGE_NAME = /^[\w+#.-]+$/;
+const FILENAME = /\bfilename=(?:"([^"]+)"|(\S+))/;
+// 정보 문자열의 첫 낱말이 등록된 언어나 별칭이면 그 언어로, 아니면 원문 그대로 plaintext로 다룬다.
+export function codeLanguage(info = '') {
+  const word = info.trim().split(/\s+/)[0].toLowerCase();
+  const found = LANGUAGE_NAME.test(word) ? hljs.getLanguage(word) : undefined;
+  return found ? { id: word, label: found.name ?? word } : { id: 'plaintext', label: hljs.getLanguage('plaintext').name };
+}
+function codeBlock(code, { label = '코드 복사', language = '', filename = '' } = {}) {
+  const heading = [language, filename].filter(Boolean).map(escape).join(' · ');
+  return `<div class="app-code"><div class="app-code-header"><span class="app-code-language">${heading}</span><button type="button" data-copy aria-label="${escape(label)}" hidden>복사</button></div><pre>${code}</pre><span class="app-sr" data-copy-status role="status" aria-live="polite" aria-atomic="true"></span></div>`;
 }
 
 const referenceIcon = (name = 'question') => `<span class="app-article-icon app-icon-${escape(name)}" aria-hidden="true"></span>`;
@@ -40,8 +52,119 @@ function remote(id, src = '') {
   return `<button class="app-remote" type="button" data-remote="${id}"${src ? ` data-video-src="${asset(src)}"` : ''} aria-label="Play video">${controlImage('play')}<span>Play</span></button>`;
 }
 
+// 같은 낱말 표식 `::강조::`, `==강조==`로 mark를 만든다. 공백으로 시작하거나 끝나는 표식은 글자 그대로 둔다.
+function markRule(marker) {
+  return (state, silent) => {
+    const start = state.pos;
+    const first = state.src[start + marker.length] ?? ' ';
+    if (state.src.slice(start, start + marker.length) !== marker || /\s/.test(first) || first === marker[0]) return false;
+    let end = start + marker.length;
+    while ((end = state.src.indexOf(marker, end)) !== -1) {
+      let escapes = 0;
+      for (let at = end - 1; at >= 0 && state.src[at] === String.fromCharCode(92); at -= 1) escapes += 1;
+      if (escapes % 2 === 0) break;
+      end += marker.length;
+    }
+    if (end < 0 || /\s/.test(state.src[end - 1]) || state.src.slice(start + marker.length, end).includes('\n')) return false;
+    if (!silent) {
+      state.push('mark_open', 'mark', 1);
+      const children = [];
+      state.md.inline.parse(state.src.slice(start + marker.length, end), state.md, state.env, children);
+      state.tokens.push(...children);
+      state.push('mark_close', 'mark', -1);
+    }
+    state.pos = end + marker.length;
+    return true;
+  };
+}
+
+// `H~2~O`, `x^2^`: 공백 없는 짧은 낱말만 아래·위 첨자로 만든다. `~~취소선~~`과 `^[각주]`는 건드리지 않는다.
+function scriptRule(marker, tag) {
+  return (state, silent) => {
+    const { src, pos: start } = state;
+    if (src[start] !== marker || src[start + 1] === marker || src[start + 1] === '[') return false;
+    let end = start + 1;
+    while (end < src.length && src[end] !== marker) {
+      if (/\s/.test(src[end])) return false;
+      end += src[end] === String.fromCharCode(92) ? 2 : 1;
+    }
+    if (end >= src.length || end === start + 1) return false;
+    if (!silent) {
+      state.push(`${tag}_open`, tag, 1);
+      const children = [];
+      state.md.inline.parse(src.slice(start + 1, end), state.md, state.env, children);
+      state.tokens.push(...children);
+      state.push(`${tag}_close`, tag, -1);
+    }
+    state.pos = end + 1;
+    return true;
+  };
+}
+
+const DETAILS_OPEN = /^<details(\s+open)?>\s*$/i;
+const DETAILS_SUMMARY = /^<summary>([^<>\n]+)<\/summary>\s*$/i;
+const DETAILS_CLOSE = /^<\/details>\s*$/i;
+// 속성이 없는 `<details>`와 글자만 있는 `<summary>`만 접힘 블록으로 받아들이고 나머지 HTML은 계속 글자로 둔다.
+function detailsBlock(state, startLine, endLine, silent) {
+  if (state.sCount[startLine] - state.blkIndent >= 4) return false;
+  const line = index => state.src.slice(state.bMarks[index] + state.tShift[index], state.eMarks[index]);
+  const opening = DETAILS_OPEN.exec(line(startLine));
+  if (!opening) return false;
+  let depth = 1;
+  let fence = null;
+  let close = startLine + 1;
+  for (; close < endLine; close += 1) {
+    const text = line(close);
+    const indented = state.sCount[close] - state.blkIndent >= 4;
+    const marker = indented ? undefined : /^(`{3,}|~{3,})/.exec(text)?.[1];
+    if (fence) {
+      if (marker && marker[0] === fence[0] && marker.length >= fence.length && text.slice(marker.length).trim() === '') fence = null;
+      continue;
+    }
+    if (indented) continue;
+    if (marker) fence = marker;
+    else if (DETAILS_OPEN.test(text)) depth += 1;
+    else if (DETAILS_CLOSE.test(text) && (depth -= 1) === 0) break;
+  }
+  if (close >= endLine) return false;
+  if (silent) return true;
+  const summary = DETAILS_SUMMARY.exec(line(startLine + 1));
+  const open = state.push('details_open', 'details', 1);
+  open.map = [startLine, close];
+  if (opening[1]) open.attrSet('open', '');
+  open.attrJoin('class', 'app-details');
+  if (summary) {
+    state.push('summary_open', 'summary', 1);
+    const inline = state.push('inline', '', 0);
+    inline.content = summary[1].trim();
+    inline.children = [];
+    state.push('summary_close', 'summary', -1);
+  }
+  const [oldMax, oldParent] = [state.lineMax, state.parentType];
+  state.parentType = 'details';
+  state.lineMax = close;
+  state.md.block.tokenize(state, startLine + (summary ? 2 : 1), close);
+  state.lineMax = oldMax;
+  state.parentType = oldParent;
+  state.push('details_close', 'details', -1);
+  state.line = close + 1;
+  return true;
+}
+
+// 수식은 빌드 때 KaTeX가 HTML과 MathML로 만든다. 믿을 수 없는 명령(\\href, \\includegraphics 등)은 실행하지 않고, 틀린 수식은 원문을 그대로 보여 준다.
+const MATH_OPTIONS = Object.freeze({ katex, throwOnError: false, errorColor: 'inherit', strict: 'ignore', trust: false, output: 'htmlAndMathml' });
+
+// ```mermaid 블록은 도표 자리와 원문을 함께 낸다. 스크립트가 없거나 그리기에 실패하면 열린 원문이 남는다.
+function diagram(source, env) {
+  env.diagramCount = (env.diagramCount ?? 0) + 1;
+  const id = `diagram-${env.docId ?? env.pageId ?? 'page'}-${env.diagramCount}`;
+  const kind = /^\s*(?:%%[^\n]*\n\s*)*([A-Za-z][\w-]*)/.exec(source)?.[1] ?? '';
+  const label = kind ? `${kind} 도표` : '도표';
+  return `<figure class="app-diagram" data-mermaid data-mermaid-id="${escape(id)}"><div class="app-diagram-view" data-mermaid-view role="img" aria-label="${escape(label)}" hidden></div><p class="app-diagram-status" data-mermaid-status role="status" aria-live="polite"></p><details class="app-details app-diagram-source" open><summary>도표 원문</summary>${codeBlock(`<code class="language-mermaid">${escape(source)}</code>`, { label: '도표 원문 복사', language: 'Mermaid' })}</details></figure>`;
+}
+
 export function createMarkdown() {
-  const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(taskLists, { label: true });
+  const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(deflist).use(mathPlugin.default ?? mathPlugin, MATH_OPTIONS).use(taskLists, { label: true });
   md.inline.ruler.before('emphasis', 'interface-label', (state, silent) => {
     const match = /^:(kbd|menu)\[([^\]\n]+)\]/.exec(state.src.slice(state.pos));
     if (!match) return false;
@@ -54,27 +177,11 @@ export function createMarkdown() {
     state.pos += match[0].length;
     return true;
   });
-  md.inline.ruler.before('emphasis', 'highlight', (state, silent) => {
-    const start = state.pos;
-    if (state.src.slice(start, start + 2) !== '::' || /\s/.test(state.src[start + 2] ?? ' ')) return false;
-    let end = start + 2;
-    while ((end = state.src.indexOf('::', end)) !== -1) {
-      let escapes = 0;
-      for (let at = end - 1; at >= 0 && state.src[at] === String.fromCharCode(92); at -= 1) escapes += 1;
-      if (escapes % 2 === 0) break;
-      end += 2;
-    }
-    if (end < 0 || /\s/.test(state.src[end - 1]) || state.src.slice(start + 2, end).includes('\n')) return false;
-    if (!silent) {
-      state.push('mark_open', 'mark', 1);
-      const children = [];
-      state.md.inline.parse(state.src.slice(start + 2, end), state.md, state.env, children);
-      state.tokens.push(...children);
-      state.push('mark_close', 'mark', -1);
-    }
-    state.pos = end + 2;
-    return true;
-  });
+  md.inline.ruler.before('emphasis', 'highlight', markRule('::'));
+  md.inline.ruler.before('emphasis', 'equals-highlight', markRule('=='));
+  md.inline.ruler.before('emphasis', 'subscript', scriptRule('~', 'sub'));
+  md.inline.ruler.before('emphasis', 'superscript', scriptRule('^', 'sup'));
+  md.block.ruler.before('html_block', 'details', detailsBlock, { alt: ['paragraph', 'reference', 'blockquote', 'list'] });
   md.core.ruler.after('github-task-lists', 'cancelled-task-lists', state => {
     for (let index = 2; index < state.tokens.length; index += 1) {
       const token = state.tokens[index];
@@ -105,6 +212,7 @@ export function createMarkdown() {
     if (alignment) { token.attrs = token.attrs.filter(([key]) => key !== 'style'); token.attrSet('class', `is-${alignment.split(':')[1]}`); }
     return self.renderToken(tokens, index, options);
   };
+  md.renderer.rules.code_block = (tokens, index) => codeBlock(`<code class="language-plaintext">${escape(tokens[index].content)}</code>`, { language: codeLanguage().label });
   md.renderer.rules.fence = (tokens, index, options, env) => {
     const token = tokens[index];
     const kind = token.info.trim();
@@ -113,11 +221,13 @@ export function createMarkdown() {
       if (!data || typeof data !== 'object') throw new Error(`Invalid ${kind} data`);
       const html = component(kind.slice(3), data, md, env);
       if (!env.showSyntax) return html;
-      return html + `<details class="app-source-example"><summary>작성 문법 보기: ${escape(kind)}</summary>${codeBlock(`<code>${escape('```' + kind + '\n' + token.content + '```')}</code>`, '작성 문법 복사')}</details>`;
+      return html + `<details class="app-source-example"><summary>작성 문법 보기: ${escape(kind)}</summary>${codeBlock(`<code>${escape('```' + kind + '\n' + token.content + '```')}</code>`, { label: '작성 문법 복사', language: 'Markdown' })}</details>`;
     }
-    const language = kind.split(' ')[0];
-    const value = hljs.getLanguage(language) ? hljs.highlight(token.content, { language }).value : escape(token.content);
-    return codeBlock(`<code class="language-${escape(language)}">${value}</code>`);
+    if (kind.split(/\s+/)[0].toLowerCase() === 'mermaid') return diagram(token.content, env);
+    const { id, label } = codeLanguage(kind);
+    const filename = FILENAME.exec(kind);
+    const value = id === 'plaintext' ? escape(token.content) : hljs.highlight(token.content, { language: id, ignoreIllegals: true }).value;
+    return codeBlock(`<code class="language-${id}">${value}</code>`, { language: label, filename: filename?.[1] ?? filename?.[2] ?? '' });
   };
   md.core.ruler.push('heading-ids', (state) => {
     state.env.headings ??= [];
@@ -127,11 +237,15 @@ export function createMarkdown() {
       if (token.type !== 'heading_open') continue;
       const title = state.tokens[index + 1].content;
       const slug = title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '') || 'section';
-      const count = (state.env.headingIds.get(slug) ?? 0) + 1;
+      // 다른 제목의 `제목-2` 같은 글자와 겹치지 않도록 예약된 ID는 건너뛴다.
+      let count = state.env.headingIds.get(slug) ?? 0;
+      let localId;
+      do localId = ++count === 1 ? slug : `${slug}-${count}`; while (state.env.headingIds.has(`#${localId}`));
       state.env.headingIds.set(slug, count);
-      const localId = count === 1 ? slug : `${slug}-${count}`;
+      state.env.headingIds.set(`#${localId}`, 1);
       const id = state.env.pageId ? `${state.env.pageId}-${localId}` : localId;
       token.attrSet('id', id);
+      token.attrJoin('class', `app-heading-${token.tag.slice(1)}`);
       state.env.headings.push({ id, title, level: Number(token.tag.slice(1)) });
     }
   });

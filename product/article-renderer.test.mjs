@@ -31,13 +31,16 @@ test('only_the_complete_first_paragraph_can_be_promoted', () => {
 });
 
 test('detail_and_feed_share_the_lead_without_prose_rules_on_the_title_or_empty_related_sections', () => {
-  const page = { id: 'a', slug: 'a', route: '/articles/a/', title: '제목', description: '설명', body: '**설명**\n\n## 본문\n내용', type: 'blog', tags: ['python'], contentIcon: { name: 'python' }, comments: true, publishedAt: '2026-01-01' };
+  const page = { id: 'a', slug: 'a', route: '/articles/a/', title: '제목', description: '설명', body: '**설명**\n\n## 본문\n내용', type: 'wiki', tags: ['python'], contentIcon: { name: 'python' }, comments: true, publishedAt: '2026-01-01' };
   Object.assign(page, renderArticle(createMarkdown(), page));
   const topics = { python: { label: 'Python' } };
   const detail = articlePage(page, [page], { topics });
   assert.doesNotMatch(detail, /class="app-document app-prose"|함께 읽기/);
   assert.match(detail, /app-document-lead"><strong>설명<\/strong>/);
-  const feed = blogFeed([page], topics, 1);
+  const post = { ...page, type: 'blog' };
+  const blog = articlePage(post, [post], { topics });
+  assert.match(blog, /app-article-lead"><strong>설명<\/strong>/);
+  const feed = blogFeed([post], topics, 1);
   assert.match(feed, /app-article-lead"><strong>설명<\/strong>/);
   assert.equal((feed.match(/<strong>설명<\/strong>/g) ?? []).length, 1);
   const related = articlePage(page, [page, { ...page, id: 'b', route: '/articles/b/' }], { topics });

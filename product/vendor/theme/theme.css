@@ -754,6 +754,11 @@
   --primitive-simple-prose-pre-padding: .4em .8em;
   --primitive-simple-prose-pre-radius: .5em;
   --primitive-simple-prose-quote-margin: 0 2em 1.4em;
+  --primitive-simple-prose-quote-inset-compact: .75em;
+  --primitive-simple-prose-script-size: .8em;
+  --primitive-simple-prose-rule-width: 62%;
+  --primitive-simple-prose-rule-margin: 2.8em auto;
+  --primitive-simple-prose-tab-size: 4;
   --primitive-simple-prose-table-padding: .3em .5em;
   --primitive-simple-key-font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Apple Symbols", Roboto, sans-serif;
   --primitive-simple-key-padding: .3em .4em;
@@ -1771,6 +1776,11 @@
   --site-prose-pre-padding: var(--primitive-simple-prose-pre-padding);
   --site-prose-pre-radius: var(--primitive-simple-prose-pre-radius);
   --site-prose-quote-margin: var(--primitive-simple-prose-quote-margin);
+  --site-prose-quote-inset-compact: var(--primitive-simple-prose-quote-inset-compact);
+  --site-prose-script-size: var(--primitive-simple-prose-script-size);
+  --site-prose-rule-width: var(--primitive-simple-prose-rule-width);
+  --site-prose-rule-margin: var(--primitive-simple-prose-rule-margin);
+  --site-prose-tab-size: var(--primitive-simple-prose-tab-size);
   --site-prose-table-padding: var(--primitive-simple-prose-table-padding);
   --site-key-font: var(--primitive-simple-key-font);
   --site-key-padding: var(--primitive-simple-key-padding);

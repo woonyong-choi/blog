@@ -3742,6 +3742,31 @@
         "$value": "0 2em 1.4em",
         "$description": "Things 문서의 공통 코드·표·인용문·키보드 표시 원본 CSS"
       },
+      "prose-quote-inset-compact": {
+        "$type": "string",
+        "$value": ".75em",
+        "$description": "Things 공통 CSS의 734px 이하 인용문 좌우 여백. 2em 인용문 여백은 좁은 화면에서 본문 폭을 줄인다"
+      },
+      "prose-script-size": {
+        "$type": "string",
+        "$value": ".8em",
+        "$description": "Things 공통 CSS의 위·아래 첨자 글자 크기. 본문 글자 크기와 같은 값으로 대체할 수 없다"
+      },
+      "prose-rule-width": {
+        "$type": "string",
+        "$value": "62%",
+        "$description": "Things 공통 CSS의 구분선 너비"
+      },
+      "prose-rule-margin": {
+        "$type": "string",
+        "$value": "2.8em auto",
+        "$description": "Things 공통 CSS의 구분선 위아래 여백과 가운데 정렬"
+      },
+      "prose-tab-size": {
+        "$type": "string",
+        "$value": "4",
+        "$description": "코드 블록 탭 너비. Things 원본은 브라우저 기본값 8을 쓰지만 탭 들여쓰기 언어를 읽기 위해 줄인다"
+      },
       "prose-table-padding": {
         "$type": "string",
         "$value": ".3em .5em",
@@ -8742,6 +8767,26 @@
     "prose-quote-margin": {
       "$type": "string",
       "$value": "{primitive.simple.prose-quote-margin}"
+    },
+    "prose-quote-inset-compact": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-quote-inset-compact}"
+    },
+    "prose-script-size": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-script-size}"
+    },
+    "prose-rule-width": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-rule-width}"
+    },
+    "prose-rule-margin": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-rule-margin}"
+    },
+    "prose-tab-size": {
+      "$type": "string",
+      "$value": "{primitive.simple.prose-tab-size}"
     },
     "prose-table-padding": {
       "$type": "string",

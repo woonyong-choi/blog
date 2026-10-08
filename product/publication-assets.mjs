@@ -2,7 +2,7 @@
 import { videoControlAssets } from './controls.mjs';
 const ORIGIN = 'https://publication.invalid';
 const CLIENT_ASSETS = { 'video.js': videoControlAssets };
-const ASSET_ROOTS = ['/theme/', '/assets/', '/media/'];
+const ASSET_ROOTS = ['/theme/', '/assets/', '/media/', '/katex/'];
 const ASSET_NOTICES = new Map([
   ['/theme/assets/fonts/pretendard-variable.woff2', '/theme/assets/fonts/pretendard-license.txt'],
   ['/theme/assets/fonts/jetbrains-mono-regular.woff2', '/theme/assets/fonts/jetbrains-mono-license.txt'],
@@ -15,6 +15,7 @@ export function clientEntrypoints(body) {
   if (/<[^>]+\sdata-public-search(?:[\s=>])/.test(body)) scripts.push('publication.js');
   if (/<[^>]+\sclass="[^"]*\bapp-document-nav\b/.test(body) || /<[^>]+\sdata-(?:gallery|tabs|copy|keyboard|tooltip-trigger)(?:[\s=>])/.test(body)) scripts.push('document.js');
   if (/<[^>]+\sdata-comments(?:[\s=>])/.test(body)) scripts.push('comments.js');
+  if (/<[^>]+\sdata-mermaid(?:[\s=>])/.test(body)) scripts.push('mermaid-loader.js');
   if (/<[^>]+\sdata-flow-rail(?:[\s=>])/.test(body)) scripts.push('flows.js');
   if (/<[^>]+\sdata-player(?:[\s=>])/.test(body)) scripts.push('video.js');
   if (/<[^>]+\sdata-current-year(?:[\s=>])/.test(body)) scripts.push('footer-year.js');
@@ -48,7 +49,7 @@ export function publicationAssets(pages, searchEntries, readAsset) {
     files.set(path, content);
     // 화면에서 요청하지 않는 고지도 해당 자산의 배포 의존성이다.
     const notice = /^\/theme\/assets\/icons\/brands\/[^/]+\.svg$/.test(path)
-      ? '/theme/assets/icons/brands/LICENSE' : /^\/theme\/assets\/controls\/[^/]+\.svg$/.test(path) ? '/theme/assets/controls/LICENSE' : ASSET_NOTICES.get(path);
+      ? '/theme/assets/icons/brands/LICENSE' : /^\/theme\/assets\/controls\/[^/]+\.svg$/.test(path) ? '/theme/assets/controls/LICENSE' : path.startsWith('/katex/fonts/') ? '/katex/LICENSE' : ASSET_NOTICES.get(path);
     if (notice) include(notice);
     const references = path.endsWith('.css') ? styleReferences(content.toString()) : path.endsWith('.svg') ? markupReferences(content.toString()) : [];
     for (const dependency of references) include(dependency, path);
