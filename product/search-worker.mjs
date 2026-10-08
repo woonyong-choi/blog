@@ -1,12 +1,10 @@
 // 큰 색인의 파싱과 정규화는 입력을 처리하는 화면 스레드 밖에서 실행한다.
 import { prepareIndex, searchDocuments, suggestions } from './search-model.mjs';
+import { loadSearchIndex } from './search-index-loader.mjs';
 
 let indexPromise;
 function loadIndex() {
-  return indexPromise ??= fetch('/search-index.json', { signal: AbortSignal.timeout(15_000) }).then(response => {
-    if (!response.ok) throw new Error('search index unavailable');
-    return response.json();
-  }).then(data => ({ ...data, entries: prepareIndex(data.entries) })).catch(error => { indexPromise = undefined; throw error; });
+  return indexPromise ??= loadSearchIndex().then(data => ({ ...data, entries: prepareIndex(data.entries) })).catch(error => { indexPromise = undefined; throw error; });
 }
 
 function visibleEntry({ normalized, text, keywords, ...entry }) { return entry; }

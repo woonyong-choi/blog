@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gzipSync } from 'node:zlib';
 
 import { readDocument, publicDocuments, searchEntry, FIELDS, blogDocuments, PAGE_SIZES } from './content-model.mjs';
 import { createMarkdown, escape } from './markdown.mjs';
@@ -22,7 +23,7 @@ const TOPICS = JSON.parse(readFileSync(join(ROOT, 'topics.json')));
 const THEME = join(ROOT, 'vendor/theme');
 const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
 const digest = value => createHash('sha256').update(value).digest('hex');
-const CLIENT_FILES = ['publication.js', 'document.js', 'search-model.mjs', 'search-view.mjs', 'search-client.mjs', 'search-worker.mjs', 'comments.js', 'flows.js', 'video.js'];
+const CLIENT_FILES = ['publication.js', 'document.js', 'search-model.mjs', 'search-view.mjs', 'search-client.mjs', 'search-worker.mjs', 'search-index-loader.mjs', 'comments.js', 'flows.js', 'video.js'];
 
 export function buildPublication({ origin = '', preview = true } = {}) {
   if (origin && !/^https?:\/\/[^/?#]+$/.test(origin)) throw new Error('invalid site origin');
@@ -110,7 +111,9 @@ function writeSite(output, documents, context) {
     mkdirSync(dirname(destination), { recursive: true });
     writeFileSync(destination, html);
   }
-  writeFileSync(join(OUTPUT, 'search-index.json'), JSON.stringify(index));
+  const indexJson = JSON.stringify(index);
+  writeFileSync(join(OUTPUT, 'search-index.json'), indexJson);
+  writeFileSync(join(OUTPUT, 'search-index.json.gz'), gzipSync(indexJson, { level: 9 }));
   mkdirSync(join(OUTPUT, 'blog'), { recursive: true });
   const posts = blogDocuments(documents).filter(page => !page.example);
   writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description>${posts.map(page => `<item><title>${escape(page.title)}</title><link>${escape(context.origin + page.route)}</link><guid isPermaLink="false">${page.id}</guid><pubDate>${new Date(page.publishedAt).toUTCString()}</pubDate><description>${escape(page.description)}</description></item>`).join('')}</channel></rss>`);
