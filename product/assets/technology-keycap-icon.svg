@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><style data-site-tokens="">:root{--color-paint-purple-stroke:#8c6aaa;--color-paint-purple-group-3:#dcd1e8;--color-paint-purple-ink:#704f8c}@media(prefers-color-scheme:dark){:root{--color-paint-purple-stroke:#b693d6;--color-paint-purple-group-3:#393042;--color-paint-purple-ink:#be9ade}}</style>
+  <path d="M22 12H42A11 11 0 0 1 53 23V42A11 11 0 0 1 42 53H22A11 11 0 0 1 11 42V23A11 11 0 0 1 22 12Z" fill="var(--color-paint-purple-stroke)"/>
+  <path d="M22 12H42A11 11 0 0 1 53 23V36A11 11 0 0 1 42 47H22A11 11 0 0 1 11 36V23A11 11 0 0 1 22 12Z" fill="var(--color-paint-purple-group-3)"/>
+  <g fill="none" stroke="var(--color-paint-purple-ink)" style="stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round">
+    <path d="M28.5 26H35.5V33H28.5Z"/>
+    <path d="M28.5 26V23.5A2.5 2.5 0 1 0 26 26H28.5"/>
+    <path d="M35.5 26V23.5A2.5 2.5 0 1 1 38 26H35.5"/>
+    <path d="M28.5 33V35.5A2.5 2.5 0 1 1 26 33H28.5"/>
+    <path d="M35.5 33V35.5A2.5 2.5 0 1 0 38 33H35.5"/>
+  </g>
+</svg>

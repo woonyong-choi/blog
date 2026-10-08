@@ -62,7 +62,7 @@ sections:
     type: technologies
     enabled: true
     icon:
-      src: /assets/technology-layers-icon.svg
+      src: /assets/technology-keycap-icon.svg
       alt: ""
     title: 함께 쓰는 기술
     description: 기술별 기록을 모았습니다.
