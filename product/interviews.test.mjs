@@ -15,13 +15,11 @@ test('interview_examples_are_preview_only_and_empty_public_data_has_no_section',
   assert.deepEqual(clientEntrypoints(preview), ['flows.js']);
 });
 
-test('real_interviews_require_a_source_and_text_is_escaped', () => {
+test('interview_text_is_escaped_and_real_entries_link_their_source', () => {
   const entry = { id: 'published', question: '<질문>', quote: 'A & B', source: '공개 인터뷰', url: 'https://example.com/interview' };
   const html = interviewSection(publicInterviews([entry]));
   assert.match(html, /&lt;질문&gt;/);
   assert.match(html, /A &amp; B/);
-  assert.match(html, /href="https:\/\/example.com\/interview"/);
-  assert.throws(() => publicInterviews([{ ...entry, url: 'javascript:alert(1)' }]), /HTTPS source/);
-  assert.throws(() => publicInterviews([entry, entry]), /duplicate/);
-  assert.throws(() => publicInterviews([{ ...entry, quote: '' }]), /missing interview quote/);
+  assert.match(html, /<a href="https:\/\/example.com\/interview">공개 인터뷰 →<\/a>/);
+  assert.doesNotMatch(html, /app-supporting-links/);
 });

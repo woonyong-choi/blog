@@ -1,0 +1,94 @@
+# 홈 화면 구성 파일. sections의 순서가 화면 순서이고, enabled: false로 섹션을 숨긴다.
+# 종류: hero, projects, technologies, interviews, contact. 같은 종류를 여러 번 쓸 수 있지만 id는 겹치면 안 된다.
+# 사진과 영상은 product/assets/ 또는 product/media/ 아래 파일(/assets/..., /media/...)이나 HTTPS 주소를 쓴다.
+# 사용법: docs/design/home-config.md
+
+sections:
+  # 히어로: 아이콘, 소개, 동영상, 포스터, 액션을 한 묶음으로 바꾼다.
+  - id: hero
+    type: hero
+    enabled: true
+    description: 흩어진 지식을 연결해, 다시 꺼내 쓸 수 있는 도구를 만듭니다.
+    icon:
+      src: /assets/hero-logo-things-io90.png
+      alt: Things 임시 로고
+    # image: 동영상이 없을 때 소개 아래에 큰 이미지를 보인다.
+    # image:
+    #   src: /assets/meettheallnewthings2-io75.jpg
+    #   alt: 설명
+    video:
+      src: /media/manta-code-blocks-intro.mp4
+      poster: /media/manta-code-blocks-poster.png
+      title: Manta Code Blocks
+    # action: 영상이 있으면 재생 버튼의 문구. href를 쓰면 그 주소로 가는 링크가 된다.
+    action:
+      label: 프로젝트 영상 보기
+
+  # 프로젝트: items에 항목을 추가하면 같은 모양의 소개 구간이 늘어난다. 지금은 더미 2개다.
+  - id: projects
+    type: projects
+    enabled: true
+    items:
+      - title: 프로젝트 예시 01
+        description: |
+          실제 프로젝트가 아닌 배치 확인용 예시입니다. 제목, 소개, 링크, 아이콘과 큰 이미지를 이 파일에서 바꿉니다.
+
+          빈 줄로 나눈 문단은 각각 하나의 문단으로 보입니다.
+        link:
+          label: 예시 링크
+          href: /wiki/
+        icon:
+          src: /assets/fancysection-icon-features-io70.png
+          alt: ""
+        image:
+          src: /assets/whatsnew-collage-io60.png
+          alt: 프로젝트 예시 01의 큰 이미지
+      - title: 프로젝트 예시 02
+        description: 두 번째 배치 확인용 예시입니다. enabled를 false로 두면 이 항목만 숨깁니다.
+        link:
+          label: 예시 링크
+          href: /blog/
+        icon:
+          src: /assets/fancysection-icon-design-io70.png
+          alt: ""
+        image:
+          src: /assets/meettheallnewthings2-io75.jpg
+          alt: 프로젝트 예시 02의 큰 이미지
+
+  # 기술: items는 아이콘 카탈로그의 이름이다. 아이콘을 누르면 같은 태그의 글로 간다.
+  - id: technologies
+    type: technologies
+    enabled: true
+    items: [c, csharp, python, typescript, javascript, kotlin, postgresql, kubernetes, docker, git]
+
+  # 인터뷰: items가 비어 있으면 미리보기에서만 예시 카드를 보인다.
+  # 실제 항목은 url(HTTPS 원문 주소)이 필요하고, 카드의 출처 문구가 그 링크가 된다.
+  #   - id: first-interview
+  #     question: 질문
+  #     quote: 답변 발췌
+  #     source: 출처 이름
+  #     url: https://example.com/interview
+  - id: interviews
+    type: interviews
+    enabled: true
+    items: []
+
+  # 연락: mode가 email이면 메일 버튼, newsletter이면 구독 입력을 보인다.
+  # endpoint(HTTPS 주소)를 쓰기 전에는 입력과 버튼이 비활성이고 어떤 주소도 저장하거나 보내지 않는다.
+  - id: contact
+    type: contact
+    enabled: true
+    mode: newsletter
+    title: 소식 받아보기
+    description: 새 글과 프로젝트 소식을 이메일로 보내 드립니다.
+    button: 구독
+    icon:
+      src: /assets/fancysection-icon-newsletter-io70.png
+      alt: ""
+    email: woonyong.contact@gmail.com
+    # endpoint: https://subscribe.example.com/form
+    # field: email
+    # note: 구독 안내 문구
+    # privacy:
+    #   label: 개인정보 처리방침
+    #   href: /privacy/

@@ -8,3 +8,4 @@
 | [기록 탐색과 화면 구성](design/knowledge-navigation.md) | 확정한 네 분야, 카드 배치, 전체 목록과 사이드바 깊이 |
 
 - [개인 사이트 발행](design/publication.md)
+- [홈 설정 가이드](design/home-config.md)

@@ -957,6 +957,11 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-home-stories { display: flex; flex-direction: column; gap: var(--site-gap-lg); padding-block: var(--site-landing-section); background: var(--site-card); }
 .app-home-rail { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; }
 .app-home-rail-footer { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; }
+.app-home-stories:has(+ .app-home-stories) { padding-bottom: 0; }
+.app-home-stories + .app-home-stories { padding-top: var(--site-gap-lg); }
+.app-newsletter :disabled { opacity: var(--site-landing-logo-opacity); cursor: default; }
+.app-newsletter button:disabled:hover { background: var(--site-link); box-shadow: none; }
+.app-landing-newsletter .app-caption { text-align: center; }
 .app-project-caption { display: flex; flex-direction: column; align-items: center; gap: var(--site-gap-sm); text-align: center; margin-top: var(--site-gap); font-size: var(--site-small-text); }
 .app-project-caption p { margin: 0; }
 .app-project-caption strong { color: var(--site-ink); }

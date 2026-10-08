@@ -13,7 +13,7 @@ import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
 import { iconAuditPages } from './icon-audit.mjs';
 import { publicationAssets } from './publication-assets.mjs';
-import { publicInterviews } from './interviews.mjs';
+import { loadHomeConfig } from './home-config.mjs';
 import { createTopicTrees } from './topic-navigation.mjs';
 import { browserScripts } from './browser-scripts.mjs';
 import { repositoryUrl } from './repository-links.mjs';
@@ -27,6 +27,7 @@ const CONFIG = JSON.parse(readFileSync(join(ROOT, 'publication.config.json')));
 const TOPICS = JSON.parse(readFileSync(join(ROOT, 'topics.json')));
 const THEME = join(ROOT, 'vendor/theme');
 const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
+const BRAND_NAMES = JSON.parse(readFileSync(join(THEME, 'assets/icons/brands/catalog.json'))).icons.map(item => item.name);
 const digest = value => createHash('sha256').update(value).digest('hex');
 
 export async function buildPublication({ origin = '', preview = true } = {}) {
@@ -40,7 +41,8 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const scripts = browserScripts(ROOT);
   const identity = siteIdentity(readFileSync(join(THEME, SITE_ICON.slice('/theme/'.length))), readFileSync(join(THEME, 'assets/controls/LICENSE')));
   const context = { config: CONFIG, repositoryUrl: repositoryUrl(CONFIG.repository), topics: TOPICS, topicTrees, origin, preview, identity, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')) };
-  context.interviews = publicInterviews(CONFIG.interviews?.length ? CONFIG.interviews : preview ? JSON.parse(readFileSync(join(ROOT, 'interview-examples.json'))) : [], preview);
+  context.home = loadHomeConfig(new Set(BRAND_NAMES));
+  context.interviewExamples = JSON.parse(readFileSync(join(ROOT, 'interview-examples.json')));
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
   add('/', CONFIG.name, personalHome(context));

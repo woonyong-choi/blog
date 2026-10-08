@@ -6,8 +6,7 @@ import { escape } from './markdown.mjs';
 import { contentIcon } from './content-icons.mjs';
 import { FIELDS } from './content-model.mjs';
 import { clientEntrypoints } from './publication-assets.mjs';
-import { projectVideo, technologySection, contactSection } from './home-sections.mjs';
-import { interviewSection } from './interviews.mjs';
+import { heroSection, projectsSection, technologySection, interviewsSection, contactSection } from './home-sections.mjs';
 import { articleToc } from './article-toc.mjs';
 import { publicationMetadata } from './publication-metadata.mjs';
 
@@ -66,11 +65,17 @@ export function knowledgeFields(documents, topics, field) {
   }).join('');
 }
 
+// 설정 목록의 순서가 곧 홈의 섹션 순서다.
+const HOME_SECTIONS = {
+  hero: heroSection,
+  projects: projectsSection,
+  technologies: section => technologySection(section, BRANDS),
+  interviews: (section, context) => interviewsSection(section, { examples: context.interviewExamples, preview: context.preview }),
+  contact: contactSection,
+};
+
 export function personalHome(context) {
-  const { config } = context;
-  const introduction = config.hero?.description ?? config.introduction;
-  const action = config.projectVideo?.src ? '<a class="app-remote" href="#project-video" data-remote="project-demo" data-scroll="down" data-language="ko" aria-label="프로젝트 영상 보기">' + controlImage('play', '', '') + '<span>프로젝트 영상 보기</span></a>' : '<a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a>';
-  return `<main id="main" class="app-landing"><section class="app-landing-hero"><div class="app-shell"><div class="app-hero-copy"><h1 class="app-sr">${escape(config.name)}</h1><img class="app-hero-logo" src="/assets/hero-logo-things-io90.png" alt="Things 임시 로고"><p class="app-hero-description">${escape(introduction)}</p><p class="app-hero-description">${action}</p></div></div></section>${projectVideo(config.projectVideo)}<div class="app-home-flow"><div class="app-home-stories">${technologySection(config.technologies, BRANDS)}${interviewSection(context.interviews)}</div>${contactSection(config.contact)}</div></main>`;
+  return `<main id="main" class="app-landing"><h1 class="app-sr">${escape(context.config.name)}</h1>${context.home.map(section => HOME_SECTIONS[section.type](section, context)).join('')}</main>`;
 }
 
 export function wikiLanding(documents, context, field, recent = '') {

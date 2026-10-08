@@ -1,10 +1,8 @@
 {
   "name": "최우녕",
   "description": "문서와 개발 흐름에서 반복되는 문제를 코드로 해결합니다.",
-  "introduction": "시스템의 동작을 공부하고, 기록을 다시 찾고 활용하는 도구를 만듭니다.",
   "github": "https://github.com/woonyong-choi",
   "profileSource": "https://github.com/woonyong-choi/woonyong-kr",
-  "interviews": [],
   "projects": [
     {
       "title": "Manta",
@@ -39,34 +37,6 @@
     "category": "Comments",
     "categoryId": "DIC_kwDOU8zFrc4DHTnu",
     "themeUrl": "https://cdn.jsdelivr.net/gh/woonyong-choi/blog@fd16b518f1e614cb69ccbd0e5126f21c32af944e/product/vendor/theme/assets/giscus.css"
-  },
-  "projectVideo": {
-    "title": "Manta Code Blocks",
-    "description": "기록한 코드를 바로 실행하고 확인하는 도구",
-    "src": "/media/manta-code-blocks-intro.mp4",
-    "poster": "/media/manta-code-blocks-poster.png",
-    "href": "https://github.com/woonyong-choi/manta-code-blocks"
-  },
-  "technologies": [
-    "c",
-    "csharp",
-    "python",
-    "typescript",
-    "javascript",
-    "kotlin",
-    "postgresql",
-    "kubernetes",
-    "docker",
-    "git"
-  ],
-  "contact": {
-    "email": "woonyong.contact@gmail.com",
-    "source": "https://docs.woonyong.com/resume/"
-  },
-  "hero": {
-    "eyebrow": "Backend Engineer",
-    "title": "기록을 연결하고,\n도구로 만듭니다.",
-    "description": "흩어진 지식을 연결해, 다시 꺼내 쓸 수 있는 도구를 만듭니다."
   },
   "repository": "woonyong-choi/blog"
 }
