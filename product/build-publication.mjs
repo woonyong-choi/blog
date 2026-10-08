@@ -11,6 +11,7 @@ import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
 import { iconAuditPages } from './icon-audit.mjs';
 import { publicationAssets } from './publication-assets.mjs';
+import { publicInterviews } from './interviews.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -19,7 +20,7 @@ const TOPICS = JSON.parse(readFileSync(join(ROOT, 'topics.json')));
 const THEME = join(ROOT, 'vendor/theme');
 const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
 const digest = value => createHash('sha256').update(value).digest('hex');
-const CLIENT_FILES = ['publication.js', 'document.js', 'search-model.mjs', 'search-view.mjs', 'search-client.mjs', 'search-worker.mjs', 'comments.js'];
+const CLIENT_FILES = ['publication.js', 'document.js', 'search-model.mjs', 'search-view.mjs', 'search-client.mjs', 'search-worker.mjs', 'comments.js', 'interviews.js'];
 
 export function buildPublication({ origin = '', preview = true } = {}) {
   if (origin && !/^https?:\/\/[^/?#]+$/.test(origin)) throw new Error('invalid site origin');
@@ -30,6 +31,7 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   const posts = blogDocuments(documents);
   renderDocuments(documents);
   const context = { config: CONFIG, topics: TOPICS, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest(CLIENT_FILES.map(file => readFileSync(join(ROOT, file), 'utf8')).join('\n')) };
+  context.interviews = publicInterviews(CONFIG.interviews?.length ? CONFIG.interviews : preview ? JSON.parse(readFileSync(join(ROOT, 'interview-examples.json'))) : [], preview);
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
   add('/', CONFIG.name, personalHome(documents, context, recentBlog(posts, TOPICS)));

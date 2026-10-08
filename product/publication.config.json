@@ -5,6 +5,7 @@
   "github": "https://github.com/woonyong-choi",
   "profileSource": "https://github.com/woonyong-choi/woonyong-kr",
   "features": { "panorama": false, "appFeatures": false, "newsletter": false },
+  "interviews": [],
   "portfolio": ["pintos", "lrn-sql", "k8s-clue", "woon-core"],
   "projects": [
     { "title": "Manta", "description": "Obsidian의 코드, 일정, 노트 관계와 다이어그램 작업을 위한 도구입니다.", "href": "https://github.com/woonyong-choi/manta-code-blocks", "icon": "project", "links": [

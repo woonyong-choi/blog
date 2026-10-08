@@ -1339,6 +1339,17 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-personal-footer { display: flex; flex-wrap: wrap; gap: var(--site-gap); align-items: center; justify-content: space-between; margin-top: var(--site-section); padding-block: var(--site-gap-lg); border-top: var(--site-border) solid var(--site-nav-line); }
 .app-personal-footer nav, .app-supporting-links { display: flex; flex-wrap: wrap; gap: var(--site-gap); font-size: var(--site-small-text); }
 .app-supporting-links { margin-top: var(--site-gap); }
+.app-interview-controls { display: flex; gap: var(--site-gap-xs); align-items: center; }
+.app-interview-controls button { padding: var(--site-gap-xs) var(--site-gap-sm); font-size: var(--site-small-text); color: var(--site-link); background: transparent; border: 0; border-radius: var(--site-button-radius); cursor: pointer; }
+.app-interview-controls button:hover { background: var(--site-help-hover); }
+.app-interview-controls button:disabled { color: var(--site-muted); cursor: default; }
+.app-interview-viewport { display: flex; gap: var(--site-gap); overflow-x: auto; padding: var(--site-gap-xs) var(--site-border) var(--site-gap); scrollbar-width: none; }
+.app-interview-viewport::-webkit-scrollbar { display: none; }
+.app-interview-group { display: flex; flex: none; gap: var(--site-gap); margin: 0; padding: 0; list-style: none; }
+.app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: min(calc(var(--site-body-width) / 2), calc(100vw - var(--site-gap-lg))); padding: var(--site-landing-quote-padding); border-radius: var(--site-landing-radius); background: var(--site-card); box-shadow: var(--site-landing-review-shadow); }
+.app-interview-question { margin: 0 0 var(--site-gap-sm); font-size: var(--site-small-text); font-weight: var(--site-weight-medium); color: var(--site-muted); }
+.app-interview-card blockquote { margin: 0 0 var(--site-gap); padding: 0; font-size: var(--site-body-text); font-style: normal; line-height: var(--site-landing-quote-line); color: var(--site-ink); border: 0; word-break: keep-all; overflow-wrap: anywhere; }
+.app-interview-source { margin: auto 0 0; font-size: var(--site-landing-quote-meta); line-height: var(--site-line-compact); color: var(--site-muted); }
 .app-page-heading { margin: var(--site-gap-lg) 0 var(--site-gap-sm); font-size: var(--site-section-title); line-height: var(--site-line-title); }
 .app-page-description { color: var(--site-muted); margin-bottom: var(--site-gap-lg); }
 .app-knowledge-section { margin-block: var(--site-support-gap); }

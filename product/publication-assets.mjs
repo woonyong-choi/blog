@@ -7,6 +7,7 @@ export function clientEntrypoints(body) {
   if (/<[^>]+\sdata-public-search(?:[\s=>])/.test(body)) scripts.push('publication.js');
   if (/<[^>]+\sclass="[^"]*\bapp-document-nav\b/.test(body) || /<[^>]+\sdata-(?:gallery|tabs|copy|keyboard|tooltip-trigger)(?:[\s=>])/.test(body)) scripts.push('document.js');
   if (/<[^>]+\sdata-comments(?:[\s=>])/.test(body)) scripts.push('comments.js');
+  if (/<[^>]+\sdata-interview-rail(?:[\s=>])/.test(body)) scripts.push('interviews.js');
   return scripts;
 }
 
