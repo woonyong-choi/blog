@@ -70,4 +70,10 @@ function validateThumbnail(thumbnail) {
   if (thumbnail === undefined) return;
   if (!thumbnail || !/^\/media\/[a-z0-9][a-z0-9./-]*\.(?:png|jpg|webp|svg)$/.test(thumbnail.src) || thumbnail.src.includes('..')) throw new Error('invalid thumbnail path');
   if (typeof thumbnail.alt !== 'string') throw new Error('missing thumbnail alternative');
+  if (thumbnail.position !== undefined) {
+    for (const axis of ['x', 'y']) {
+      const value = thumbnail.position?.[axis];
+      if (!Number.isFinite(value) || value < 0 || value > 100) throw new Error('invalid thumbnail position');
+    }
+  }
 }

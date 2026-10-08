@@ -33,6 +33,17 @@ test('publication_contract_accepts_only_optional_slug_parents', () => {
   }
 });
 
+// #65: 자르기 좌표는 콘텐츠 데이터이며 임의 CSS 문자열을 허용하지 않는다.
+test('publication_contract_accepts_only_finite_thumbnail_coordinates', () => {
+  const thumbnail = { src: '/media/cover.webp', alt: '검색 화면' };
+  for (const position of [undefined, { x: 0, y: 100 }, { x: 50, y: 50 }, { x: 37.5, y: 60.49 }]) {
+    assert.deepEqual(readDocument(source({ thumbnail: { ...thumbnail, position } }), TAGS).thumbnail.position, position);
+  }
+  for (const position of [null, {}, [], 'top', { x: 50 }, { x: -1, y: 50 }, { x: 50, y: 101 }, { x: '50', y: 50 }, { x: 50, y: Infinity }, { x: '0; color:red', y: 50 }]) {
+    assert.throws(() => readDocument(source({ thumbnail: { ...thumbnail, position } }), TAGS), /invalid thumbnail position/);
+  }
+});
+
 test('blog_pagination_keeps_all_posts_at_approved_boundaries', () => {
   assert.deepEqual(PAGE_SIZES, { preview: 3, cards: 12, feed: 4, search: 12 });
   for (const count of [0, 1, 3, 4, 5, 8, 9, 12, 13]) {

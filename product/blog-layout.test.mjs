@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
+import { blogCard, recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 
 const TAGS = { os: { label: '운영체제' } };
 function posts(count) {
@@ -27,4 +27,20 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.equal((feed.match(/class="app-blog-post"/g) ?? []).length, 4);
   assert.match(feed, /href="\/blog\/page\/2\/"/);
   assert.match(feed, /<h3[^>]* id="post-0-section">/);
+});
+
+// #65: 최근 글과 전체 목록은 이미지 위치와 제목·태그의 독립 링크를 공유한다.
+test('blog_cards_preserve_thumbnail_position_and_separate_links', () => {
+  const post = { ...posts(1)[0], thumbnail: { src: '/media/cover.webp', alt: '상단의 "검색" 입력창', position: { x: 37.5, y: 0 } } };
+  for (const html of [recentBlog([post], TAGS), blogArchive([post], TAGS, 1)]) {
+    assert.match(html, /object-position:37\.5% 0%/);
+    assert.match(html, /alt="상단의 &quot;검색&quot; 입력창"/);
+    assert.match(html, /<a class="app-blog-cover"[^>]+><img[^>]+><\/a>/);
+    assert.match(html, /href="\/tags\/os\/\?type=blog"/);
+  }
+  const centered = blogCard({ ...post, thumbnail: { src: post.thumbnail.src, alt: '' } }, TAGS);
+  assert.doesNotMatch(centered, /object-position/);
+  const fallback = blogCard({ ...post, thumbnail: undefined }, TAGS);
+  assert.match(fallback, /app-content-icon/);
+  assert.doesNotMatch(fallback, /cover.webp|object-position/);
 });
