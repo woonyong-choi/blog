@@ -112,6 +112,7 @@ function writeSite(output, documents, context) {
     writeFileSync(destination, html);
   }
   const indexJson = JSON.stringify(index);
+  writeFileSync(join(OUTPUT, 'search-version.json'), JSON.stringify({ revision: digest(indexJson) }));
   writeFileSync(join(OUTPUT, 'search-index.json'), indexJson);
   writeFileSync(join(OUTPUT, 'search-index.json.gz'), gzipSync(indexJson, { level: 9 }));
   mkdirSync(join(OUTPUT, 'blog'), { recursive: true });

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { gzipSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 
 import { loadSearchIndex } from './search-index-loader.mjs';
 
@@ -57,4 +58,84 @@ test('loadSearchIndex_abort_during_body_does_not_start_fallback', async context 
   }));
   await assert.rejects(loadSearchIndex(controller.signal), { name: 'AbortError' });
   assert.equal(fetchMock.mock.calls.length, 1);
+});
+
+function cacheFixture(context, { denyOpen = false, denyWrite = false } = {}) {
+  const entries = new Map();
+  const cache = {
+    async match(key) { return entries.get(key)?.clone(); },
+    async put(key, response) { if (denyWrite) throw new Error('quota exceeded'); entries.set(key, response.clone()); },
+    async delete(key) { return entries.delete(typeof key === 'string' ? key : new URL(key.url).pathname + new URL(key.url).search); },
+    async keys() { return [...entries.keys()].map(key => ({ url: `https://site.example${key}` })); },
+  };
+  const previous = Object.getOwnPropertyDescriptor(globalThis, 'caches');
+  Object.defineProperty(globalThis, 'caches', { configurable: true, value: { async open(name) {
+    assert.equal(name, 'publication-search-v1');
+    if (denyOpen) throw new Error('storage denied');
+    return cache;
+  } } });
+  context.after(() => { if (previous) Object.defineProperty(globalThis, 'caches', previous); else delete globalThis.caches; });
+  return entries;
+}
+
+function revisionOf(data) { return createHash('sha256').update(JSON.stringify(data)).digest('hex'); }
+
+// #79: 페이지마다 새 Worker를 만들어도 버전 확인 뒤 같은 본문 색인을 재사용한다.
+test('loadSearchIndex_reuses_verified_cache_and_refreshes_changed_content', async context => {
+  const cached = cacheFixture(context);
+  let current = INDEX;
+  const fetchMock = context.mock.method(globalThis, 'fetch', async url => new Response(
+    url === '/search-version.json' ? JSON.stringify({ revision: revisionOf(current) }) : gzipSync(JSON.stringify(current))));
+  assert.deepEqual(await loadSearchIndex(), INDEX);
+  assert.deepEqual(await loadSearchIndex(), INDEX);
+  assert.equal(fetchMock.mock.calls.filter(call => call.arguments[0].includes('.gz')).length, 1);
+  assert.equal(fetchMock.mock.calls.filter(call => call.arguments[0] === '/search-version.json').length, 2);
+  assert.equal(fetchMock.mock.calls[0].arguments[1].cache, 'no-store');
+  current = { entries: [], tags: INDEX.tags };
+  assert.deepEqual(await loadSearchIndex(), current);
+  assert.equal(fetchMock.mock.calls.filter(call => call.arguments[0].includes('.gz')).length, 2);
+  assert.deepEqual([...cached.keys()], [`/search-index.json?revision=${revisionOf(current)}`]);
+});
+
+test('loadSearchIndex_corrupt_cache_recovers_and_storage_failures_do_not_block_results', async context => {
+  const cached = cacheFixture(context);
+  const key = `/search-index.json?revision=${revisionOf(INDEX)}`;
+  cached.set(key, new Response(JSON.stringify({ ...INDEX, entries: [] })));
+  const fetchMock = context.mock.method(globalThis, 'fetch', async url => new Response(
+    url === '/search-version.json' ? JSON.stringify({ revision: revisionOf(INDEX) }) : gzipSync(JSON.stringify(INDEX))));
+  assert.deepEqual(await loadSearchIndex(), INDEX);
+  assert.equal(fetchMock.mock.calls.length, 2);
+  assert.deepEqual(await cached.get(key).json(), INDEX);
+});
+
+test('loadSearchIndex_storage_open_or_write_denial_uses_network', async context => {
+  for (const options of [{ denyOpen: true }, { denyWrite: true }]) {
+    await context.test(JSON.stringify(options), async child => {
+      const cached = cacheFixture(child, options);
+      child.mock.method(globalThis, 'fetch', async url => new Response(url === '/search-version.json'
+        ? JSON.stringify({ revision: revisionOf(INDEX) }) : gzipSync(JSON.stringify(INDEX))));
+      assert.deepEqual(await loadSearchIndex(), INDEX);
+      assert.equal(cached.size, 0);
+    });
+  }
+});
+
+test('loadSearchIndex_missing_version_falls_back_without_trusting_saved_content', async context => {
+  cacheFixture(context);
+  const fetchMock = context.mock.method(globalThis, 'fetch', async url => url === '/search-version.json'
+    ? new Response('', { status: 404 }) : new Response(gzipSync(JSON.stringify(INDEX))));
+  assert.deepEqual(await loadSearchIndex(), INDEX);
+  assert.deepEqual(fetchMock.mock.calls.map(call => call.arguments[0]), ['/search-version.json', '/search-index.json.gz']);
+});
+
+test('loadSearchIndex_mismatched_network_version_is_not_cached_and_retry_reads_new_version', async context => {
+  const cached = cacheFixture(context);
+  let revision = '0'.repeat(64);
+  context.mock.method(globalThis, 'fetch', async url => new Response(url === '/search-version.json'
+    ? JSON.stringify({ revision }) : url.includes('.gz') ? gzipSync(JSON.stringify(INDEX)) : JSON.stringify(INDEX)));
+  await assert.rejects(loadSearchIndex(), /version mismatch/);
+  assert.equal(cached.size, 0);
+  revision = revisionOf(INDEX);
+  assert.deepEqual(await loadSearchIndex(), INDEX);
+  assert.equal(cached.size, 1);
 });
