@@ -63,6 +63,7 @@ main {
 .gsc-main .gsc-comment-box-tabs button.color-bg-canvas { color: #2576eb; background: #ebf1ff; font-weight: 600; }
 .gsc-main .gsc-comment-box-main { padding: 0; margin: 0; }
 .gsc-main .gsc-comment-box-write { border: 0; border-radius: 0; background: transparent; }
+.gsc-main .gsc-comment-box-write:focus-within { box-shadow: none; outline: 0; }
 .gsc-main .gsc-comment-box-preview { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #f6f7fa; border: 0; border-radius: 12px; padding: 18px; }
 .gsc-main .gsc-comment-box-textarea { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #edeef1; border: 1px solid transparent; border-radius: 12px; padding: 18px; box-shadow: none; }
 .gsc-main .gsc-comment-box-textarea:focus { outline: 0; border-color: transparent; box-shadow: 0 0 0 3px rgb(100,159,255); }
