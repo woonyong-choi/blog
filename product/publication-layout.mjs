@@ -28,7 +28,7 @@ export function documentShell(page, body, context) {
 }
 
 export function searchBox({ large = false, query = '' } = {}) {
-  return `<section class="app-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">위키와 블로그 검색</label><div class="app-search-field"><input class="app-search-input" id="site-query" name="q" type="search" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-reset" type="button" data-clear-query aria-label="검색어 지우기" hidden>지우기</button><button class="app-search-submit" type="submit">검색</button></div></form><div class="app-search-suggestions" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p><noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/wiki/">위키 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
+  return `<section class="app-search app-public-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">위키와 블로그 검색</label><div class="app-search-field"><img class="app-search-icon" src="/assets/quickfind-loupe.svg" alt=""><input class="app-search-input" id="site-query" name="q" type="text" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-clear" type="button" data-clear-query aria-label="검색어 지우기" hidden><img src="/assets/quickfind-clear.svg" alt=""></button></div></form><div class="app-search-panel" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p><noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/wiki/">위키 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
 }
 
 export function tagLinks(page, tags, limit = Infinity) {
@@ -75,7 +75,7 @@ export function articlePage(page, documents, context, comments = '') {
 }
 
 export function resultRow(page, tags) {
-  return `<article class="app-result-row">${subjectIcon(page.contentIcon, 'small')}<div><a class="app-result-title" href="${page.route}">${escape(page.title)}</a><span class="app-result-type">${page.type === 'wiki' ? 'Wiki' : 'Blog'}${page.example ? ' · 예시' : ''}</span><p>${escape(page.description)}</p>${tagLinks(page, tags)}</div></article>`;
+  return `<article class="app-search-entry"><a class="app-search-result-link" href="${page.route}">${subjectIcon(page.contentIcon, 'small')}<strong>${escape(page.title)}</strong><span class="app-search-result-type">${page.type === 'wiki' ? 'Wiki' : 'Blog'}${page.example ? ' · 예시' : ''}</span><p>${escape(page.description)}</p></a><div class="app-search-result-tags">${page.tags.map(id => `<a href="/tags/${id}/?type=${page.type}">${escape(tags[id].label)}</a>`).join('')}</div></article>`;
 }
 
 export function dateLine(page) {

@@ -1355,14 +1355,26 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-project-grid { display: grid; gap: var(--site-gap); }
 .app-project-entry { display: grid; gap: var(--site-gap); }
 .app-project-links { display: flex; flex-direction: column; justify-content: center; gap: var(--site-gap-sm); font-size: var(--site-small-text); }
-.app-publication .app-search { margin-block: var(--site-gap-lg); max-width: var(--site-body-width); }
-.app-publication .app-search-field { display: flex; align-items: center; gap: var(--site-gap-xs); }
-.app-publication .app-search-input { min-width: 0; flex: 1; padding-inline: var(--site-gap-sm); }
-.app-search-submit, .app-search-reset { flex: none; padding: var(--site-gap-xs); border: 0; background: transparent; color: var(--site-link); font-size: var(--site-small-text); cursor: pointer; }
-.app-search-suggestions { padding: var(--site-gap-sm); border: var(--site-border) solid var(--site-line); border-radius: var(--site-help-radius); background: var(--site-card); }
-.app-search-suggestions a { display: block; padding: var(--site-gap-xs); text-decoration: none; }
-.app-search-suggestions a[aria-selected=true], .app-search-suggestions a:hover { background: var(--site-help-hover); border-radius: var(--site-button-radius); }
-.app-suggestion-label { margin: var(--site-gap-sm) var(--site-gap-xs) 0; color: var(--site-muted); font-size: var(--site-small-text); }
+.app-public-search.app-search { margin-block: var(--site-article-search-top) var(--site-gap-lg); max-width: var(--site-body-width); }
+.app-public-search.app-search.is-prominent { margin-block: var(--site-search-top) var(--site-search-bottom); }
+.app-public-search .app-search-input { box-sizing: border-box; }
+.app-public-search.is-prominent .app-search-input { padding: var(--site-search-input-padding); font-size: var(--site-search-input-font); border-radius: var(--site-search-input-radius); }
+.app-public-search.is-prominent .app-search-icon { width: var(--site-search-icon-size); }
+.app-search-panel { margin: var(--site-search-results-margin); padding: var(--site-search-results-padding); background: var(--site-search-results-background); box-shadow: var(--site-search-results-shadow); border-radius: var(--site-search-results-radius); font-size: var(--site-search-result-size); line-height: var(--site-feature-line); }
+.app-search-result-link { position: relative; display: block; padding: var(--site-search-result-padding); font-size: var(--site-search-result-size); line-height: var(--site-feature-line); border-radius: var(--site-search-result-radius); color: var(--site-search-result-color); text-decoration: none; overflow-wrap: anywhere; }
+.app-search-result-link > strong { font-weight: var(--site-weight-medium); }
+.app-search-result-link > p { margin: 0; color: var(--site-search-result-muted); font-size: inherit; line-height: inherit; }
+.app-search-result-link > .app-content-icon { position: absolute; left: var(--site-search-results-padding); top: var(--site-search-result-icon-top); }
+.app-search-result-link::after { content: ''; position: absolute; top: 0; bottom: 0; right: var(--site-search-results-padding); width: var(--site-gap-sm); background: url('../assets/quickfind-chevron.svg') center / var(--site-help-grouped-chevron) no-repeat; opacity: var(--site-help-chevron-opacity); }
+.app-search-result-link:hover, .app-search-result-link:focus-visible, .app-search-result-link[aria-selected=true], .app-search-choice:hover, .app-search-choice[aria-selected=true] { background: var(--site-search-hover); text-decoration: none; }
+.app-search-result-link:active, .app-search-choice:active { background: var(--site-search-active); }
+.app-search-result-link + .app-search-result-link, .app-search-entry + .app-search-entry { border-top: var(--site-border) solid var(--site-search-result-line); }
+.app-search-result-type { margin-left: var(--site-gap-xs); font-size: var(--site-small-text); color: var(--site-search-result-muted); }
+.app-search-result-tags { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); padding: var(--site-search-result-padding); padding-top: 0; font-size: var(--site-small-text); }
+.app-search-result-tags a { color: var(--site-search-result-muted); }
+.app-search-panel mark { background: var(--site-search-match); color: inherit; }
+.app-search-choice { display: inline-block; margin: var(--site-search-results-padding); padding: var(--site-gap-xs); border-radius: var(--site-search-result-radius); color: var(--site-search-result-color); font-size: var(--site-small-text); text-decoration: none; }
+.app-suggestion-label { margin: var(--site-gap-sm) var(--site-search-results-padding) 0; color: var(--site-muted); font-size: var(--site-small-text); }
 .app-document-layout { min-width: 0; }
 .app-document { min-width: 0; max-width: var(--site-body-width); margin-inline: auto; overflow-wrap: anywhere; }
 .app-document-header { margin-bottom: var(--site-gap-lg); }
@@ -1381,11 +1393,6 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-tags-more > summary { cursor: pointer; }
 .app-tags-more > .app-tags { margin-top: var(--site-gap-xs); }
 .app-example-notice { padding: var(--site-gap-sm); border-left: var(--site-outline) solid var(--site-line); color: var(--site-muted); font-size: var(--site-small-text); }
-.app-result-row { display: flex; gap: var(--site-gap-sm); padding-block: var(--site-gap); border-bottom: var(--site-border) solid var(--site-line); }
-.app-result-row > div { min-width: 0; flex: 1; }
-.app-result-title { font-weight: var(--site-weight-medium); }
-.app-result-type { display: inline-block; margin-left: var(--site-gap-sm); font-size: var(--site-small-text); color: var(--site-muted); }
-.app-result-row p { margin: var(--site-gap-xs) 0 var(--site-gap-sm); color: var(--site-muted); font-size: var(--site-small-text); }
 .app-source-link, .app-back-link { font-size: var(--site-small-text); }
 .app-related { margin-top: var(--site-support-gap); }
 .app-blog-card { min-width: 0; overflow: hidden; border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-help-radius); background: var(--site-help-bg); }

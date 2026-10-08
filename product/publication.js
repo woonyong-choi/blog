@@ -13,9 +13,10 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
   const status = box.querySelector('[data-search-status]');
   const page = document.querySelector('[data-search-page]');
   const state = () => readSearchState(location.search, page?.dataset.tag);
-  let revision = 0; let composing = false; let active = -1; let resultStatus = '';
+  let revision = 0; let resultRevision = 0; let composing = false; let active = -1; let resultStatus = '';
+  if (page) { input.setAttribute('role', 'searchbox'); input.removeAttribute('aria-autocomplete'); input.removeAttribute('aria-controls'); input.removeAttribute('aria-expanded'); }
   const failureStatus = '검색 자료를 불러오지 못했습니다. 다시 시도해 주세요.';
-  function close() { output.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); active = -1; status.textContent = resultStatus; }
+  function close() { output.hidden = true; if (!page) input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); active = -1; status.textContent = resultStatus; }
   function restorePosition() {
     const position = history.state?.searchPosition;
     if (page && position) requestAnimationFrame(() => window.scrollTo(position.x, position.y));
@@ -24,6 +25,12 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
     const request = ++revision;
     clear.hidden = !input.value;
     close();
+    if (page) {
+      const next = { ...state(), query: input.value, page: 1 };
+      const url = new URL(location.href); url.search = new URL(searchUrl(next), location.origin).search;
+      history.replaceState({ ...history.state, searchPosition: null }, '', url);
+      results(); return;
+    }
     if (!input.value.trim()) return;
     status.textContent = '검색 중입니다.';
     try {
@@ -36,24 +43,25 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
   }
   async function results() {
     if (!page) return;
+    const request = ++resultRevision;
     const selected = state(); input.value = selected.query; clear.hidden = !input.value;
     status.textContent = '검색 결과를 불러오는 중입니다.';
     try {
       const { result, tags } = await queryIndex('results', selected);
+      if (request !== resultRevision || composing) return;
       renderResults(page, result, selected, tags);
       resultStatus = `검색 결과 ${result.counts[selected.type]}개`;
       status.textContent = resultStatus;
       restorePosition();
-    } catch { showSearchError(page.querySelector('[data-full-results]'), results); resultStatus = failureStatus; status.textContent = resultStatus; }
+    } catch { if (request === resultRevision) { showSearchError(page.querySelector('[data-full-results]'), results); resultStatus = failureStatus; status.textContent = resultStatus; } }
   }
-  input.addEventListener('compositionstart', () => { composing = true; revision++; close(); });
+  input.addEventListener('compositionstart', () => { composing = true; revision++; resultRevision++; close(); });
   input.addEventListener('compositionend', () => { composing = false; propose(); });
   input.addEventListener('input', event => { if (!composing && !event.isComposing) propose(); });
-  input.addEventListener('focus', () => { if (input.value) propose(); });
   clear.addEventListener('click', () => {
     revision++; input.value = ''; clear.hidden = true; close();
-    if (page) location.assign(searchUrl({ ...state(), query: '', page: 1 }));
-    else input.focus();
+    if (page) propose();
+    input.focus();
   });
   input.addEventListener('keydown', event => {
     if (composing || event.isComposing) return;
@@ -66,8 +74,12 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
       input.setAttribute('aria-activedescendant', options[active].id); options[active].scrollIntoView({ block: 'nearest' });
     } else if (event.key === 'Enter' && !output.hidden && active >= 0) { event.preventDefault(); options[active].click(); }
   });
-  form.addEventListener('submit', event => { event.preventDefault(); if (!composing) location.assign(searchUrl({ ...state(), query: input.value, page: 1 })); });
-  document.addEventListener('click', event => { if (!box.contains(event.target)) { revision++; close(); } });
+  form.addEventListener('submit', event => { event.preventDefault(); if (!composing) propose(); });
+  output.addEventListener('click', event => {
+    const suggestion = event.target.closest('[data-query]');
+    if (!suggestion) return;
+    event.preventDefault(); input.value = suggestion.dataset.query; input.focus(); propose();
+  });
   window.addEventListener('pagehide', () => {
     if (page) history.replaceState({ ...history.state, searchPosition: { x: window.scrollX, y: window.scrollY } }, '');
   });

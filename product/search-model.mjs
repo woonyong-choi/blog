@@ -55,7 +55,7 @@ export function suggestions(entries, tags, state) {
   const queries = [...new Set(result.all.flatMap(entry => [entry.title, ...entry.keywords]))].filter(value => normalizeQuery(value).includes(query) && normalizeQuery(value) !== query).slice(0, 5);
   const available = searchDocuments(entries, { ...state, query: '', page: 1 }).all;
   const matchingTags = Object.entries(tags).filter(([id, tag]) => !state.tags.includes(id) && [tag.label, ...(tag.aliases ?? [])].some(value => normalizeQuery(value).includes(query)) && available.some(entry => entry.tags.includes(id))).slice(0, 5);
-  return { queries, tags: matchingTags, entries: result.all.slice(0, 6), count: result.all.length };
+  return { queries, tags: matchingTags, entries: result.entries.slice(0, 6), count: result.all.length };
 }
 
 function scoreEntry(entry, terms, query) {
