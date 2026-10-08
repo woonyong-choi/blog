@@ -1,6 +1,4 @@
-// 본문 조작은 정적 HTML 위에서 필요한 기능만 점진적으로 활성화한다.
-import './document.js';
-import './comments.js';
+// 정적 탐색 위에 검색 추천과 필터 결과를 연결한다.
 import { readSearchState, searchUrl } from './search-model.mjs';
 import { queryIndex } from './search-client.mjs';
 import { renderResults, renderSuggestions, showSearchError } from './search-view.mjs';

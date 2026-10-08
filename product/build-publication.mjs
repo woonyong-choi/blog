@@ -1,6 +1,6 @@
 // 공개 입력을 정적 페이지와 검색 색인으로 만들며 깨진 내부 연결을 차단한다.
 import { createHash } from 'node:crypto';
-import { readFileSync, readdirSync, writeFileSync, mkdirSync, cpSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,6 +10,7 @@ import { documentShell, personalHome, wikiLanding, articlePage, projectSection, 
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
 import { iconAuditPages } from './icon-audit.mjs';
+import { publicationAssets } from './publication-assets.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -87,39 +88,30 @@ function verifyTheme() {
 function writeSite(output, documents, context) {
   rmSync(OUTPUT, { recursive: true, force: true });
   mkdirSync(OUTPUT, { recursive: true });
-  cpSync(THEME, join(OUTPUT, 'theme'), { recursive: true });
   for (const file of CLIENT_FILES) {
     let source = readFileSync(join(ROOT, file), 'utf8');
     for (const dependency of CLIENT_FILES) source = source.replaceAll(`'./${dependency}'`, `'./${dependency}?v=${context.scriptHash}'`);
     writeFileSync(join(OUTPUT, file), source);
   }
-  const media = new Set([...output.values()].flatMap(html => [...html.matchAll(/(?:src|poster)="\/media\/([a-zA-Z0-9./_-]+)"/g)].map(match => match[1])));
-  for (const name of media) {
-    if (name.includes('..') || !existsSync(join(ROOT, 'media', name))) throw new Error(`invalid publication media: ${name}`);
-    mkdirSync(dirname(join(OUTPUT, 'media', name)), { recursive: true });
-    cpSync(join(ROOT, 'media', name), join(OUTPUT, 'media', name));
-  }
-  const assets = new Set();
-  const css = readFileSync(join(THEME, 'styles.css'), 'utf8');
-  for (const [, name] of css.matchAll(/\.\.\/assets\/([\w.-]+)/g)) assets.add(name);
-  for (const html of output.values()) for (const [, name] of html.matchAll(/(?:src|poster)="\/assets\/([\w.-]+)/g)) assets.add(name);
-  for (const name of assets) {
-    if (!existsSync(join(ROOT, 'assets', name))) throw new Error(`missing asset: ${name}`);
-    mkdirSync(join(OUTPUT, 'assets'), { recursive: true });
-    cpSync(join(ROOT, 'assets', name), join(OUTPUT, 'assets', name));
+  const index = { entries: documents.map(page => ({ ...searchEntry(page, TOPICS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TOPICS };
+  const assets = publicationAssets(output, index.entries, path => readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path)));
+  for (const [path, content] of assets) {
+    const destination = join(OUTPUT, path);
+    mkdirSync(dirname(destination), { recursive: true });
+    writeFileSync(destination, content);
   }
   for (const [route, html] of output) {
     const destination = join(OUTPUT, route, 'index.html');
     mkdirSync(dirname(destination), { recursive: true });
     writeFileSync(destination, html);
   }
-  writeFileSync(join(OUTPUT, 'search-index.json'), JSON.stringify({ entries: documents.map(page => ({ ...searchEntry(page, TOPICS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TOPICS }));
+  writeFileSync(join(OUTPUT, 'search-index.json'), JSON.stringify(index));
   mkdirSync(join(OUTPUT, 'blog'), { recursive: true });
   const posts = blogDocuments(documents).filter(page => !page.example);
   writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description>${posts.map(page => `<item><title>${escape(page.title)}</title><link>${escape(context.origin + page.route)}</link><guid isPermaLink="false">${page.id}</guid><pubDate>${new Date(page.publishedAt).toUTCString()}</pubDate><description>${escape(page.description)}</description></item>`).join('')}</channel></rss>`);
   writeFileSync(join(OUTPUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...output.keys()].filter(route => route !== '/search/').map(route => `<url><loc>${escape(context.origin + route)}</loc></url>`).join('')}</urlset>`);
   validateOutput(output);
-  writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, themeHash: context.themeHash, routes: [...output.keys()] }, null, 2));
+  writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, themeHash: context.themeHash, assets: { files: assets.size, bytes: [...assets.values()].reduce((sum, content) => sum + content.length, 0) }, routes: [...output.keys()] }, null, 2));
   writeFileSync(join(OUTPUT, 'robots.txt'), context.preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${context.origin}/sitemap.xml\n`);
 }
 

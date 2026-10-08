@@ -1,0 +1,46 @@
+// 발행 HTML과 런타임 색인의 의존 파일만 복사 대상으로 모은다.
+const ORIGIN = 'https://publication.invalid';
+const ASSET_ROOTS = ['/theme/', '/assets/', '/media/'];
+
+export function clientEntrypoints(body) {
+  const scripts = [];
+  if (/<[^>]+\sdata-public-search(?:[\s=>])/.test(body)) scripts.push('publication.js');
+  if (/<[^>]+\sclass="[^"]*\bapp-document-nav\b/.test(body) || /<[^>]+\sdata-(?:gallery|tabs|copy|keyboard|tooltip-trigger)(?:[\s=>])/.test(body)) scripts.push('document.js');
+  if (/<[^>]+\sdata-comments(?:[\s=>])/.test(body)) scripts.push('comments.js');
+  return scripts;
+}
+
+function markupReferences(source) {
+  return [...source.matchAll(/\b(?:src|href|poster)="([^"]+)"/g)].map(match => match[1]);
+}
+
+function styleReferences(source) {
+  const urls = [...source.matchAll(/url\(\s*(?:"([^"]+)"|'([^']+)'|([^\s)]+))\s*\)/g)].map(match => match[1] ?? match[2] ?? match[3]);
+  const imports = [...source.matchAll(/@import\s+["']([^"']+)["']/g)].map(match => match[1]);
+  return [...urls, ...imports];
+}
+
+export function publicationAssets(pages, searchEntries, readAsset) {
+  const files = new Map();
+  function include(reference, from = '/') {
+    if (!reference || reference.startsWith('#')) return;
+    const url = new URL(reference, ORIGIN + from);
+    if (url.origin !== ORIGIN) return;
+    const path = decodeURIComponent(url.pathname);
+    if (!ASSET_ROOTS.some(root => path.startsWith(root))) {
+      if (ASSET_ROOTS.some(root => from.startsWith(root))) throw new Error(`asset dependency outside publication roots: ${reference}`);
+      return;
+    }
+    if (path.includes('\\') || path.split('/').some(part => part === '..' || part === '.')) throw new Error(`invalid publication asset: ${reference}`);
+    if (files.has(path)) return;
+    const content = readAsset(path);
+    files.set(path, content);
+    const references = path.endsWith('.css') ? styleReferences(content.toString()) : path.endsWith('.svg') ? markupReferences(content.toString()) : [];
+    for (const dependency of references) include(dependency, path);
+  }
+  for (const [route, html] of pages) for (const reference of markupReferences(html)) include(reference, route);
+  for (const entry of searchEntries) include(entry.iconUrl);
+  // iframe에서 직접 읽는 테마는 부모 HTML에 stylesheet 링크가 없다.
+  include('/theme/assets/giscus.css');
+  return files;
+}
