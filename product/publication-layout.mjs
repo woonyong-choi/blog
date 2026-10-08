@@ -77,7 +77,7 @@ export function projectSection(projects, hasMore = false) {
 
 export function articlePage(page, documents, context, comments = '') {
   const related = documents.filter(other => other.id !== page.id && other.tags.some(tag => page.tags.includes(tag))).slice(0, 3);
-  return `<main id="main" class="app-shell app-document-shell">${searchBox()}<div class="app-document-layout">${topicNavigation(page, documents, context.topics)}<article class="app-document"><header class="app-document-header"><p class="app-eyebrow">${page.type === 'wiki' ? 'Wiki' : 'Blog'}${page.example ? ' · 예시 글' : ''}</p><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : ''}</div>${tableOfContents(page)}<div class="app-prose app-document-body">${page.html}</div>${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="https://github.com/woonyong-choi/blog/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2><div class="app-related-grid">${related.map(other => relatedCard(other, context.topics)).join('')}</div></section>` : ''}</article></div></main>`;
+  return `<main id="main" class="app-shell app-document-shell">${searchBox()}<div class="app-document-layout">${topicNavigation(page, context)}<article class="app-document"><header class="app-document-header"><p class="app-eyebrow">${page.type === 'wiki' ? 'Wiki' : 'Blog'}${page.example ? ' · 예시 글' : ''}</p><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : ''}</div>${tableOfContents(page)}<div class="app-prose app-document-body">${page.html}</div>${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="https://github.com/woonyong-choi/blog/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2><div class="app-related-grid">${related.map(other => relatedCard(other, context.topics)).join('')}</div></section>` : ''}</article></div></main>`;
 }
 
 export function relatedCard(page, tags) {
@@ -100,19 +100,14 @@ function tableOfContents(page) {
   return `<nav class="app-toc" aria-label="이 글의 목차"><strong>이 글에서</strong><ul>${headings.map(heading => `<li><a href="#${heading.id}">${escape(heading.title)}</a></li>`).join('')}</ul></nav>`;
 }
 
-function topicNavigation(page, documents, topics) {
+function topicNavigation(page, context) {
   if (page.type !== 'wiki') return '';
-  const entries = documents.filter(other => other.topic === page.topic);
-  const bySlug = new Map(entries.map(other => [other.slug, other]));
-  const roots = entries.filter(other => !bySlug.has(other.parent) || other.parent === other.slug);
-  function children(parent, depth, visited = new Set()) {
-    if (visited.has(parent.slug)) return '';
-    const path = new Set([...visited, parent.slug]);
-    const nested = entries.filter(other => other.parent === parent.slug && !path.has(other.slug));
+  const roots = context.topicTrees.get(page.topic);
+  function children(node) {
+    const parent = node.page;
     const link = `<a href="${parent.route}"${parent.id === page.id ? ' aria-current="page"' : ''}>${escape(parent.title)}</a>`;
-    if (!nested.length) return `<li>${link}</li>`;
-    if (depth >= 2) return `<li>${link}</li>${nested.map(other => children(other, depth, path)).join('')}`;
-    return `<li><details open><summary>${escape(parent.title)}</summary><ul><li>${link}</li>${nested.map(other => children(other, depth + 1, path)).join('')}</ul></details></li>`;
+    if (!node.children.length) return `<li>${link}</li>`;
+    return `<li><details open><summary>${escape(parent.title)}</summary><ul><li>${link}</li>${node.children.map(children).join('')}</ul></details></li>`;
   }
-  return `<details class="app-document-nav" open><summary>문서 목록 · ${escape(topics[page.topic].label)}</summary><nav aria-label="${escape(topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Wiki</a><ul>${roots.map(root => children(root, 0)).join('')}</ul></nav></details>`;
+  return `<details class="app-document-nav" open><summary>문서 목록 · ${escape(context.topics[page.topic].label)}</summary><nav aria-label="${escape(context.topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Wiki</a><ul>${roots.map(children).join('')}</ul></nav></details>`;
 }

@@ -24,6 +24,15 @@ test('publication_contract_rejects_missing_comments_invalid_dates_and_tags', () 
   }
 });
 
+test('publication_contract_accepts_only_optional_slug_parents', () => {
+  for (const parent of [undefined, null, 'public-parent']) {
+    assert.equal(readDocument(source({ parent }), TAGS).parent, parent);
+  }
+  for (const parent of ['', 12, {}, [], '../private', 'invalid parent']) {
+    assert.throws(() => readDocument(source({ parent }), TAGS), /invalid parent: a/);
+  }
+});
+
 test('blog_pagination_keeps_all_posts_at_approved_boundaries', () => {
   assert.deepEqual(PAGE_SIZES, { preview: 3, cards: 12, feed: 4, search: 12 });
   for (const count of [0, 1, 3, 4, 5, 8, 9, 12, 13]) {

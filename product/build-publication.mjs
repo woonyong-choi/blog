@@ -13,6 +13,7 @@ import { commentsSection } from './comments.mjs';
 import { iconAuditPages } from './icon-audit.mjs';
 import { publicationAssets } from './publication-assets.mjs';
 import { publicInterviews } from './interviews.mjs';
+import { createTopicTrees } from './topic-navigation.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -30,8 +31,9 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   const folders = ['publication', ...(preview && existsSync(join(ROOT, 'examples')) ? ['examples'] : [])];
   const documents = publicDocuments(folders.flatMap(folder => readdirSync(join(ROOT, folder)).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, folder, name), 'utf8'), TOPICS))), { includeExamples: preview });
   const posts = blogDocuments(documents);
+  const topicTrees = createTopicTrees(documents);
   renderDocuments(documents);
-  const context = { config: CONFIG, topics: TOPICS, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest(CLIENT_FILES.map(file => readFileSync(join(ROOT, file), 'utf8')).join('\n')) };
+  const context = { config: CONFIG, topics: TOPICS, topicTrees, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest(CLIENT_FILES.map(file => readFileSync(join(ROOT, file), 'utf8')).join('\n')) };
   context.interviews = publicInterviews(CONFIG.interviews?.length ? CONFIG.interviews : preview ? JSON.parse(readFileSync(join(ROOT, 'interview-examples.json'))) : [], preview);
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));

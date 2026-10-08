@@ -21,6 +21,7 @@ export function readDocument(source, tags, now = new Date()) {
   if (new Set(page.tags).size !== page.tags.length || page.tags.some(tag => !tags[tag])) throw new Error(`unknown or duplicate tag: ${page.id}`);
   if (!FIELDS.includes(page.field)) throw new Error(`invalid field: ${page.id}`);
   if (!ID.test(page.topic ?? '') || !tags[page.topic]) throw new Error(`invalid topic: ${page.id}`);
+  if (page.parent != null && (typeof page.parent !== 'string' || !ID.test(page.parent))) throw new Error(`invalid parent: ${page.id}`);
   if (typeof page.contentIcon?.name !== 'string') throw new Error(`missing content icon: ${page.id}`);
   if (page.type === 'blog' && page.comments !== true) throw new Error(`blog comments are required: ${page.id}`);
   for (const name of ['publishedAt', 'updatedAt']) {
