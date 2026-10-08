@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { readDocument, publicDocuments, searchEntry, FIELDS, blogDocuments, PAGE_SIZES } from './content-model.mjs';
 import { createMarkdown, escape } from './markdown.mjs';
-import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, resultRow } from './publication-layout.mjs';
+import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, resultRow, iconUrl } from './publication-layout.mjs';
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
@@ -84,6 +84,7 @@ function writeSite(output, documents, context) {
   mkdirSync(OUTPUT, { recursive: true });
   cpSync(THEME, join(OUTPUT, 'theme'), { recursive: true });
   cpSync(join(ROOT, 'publication.js'), join(OUTPUT, 'publication.js'));
+  for (const file of ['search-model.mjs', 'search-view.mjs']) cpSync(join(ROOT, file), join(OUTPUT, file));
   cpSync(join(ROOT, 'site.js'), join(OUTPUT, 'document.js'));
   const assets = new Set();
   const css = readFileSync(join(THEME, 'styles.css'), 'utf8');
@@ -99,7 +100,7 @@ function writeSite(output, documents, context) {
     mkdirSync(dirname(destination), { recursive: true });
     writeFileSync(destination, html);
   }
-  writeFileSync(join(OUTPUT, 'search-index.json'), JSON.stringify({ entries: documents.map(page => searchEntry(page, TOPICS)), tags: TOPICS }));
+  writeFileSync(join(OUTPUT, 'search-index.json'), JSON.stringify({ entries: documents.map(page => ({ ...searchEntry(page, TOPICS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TOPICS }));
   mkdirSync(join(OUTPUT, 'blog'), { recursive: true });
   const posts = blogDocuments(documents).filter(page => !page.example);
   writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description>${posts.map(page => `<item><title>${escape(page.title)}</title><link>${escape(context.origin + page.route)}</link><guid isPermaLink="false">${page.id}</guid><pubDate>${new Date(page.publishedAt).toUTCString()}</pubDate><description>${escape(page.description)}</description></item>`).join('')}</channel></rss>`);

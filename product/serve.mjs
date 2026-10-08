@@ -9,7 +9,7 @@ const option = (name, fallback) => args.includes(name) ? args[args.indexOf(name)
 const port = Number(option('--port', '8794'));
 const host = option('--host', '127.0.0.1');
 const root = resolve(option('--root', fileURLToPath(new URL('../dist/', import.meta.url))));
-const mime = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.mp4':'video/mp4', '.woff2':'font/woff2', '.md':'text/plain; charset=utf-8', '.xml':'application/xml' };
+const mime = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.mjs':'text/javascript', '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.mp4':'video/mp4', '.woff2':'font/woff2', '.md':'text/plain; charset=utf-8', '.xml':'application/xml' };
 createServer((request, response) => {
   try {
     if (!['GET','HEAD'].includes(request.method)) { response.writeHead(405); response.end(); return; }
@@ -36,4 +36,4 @@ createServer((request, response) => {
     const stream = createReadStream(path, { start,end });
     stream.on('error', () => response.destroy()); stream.pipe(response);
   } catch { response.writeHead(404, {'content-type':'text/plain; charset=utf-8'}); response.end('페이지를 찾을 수 없습니다.'); }
-}).listen(port, host, () => console.log(`Preview: http://${host}:${port}/things/`));
+}).listen(port, host, () => console.log(`Preview: http://${host}:${port}/${args.includes('--root') ? '' : 'things/'}`));

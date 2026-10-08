@@ -7,6 +7,11 @@ import { FIELDS } from './content-model.mjs';
 const BRANDS = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons;
 const FIELD_NAMES = Object.freeze({ languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
 
+export function iconUrl(spec) {
+  const name = typeof spec === 'string' ? spec : spec.name;
+  return `/theme/assets/icons/${BRANDS.some(item => item.file === `${name}.svg`) ? 'brands' : 'detail'}/${name}.svg`;
+}
+
 export function subjectIcon(spec, size = 'card') {
   const name = typeof spec === 'string' ? spec : spec.name;
   const brand = BRANDS.find(item => item.file === `${name}.svg`);
