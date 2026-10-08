@@ -3993,6 +3993,151 @@
         "$type": "dimension",
         "$value": "2em",
         "$description": "원본 지원 검색 CSS의 지우기 버튼·결과·안내 상태에서 확인한 값. 같은 형식과 값의 기존 simple 토큰이 없어 추가"
+      },
+      "icon-yellow": {
+        "$type": "color",
+        "$value": "#ffbf00",
+        "$description": "전구·학습 타일의 장식 면. 기존 note는 너무 연하고 orange는 주황 계열이므로 별도 원색 사용. 의미 전달은 제목과 실루엣으로 보완"
+      },
+      "icon-stroke": {
+        "$type": "number",
+        "$value": 3,
+        "$description": "48 단위 SVG 제작 및 24·32·48·96 크기 검토용. SVG 선은 viewBox와 함께 확대되는 단위 없는 값"
+      },
+      "icon-strong-stroke": {
+        "$type": "number",
+        "$value": 3,
+        "$description": "48 단위 SVG 제작 및 24·32·48·96 크기 검토용. SVG 선은 viewBox와 함께 확대되는 단위 없는 값"
+      },
+      "icon-size-card": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "48 단위 SVG 제작 및 24·32·48·96 크기 검토용. SVG 선은 viewBox와 함께 확대되는 단위 없는 값"
+      },
+      "icon-size-proof": {
+        "$type": "dimension",
+        "$value": "96px",
+        "$description": "48 단위 SVG 제작 및 24·32·48·96 크기 검토용. SVG 선은 viewBox와 함께 확대되는 단위 없는 값"
+      },
+      "icon-outline": {
+        "$type": "color",
+        "$value": "#a4a8ae",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-detail": {
+        "$type": "color",
+        "$value": "#c6cbd2",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-accent": {
+        "$type": "color",
+        "$value": "#2465c7",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-accent-soft": {
+        "$type": "color",
+        "$value": "#c7ddff",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-accent-edge": {
+        "$type": "color",
+        "$value": "#90b4ee",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-positive": {
+        "$type": "color",
+        "$value": "#28a779",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-positive-edge": {
+        "$type": "color",
+        "$value": "#218b67",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-positive-soft": {
+        "$type": "color",
+        "$value": "#c9eddf",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-critical": {
+        "$type": "color",
+        "$value": "#f64f82",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-critical-edge": {
+        "$type": "color",
+        "$value": "#d84270",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-critical-soft": {
+        "$type": "color",
+        "$value": "#ffd5e1",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-warm": {
+        "$type": "color",
+        "$value": "#ee9d45",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-warm-edge": {
+        "$type": "color",
+        "$value": "#d08437",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-warm-soft": {
+        "$type": "color",
+        "$value": "#ffe1b5",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-special": {
+        "$type": "color",
+        "$value": "#9580c4",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-special-edge": {
+        "$type": "color",
+        "$value": "#7e69ad",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-special-soft": {
+        "$type": "color",
+        "$value": "#e0d7f4",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-neutral-edge": {
+        "$type": "color",
+        "$value": "#35404c",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-idea-edge": {
+        "$type": "color",
+        "$value": "#edb300",
+        "$description": "콘텐츠 아이콘의 면과 테두리 구분. 기존 상태색은 작은 장식 면에 지나치게 강해 별도 기본값 사용"
+      },
+      "icon-structure": {
+        "$type": "color",
+        "$value": "#478fa7",
+        "$description": "세부 형태 시안의 저장소·구조 표현에 사용하는 청록색"
+      },
+      "icon-structure-edge": {
+        "$type": "color",
+        "$value": "#39768e",
+        "$description": "세부 형태 시안의 저장소·구조 표현에 사용하는 청록색"
+      },
+      "icon-structure-soft": {
+        "$type": "color",
+        "$value": "#c9eaf1",
+        "$description": "세부 형태 시안의 저장소·구조 표현에 사용하는 청록색"
+      },
+      "icon-cloud": {
+        "$type": "color",
+        "$value": "#639bfa",
+        "$description": "구름과 연결 장비의 채색 면. 기호색과 분리"
+      },
+      "icon-cloud-edge": {
+        "$type": "color",
+        "$value": "#528aee",
+        "$description": "구름과 연결 장비의 채색 면. 기호색과 분리"
       }
     }
   },
@@ -8725,6 +8870,183 @@
     "search-result-radius": {
       "$type": "dimension",
       "$value": "{primitive.simple.platform-button-y}"
+    },
+    "icon-catalog-width": {
+      "$type": "dimension",
+      "$value": "calc({primitive.simple.icon} * 5)",
+      "$description": "아이콘 목록의 최소 열 폭. 기존 24px 아이콘 크기에서 파생"
+    }
+  },
+  "icon": {
+    "paper": {
+      "$type": "color",
+      "$value": "{color.gray.0}",
+      "$description": "콘텐츠 식별용 역할 색. 기존 기본 팔레트 재사용"
+    },
+    "outline": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-outline}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "detail": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-detail}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "neutral": {
+      "$type": "color",
+      "$value": "{primitive.simple.help-title-color}",
+      "$description": "콘텐츠 식별용 역할 색. 기존 기본 팔레트 재사용"
+    },
+    "neutral-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-neutral-edge}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-accent}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "accent-soft": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-accent-soft}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "accent-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-accent-edge}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "positive": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-positive}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "positive-soft": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-positive-soft}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "critical": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-critical}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "critical-soft": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-critical-soft}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "warm": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-warm}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "warm-soft": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-warm-soft}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "special": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-special}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "special-soft": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-special-soft}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "idea": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-yellow}",
+      "$description": "학습·아이디어의 장식 면. 흰 기호와의 대비로 상태를 전달하지 않음"
+    },
+    "stroke": {
+      "$type": "number",
+      "$value": "{primitive.simple.icon-stroke}",
+      "$description": "콘텐츠 아이콘 공통 규격"
+    },
+    "detail-stroke": {
+      "$type": "number",
+      "$value": "{primitive.simple.status-flip-line}",
+      "$description": "콘텐츠 아이콘 공통 규격"
+    },
+    "strong-stroke": {
+      "$type": "number",
+      "$value": "{primitive.simple.icon-strong-stroke}",
+      "$description": "콘텐츠 아이콘 공통 규격"
+    },
+    "size-small": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.gutter}",
+      "$description": "콘텐츠 아이콘 공통 규격"
+    },
+    "size-medium": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.nav-height}",
+      "$description": "콘텐츠 아이콘 공통 규격"
+    },
+    "size-card": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.icon-size-card}",
+      "$description": "콘텐츠 아이콘 공통 규격"
+    },
+    "size-proof": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.icon-size-proof}",
+      "$description": "콘텐츠 아이콘 공통 규격"
+    },
+    "positive-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-positive-edge}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "critical-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-critical-edge}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "warm-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-warm-edge}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "special-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-special-edge}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "idea-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-idea-edge}",
+      "$description": "콘텐츠 식별용 장식 색. 상태나 본문 대비 판정에 사용하지 않음"
+    },
+    "structure": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-structure}",
+      "$description": "저장소·구조 아이콘의 장식 면"
+    },
+    "structure-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-structure-edge}",
+      "$description": "저장소·구조 아이콘의 장식 면"
+    },
+    "structure-soft": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-structure-soft}",
+      "$description": "저장소·구조 아이콘의 장식 면"
+    },
+    "cloud": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-cloud}",
+      "$description": "구름과 연결 장비의 채색 면"
+    },
+    "cloud-edge": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-cloud-edge}",
+      "$description": "구름과 연결 장비의 채색 면"
     }
   }
 }

@@ -5,6 +5,7 @@ import footnote from 'markdown-it-footnote';
 import taskLists from 'markdown-it-task-lists';
 import hljs from 'highlight.js';
 import { parse } from 'yaml';
+import { contentIcon, iconLab } from './content-icons.mjs';
 
 const IMAGE_SIZES = JSON.parse(readFileSync(new URL('./image-sizes.json', import.meta.url)));
 export const escape = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -16,7 +17,12 @@ export function asset(name) {
   if (typeof name !== 'string' || !/^[\w.-]+$/.test(name)) throw new Error(`Invalid asset: ${name}`);
   return `/things/assets/${name}`;
 }
-export const icon = (name = 'question') => `<span class="app-article-icon app-icon-${escape(name)}" aria-hidden="true"></span>`;
+const referenceIcon = (name = 'question') => `<span class="app-article-icon app-icon-${escape(name)}" aria-hidden="true"></span>`;
+export function icon(name = 'question') {
+  if (typeof name === 'object' && name !== null) return contentIcon(name);
+  if (typeof name === 'string' && name.startsWith('content:')) return contentIcon(name.slice(8));
+  return referenceIcon(name);
+}
 export function image(name, alt = '', className = '') {
   const size = IMAGE_SIZES[name];
   return `<img${size ? ` width="${size[0]}" height="${size[1]}"` : ''} class="${className}" src="${asset(name)}" alt="${escape(alt)}" loading="lazy" decoding="async">`;
@@ -176,6 +182,7 @@ function component(kind, data, md, env) {
       if (!Array.isArray(data.items) || !data.items.length) throw new Error('Tabs require items');
       return `<section class="app-tabs${kind === 'platform' ? ' is-platform' : ''}" data-tabs${kind === 'platform' ? ' data-platform' : ''}><div class="app-tablist" role="tablist" aria-label="${escape(data.title ?? '기기별 안내')}">${data.items.map((item, index) => `<button type="button" id="${id}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${id}-panel-${index}" tabindex="${index ? '-1' : '0'}">${escape(item.label)}</button>`).join('')}</div>${data.items.map((item, index) => `<div class="app-tabpanel" id="${id}-panel-${index}" role="tabpanel" aria-labelledby="${id}-tab-${index}" tabindex="0"${index ? ' hidden' : ''}>${render(item.body)}</div>`).join('')}</section>`;
     }
+    case 'icon-lab': return iconLab();
     case 'cards': {
       const variants = ['centered', 'grouped', 'inline'];
       if (data.variant && !variants.includes(data.variant)) throw new Error(`Unknown card variant: ${data.variant}`);

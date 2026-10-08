@@ -34,7 +34,7 @@ for (const name of readdirSync(join(ROOT, 'content')).filter((name) => name.ends
   const match = source.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!match) throw new Error(`Missing frontmatter: ${name}`);
   const page = parse(match[1], { maxAliasCount: 0 });
-  if (!['home','support','features','article','post','blog','plain','contact','newsletter','about','status','redirect','pricing'].includes(page.layout)) throw new Error(`Invalid layout: ${name}`);
+  if (!['home','support','features','article','post','blog','plain','contact','newsletter','about','status','redirect','pricing','icon-lab'].includes(page.layout)) throw new Error(`Invalid layout: ${name}`);
   if (page.layout === 'post' && (typeof page.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(page.date) || !Number.isFinite(Date.parse(page.date)))) throw new Error(`Invalid post date: ${name}`);
   page.body = match[2]; page.source = source; page.id = name.slice(0, -3);
   if (!/^\/things\/(?:[a-z0-9-]+\/)*$/.test(page.route) || !page.title) throw new Error(`Invalid page: ${name}`);
@@ -49,6 +49,7 @@ const htmlOutputs = new Map();
 for (const page of pages) {
   let body;
   switch (page.layout) {
+    case 'icon-lab': body = `<main id="main" class="app-shell"><div class="app-body app-plain"><h1>${escape(page.title)}</h1>${page.html}</div></main>`; break;
     case 'home': body = home(page, page.html); break;
     case 'support': body = `<div class="app-shell">${search(true)}<main id="main" class="app-body"><h1 class="app-sr">Support</h1>${page.html}<div class="app-contact-prompt"><p>Didn’t find what you were looking for?</p><a href="/things/contact/">Contact Us →</a></div></main></div>`; break;
     case 'redirect': body = `<main id="main" class="app-shell"><a href="${escape(page.target)}">${escape(page.title)}</a></main>`; break;

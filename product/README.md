@@ -134,3 +134,19 @@ npm run build
 `cards.variant`는 `centered`, `grouped`, `inline`을 지원한다. 개별 항목의 `variant`로도 지정할 수 있다. `inline` 묶음은 문장 높이의 링크를 나란히 배치한다. `icon: false`로 아이콘을 생략한다.
 
 문장 안 키캡은 `:kbd[⌘ Cmd]`, 메뉴 이름은 `:menu[Edit]`로 작성한다. 대괄호 안 내용은 일반 텍스트로 이스케이프하며 코드 구간에서는 변환하지 않는다.
+
+## 콘텐츠 아이콘
+
+`/things/icon-system/`에서 카드, 썸네일 없는 글, 사람과 시스템, 크기별 아이콘을 검토한다. SVG 원본 목록과 표현 토큰은 design-tokens의 `themes/base/simple`이 정본이다. `product/vendor/theme`는 내보낸 사본이다.
+
+기존 참고 아이콘 이름은 유지한다. `ui:cards`의 `icon`에 `content:network` 또는 `{name: database, kind: concept}`를 지정하면 새 SVG를 렌더링한다. 글 frontmatter의 `contentIcon`도 같은 객체를 받는다.
+
+```yaml
+contentIcon:
+  name: database
+  kind: troubleshooting
+```
+
+글 유형은 concept, build, troubleshooting, experiment, retrospective 중 하나다. 주 아이콘은 글의 핵심 대상으로 직접 선택한다. 종류나 아이콘 이름이 없으면 빌드를 실패시킨다. 작은 24px 표시는 보조 표식을 생략한다. 현재 예시는 검토 페이지에 있으며 기존 글의 그림을 일괄 변경하지 않는다.
+
+제작 기준과 Daphnis 대응은 [디자인 정본 문서](https://github.com/woonyong-choi/design-tokens/blob/feat/16-repo-content-icons/docs/design/content-icons.md)에 있다.

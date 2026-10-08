@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "viewBox": "0 0 48 48",
+  "icons": {
+    "data-structures": {
+      "label": "자료구조",
+      "family": "object",
+      "metaphor": "색으로 구분한 연결 블록",
+      "body": "<path d=\"M14 15V34H33\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"5\" width=\"18\" height=\"17\" rx=\"5\" fill=\"var(--icon-critical-soft)\" stroke=\"var(--icon-critical)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"25\" y=\"25\" width=\"18\" height=\"18\" rx=\"5\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M14 15V34H33\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"5\" width=\"18\" height=\"17\" rx=\"5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"25\" y=\"25\" width=\"18\" height=\"18\" rx=\"5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "algorithm": {
+      "label": "알고리즘",
+      "family": "tile",
+      "metaphor": "분기한 뒤 서로 다른 결과에 도달하는 경로",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M24 13V22 M24 22H14V33 M24 22H34V33\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"13\" r=\"3\" fill=\"var(--icon-paper)\"/><rect x=\"10\" y=\"30\" width=\"8\" height=\"7\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"30\" y=\"30\" width=\"8\" height=\"7\" rx=\"2\" fill=\"var(--icon-paper)\"/>",
+      "diagramBody": "<path d=\"M24 13V22 M24 22H14V33 M24 22H34V33\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"13\" r=\"3\" fill=\"currentColor\"/><rect x=\"10\" y=\"30\" width=\"8\" height=\"7\" rx=\"2\" fill=\"currentColor\"/><rect x=\"30\" y=\"30\" width=\"8\" height=\"7\" rx=\"2\" fill=\"currentColor\"/>"
+    },
+    "operating-system": {
+      "label": "운영체제",
+      "family": "object",
+      "metaphor": "작업 공간과 시스템 설정 기어",
+      "body": "<rect x=\"4\" y=\"6\" width=\"36\" height=\"33\" rx=\"7\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 16H39\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"11\" cy=\"11\" r=\"2\" fill=\"var(--icon-critical)\"/><circle cx=\"18\" cy=\"11\" r=\"2\" fill=\"var(--icon-idea)\"/><rect x=\"9\" y=\"21\" width=\"10\" height=\"12\" rx=\"2\" fill=\"var(--icon-accent-soft)\"/><path d=\"M24 23H32 M24 29H29\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"35\" cy=\"35\" r=\"11\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M35 27V29 M35 41V43 M27 35H29 M41 35H43 M29 29L31 31 M39 39L41 41 M29 41L31 39 M39 31L41 29\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"35\" cy=\"35\" r=\"4\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<rect x=\"4\" y=\"6\" width=\"36\" height=\"33\" rx=\"7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 16H39\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"11\" cy=\"11\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"18\" cy=\"11\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"9\" y=\"21\" width=\"10\" height=\"12\" rx=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 23H32 M24 29H29\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"35\" cy=\"35\" r=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M35 27V29 M35 41V43 M27 35H29 M41 35H43 M29 29L31 31 M39 39L41 41 M29 41L31 39 M39 31L41 29\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"35\" cy=\"35\" r=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "network": {
+      "label": "네트워크",
+      "family": "object",
+      "metaphor": "안테나와 연결 상태등이 있는 라우터",
+      "body": "<path d=\"M10 27V12 M38 27V12\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"4\" y=\"25\" width=\"40\" height=\"17\" rx=\"6\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"8\" y=\"29\" width=\"32\" height=\"8\" rx=\"3\" fill=\"var(--icon-paper)\"/><circle cx=\"13\" cy=\"33\" r=\"2\" fill=\"var(--icon-positive)\"/><path d=\"M23 33H36\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 17Q24 10 31 17 M21 21Q24 18 27 21\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M10 27V12 M38 27V12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"4\" y=\"25\" width=\"40\" height=\"17\" rx=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"8\" y=\"29\" width=\"32\" height=\"8\" rx=\"3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"13\" cy=\"33\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M23 33H36\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 17Q24 10 31 17 M21 21Q24 18 27 21\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "processor": {
+      "label": "컴퓨터 구조",
+      "family": "object",
+      "metaphor": "핀과 코어가 있는 프로세서",
+      "body": "<path d=\"M16 5V10 M24 5V10 M32 5V10 M16 38V43 M24 38V43 M32 38V43 M5 16H10 M5 24H10 M5 32H10 M38 16H43 M38 24H43 M38 32H43\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"10\" width=\"28\" height=\"28\" rx=\"6\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"17\" y=\"17\" width=\"14\" height=\"14\" rx=\"3\" fill=\"var(--icon-paper)\"/>",
+      "diagramBody": "<path d=\"M16 5V10 M24 5V10 M32 5V10 M16 38V43 M24 38V43 M32 38V43 M5 16H10 M5 24H10 M5 32H10 M38 16H43 M38 24H43 M38 32H43\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"10\" width=\"28\" height=\"28\" rx=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"17\" y=\"17\" width=\"14\" height=\"14\" rx=\"3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "architecture": {
+      "label": "시스템 설계",
+      "family": "object",
+      "metaphor": "겹쳐진 세 개의 시스템 계층",
+      "body": "<path d=\"M5 32L24 22L43 32L24 43Z\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 24L24 14L43 24L24 35Z\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 16L24 6L43 16L24 27Z\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M5 32L24 22L43 32L24 43Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 24L24 14L43 24L24 35Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 16L24 6L43 16L24 27Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "search": {
+      "label": "검색",
+      "family": "outline",
+      "metaphor": "확대경",
+      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"10\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"22\" cy=\"21\" r=\"9\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M29 28L36 35\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "diagramBody": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"10\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"22\" cy=\"21\" r=\"9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M29 28L36 35\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-strong-stroke)\"/>"
+    },
+    "testing": {
+      "label": "테스트",
+      "family": "tile",
+      "metaphor": "결과를 검증하는 체크",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-positive-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M13 24L21 32L35 16\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "diagramBody": "<path d=\"M13 24L21 32L35 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-strong-stroke)\"/>"
+    },
+    "idea": {
+      "label": "문제 해결",
+      "family": "tile",
+      "metaphor": "아이디어를 떠올리는 전구",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-idea-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-idea)\"/><path d=\"M24 10C13 10 12 23 18 28C20 30 20 31 20 33H28C28 31 28 30 30 28C36 23 35 10 24 10Z\" fill=\"var(--icon-paper)\"/><path d=\"M21 36H27 M22 39H26\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>",
+      "diagramBody": "<path d=\"M24 10C13 10 12 23 18 28C20 30 20 31 20 33H28C28 31 28 30 30 28C36 23 35 10 24 10Z\" fill=\"currentColor\"/><path d=\"M21 36H27 M22 39H26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    },
+    "event": {
+      "label": "이벤트",
+      "family": "tile",
+      "metaphor": "발생한 일을 알리는 종",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-critical-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-critical)\"/><path d=\"M12 31C16 27 16 24 16 20C16 15 19 12 24 12C29 12 32 15 32 20C32 24 32 27 36 31Z\" fill=\"var(--icon-paper)\"/><path d=\"M21 35Q24 40 27 35\" fill=\"var(--icon-paper)\"/><path d=\"M24 9V12\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "diagramBody": "<path d=\"M12 31C16 27 16 24 16 20C16 15 19 12 24 12C29 12 32 15 32 20C32 24 32 27 36 31Z\" fill=\"currentColor\"/><path d=\"M21 35Q24 40 27 35\" fill=\"currentColor\"/><path d=\"M24 9V12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-strong-stroke)\"/>"
+    },
+    "document": {
+      "label": "개념 정리",
+      "family": "object",
+      "metaphor": "접힌 종이와 본문",
+      "body": "<path d=\"M12 5H28L39 16V38Q39 43 34 43H12Q7 43 7 38V10Q7 5 12 5Z\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M27 6V13Q27 17 31 17H38\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 24H31 M14 30H31 M14 36H25\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-detail-stroke)\"/>",
+      "diagramBody": "<path d=\"M12 5H28L39 16V38Q39 43 34 43H12Q7 43 7 38V10Q7 5 12 5Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M27 6V13Q27 17 31 17H38\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 24H31 M14 30H31 M14 36H25\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    },
+    "database": {
+      "label": "데이터베이스",
+      "family": "object",
+      "metaphor": "넓은 상판과 층별 저장 면을 가진 저장소",
+      "body": "<path d=\"M7 13V35C7 45 41 45 41 35V13Z\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M8 24C12 31 36 31 40 24V33C34 39 14 39 8 33Z\" fill=\"var(--icon-special)\"/><ellipse cx=\"24\" cy=\"13\" rx=\"17\" ry=\"7\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 12Q24 8 33 12\" fill=\"none\" stroke=\"var(--icon-special-soft)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M7 13V35C7 45 41 45 41 35V13Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M8 24C12 31 36 31 40 24V33C34 39 14 39 8 33Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"24\" cy=\"13\" rx=\"17\" ry=\"7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 12Q24 8 33 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "cache": {
+      "label": "캐시",
+      "family": "tile",
+      "metaphor": "빠른 접근을 나타내는 번개",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-warm-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-warm)\"/><path d=\"M25 10L14 26H23L21 38L35 21H26Z\" fill=\"var(--icon-paper)\"/>",
+      "diagramBody": "<path d=\"M25 10L14 26H23L21 38L35 21H26Z\" fill=\"currentColor\"/>"
+    },
+    "deploy": {
+      "label": "배포",
+      "family": "object",
+      "metaphor": "상자에서 내보내는 화살표",
+      "body": "<path d=\"M6 18L24 10L42 18V37L24 44L6 37Z\" fill=\"var(--icon-warm-soft)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 18L24 26L42 18 M24 26V43\" fill=\"none\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-detail-stroke)\"/><path d=\"M24 5V21 M18 11L24 5L30 11\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "diagramBody": "<path d=\"M6 18L24 10L42 18V37L24 44L6 37Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 18L24 26L42 18 M24 26V43\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-detail-stroke)\"/><path d=\"M24 5V21 M18 11L24 5L30 11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-strong-stroke)\"/>"
+    },
+    "terminal": {
+      "label": "구현",
+      "family": "tile",
+      "metaphor": "명령 입력창",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M12 16L21 24L12 32 M25 32H35\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "diagramBody": "<path d=\"M12 16L21 24L12 32 M25 32H35\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-strong-stroke)\"/>"
+    },
+    "experiment": {
+      "label": "실험",
+      "family": "object",
+      "metaphor": "실험 조건과 결과를 담는 플라스크",
+      "body": "<path d=\"M18 5H30 M20 5V18L10 35Q6 43 15 43H33Q42 43 38 35L28 18V5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 29H33L38 38Q39 41 33 41H15Q9 41 11 37Z\" fill=\"var(--icon-special-soft)\"/><circle cx=\"22\" cy=\"32\" r=\"2\" fill=\"var(--icon-special)\"/><circle cx=\"29\" cy=\"37\" r=\"2\" fill=\"var(--icon-special)\"/>",
+      "diagramBody": "<path d=\"M18 5H30 M20 5V18L10 35Q6 43 15 43H33Q42 43 38 35L28 18V5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 29H33L38 38Q39 41 33 41H15Q9 41 11 37Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"22\" cy=\"32\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"29\" cy=\"37\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "retrospective": {
+      "label": "회고",
+      "family": "outline",
+      "metaphor": "기록을 다시 돌아보는 노트",
+      "body": "<path d=\"M12 6H34Q40 6 40 12V37Q40 42 35 42H12Q7 42 7 37V11Q7 6 12 6Z\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 7V41 M21 17H32 M21 24H32\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-detail-stroke)\"/><path d=\"M31 28L35 32L31 36 M25 36Q20 28 31 32H35\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-detail-stroke)\"/>",
+      "diagramBody": "<path d=\"M12 6H34Q40 6 40 12V37Q40 42 35 42H12Q7 42 7 37V11Q7 6 12 6Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 7V41 M21 17H32 M21 24H32\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-detail-stroke)\"/><path d=\"M31 28L35 32L31 36 M25 36Q20 28 31 32H35\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    },
+    "portfolio": {
+      "label": "포트폴리오",
+      "family": "object",
+      "metaphor": "결과물을 담은 서류 가방",
+      "body": "<rect x=\"5\" y=\"14\" width=\"38\" height=\"28\" rx=\"6\" fill=\"var(--icon-warm-soft)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 14V9Q17 6 20 6H28Q31 6 31 9V14 M6 24Q24 33 42 24\" fill=\"none\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"20\" y=\"25\" width=\"8\" height=\"7\" rx=\"2\" fill=\"var(--icon-warm)\"/>",
+      "diagramBody": "<rect x=\"5\" y=\"14\" width=\"38\" height=\"28\" rx=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 14V9Q17 6 20 6H28Q31 6 31 9V14 M6 24Q24 33 42 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"20\" y=\"25\" width=\"8\" height=\"7\" rx=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "project": {
+      "label": "개발 프로젝트",
+      "family": "tile",
+      "metaphor": "조립된 네 개의 모듈",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-special-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-special)\"/><path d=\"M14 14H22V22H14Z M27 14H35V22H27Z M14 27H22V35H14Z M27 27H35V35H27Z\" fill=\"var(--icon-paper)\"/>",
+      "diagramBody": "<path d=\"M14 14H22V22H14Z M27 14H35V22H27Z M14 27H22V35H14Z M27 27H35V35H27Z\" fill=\"currentColor\"/>"
+    },
+    "security": {
+      "label": "보안",
+      "family": "outline",
+      "metaphor": "보호와 확인을 나타내는 방패",
+      "body": "<path d=\"M24 4L40 10V23C40 33 32 40 24 44C16 40 8 33 8 23V10Z\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 24L22 29L32 18\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "diagramBody": "<path d=\"M24 4L40 10V23C40 33 32 40 24 44C16 40 8 33 8 23V10Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 24L22 29L32 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-strong-stroke)\"/>"
+    },
+    "person": {
+      "label": "사용자",
+      "family": "object",
+      "metaphor": "원형 프로필 속 얼굴과 어깨",
+      "body": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 37C11 24 37 24 38 37Q24 47 10 37Z\" fill=\"var(--icon-accent)\"/><circle cx=\"24\" cy=\"19\" r=\"8\" fill=\"var(--icon-paper)\"/>",
+      "diagramBody": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 37C11 24 37 24 38 37Q24 47 10 37Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"19\" r=\"8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "team": {
+      "label": "팀",
+      "family": "object",
+      "metaphor": "서로 겹치는 세 프로필",
+      "body": "<circle cx=\"12\" cy=\"17\" r=\"6\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"36\" cy=\"17\" r=\"6\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M3 36V31C3 21 21 21 21 31V36Z\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M27 36V31C27 21 45 21 45 31V36Z\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 42V35C12 23 36 23 36 35V42Z\" fill=\"var(--icon-accent)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"20\" r=\"8\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<circle cx=\"12\" cy=\"17\" r=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"36\" cy=\"17\" r=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M3 36V31C3 21 21 21 21 31V36Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M27 36V31C27 21 45 21 45 31V36Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 42V35C12 23 36 23 36 35V42Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"20\" r=\"8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "administrator": {
+      "label": "관리자",
+      "family": "object",
+      "metaphor": "프로필과 권한 확인 표식",
+      "body": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 37C11 24 37 24 38 37Q24 47 10 37Z\" fill=\"var(--icon-accent)\"/><circle cx=\"24\" cy=\"19\" r=\"8\" fill=\"var(--icon-paper)\"/><circle cx=\"37\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"37\" cy=\"36\" r=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M33 36L36 39L41 33\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<circle cx=\"24\" cy=\"24\" r=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 37C11 24 37 24 38 37Q24 47 10 37Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"19\" r=\"8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"37\" cy=\"36\" r=\"10\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"37\" cy=\"36\" r=\"8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M33 36L36 39L41 33\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "server": {
+      "label": "서버",
+      "family": "object",
+      "metaphor": "상태등이 있는 서버 장비",
+      "body": "<rect x=\"8\" y=\"5\" width=\"32\" height=\"38\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M9 18H39 M9 31H39\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"15\" cy=\"12\" r=\"2\" fill=\"var(--icon-positive)\"/><circle cx=\"15\" cy=\"25\" r=\"2\" fill=\"var(--icon-positive)\"/><circle cx=\"15\" cy=\"37\" r=\"2\" fill=\"var(--icon-positive)\"/><path d=\"M23 12H33 M23 25H33 M23 37H33\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<rect x=\"8\" y=\"5\" width=\"32\" height=\"38\" rx=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M9 18H39 M9 31H39\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"15\" cy=\"12\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"15\" cy=\"25\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"15\" cy=\"37\" r=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M23 12H33 M23 25H33 M23 37H33\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "cloud": {
+      "label": "클라우드",
+      "family": "outline",
+      "metaphor": "둥근 구름 실루엣",
+      "body": "<path d=\"M13 39C0 39 1 21 11 20C12 6 31 3 35 17C49 17 50 39 36 39Z\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M13 39C0 39 1 21 11 20C12 6 31 3 35 17C49 17 50 39 36 39Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "queue": {
+      "label": "메시지 큐",
+      "family": "outline",
+      "metaphor": "차례로 들어오는 메시지 슬롯",
+      "body": "<rect x=\"4\" y=\"12\" width=\"40\" height=\"25\" rx=\"6\" fill=\"var(--icon-special-soft)\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 13V36 M30 13V36\" fill=\"none\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 6H37 M33 3L37 6L33 9\" fill=\"none\" stroke=\"var(--icon-special)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<rect x=\"4\" y=\"12\" width=\"40\" height=\"25\" rx=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 13V36 M30 13V36\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 6H37 M33 3L37 6L33 9\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "lock": {
+      "label": "접근 제어",
+      "family": "object",
+      "metaphor": "잠금쇠와 열쇠 구멍",
+      "body": "<path d=\"M14 20V14C14 1 34 1 34 14V20\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"8\" y=\"19\" width=\"32\" height=\"25\" rx=\"6\" fill=\"var(--icon-neutral)\"/><circle cx=\"24\" cy=\"29\" r=\"3\" fill=\"var(--icon-paper)\"/><path d=\"M24 30V36\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M14 20V14C14 1 34 1 34 14V20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"8\" y=\"19\" width=\"32\" height=\"25\" rx=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"29\" r=\"3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 30V36\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "key": {
+      "label": "인증 키",
+      "family": "outline",
+      "metaphor": "인증에 사용하는 열쇠",
+      "body": "<path d=\"M29 5C17 5 15 16 20 22L6 36V43H13V38H19V32L26 25C41 29 48 5 29 5Z\" fill=\"var(--icon-warm-soft)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"33\" cy=\"13\" r=\"3\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M29 5C17 5 15 16 20 22L6 36V43H13V38H19V32L26 25C41 29 48 5 29 5Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"33\" cy=\"13\" r=\"3\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "firewall": {
+      "label": "방화벽",
+      "family": "object",
+      "metaphor": "접근 경계의 벽돌",
+      "body": "<rect x=\"5\" y=\"8\" width=\"38\" height=\"33\" rx=\"4\" fill=\"var(--icon-critical-soft)\" stroke=\"var(--icon-critical)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 19H42 M6 30H42 M17 9V19 M31 19V30 M17 30V40\" fill=\"none\" stroke=\"var(--icon-critical)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<rect x=\"5\" y=\"8\" width=\"38\" height=\"33\" rx=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 19H42 M6 30H42 M17 9V19 M31 19V30 M17 30V40\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "monitoring": {
+      "label": "관측",
+      "family": "tile",
+      "metaphor": "변화를 추적하는 신호선",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-positive-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M10 27H17L21 15L27 33L31 23H38\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M10 27H17L21 15L27 33L31 23H38\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "mobile": {
+      "label": "모바일",
+      "family": "object",
+      "metaphor": "휴대 전화",
+      "body": "<rect x=\"13\" y=\"4\" width=\"22\" height=\"40\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M21 8H27 M22 39H26\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<rect x=\"13\" y=\"4\" width=\"22\" height=\"40\" rx=\"5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M21 8H27 M22 39H26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "gateway": {
+      "label": "게이트웨이",
+      "family": "outline",
+      "metaphor": "경계를 통과하는 입구",
+      "body": "<path d=\"M9 42V10L24 5L39 10V42 M18 42V19H30V42\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M3 29H16 M32 29H45 M12 25L16 29L12 33 M41 25L45 29L41 33\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<path d=\"M9 42V10L24 5L39 10V42 M18 42V19H30V42\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M3 29H16 M32 29H45 M12 25L16 29L12 33 M41 25L45 29L41 33\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "container": {
+      "label": "컨테이너",
+      "family": "object",
+      "metaphor": "분리된 실행 단위를 담는 컨테이너",
+      "body": "<rect x=\"4\" y=\"13\" width=\"40\" height=\"27\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 19V34 M20 19V34 M28 19V34 M36 19V34 M12 7H36\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<rect x=\"4\" y=\"13\" width=\"40\" height=\"27\" rx=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 19V34 M20 19V34 M28 19V34 M36 19V34 M12 7H36\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "scaling": {
+      "label": "확장",
+      "family": "outline",
+      "metaphor": "작은 단위에서 바깥으로 커지는 화살표",
+      "body": "<rect x=\"5\" y=\"25\" width=\"18\" height=\"18\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 7H41V34 M41 7L24 24\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<rect x=\"5\" y=\"25\" width=\"18\" height=\"18\" rx=\"4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 7H41V34 M41 7L24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    },
+    "globe": {
+      "label": "인터넷",
+      "family": "outline",
+      "metaphor": "지구의 경선과 위선",
+      "body": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 24H43 M24 5C10 15 10 33 24 43C38 33 38 15 24 5 M9 13H39 M9 35H39\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "diagramBody": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 24H43 M24 5C10 15 10 33 24 43C38 33 38 15 24 5 M9 13H39 M9 35H39\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"var(--icon-stroke)\"/>"
+    }
+  },
+  "badges": {
+    "concept": {
+      "label": "개념",
+      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-accent)\"/><path d=\"M36 35V40 M36 32V32\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    },
+    "build": {
+      "label": "구현",
+      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M33 33L30 36L33 39 M39 33L42 36L39 39\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    },
+    "troubleshooting": {
+      "label": "문제 해결",
+      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-warm)\"/><path d=\"M36 31V37 M36 41V41\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    },
+    "experiment": {
+      "label": "실험",
+      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-special)\"/><path d=\"M34 31H38 M35 31V35L32 40H40L37 35V31\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    },
+    "retrospective": {
+      "label": "회고",
+      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M32 35A5 5 0 1 1 32 39 M32 31V35H36\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+    }
+  },
+  "daphnis": {
+    "server": "server",
+    "db": "database",
+    "block": "data-structures",
+    "object": "deploy",
+    "container": "container",
+    "cache": "cache",
+    "mq": "queue",
+    "region": "cloud",
+    "vpc": "cloud",
+    "cdn": "globe",
+    "dns": "globe",
+    "igw": "gateway",
+    "lb": "network",
+    "apigw": "gateway",
+    "vpn": "security",
+    "ddos": "security",
+    "bastion": "administrator",
+    "firewall": "firewall",
+    "key": "key",
+    "subnet": "lock",
+    "user": "person",
+    "admin": "administrator",
+    "desktop": "operating-system",
+    "mobile": "mobile",
+    "notify": "event",
+    "monitoring": "monitoring",
+    "logsearch": "search",
+    "scaling": "scaling",
+    "function": "terminal"
+  }
+}
