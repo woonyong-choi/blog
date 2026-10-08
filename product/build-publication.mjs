@@ -78,7 +78,7 @@ function renderDocuments(documents) {
       if ((page.leadHtml + page.html).includes(`id="${fragment}"`)) return original;
       const prefixed = `${page.id}-${decodeURIComponent(fragment)}`;
       return (page.leadHtml + page.html).includes(`id="${prefixed}"`) ? `href="#${prefixed}"` : original;
-    }).replaceAll('/things/assets/', '/assets/');
+    }).replaceAll('/things/assets/', '/assets/').replaceAll('/things/theme/', '/theme/');
     page.leadHtml = rewrite(page.leadHtml);
     page.html = rewrite(page.html);
   }

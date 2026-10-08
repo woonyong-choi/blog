@@ -839,6 +839,12 @@
   --primitive-simple-navy-alpha-15: rgba(4,15,26,.15);
   --primitive-simple-blue-alpha-4: rgba(0,52,126,.04);
   --primitive-simple-navy-alpha-6: rgba(0,28,70,.06);
+  --primitive-simple-control-search-ink: rgba(0,7,18,.5);
+  --primitive-simple-control-chevron-ink: #05101c;
+  --primitive-simple-control-play-ink: #5b9aff;
+  --primitive-simple-control-overlay-ink: rgba(0,0,0,.75);
+  --primitive-simple-control-task-fill: rgba(0,0,0,.05);
+  --primitive-simple-control-task-ink: rgba(0,0,0,.2);
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1826,6 +1832,15 @@
   --site-toc-border: var(--primitive-simple-syntax-example-border);
   --site-toc-marker: var(--primitive-simple-landing-footer-ink);
   --site-toc-underline: var(--primitive-simple-newsletter-button-color);
+  --site-control-search-ink: var(--primitive-simple-control-search-ink);
+  --site-control-chevron-ink: var(--primitive-simple-control-chevron-ink);
+  --site-control-play-ink: var(--primitive-simple-control-play-ink);
+  --site-control-overlay-ink: var(--primitive-simple-control-overlay-ink);
+  --site-control-task-fill: var(--primitive-simple-control-task-fill);
+  --site-control-task-ink: var(--primitive-simple-control-task-ink);
+  --site-control-paper: var(--color-gray-0);
+  --site-control-stroke: var(--primitive-simple-status-flip-line);
+  --site-control-cutout: var(--color-gray-1000);
   --icon-paper: var(--color-gray-0);
   --icon-outline: var(--primitive-simple-icon-outline);
   --icon-detail: var(--primitive-simple-icon-detail);

@@ -1,4 +1,5 @@
 // Markdown과 명시적인 문서 구성 요소를 정적 HTML로 변환한다.
+import { controlImage } from './controls.mjs';
 import { readFileSync } from 'node:fs';
 import MarkdownIt from '../assets/vendor/markdown-it.mjs';
 import footnote from 'markdown-it-footnote';
@@ -36,7 +37,7 @@ export function player(data, id, controls = false) {
   return `<div class="app-player${data.wide ? ' is-wide' : ''}${controls ? ' has-controls' : ''}" data-player id="${id}"><video${data.width ? ` width="${Number(data.width)}"` : ''}${data.height ? ` height="${Number(data.height)}"` : ''} playsinline${controls ? '' : ' muted'} preload="none" poster="${asset(data.poster)}" aria-label="${escape(data.title ?? '기능 소개 영상')}"${controls ? ' data-native-controls' : ''}><source src="${asset(data.src)}" type="video/mp4"></video>${data.overlay || controls ? '<button class="app-player-button" type="button" data-player-play aria-label="Play video"></button>' : ''}<span class="app-sr" role="status"></span></div>`;
 }
 function remote(id, src = '') {
-  return `<button class="app-remote" type="button" data-remote="${id}"${src ? ` data-video-src="${asset(src)}"` : ''} aria-label="Play video">${image('remotecontrol-play.svg')}<span>Play</span></button>`;
+  return `<button class="app-remote" type="button" data-remote="${id}"${src ? ` data-video-src="${asset(src)}"` : ''} aria-label="Play video">${controlImage('play')}<span>Play</span></button>`;
 }
 
 export function createMarkdown() {

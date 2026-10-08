@@ -1,6 +1,7 @@
 // 발행 HTML과 런타임 색인의 의존 파일만 복사 대상으로 모은다.
+import { videoControlAssets } from './controls.mjs';
 const ORIGIN = 'https://publication.invalid';
-const CLIENT_ASSETS = { 'video.js': ['/assets/remotecontrol-play.svg', '/assets/remotecontrol-pause-gray.svg', '/assets/remotecontrol-replay.svg'] };
+const CLIENT_ASSETS = { 'video.js': videoControlAssets };
 const ASSET_ROOTS = ['/theme/', '/assets/', '/media/'];
 const ASSET_NOTICES = new Map([
   ['/theme/assets/fonts/pretendard-variable.woff2', '/theme/assets/fonts/pretendard-license.txt'],
@@ -46,7 +47,7 @@ export function publicationAssets(pages, searchEntries, readAsset) {
     files.set(path, content);
     // 화면에서 요청하지 않는 고지도 해당 자산의 배포 의존성이다.
     const notice = /^\/theme\/assets\/icons\/brands\/[^/]+\.svg$/.test(path)
-      ? '/theme/assets/icons/brands/LICENSE' : ASSET_NOTICES.get(path);
+      ? '/theme/assets/icons/brands/LICENSE' : /^\/theme\/assets\/controls\/[^/]+\.svg$/.test(path) ? '/theme/assets/controls/LICENSE' : ASSET_NOTICES.get(path);
     if (notice) include(notice);
     const references = path.endsWith('.css') ? styleReferences(content.toString()) : path.endsWith('.svg') ? markupReferences(content.toString()) : [];
     for (const dependency of references) include(dependency, path);

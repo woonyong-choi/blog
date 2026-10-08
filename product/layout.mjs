@@ -1,4 +1,5 @@
 // 본문과 메뉴, 검색, 공통 제품 소개 영역을 조합한다.
+import { controlImage } from './controls.mjs';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { escape, image, icon } from './markdown.mjs';
@@ -7,7 +8,7 @@ import { articleToc } from './article-toc.mjs';
 const THEME_VERSION = JSON.parse(readFileSync(new URL('./vendor/theme/theme.json', import.meta.url))).contentHash;
 const SCRIPT_VERSION = createHash('sha256').update(readFileSync(new URL('./site.js', import.meta.url))).digest('hex');
 export function search(frequent = false) {
-  return `<section class="app-search" data-search role="search" aria-label="Support search"><div class="app-search-field">${image('quickfind-loupe.svg', '', 'app-search-icon')}<label class="app-sr" for="article-search">Search support articles</label><input class="app-search-input" id="article-search" type="text" placeholder="${frequent ? 'Type…' : 'How can we help you?'}" autocomplete="off"><button class="app-search-clear" data-clear type="button" aria-label="Clear search" hidden>${image('quickfind-clear.svg')}</button></div><div class="app-search-results" data-results role="status" aria-live="polite" hidden></div>${frequent ? '<div class="app-search-frequent">Frequent questions: <button data-query="ai tools">ai tools</button> <button data-query="new device">new device</button> <button data-query="discounts">discounts</button> <button data-query="android">android</button></div>' : ''}</section>`;
+  return `<section class="app-search" data-search role="search" aria-label="Support search"><div class="app-search-field">${controlImage('search', 'app-search-icon')}<label class="app-sr" for="article-search">Search support articles</label><input class="app-search-input" id="article-search" type="text" placeholder="${frequent ? 'Type…' : 'How can we help you?'}" autocomplete="off"><button class="app-search-clear" data-clear type="button" aria-label="Clear search" hidden>${controlImage('clear')}</button></div><div class="app-search-results" data-results role="status" aria-live="polite" hidden></div>${frequent ? '<div class="app-search-frequent">Frequent questions: <button data-query="ai tools">ai tools</button> <button data-query="new device">new device</button> <button data-query="discounts">discounts</button> <button data-query="android">android</button></div>' : ''}</section>`;
 }
 const FOOTER = [
   ['Products', [['Things for Mac','mac/'],['Things for iPhone','iphone/'],['Things for Watch','watch/'],['Things for iPad','ipad/'],['Things for Vision','vision/']]],

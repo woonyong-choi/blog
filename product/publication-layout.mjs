@@ -1,4 +1,5 @@
 // 개인 사이트의 탐색과 본문을 하나의 테마와 문서 식별자로 조합한다.
+import { controlImage } from './controls.mjs';
 import { readFileSync } from 'node:fs';
 import { escape } from './markdown.mjs';
 import { contentIcon } from './content-icons.mjs';
@@ -35,7 +36,7 @@ export function documentShell(page, body, context) {
 }
 
 export function searchBox({ large = false, query = '' } = {}) {
-  return `<section class="app-search app-public-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">글 검색</label><div class="app-search-field"><img class="app-search-icon" src="/assets/quickfind-loupe.svg" alt=""><input class="app-search-input" id="site-query" name="q" type="text" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-clear" type="button" data-clear-query aria-label="검색어 지우기" hidden><img src="/assets/quickfind-clear.svg" alt=""></button></div></form><div class="app-search-panel" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p><noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/wiki/">주제별 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
+  return `<section class="app-search app-public-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">글 검색</label><div class="app-search-field">${controlImage('search', 'app-search-icon', '')}<input class="app-search-input" id="site-query" name="q" type="text" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-clear" type="button" data-clear-query aria-label="검색어 지우기" hidden>${controlImage('clear', '', '')}</button></div></form><div class="app-search-panel" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p><noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/wiki/">주제별 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
 }
 
 export function tagLinks(page, tags, limit = Infinity) {
@@ -66,7 +67,7 @@ export function personalHome(context) {
   const { config } = context;
   const title = (config.hero?.title ?? config.description).split('\n').map(line => `<span>${escape(line)}</span>`).join('');
   const introduction = config.hero?.description ?? config.introduction;
-  const action = config.projectVideo?.src ? '<a class="app-remote" href="#project-video" data-remote="project-demo" data-language="ko" aria-label="프로젝트 영상 보기"><img src="/assets/remotecontrol-play.svg" alt=""><span>프로젝트 영상 보기</span></a>' : '<a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a>';
+  const action = config.projectVideo?.src ? '<a class="app-remote" href="#project-video" data-remote="project-demo" data-language="ko" aria-label="프로젝트 영상 보기">' + controlImage('play', '', '') + '<span>프로젝트 영상 보기</span></a>' : '<a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a>';
   return `<main id="main"><section class="app-personal-hero app-shell"><p class="app-eyebrow">${escape(config.hero?.eyebrow ?? 'Backend Engineer')}</p><h1>${title}</h1><p class="app-personal-intro">${escape(introduction)}</p>${action}</section><div class="app-home-flow"><div class="app-home-stage">${projectVideo(config.projectVideo)}</div><div class="app-home-stories">${technologySection(config.technologies, BRANDS)}${interviewSection(context.interviews)}</div>${contactSection(config.contact)}</div></main>`;
 }
 

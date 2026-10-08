@@ -35,7 +35,7 @@ export function updateRemote(button, video, selected = true) {
   button.setAttribute('aria-label', korean ? (playing ? '영상 일시정지' : ended ? '영상 다시 보기' : '프로젝트 영상 보기') : (playing ? 'Pause video' : ended ? 'Replay video' : 'Play video'));
   if (korean) button.querySelector('span').textContent = playing ? '영상 일시정지' : ended ? '영상 다시 보기' : '프로젝트 영상 보기';
   const icon = button.querySelector('img');
-  icon.src = icon.src.replace(/remotecontrol-[^/]+\.svg$/, `remotecontrol-${playing ? 'pause-gray' : ended ? 'replay' : 'play'}.svg`);
+  icon.src = new URL(`${playing ? 'pause' : ended ? 'replay' : 'play'}.svg`, icon.src).href;
 }
 for (const root of document.querySelectorAll('[data-player]')) {
   const video = root.querySelector('video');

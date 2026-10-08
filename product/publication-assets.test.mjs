@@ -50,12 +50,13 @@ test('static_pages_load_no_client_modules_and_document_controls_keep_their_own_e
 test('video_state_icons_are_included_before_the_first_play', () => {
   const pages = new Map([['/', '<div data-player><video poster="/media/poster.png"><source src="/media/demo.mp4"></video></div>']]);
   const assets = publicationAssets(pages, [], () => Buffer.from(''));
-  for (const path of ['/media/poster.png', '/media/demo.mp4', '/assets/remotecontrol-pause-gray.svg', '/assets/remotecontrol-replay.svg']) assert.ok(assets.has(path));
+  for (const path of ['/media/poster.png', '/media/demo.mp4', '/theme/assets/controls/pause.svg', '/theme/assets/controls/replay.svg']) assert.ok(assets.has(path));
   assert.deepEqual(clientEntrypoints(pages.get('/')), ['video.js']);
 });
 
 test('used_licensed_assets_include_notices_and_unused_assets_do_not', () => {
   const dependencies = [
+    ['/theme/assets/controls/play.svg', '/theme/assets/controls/LICENSE'],
     ['/theme/assets/fonts/pretendard-variable.woff2', '/theme/assets/fonts/pretendard-license.txt'],
     ['/theme/assets/fonts/jetbrains-mono-regular.woff2', '/theme/assets/fonts/jetbrains-mono-license.txt'],
     ['/theme/assets/icons/brands/python.svg', '/theme/assets/icons/brands/LICENSE'],
