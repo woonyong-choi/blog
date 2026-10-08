@@ -1,25 +1,26 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
-import { publicInterviews, interviewSection } from './interviews.mjs';
-import { clientEntrypoints } from './publication-assets.mjs';
+import { publicInterviews, interviewCards } from './interviews.mjs';
 
 const examples = JSON.parse(readFileSync(new URL('./interview-examples.json', import.meta.url)));
 
-test('interview_examples_are_preview_only_and_empty_public_data_has_no_section', () => {
+test('interview_examples_use_the_new_schema_are_dummy_and_preview_only', () => {
   assert.equal(publicInterviews(examples, true).length, 5);
   assert.deepEqual(publicInterviews(examples), []);
-  assert.equal(interviewSection(publicInterviews(examples)), '');
-  const preview = interviewSection(publicInterviews(examples, true));
-  assert.doesNotMatch(preview, /실제 인터뷰 발언이 아닙니다|interviews-description/);
-  assert.deepEqual(clientEntrypoints(preview), ['flows.js']);
+  assert.equal(interviewCards(publicInterviews(examples)), '');
+  for (const entry of examples) {
+    assert.deepEqual(Object.keys(entry).sort(), ['company', 'example', 'id', 'role', 'summary']);
+    assert.equal(entry.company, '예시 회사');
+    assert.equal(entry.example, true);
+  }
 });
 
-test('interview_text_is_escaped_and_real_entries_link_their_source', () => {
-  const entry = { id: 'published', question: '<질문>', quote: 'A & B', source: '공개 인터뷰', url: 'https://example.com/interview' };
-  const html = interviewSection(publicInterviews([entry]));
-  assert.match(html, /&lt;질문&gt;/);
-  assert.match(html, /A &amp; B/);
-  assert.match(html, /<a href="https:\/\/example.com\/interview">공개 인터뷰 →<\/a>/);
-  assert.doesNotMatch(html, /app-supporting-links/);
+test('interview_text_is_escaped_and_mixed_lists_mark_examples', () => {
+  const entry = { id: 'a', summary: '<요약> & 내용', company: '<회사>', role: '직무' };
+  const html = interviewCards(publicInterviews([entry, { ...examples[0] }], true));
+  assert.match(html, /&lt;요약&gt; &amp; 내용/);
+  assert.match(html, /&lt;회사&gt;/);
+  assert.match(html, /<span>구성 예시<\/span>/);
+  assert.doesNotMatch(interviewCards([entry]), /구성 예시/);
 });

@@ -75,7 +75,7 @@ a:hover { text-decoration: underline; }
 .app-caption { color: var(--site-muted); font-size: var(--site-small-text); }
 .app-footer { background: var(--site-canvas); margin-top: var(--site-section); padding-block: var(--site-gap-lg); }
 .app-footer a { color: var(--site-muted); font-size: var(--site-small-text); }
-.app-footer-bar { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs) var(--site-gap); align-items: center; justify-content: space-between; border-top: var(--site-border) solid var(--site-line); padding-top: var(--site-gap-lg); }
+.app-footer-bar { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs) var(--site-gap); align-items: center; justify-content: space-between; border-top: var(--site-border) solid var(--site-line); padding-top: var(--site-gap); }
 .app-footer-copy { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .app-footer-links { display: flex; gap: var(--site-gap-sm); align-items: center; }
 .app-footer-links a { display: inline-flex; padding: var(--site-gap-xs); }
@@ -372,8 +372,9 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-landing-heading :is(h1,h2) img { display: inline-block; width: var(--site-landing-icon); height: auto; margin-left: var(--site-landing-icon-left); margin-bottom: var(--site-landing-icon-bottom); margin-right: var(--site-landing-icon-right); }
 .app-landing-heading > p { color: var(--site-description-color); margin: var(--site-landing-description-margin) auto; font-size: var(--site-landing-intro); line-height: var(--site-feature-line); }
 .app-landing-action { display: inline-block; padding: var(--site-platform-button-gap) var(--site-platform-button-y); border-radius: var(--site-tab-button-inset); font-weight: var(--site-weight-medium); color: var(--site-control-link); }
-.app-landing-action::after { content: ''; display: inline-block; width: var(--site-help-mobile-block); height: var(--site-landing-review-font); margin-left: var(--site-platform-button-gap); background: url('../assets/fancysection-chevron.svg') center / contain no-repeat; }
+.app-landing-action::after { content: ''; display: inline-block; width: var(--site-help-mobile-block); height: var(--site-landing-review-font); margin-left: var(--site-landing-chevron-gap); margin-right: var(--site-landing-chevron-offset); vertical-align: var(--site-landing-chevron-align); background: url('../assets/fancysection-chevron.svg') 0 0 / 100% 100% no-repeat; }
 .app-landing-action:hover { text-decoration: none; background: var(--site-control-hover); }
+.app-landing-action:active, .app-landing-social a:active { color: var(--site-control-active-ink); background: var(--site-landing-action-pressed); }
 .app-landing-features { padding-bottom: 0; background: var(--site-feature-canvas); }
 .app-landing-collage { width: var(--site-collage-crop); margin-left: var(--site-collage-outset); }
 .app-landing-collage img { display: block; width: 100%; }
@@ -388,7 +389,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-product-actions { display: grid; justify-items: center; gap: var(--site-tab-inset); }
 .app-product-badge { height: var(--site-landing-heading-space); max-width: 100%; opacity: var(--site-player-opacity); }
 .app-product-badge:hover { opacity: 1; }
-.app-landing-reviews, .app-landing-newsletter { background: var(--site-canvas); }
+.app-landing-reviews, .app-landing-newsletter, .app-landing-interviews { background: var(--site-canvas); }
 .app-landing-reviews .app-landing-heading { margin-bottom: 0; }
 .app-landing-social { display: flex; align-items: center; justify-content: center; gap: var(--site-gap-sm); margin: var(--site-landing-panel-gap) auto var(--site-landing-heading-space); }
 .app-landing-social img { width: var(--site-icon); height: var(--site-icon); opacity: var(--site-landing-logo-opacity); }
@@ -948,20 +949,21 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-flow-viewport.has-flow { mask-image: linear-gradient(to right, transparent, var(--site-ink) var(--site-gap), var(--site-ink) calc(100% - var(--site-gap)), transparent); }
 .app-flow-viewport:focus-visible { mask-image: none; }
 .app-flow-group { display: flex; flex: none; gap: var(--site-gap); margin: 0; padding: 0; list-style: none; }
-.app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: min(var(--site-intro), calc(100vw - var(--site-gap-lg))); padding: var(--site-landing-quote-padding); border-radius: var(--site-landing-radius); background: var(--site-canvas); }
-.app-interview-question { margin: 0 0 var(--site-gap-sm); font-size: var(--site-small-text); font-weight: var(--site-weight-medium); color: var(--site-muted); }
-.app-interview-card blockquote { margin: 0 0 var(--site-gap); padding: 0; font-size: var(--site-body-text); font-style: normal; line-height: var(--site-landing-quote-line); color: var(--site-ink); border: 0; word-break: keep-all; overflow-wrap: anywhere; }
-.app-interview-source { margin: auto 0 0; font-size: var(--site-landing-quote-meta); line-height: var(--site-line-compact); color: var(--site-muted); }
+.app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: calc((var(--site-page) - 3 * var(--site-landing-review-font)) / 4); max-width: calc(100vw - var(--site-gap-lg)); padding: var(--site-landing-review-padding); border-radius: var(--site-landing-review-radius); background: var(--site-card); color: var(--site-ink); box-shadow: var(--site-landing-review-shadow); font-size: var(--site-landing-review-font); line-height: var(--site-feature-line); }
+.app-interview-summary { margin: 0 0 var(--site-landing-review-padding); font-size: var(--site-landing-review-copy); word-break: keep-all; overflow-wrap: anywhere; }
+.app-interview-meta { margin: auto 0 0; font-size: var(--site-landing-review-meta); line-height: var(--site-line-compact); color: var(--site-landing-review-meta-ink); text-align: left; }
+.app-interview-meta > * { display: block; overflow-wrap: anywhere; }
+.app-interview-meta strong { font-weight: var(--site-weight-title); }
+.app-interview-meta a { color: inherit; text-decoration: underline; }
+.app-landing-interviews .app-flow-viewport, .app-landing-interviews .app-flow-group { gap: var(--site-landing-review-font); align-items: flex-end; }
+.app-landing-section .app-flow-viewport { margin-top: calc(var(--site-gap-xs) * -1); padding-bottom: var(--site-landing-heading-space); }
 .app-home-flow { display: flex; flex-direction: column; }
 .app-home-stage { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; padding-bottom: var(--site-landing-section); }
-.app-home-stories { display: flex; flex-direction: column; gap: var(--site-gap-lg); padding-block: var(--site-landing-section); background: var(--site-card); }
-.app-home-rail { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; }
 .app-home-rail-footer { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; }
-.app-home-stories:has(+ .app-home-stories) { padding-bottom: 0; }
-.app-home-stories + .app-home-stories { padding-top: var(--site-gap-lg); }
 .app-newsletter :disabled { opacity: var(--site-landing-logo-opacity); cursor: default; }
 .app-newsletter button:disabled:hover { background: var(--site-link); box-shadow: none; }
 .app-landing-newsletter .app-caption { text-align: center; }
+.app-landing-newsletter .app-newsletter { margin-bottom: var(--site-landing-nav-gap); }
 .app-project-caption { display: flex; flex-direction: column; align-items: center; gap: var(--site-gap-sm); text-align: center; margin-top: var(--site-gap); font-size: var(--site-small-text); }
 .app-project-caption p { margin: 0; }
 .app-project-caption strong { color: var(--site-ink); }
@@ -983,8 +985,7 @@ body[data-page=features] > main { background: var(--site-card); }
 @media (max-width: breakpoint(mobile)) {
   .app-personal-hero { padding-block: var(--site-hero-top) var(--site-gap-lg); }
   .app-home-stage { padding-bottom: var(--site-gap-lg); }
-  .app-home-stories { padding-block: var(--site-gap-lg); }
-  .app-home-contact { padding-block: var(--site-gap-lg) var(--site-landing-section); }
+    .app-home-contact { padding-block: var(--site-gap-lg) var(--site-landing-section); }
   .app-player-button.is-compact { width: var(--site-flow-control-size); height: var(--site-flow-control-size); }
   .app-personal-hero h1 { font-size: var(--site-section-title); }
   .app-personal-intro { font-size: var(--site-body-text); }

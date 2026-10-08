@@ -5,9 +5,15 @@ export function publicInterviews(entries, preview = false) {
   return entries.filter(entry => preview || !entry.example);
 }
 
-export function interviewSection(entries = [], id = 'interviews') {
+// 출처는 플랫폼에 관계없이 같은 모양이며 주소가 있을 때만 링크가 된다.
+function sourceLine({ source }) {
+  if (!source) return '';
+  const label = escape(source.label ?? source.platform);
+  return source.url ? `<a href="${escape(source.url)}">${label} →</a>` : `<span>${label}</span>`;
+}
+
+export function interviewCards(entries) {
   if (!entries.length) return '';
   const examples = entries.every(entry => entry.example);
-  const source = entry => entry.url ? `<a href="${escape(entry.url)}">${escape(entry.source)} →</a>` : escape(entry.source);
-  return `<section class="app-interviews" id="${escape(id)}" aria-label="인터뷰" data-flow-rail data-flow-label="인터뷰"><div class="app-home-rail"><div class="app-flow-viewport" data-flow-viewport tabindex="0" role="region" aria-label="인터뷰 카드"><ul class="app-flow-group" data-flow-group>${entries.map(entry => `<li class="app-interview-card"><p class="app-interview-question">${escape(entry.question)}</p><blockquote>${escape(entry.quote)}</blockquote><p class="app-interview-source">${source(entry)}${entry.example && !examples ? ' · 구성 예시' : ''}</p></li>`).join('')}</ul></div></div></section>`;
+  return entries.map(entry => `<li class="app-interview-card"><p class="app-interview-summary">${escape(entry.summary)}</p><p class="app-interview-meta"><strong>${escape(entry.company)}</strong><span>${escape(entry.role)}</span>${sourceLine(entry)}${entry.example && !examples ? '<span>구성 예시</span>' : ''}</p></li>`).join('');
 }

@@ -564,6 +564,11 @@
   --primitive-simple-landing-social-x: 10.125px;
   --primitive-simple-landing-product-muted: rgba(0,7,18,.44);
   --primitive-simple-landing-title-color: #2c3138;
+  --primitive-simple-landing-chevron-gap: 0.15em;
+  --primitive-simple-landing-chevron-offset: -0.15em;
+  --primitive-simple-landing-chevron-align: -0.07em;
+  --primitive-simple-landing-action-pressed: rgba(38,52,74,.1);
+  --primitive-simple-landing-review-meta-ink: #8e9196;
   --primitive-simple-landing-footer-ink: rgba(0,15,36,.46);
   --primitive-simple-landing-footer-logo-width: 125px;
   --primitive-simple-landing-footer-logo-height: 25px;
@@ -1527,6 +1532,11 @@
   --site-landing-social-x: var(--primitive-simple-landing-social-x);
   --site-landing-product-muted: var(--primitive-simple-landing-product-muted);
   --site-landing-title-color: var(--primitive-simple-landing-title-color);
+  --site-landing-chevron-gap: var(--primitive-simple-landing-chevron-gap);
+  --site-landing-chevron-offset: var(--primitive-simple-landing-chevron-offset);
+  --site-landing-chevron-align: var(--primitive-simple-landing-chevron-align);
+  --site-landing-action-pressed: var(--primitive-simple-landing-action-pressed);
+  --site-landing-review-meta-ink: var(--primitive-simple-landing-review-meta-ink);
   --site-landing-footer-ink: var(--primitive-simple-landing-footer-ink);
   --site-landing-footer-logo-width: var(--primitive-simple-landing-footer-logo-width);
   --site-landing-footer-logo-height: var(--primitive-simple-landing-footer-logo-height);

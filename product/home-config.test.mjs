@@ -42,9 +42,19 @@ test('section_ids_must_be_unique_and_not_collide_with_derived_dom_ids', () => {
   rejects('sections:\n  - { id: Bad_Id, type: technologies }', /sections\[0\]\.id/);
 });
 
-test('interview_items_require_unique_ids_and_https_sources_unless_example', () => {
-  const item = extra => `sections:\n  - { id: a, type: interviews, items: [{ id: talk, question: q, quote: r, source: s${extra} }] }`;
-  rejects(item(''), /items\[0\]\.url: 실제 인터뷰에는 HTTPS/);
-  rejects(item(', url: "javascript:alert(1)"'), /items\[0\]\.url/);
-  assert.equal(parse(item(', example: true'))[0].items.length, 1);
+test('interview_items_require_unique_ids_and_the_three_text_fields_but_no_source', () => {
+  const item = extra => `sections:\n  - { id: a, type: interviews, items: [{ id: talk, summary: s, company: c, role: r${extra} }] }`;
+  assert.equal(parse(item(''))[0].items[0].source, undefined);
+  rejects(item('').replace('role: r', ''), /items\[0\]\.role: 값이 필요/);
+  rejects(item(', question: q'), /items\[0\]\.question: 알 수 없는 설정/);
+  rejects(item(', source: { platform: GitHub, url: "javascript:alert(1)" }'), /items\[0\]\.source\.url/);
+  rejects(item(', source: { url: "https://example.com" }'), /items\[0\]\.source\.platform/);
+  rejects(item(', source: { platform: GitHub, url: "http://example.com" }'), /items\[0\]\.source\.url.*HTTPS/);
+  rejects('sections:\n  - { id: a, type: interviews, items: [{ id: t, summary: s, company: c, role: r }, { id: t, summary: s, company: c, role: r }] }', /items\[1\]\.id: 중복/);
+});
+
+test('prototype_properties_are_not_section_types_and_link_icons_are_checked', () => {
+  for (const type of ['toString', '__proto__', 'constructor', 'hasOwnProperty']) rejects(`sections:\n  - { id: a, type: ${type} }`, /sections\[0\]\.type/);
+  rejects('sections:\n  - { id: a, type: interviews, links: [{ label: x, href: /a/, icon: twitter }] }', /links\[0\]\.icon/);
+  rejects('sections:\n  - { id: a, type: interviews, links: [{ label: x, href: "javascript:alert(1)" }] }', /links\[0\]\.href/);
 });

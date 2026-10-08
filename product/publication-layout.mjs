@@ -75,7 +75,8 @@ const HOME_SECTIONS = {
 };
 
 export function personalHome(context) {
-  return `<main id="main" class="app-landing"><h1 class="app-sr">${escape(context.config.name)}</h1>${context.home.map(section => HOME_SECTIONS[section.type](section, context)).join('')}</main>`;
+  const title = context.home.find(section => section.type === 'hero')?.title ?? context.config.name;
+  return `<main id="main" class="app-landing"><h1 class="app-sr">${escape(title)}</h1>${context.home.map(section => HOME_SECTIONS[section.type](section, context)).join('')}</main>`;
 }
 
 export function wikiLanding(documents, context, field, recent = '') {

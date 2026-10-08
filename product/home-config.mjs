@@ -80,11 +80,29 @@ function link(value, path, hrefRequired = true) {
   return { label: text(item.label, `${path}.label`), href: hrefRequired || item.href !== undefined ? href(item.href, `${path}.href`) : undefined };
 }
 
+// 아이콘, 제목, 설명을 가진 섹션 머리. 기본 문구가 없는 설명은 생략할 수 있다.
+function intro(item, path, context, title, description) {
+  return { icon: picture(item.icon, `${path}.icon`, context), title: text(item.title, `${path}.title`, false) ?? title, description: text(item.description, `${path}.description`, false) ?? description };
+}
+
+const SOCIAL_ICONS = ['github', 'rss'];
+
+// 제목 아래 링크 행. icon은 내장 이름(github, rss) 또는 이미지 파일이고 없으면 label이 글자로 보인다.
+function links(value, path, context) {
+  return list(value ?? [], path).map((entry, index) => {
+    const where = `${path}[${index}]`;
+    const item = record(entry, where, ['label', 'href', 'icon']);
+    const icon = item.icon === undefined ? undefined : SOCIAL_ICONS.includes(item.icon) ? item.icon : media(item.icon, `${where}.icon`, IMAGE_TYPES, context);
+    return { label: text(item.label, `${where}.label`), href: href(item.href, `${where}.href`), icon };
+  });
+}
+
 const SECTIONS = {
   hero(section, path, context) {
-    const item = record(section, path, ['id', 'type', 'enabled', 'description', 'icon', 'image', 'video', 'action']);
+    const item = record(section, path, ['id', 'type', 'enabled', 'title', 'description', 'icon', 'image', 'video', 'action']);
     const video = item.video === undefined ? undefined : record(item.video, `${path}.video`, ['src', 'poster', 'title']);
     return {
+      title: text(item.title, `${path}.title`, false),
       description: text(item.description, `${path}.description`),
       icon: picture(item.icon, `${path}.icon`, context),
       image: picture(item.image, `${path}.image`, context),
@@ -101,19 +119,21 @@ const SECTIONS = {
     const items = list(item.items ?? [], `${path}.items`).map((entry, index) => {
       const where = `${path}.items[${index}]`;
       const project = record(entry, where, ['enabled', 'title', 'description', 'link', 'icon', 'image']);
+      const enabled = flag(project.enabled, `${where}.enabled`);
+      const scope = { ...context, check: context.check && enabled };
       return {
-        enabled: flag(project.enabled, `${where}.enabled`),
+        enabled,
         title: text(project.title, `${where}.title`),
         description: text(project.description, `${where}.description`),
         link: link(project.link, `${where}.link`),
-        icon: picture(project.icon, `${where}.icon`, context),
-        image: picture(project.image, `${where}.image`, context),
+        icon: picture(project.icon, `${where}.icon`, scope),
+        image: picture(project.image, `${where}.image`, scope),
       };
     });
     return { items: items.filter(project => project.enabled) };
   },
   technologies(section, path, context) {
-    const item = record(section, path, ['id', 'type', 'enabled', 'items']);
+    const item = record(section, path, ['id', 'type', 'enabled', 'icon', 'title', 'description', 'items']);
     const seen = new Set();
     const items = list(item.items ?? [], `${path}.items`).map((entry, index) => {
       const id = text(entry, `${path}.items[${index}]`);
@@ -122,30 +142,33 @@ const SECTIONS = {
       seen.add(id);
       return id;
     });
-    return { items };
+    return { ...intro(item, path, context, '사용하는 기술', '아이콘을 누르면 해당 기술의 기록을 모아 볼 수 있습니다.'), items };
   },
-  interviews(section, path) {
-    const item = record(section, path, ['id', 'type', 'enabled', 'items']);
+  interviews(section, path, context) {
+    const item = record(section, path, ['id', 'type', 'enabled', 'icon', 'title', 'description', 'links', 'items']);
     const seen = new Set();
     const items = list(item.items ?? [], `${path}.items`).map((entry, index) => {
       const where = `${path}.items[${index}]`;
-      const interview = record(entry, where, ['id', 'question', 'quote', 'source', 'url', 'example']);
+      const interview = record(entry, where, ['id', 'summary', 'company', 'role', 'source', 'example']);
       const id = text(interview.id, `${where}.id`);
       if (!/^[a-z0-9-]+$/.test(id)) fail(`${where}.id`, '영문 소문자, 숫자, -만 쓸 수 있습니다');
       if (seen.has(id)) fail(`${where}.id`, `중복된 인터뷰 id입니다: ${id}`);
       seen.add(id);
       if (interview.example !== undefined && typeof interview.example !== 'boolean') fail(`${where}.example`, 'true 또는 false여야 합니다');
-      const example = interview.example === true;
-      if (!example && interview.url === undefined) fail(`${where}.url`, '실제 인터뷰에는 HTTPS 원문 주소가 필요합니다');
+      const source = interview.source === undefined ? undefined : record(interview.source, `${where}.source`, ['platform', 'label', 'url']);
       return {
-        id, example,
-        question: text(interview.question, `${where}.question`),
-        quote: text(interview.quote, `${where}.quote`),
-        source: text(interview.source, `${where}.source`),
-        url: interview.url === undefined ? undefined : secure(text(interview.url, `${where}.url`), `${where}.url`),
+        id, example: interview.example === true,
+        summary: text(interview.summary, `${where}.summary`),
+        company: text(interview.company, `${where}.company`),
+        role: text(interview.role, `${where}.role`),
+        source: source && {
+          platform: text(source.platform, `${where}.source.platform`),
+          label: text(source.label, `${where}.source.label`, false),
+          url: source.url === undefined ? undefined : secure(text(source.url, `${where}.source.url`), `${where}.source.url`),
+        },
       };
     });
-    return { items };
+    return { ...intro(item, path, context, '인터뷰'), links: links(item.links, `${path}.links`, context), items };
   },
   contact(section, path, context) {
     const mode = section?.mode ?? 'email';
@@ -178,6 +201,8 @@ const SECTIONS = {
 // 섹션 id에서 파생되는 DOM id까지 포함해 한 페이지 안의 중복을 막는다.
 export const DERIVED_IDS = {
   hero: id => [id, `${id}-video`, `${id}-player`],
+  technologies: id => [id, `${id}-title`],
+  interviews: id => [id, `${id}-title`],
   contact: id => [id, `${id}-title`, `${id}-email`, `${id}-state`],
 };
 const domIds = section => (DERIVED_IDS[section.type] ?? (id => [id]))(section.id);
@@ -191,7 +216,7 @@ export function parseHomeConfig(source, { technologies = new Set(), exists = () 
     const path = `sections[${index}]`;
     const base = record(entry, path, Object.keys(entry ?? {}));
     const type = text(base.type, `${path}.type`);
-    if (!SECTIONS[type]) fail(`${path}.type`, `알 수 없는 섹션 종류입니다: ${type}. 사용할 수 있는 종류: ${Object.keys(SECTIONS).join(', ')}`);
+    if (!Object.hasOwn(SECTIONS, type)) fail(`${path}.type`, `알 수 없는 섹션 종류입니다: ${type}. 사용할 수 있는 종류: ${Object.keys(SECTIONS).join(', ')}`);
     const id = text(base.id, `${path}.id`);
     if (!/^[a-z][a-z0-9-]*$/.test(id)) fail(`${path}.id`, '영문 소문자로 시작하고 소문자, 숫자, -만 쓸 수 있습니다');
     const enabled = flag(base.enabled, `${path}.enabled`);
