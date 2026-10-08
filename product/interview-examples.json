@@ -1,7 +1,7 @@
 [
-  { "id": "example-01", "summary": "예시 요약 01. 카드의 높이는 글 길이에 따라 달라집니다.", "company": "예시 회사", "role": "예시 직무", "example": true },
+  { "id": "example-01", "summary": "예시 요약 01. 카드의 높이는 글 길이에 따라 달라집니다.", "author": {"name": "예시 이름", "handle": "예시아이디", "url": "https://example.com/example-id", "avatar": {"src": "/assets/tweetgrid-avatar-default.png", "alt": ""}}, "date": "2026-01-15", "example": true },
   { "id": "example-02", "summary": "예시 요약 02. 실제 인터뷰가 들어오면 이 카드는 사라집니다. 지금은 여러 줄이 되었을 때의 배치와 간격을 확인하기 위한 문장입니다.", "company": "예시 회사", "role": "예시 직무", "example": true },
   { "id": "example-03", "summary": "예시 요약 03. 짧은 카드입니다.", "company": "예시 회사", "role": "예시 직무", "example": true },
-  { "id": "example-04", "summary": "예시 요약 04. 선별해 정리한 글을 옮겨 적는 자리입니다. 원문이 있으면 아래에 출처 링크가 함께 보이고, 오프라인에서 받은 이야기는 출처 없이도 쓸 수 있습니다.", "company": "예시 회사", "role": "예시 직무", "example": true },
+  { "id": "example-04", "summary": "예시 요약 04. 선별해 정리한 글을 옮겨 적는 자리입니다. 원문이 있으면 아래에 출처 링크가 함께 보이고, 오프라인에서 받은 이야기는 출처 없이도 쓸 수 있습니다.", "company": "예시 회사", "role": "예시 직무", "author": {"handle": "예시아이디"}, "date": "2026-02-03", "source": {"platform": "GitHub", "label": "댓글 보기", "url": "https://example.com/example-post"}, "example": true },
   { "id": "example-05", "summary": "예시 요약 05. 중간 길이의 카드입니다. 두세 줄 정도의 내용이 들어갑니다.", "company": "예시 회사", "role": "예시 직무", "example": true }
 ]

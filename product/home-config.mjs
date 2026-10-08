@@ -74,6 +74,30 @@ function picture(value, path, context) {
   return { src: media(item.src, `${path}.src`, IMAGE_TYPES, context), alt: text(item.alt, `${path}.alt`, false) ?? '' };
 }
 
+// YYYY-MM-DD 형식이면서 실제 달력에 있는 날짜만 받는다. 시간대 계산 없이 문자열 그대로 보존한다.
+function calendarDate(value, path) {
+  const date = text(value, path);
+  const [, year, month, day] = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date) ?? fail(path, `YYYY-MM-DD 형식이어야 합니다.: ${date}`);
+  const real = new Date(Date.UTC(year, month - 1, day));
+  if (real.getUTCFullYear() !== Number(year) || real.getUTCMonth() !== month - 1 || real.getUTCDate() !== Number(day)) fail(path, `달력에 없는 날짜입니다: ${date}`);
+  return date;
+}
+
+// 작성자는 이름, 아이디, 프로필 주소, 아이콘 중 하나 이상이 있으면 된다. 프로필 주소는 글 주소(source.url)와 따로 둔다.
+function author(value, path, context) {
+  if (value === undefined) return undefined;
+  const item = record(value, path, ['name', 'handle', 'url', 'avatar']);
+  const name = text(item.name, `${path}.name`, false);
+  const handle = text(item.handle, `${path}.handle`, false);
+  if (handle && /\s/.test(handle)) fail(`${path}.handle`, `공백을 쓸 수 없습니다: ${handle}`);
+  const avatar = picture(item.avatar, `${path}.avatar`, context);
+  const url = item.url === undefined ? undefined : secure(text(item.url, `${path}.url`), `${path}.url`);
+  if (!name && !handle && !avatar) fail(path, 'name, handle, avatar 중 하나가 필요합니다');
+  if (avatar && !avatar.alt && !name && !handle) fail(`${path}.avatar.alt`, '이름과 아이디가 없으면 아이콘 대체 글이 필요합니다');
+  if (url && !name && !handle && !avatar) fail(`${path}.url`, '연결할 이름, 아이디, 아이콘이 없습니다');
+  return { name, handle, url, avatar };
+}
+
 function link(value, path, hrefRequired = true) {
   if (value === undefined) return undefined;
   const item = record(value, path, ['label', 'href']);
@@ -149,7 +173,7 @@ const SECTIONS = {
     const seen = new Set();
     const items = list(item.items ?? [], `${path}.items`).map((entry, index) => {
       const where = `${path}.items[${index}]`;
-      const interview = record(entry, where, ['id', 'summary', 'company', 'role', 'source', 'example']);
+      const interview = record(entry, where, ['id', 'summary', 'company', 'role', 'author', 'date', 'source', 'example']);
       const id = text(interview.id, `${where}.id`);
       if (!/^[a-z0-9-]+$/.test(id)) fail(`${where}.id`, '영문 소문자, 숫자, -만 쓸 수 있습니다');
       if (seen.has(id)) fail(`${where}.id`, `중복된 인터뷰 id입니다: ${id}`);
@@ -159,8 +183,10 @@ const SECTIONS = {
       return {
         id, example: interview.example === true,
         summary: text(interview.summary, `${where}.summary`),
-        company: text(interview.company, `${where}.company`),
-        role: text(interview.role, `${where}.role`),
+        company: text(interview.company, `${where}.company`, false),
+        role: text(interview.role, `${where}.role`, false),
+        author: author(interview.author, `${where}.author`, context),
+        date: interview.date === undefined ? undefined : calendarDate(interview.date, `${where}.date`),
         source: source && {
           platform: text(source.platform, `${where}.source.platform`),
           label: text(source.label, `${where}.source.label`, false),
@@ -168,7 +194,7 @@ const SECTIONS = {
         },
       };
     });
-    return { ...intro(item, path, context, '인터뷰'), links: links(item.links, `${path}.links`, context), items };
+    return { ...intro(item, path, context, '사람들이 하는 말', '흩어진 지식을 연결하고, 다시 꺼내 쓸 수 있는 도구를 만듭니다.'), links: links(item.links, `${path}.links`, context), items };
   },
   contact(section, path, context) {
     const mode = section?.mode ?? 'email';

@@ -71,21 +71,33 @@ sections:
 
   # 인터뷰: 머리(icon, title, description, links) 아래에 카드가 흐른다. links는 {label, href, icon?}이고
   # icon은 github, rss 또는 이미지 파일이다. 생략하면 label이 글자로 보인다.
-  # items가 비어 있으면 미리보기에서만 예시 카드를 보인다. 카드는 요약(summary), 회사(company), 직무(role)만 필수다.
-  # source는 선택이며 GitHub 댓글, LinkedIn 등 어떤 플랫폼이든 같은 모양이다. url(HTTPS)이 있을 때만 링크가 된다.
-  #   - id: first-interview
+  # items가 비어 있으면 미리보기에서만 예시 카드를 보인다. 필수는 id와 summary뿐이고 나머지는 모두 선택이다.
+  # 회사와 직무(company, role)만 쓰는 카드, 프로필(author)과 날짜(date)를 쓰는 카드를 섞어도 빈 공간이 생기지 않는다.
+  # author는 name, handle, url, avatar 중 하나 이상이다. url은 작성자 프로필 주소이고 글 주소는 source.url에 따로 쓴다.
+  # avatar는 /assets/, /media/ 또는 HTTPS 이미지이며 이름과 아이디가 없으면 alt가 필요하다. date는 실제 있는 날짜(YYYY-MM-DD)다.
+  # source는 GitHub 댓글, LinkedIn 등 어느 플랫폼이든 같은 모양이고 url(HTTPS)이 있을 때만 링크가 된다.
+  # 주소를 읽어 오지 않으므로 이름, 아이디, 날짜는 직접 적는다. 아래 주소는 모두 자리 표시용이다.
+  #   - id: github-comment
   #     summary: 선별해 정리한 요약
+  #     author:
+  #       name: 표시 이름
+  #       handle: "@github-id"
+  #       url: https://github.com/github-id
+  #       avatar: { src: /assets/profile.png, alt: "" }
+  #     date: "2026-01-15"
+  #     source: { platform: GitHub, label: 댓글 보기, url: "https://github.com/owner/repo/discussions/1#discussioncomment-1" }
+  #   - id: first-interview
+  #     summary: 오프라인에서 들은 이야기
   #     company: 회사 이름
   #     role: 직무
-  #     source: { platform: GitHub, label: 댓글 보기, url: "https://github.com/owner/repo/discussions/1" }
   - id: interviews
     type: interviews
     enabled: true
     icon:
       src: /assets/fancysection-icon-whatpeoplearesaying-io70.png
       alt: ""
-    title: 인터뷰
-    description: 프로젝트와 개발에 관한 이야기를 모읍니다.
+    title: 사람들이 하는 말
+    description: 흩어진 지식을 연결하고, 다시 꺼내 쓸 수 있는 도구를 만듭니다.
     links:
       - { label: GitHub, href: "https://github.com/woonyong-choi", icon: github }
     items: []

@@ -67,7 +67,7 @@ test('projects_render_zero_two_or_many_entries_and_skip_disabled_ones', () => {
 test('interview_cards_need_only_summary_company_and_role_and_link_an_optional_source', () => {
   const item = extra => `sections:\n  - id: interviews\n    type: interviews\n    items:\n      - { id: talk, summary: 요약, company: 회사, role: 직무${extra} }`;
   const plain = render(item(''), false);
-  assert.match(plain, /<p class="app-interview-summary">요약<\/p><p class="app-interview-meta"><strong>회사<\/strong><span>직무<\/span><\/p>/);
+  assert.match(plain, /<p class="app-interview-summary">요약<\/p><div class="app-interview-meta"><div class="app-interview-lines"><strong>회사<\/strong><span>직무<\/span><\/div><\/div>/);
   assert.doesNotMatch(plain, /<a href/);
   const linked = render(item(', source: { platform: GitHub, label: 댓글 보기, url: "https://example.com/talk" }'), false);
   assert.match(linked, /<a href="https:\/\/example.com\/talk">댓글 보기 →<\/a>/);
@@ -124,7 +124,7 @@ test('newsletter_without_endpoint_keeps_controls_disabled_and_never_posts', () =
 test('the_shipped_interviews_section_shows_its_description_by_default', () => {
   const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
   const interviews = loadHomeConfig(new Set(brands)).find(section => section.type === 'interviews');
-  assert.equal(interviews.description, '프로젝트와 개발에 관한 이야기를 모읍니다.');
+  assert.equal(interviews.description, '흩어진 지식을 연결하고, 다시 꺼내 쓸 수 있는 도구를 만듭니다.');
   assert.match(personalHome({ config: { name: '이름' }, home: [interviews], interviewExamples: [], preview: true }) || '', /^<main/);
 });
 
