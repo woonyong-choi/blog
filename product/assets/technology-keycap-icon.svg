@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><style data-site-tokens="">:root{--color-data-heat-ink:#000000;--color-fg:#1f1f1f;--color-page:#ffffff}@media(prefers-color-scheme:dark){:root{--color-data-heat-ink:#ffffff;--color-fg:#f0f0f0;--color-page:#121212}}</style>
-  <path d="M22 12H42A11 11 0 0 1 53 23V42A11 11 0 0 1 42 53H22A11 11 0 0 1 11 42V23A11 11 0 0 1 22 12Z" fill="var(--color-data-heat-ink)"/>
-  <path d="M22 12H42A11 11 0 0 1 53 23V36A11 11 0 0 1 42 47H22A11 11 0 0 1 11 36V23A11 11 0 0 1 22 12Z" fill="var(--color-fg)"/>
-  <g fill="none" stroke="var(--color-page)" style="stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round">
-    <path d="M28.5 26H35.5V33H28.5Z"/>
-    <path d="M28.5 26V23.5A2.5 2.5 0 1 0 26 26H28.5"/>
-    <path d="M35.5 26V23.5A2.5 2.5 0 1 1 38 26H35.5"/>
-    <path d="M28.5 33V35.5A2.5 2.5 0 1 1 26 33H28.5"/>
-    <path d="M35.5 33V35.5A2.5 2.5 0 1 0 38 33H35.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><style data-site-tokens="">:root{--asset-paint-keycap-base:#000000;--asset-paint-keycap-face:#1f1f1f;--asset-paint-keycap-legend:#ffffff}@media(prefers-color-scheme:dark){:root{--asset-paint-keycap-base:#000000;--asset-paint-keycap-face:#1f1f1f;--asset-paint-keycap-legend:#ffffff}}</style>
+  <path d="M19 12H45A8 8 0 0 1 53 20V45A8 8 0 0 1 45 53H19A8 8 0 0 1 11 45V20A8 8 0 0 1 19 12Z" fill="var(--asset-paint-keycap-base)"/>
+  <path d="M20 14.5H44A6.5 6.5 0 0 1 50.5 21V43.5A6.5 6.5 0 0 1 44 50H20A6.5 6.5 0 0 1 13.5 43.5V21A6.5 6.5 0 0 1 20 14.5Z" fill="var(--asset-paint-keycap-face)"/>
+  <g fill="none" stroke="var(--asset-paint-keycap-legend)" style="stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round">
+    <path d="M27.5 27.75H36.5V36.75H27.5Z"/>
+    <path d="M27.5 27.75V24.5A3.25 3.25 0 1 0 24.25 27.75H27.5"/>
+    <path d="M36.5 27.75V24.5A3.25 3.25 0 1 1 39.75 27.75H36.5"/>
+    <path d="M27.5 36.75V40A3.25 3.25 0 1 1 24.25 36.75H27.5"/>
+    <path d="M36.5 36.75V40A3.25 3.25 0 1 0 39.75 36.75H36.5"/>
   </g>
 </svg>

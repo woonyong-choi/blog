@@ -32,7 +32,7 @@ a:hover { text-decoration: underline; }
 .app-body { max-width: var(--site-body-width); margin-inline: auto; }
 .app-header { display: flex; align-items: center; justify-content: space-between; position: relative; height: var(--site-header); padding-inline: 0; }
 .app-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: calc(var(--site-header-tail) - var(--site-border)); border-bottom: var(--site-border) solid var(--site-nav-line); }
-.app-canvas[data-page=home] > .app-shell .app-logo { background-position: var(--site-nav-muted-position); }
+.app-canvas[data-page=home] > .app-shell .app-logo, .app-publication.app-canvas > .app-shell .app-logo { background-position: var(--site-nav-muted-position); }
 .app-header a { color: var(--site-nav-color); font-size: var(--site-small-text); font-weight: var(--site-weight-medium); }
 .app-header a:hover { color: var(--site-ink); }
 .app-nav { display: flex; gap: var(--site-gap); align-items: center; }
@@ -350,7 +350,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 /* 홈: 원본의 섹션 배치와 미디어 확장 영역. */
 .app-header { align-items: flex-start; padding-top: var(--site-landing-nav-top); }
 .app-logo { margin-left: var(--site-landing-nav-offset); }
-.app-canvas[data-page=home] > .app-shell .app-logo { opacity: var(--site-landing-logo-opacity); }
+.app-canvas[data-page=home] > .app-shell .app-logo, .app-publication.app-canvas > .app-shell .app-logo { opacity: var(--site-landing-logo-opacity); }
 .app-nav { gap: var(--site-landing-nav-gap); margin-right: var(--site-help-mobile-icon-inset); }
 .app-nav a { padding: var(--site-underline) var(--site-landing-nav-inset); margin: var(--site-underline) calc(-1 * var(--site-landing-nav-inset)); line-height: var(--site-icon); border-radius: var(--site-tab-button-inset); }
 .app-nav a:hover { color: var(--site-nav-hover-color); background: var(--site-landing-nav-hover); text-decoration: none; transition: background var(--site-landing-nav-motion) var(--site-icon-easing); }
@@ -843,7 +843,7 @@ body[data-page=about] .app-header::before { content: ""; position: absolute; ins
 
 .app-logo { border-radius: var(--site-tab-button-inset); }
 .app-logo:hover { background-color: var(--site-landing-nav-hover); }
-.app-canvas[data-page=home] > .app-shell .app-logo:hover { background-position: var(--site-nav-position); opacity: 1; }
+.app-canvas[data-page=home] > .app-shell .app-logo:hover, .app-publication.app-canvas > .app-shell .app-logo:hover { background-position: var(--site-nav-position); opacity: 1; }
 
 body[data-page=status] .app-logo:hover { background-color: var(--site-status-logo-hover); }
 
@@ -950,11 +950,11 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-flow-viewport.has-flow { mask-image: linear-gradient(to right, transparent, var(--site-ink) var(--site-gap), var(--site-ink) calc(100% - var(--site-gap)), transparent); }
 .app-flow-viewport:focus-visible { mask-image: none; }
 .app-flow-group { display: flex; flex: none; gap: var(--site-gap); margin: 0; padding: 0; list-style: none; }
-.app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: calc((var(--site-page) - 3 * var(--site-landing-review-font)) / 4); max-width: calc(100vw - var(--site-gap-lg)); padding: var(--site-landing-review-padding); border-radius: var(--site-landing-review-radius); background: var(--site-card); color: var(--site-ink); box-shadow: var(--site-landing-review-shadow); font-size: var(--site-landing-review-font); line-height: var(--site-feature-line); }
-.app-interview-summary { margin: 0 0 var(--site-landing-review-padding); font-size: var(--site-landing-review-copy); word-break: keep-all; overflow-wrap: anywhere; }
+.app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: calc((100cqw - var(--site-landing-review-font)) / 2); max-width: calc(100vw - var(--site-gap-lg)); padding: var(--site-landing-review-padding); border-radius: var(--site-landing-review-radius); background: var(--site-card); color: var(--site-ink); box-shadow: var(--site-landing-review-shadow); font-size: var(--site-landing-review-font); line-height: var(--site-feature-line); }
+.app-interview-summary { margin: 0; padding-bottom: var(--site-landing-review-copy-bottom); font-size: var(--site-landing-review-copy); word-break: keep-all; overflow-wrap: anywhere; }
 .app-interview-summary a { color: var(--site-landing-review-link-ink); }
 .app-interview-summary a:hover { text-decoration: underline; }
-.app-interview-summary:last-child { margin-bottom: 0; }
+.app-interview-summary:last-child { padding-bottom: 0; }
 .app-interview-meta { display: flex; gap: .5em; margin: auto 0 0; font-size: var(--site-landing-review-meta); line-height: var(--site-line-compact); color: var(--site-landing-review-meta-ink); text-align: left; }
 .app-interview-avatar { display: block; flex: none; width: var(--site-landing-review-avatar); height: var(--site-landing-review-avatar); }
 .app-interview-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--site-landing-review-avatar-radius); }
@@ -965,6 +965,17 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-interview-meta a { color: inherit; text-decoration: underline; }
 .app-landing-interviews .app-flow-viewport, .app-landing-interviews .app-flow-group { gap: var(--site-landing-review-font); align-items: flex-end; }
 .app-landing-section .app-flow-viewport { margin-top: calc(var(--site-gap-xs) * -1); padding-bottom: var(--site-landing-heading-space); }
+.app-interview-rows { display: flex; flex-direction: column; }
+.app-landing-interviews .app-interview-rows > :first-child .app-flow-viewport { padding-bottom: var(--site-gap-xs); }
+.app-landing-interviews .app-interview-rows > :last-child .app-flow-viewport { margin-top: 0; }
+/* 원본 tweetgrid처럼 줄 너비에서 열 수와 간격을 계산한다. 740px부터 4열, 740~1001px은 좌우 20px 안쪽 여백. */
+.app-interviews { container-type: inline-size; }
+@media (min-width: 740px) {
+  .app-interview-card { width: calc((100cqw - 3 * var(--site-landing-review-font)) / 4); }
+}
+@media (min-width: 740px) and (width < 1002px) {
+  .app-interviews { padding-inline: var(--site-landing-review-fade); }
+}
 .app-home-flow { display: flex; flex-direction: column; }
 .app-home-stage { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; padding-bottom: var(--site-landing-section); }
 .app-home-rail-footer { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; }
@@ -1112,4 +1123,11 @@ body[data-page=features] > main { background: var(--site-card); }
 }
 @media (prefers-reduced-motion: reduce) {
   .app-knowledge-card { transition: none; }
+}
+
+/* 홈 보정: 구독 버튼은 한글 글리프 대체 글꼴의 normal 행간에 흔들리지 않게 글줄 높이를 고정하고, 모바일 헤더는 줄어든 내비게이션 글자 크기의 절반만큼 낮춘다. */
+.app-newsletter button { line-height: var(--site-newsletter-button-line); }
+@media (max-width: 620px) {
+  .app-header { height: calc(var(--site-header) - (var(--site-nav-desktop-text) - var(--site-nav-text)) / 2); }
+  .app-header a { font-size: var(--site-nav-text); }
 }

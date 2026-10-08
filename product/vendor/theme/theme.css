@@ -1225,6 +1225,9 @@
   --asset-paint-symbol-layer-74: var(--illustration-paint-blue-17);
   --asset-paint-symbol-layer-75: var(--illustration-paint-purple-02);
   --asset-paint-foreground: var(--color-gray-878);
+  --asset-paint-keycap-base: var(--illustration-paint-neutral-01);
+  --asset-paint-keycap-face: var(--illustration-paint-neutral-04);
+  --asset-paint-keycap-legend: var(--illustration-paint-neutral-11);
   --asset-fill-opacity-mark: var(--illustration-fill-opacity-mark);
   --asset-rx-library-1: var(--illustration-rx-library-1);
   --asset-rx-queues-2: var(--illustration-rx-queues-2);
@@ -1559,6 +1562,7 @@
   --site-newsletter-button-radius: var(--primitive-simple-newsletter-button-radius);
   --site-newsletter-button-padding: var(--primitive-simple-newsletter-button-padding);
   --site-newsletter-button-margin: var(--primitive-simple-newsletter-button-margin);
+  --site-newsletter-button-line: var(--primitive-simple-header-tail);
   --site-newsletter-input-radius: var(--primitive-simple-newsletter-input-radius);
   --site-quote-credit-gap: var(--primitive-simple-quote-credit-gap);
   --site-nav-text: var(--primitive-simple-help-mobile-block);

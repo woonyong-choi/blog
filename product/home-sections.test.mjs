@@ -84,6 +84,25 @@ test('interview_cards_show_summary_and_exactly_the_image_title_subtitle_slots', 
   assert.doesNotMatch(render(empty, false), /interviews|예시/);
 });
 
+test('interviews_split_in_order_into_ceil_half_rows_after_filtering', () => {
+  const items = count => `sections:\n  - id: interviews\n    type: interviews\n    items:\n${Array.from({ length: count }, (_, i) => `      - { id: i${i}, summary: 요약${i}, profile: { title: 회사${i} } }`).join('\n')}`;
+  const rows = html => [...html.matchAll(/<ul class="app-flow-group"[^>]*>(.*?)<\/ul>/g)].map(match => [...match[1].matchAll(/요약(\d)/g)].map(card => Number(card[1])));
+  assert.equal(rows(render('sections:\n  - { id: interviews, type: interviews, items: [] }', false)).length, 0);
+  assert.deepEqual(rows(render(items(1), false)), [[0]]);
+  assert.doesNotMatch(render(items(1), false), /data-flow-rows/);
+  assert.deepEqual(rows(render(items(2), false)), [[0], [1]]);
+  assert.deepEqual(rows(render(items(5), false)), [[0, 1, 2], [3, 4]]);
+  assert.deepEqual(rows(render(items(6), false)), [[0, 1, 2], [3, 4, 5]]);
+  const two = render(items(6), false);
+  assert.equal((two.match(/data-flow-rows/g) ?? []).length, 1);
+  assert.match(two, /aria-label="인터뷰 카드 1행"[\s\S]*aria-label="인터뷰 카드 2행"/);
+  assert.equal((two.match(/data-flow-direction="right"/g) ?? []).length, 1);
+  assert.match(two, /<div class="app-interviews" data-flow-rail data-flow-label="인터뷰">[\s\S]*<div class="app-interviews" data-flow-rail data-flow-direction="right" data-flow-label="인터뷰">/);
+  assert.doesNotMatch(readFileSync(new URL('./vendor/theme/styles.css', import.meta.url), 'utf8'), /app-interview-rows[^{]*\{[^}]*align-items: flex-start/);
+  const filtered = render(items(3).replace('i1,', 'i1, example: true,'), false);
+  assert.deepEqual(rows(filtered), [[0], [2]]);
+});
+
 test('social_links_support_registry_icons_and_show_a_link_less_icon_as_a_placeholder', () => {
   const html = render('sections:\n  - { id: talk, type: interviews, links: [{ label: GitHub, href: "https://github.com/x", icon: github }, { label: LinkedIn, icon: linkedin }], items: [] }');
   const row = html.match(/<p class="app-landing-social">.*?<\/p>/)[0];

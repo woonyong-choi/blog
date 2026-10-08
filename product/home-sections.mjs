@@ -69,10 +69,14 @@ export function technologySection(section, brands) {
 
 export function interviewsSection(section, { examples = [], preview = false } = {}) {
   const entries = publicInterviews(section.items.length ? section.items : examples, preview);
-  const cards = interviewCards(entries, href);
-  if (!cards) return '';
+  if (!entries.length) return '';
+  // 순서를 유지한 채 앞 절반을 위 줄, 나머지를 아래 줄에 둔다. 한 장이면 한 줄이다. 위 줄은 왼쪽, 아래 줄은 오른쪽으로 흐른다.
+  const split = entries.length > 1 ? Math.ceil(entries.length / 2) : entries.length;
+  const rows = [entries.slice(0, split), entries.slice(split)].filter(row => row.length);
+  const rails = rows.map((row, index) => flowRail(`class="app-interviews" data-flow-rail${index ? ' data-flow-direction="right"' : ''} data-flow-label="인터뷰"`, rows.length > 1 ? `인터뷰 카드 ${index + 1}행` : '인터뷰 카드', interviewCards(row, href))).join('');
+  const body = rows.length > 1 ? `<div class="app-interview-rows" data-flow-rows>${rails}</div>` : rails;
   const id = escape(section.id);
-  return `<section id="${id}" class="app-landing-section app-landing-interviews" aria-labelledby="${id}-title"><div class="app-shell">${sectionIntro({ ...section, titleId: `${section.id}-title` })}${flowRail('class="app-interviews" data-flow-rail data-flow-label="인터뷰"', '인터뷰 카드', cards)}</div></section>`;
+  return `<section id="${id}" class="app-landing-section app-landing-interviews" aria-labelledby="${id}-title"><div class="app-shell">${sectionIntro({ ...section, titleId: `${section.id}-title` })}${body}</div></section>`;
 }
 
 function newsletter(contact, id) {

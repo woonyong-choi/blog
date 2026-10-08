@@ -6203,6 +6203,21 @@
       "foreground": {
         "$type": "color",
         "$value": "{color.gray.878}"
+      },
+      "keycap-base": {
+        "$type": "color",
+        "$value": "{illustration.paint.neutral-01}",
+        "$description": "키캡 아이콘의 아랫면. 라이트와 다크 모두 검정 유지. 텍스트 전경색은 다크에서 밝아져 대체 불가"
+      },
+      "keycap-face": {
+        "$type": "color",
+        "$value": "{illustration.paint.neutral-04}",
+        "$description": "키캡 아이콘의 윗면. 라이트와 다크 모두 숯색 유지. 텍스트 전경색은 다크에서 밝아져 대체 불가"
+      },
+      "keycap-legend": {
+        "$type": "color",
+        "$value": "{illustration.paint.neutral-11}",
+        "$description": "키캡 아이콘의 밝은 기호. 라이트와 다크 모두 흰색 유지. 페이지 배경색은 다크에서 어두워져 대체 불가"
       }
     },
     "fill-opacity": {
@@ -7765,6 +7780,11 @@
       "$type": "dimension",
       "$value": "{primitive.simple.newsletter-button-margin}",
       "$description": "홈페이지 폼·인용문 표시 역할"
+    },
+    "newsletter-button-line": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.header-tail}",
+      "$description": "구독 버튼 글줄 높이. 원본 영문 글꼴의 normal 행간(약 20px)과 같은 기존 20px 값을 쓴다. 한글 대체 글꼴에서는 normal이 더 커지므로 고정한다"
     },
     "newsletter-input-radius": {
       "$type": "dimension",
