@@ -48,14 +48,15 @@ main {
   line-height: 1.4;
 }
 .gsc-main { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; color: #303336; }
-.gsc-main .gsc-header { margin-bottom: 24px; align-items: baseline; flex-wrap: wrap; gap: 12px; }
+.gsc-main .gsc-comments, .gsc-main .gsc-timeline { gap: 24px; }
+.gsc-main .gsc-header { margin: 0; align-items: baseline; flex-wrap: wrap; gap: 12px; }
 .gsc-main .gsc-left-header { flex-wrap: wrap; gap: 8px; }
 .gsc-main .gsc-comments-count, .gsc-main .gsc-replies-count { font-size: 15px; font-weight: 600; }
 .gsc-main .gsc-right-header { background: transparent; border: 0; font-size: 15px; }
 .gsc-main .gsc-right-header button { border: 0; box-shadow: none; border-radius: 8px; padding: 8px 12px; font: inherit; color: #55606e; background: transparent; }
 .gsc-main .gsc-right-header [aria-current=true] button { background: #ebf1ff; color: #303336; }
 .gsc-main .gsc-right-header > li { background: transparent; border: 0; box-shadow: none; }
-.gsc-main .gsc-comment-box { font-size: 15px; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin-bottom: 48px; }
+.gsc-main .gsc-comment-box { font-size: 15px; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 0; }
 .gsc-main .gsc-comment-box-tabs { background: transparent; border: 0; border-radius: 0; padding: 0; margin-bottom: 12px; }
 .gsc-main .gsc-comment-box-tabs > div { margin: 0; }
 .gsc-main .gsc-comment-box-tabs button { border: 0; border-radius: 8px; background: transparent; padding: 8px 12px; color: #55606e; font: inherit; }
@@ -70,8 +71,9 @@ main {
 .gsc-main .gsc-comment-box-buttons :is(button,a) { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 15px; font-weight: 600; padding: 8px 12px; border-radius: 8px; box-shadow: none; }
 .gsc-main .gsc-comment-box-buttons a.btn-primary { background: transparent; border-color: transparent; color: #2576eb; }
 .gsc-main .gsc-comment-box-buttons a.btn-primary:hover { background: #ebf1ff; text-decoration: none; }
-.gsc-main .gsc-comment { font-size: 18px; margin-bottom: 24px; }
-.gsc-main .gsc-comment > div { border: 1px solid #ebecef; border-radius: 12px; background: #f6f7fa; overflow: hidden; }
+.gsc-main .gsc-comment { font-size: 18px; margin: 0; }
+/* giscus의 rounded-md 유틸리티보다 테마의 카드 곡률을 우선한다. */
+.gsc-main .gsc-comment > div { border: 1px solid #ebecef; border-radius: 12px !important; background: #f6f7fa; overflow: hidden; }
 .gsc-main .gsc-comment-header { padding: 18px 18px 0; color: #55606e; font-size: 15px; gap: 12px; }
 .gsc-main .gsc-comment-author { flex-wrap: wrap; gap: 8px; }
 .gsc-main .gsc-comment-content, .gsc-main .gsc-reply-content { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; }
