@@ -1405,6 +1405,9 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-type-filters [aria-current=page] { background: var(--site-help-hover); color: var(--site-link); }
 .app-filter-summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--site-gap-sm); margin-bottom: var(--site-gap); font-size: var(--site-small-text); }
 .app-comments { padding-top: var(--site-gap-lg); margin-top: var(--site-support-gap); border-top: var(--site-border) solid var(--site-line); }
+.app-publication .app-comments > h2 { margin: 0 0 var(--site-gap-sm); }
+.app-publication .app-comments > .app-comments-status { margin: 0 0 var(--site-gap); }
+.app-publication .app-comments > .app-caption { margin: var(--site-gap) 0 0; }
 .app-comments-status { font-size: var(--site-small-text); color: var(--site-muted); }
 .app-empty { padding-block: var(--site-gap-lg); color: var(--site-muted); }
 .app-blog-post .app-feed-body .app-heading-2 { font-size: var(--site-subtitle); margin: var(--site-post-h2-margin); line-height: var(--site-line-intro); }

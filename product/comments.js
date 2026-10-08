@@ -4,7 +4,7 @@ if (section) {
   const status = section.querySelector('[data-comments-status]');
   const retry = section.querySelector('[data-comments-retry]');
   const container = section.querySelector('.giscus');
-  let loaded = false; let failed = false; let timeout;
+  let loaded = false; let failed = false; let timeout; let commentCount;
   function fail() { failed = true; clearTimeout(timeout); status.textContent = '댓글을 불러오지 못했습니다. 다시 시도하거나 GitHub에서 열어 주세요.'; retry.hidden = false; }
   function load() {
     if (loaded) return;
@@ -28,13 +28,14 @@ if (section) {
     if (event.origin !== 'https://giscus.app' || event.source !== frame?.contentWindow || !event.data?.giscus) return;
     const data = event.data.giscus;
     if (data.error) {
-      if (data.error.includes('Discussion not found')) { clearTimeout(timeout); status.textContent = '첫 댓글을 남겨 주세요. 작성하면 이 글의 토론이 생성됩니다.'; retry.hidden = true; }
+      if (data.error.includes('Discussion not found')) { commentCount = 0; clearTimeout(timeout); status.textContent = '첫 댓글을 남겨 주세요. 작성하면 이 글의 토론이 생성됩니다.'; retry.hidden = true; }
       else fail();
       return;
     }
     if ('discussion' in data || data.resizeHeight && !failed) {
       clearTimeout(timeout); retry.hidden = true;
-      status.textContent = data.discussion?.totalCommentCount ? 'GitHub 계정으로 댓글과 답글을 작성할 수 있습니다.' : '첫 댓글을 남겨 주세요. GitHub 계정으로 로그인할 수 있습니다.';
+      if ('discussion' in data) { failed = false; commentCount = data.discussion?.totalCommentCount ?? 0; }
+      status.textContent = commentCount === 0 ? '첫 댓글을 남겨 주세요. GitHub 계정으로 로그인할 수 있습니다.' : 'GitHub 계정으로 댓글과 답글을 작성할 수 있습니다.';
       if (data.discussion?.url?.startsWith(`https://github.com/${section.dataset.repo}/discussions/`)) section.querySelector('[data-discussion-link]').href = data.discussion.url;
     }
   });
