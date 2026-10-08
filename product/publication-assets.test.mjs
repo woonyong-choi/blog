@@ -43,3 +43,10 @@ test('static_pages_load_no_client_modules_and_document_controls_keep_their_own_e
   for (const marker of ['data-gallery', 'data-tabs', 'data-copy', 'data-keyboard', 'data-tooltip-trigger']) assert.deepEqual(clientEntrypoints(`<div ${marker}></div>`), ['document.js']);
   assert.deepEqual(clientEntrypoints('<code>&lt;div data-copy&gt;</code>'), []);
 });
+
+test('video_state_icons_are_included_before_the_first_play', () => {
+  const pages = new Map([['/', '<div data-player><video poster="/media/poster.png"><source src="/media/demo.mp4"></video></div>']]);
+  const assets = publicationAssets(pages, [], () => Buffer.from(''));
+  for (const path of ['/media/poster.png', '/media/demo.mp4', '/assets/remotecontrol-pause-gray.svg', '/assets/remotecontrol-replay.svg']) assert.ok(assets.has(path));
+  assert.deepEqual(clientEntrypoints(pages.get('/')), ['video.js']);
+});

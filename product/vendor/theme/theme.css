@@ -1813,6 +1813,8 @@
   --site-search-result-radius: var(--primitive-simple-platform-button-y);
   --site-icon-catalog-width: calc(var(--primitive-simple-icon) * 5);
   --site-sidebar-width: var(--primitive-simple-sidebar-width);
+  --site-home-title: var(--primitive-simple-hero-title-mobile);
+  --site-flow-control-size: var(--primitive-simple-hero-title-mobile);
   --icon-paper: var(--color-gray-0);
   --icon-outline: var(--primitive-simple-icon-outline);
   --icon-detail: var(--primitive-simple-icon-detail);

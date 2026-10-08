@@ -53,10 +53,11 @@
     "themeUrl": "https://cdn.jsdelivr.net/gh/woonyong-choi/blog@fd16b518f1e614cb69ccbd0e5126f21c32af944e/product/vendor/theme/assets/giscus.css"
   },
   "projectVideo": {
-    "title": "진행 중인 프로젝트",
-    "description": "직접 만든 도구가 동작하는 모습을 소개합니다.",
-    "src": "",
-    "poster": ""
+    "title": "Manta Code Blocks",
+    "description": "기록한 코드를 바로 실행하고 확인하는 도구",
+    "src": "/media/manta-code-blocks-intro.mp4",
+    "poster": "/media/manta-code-blocks-poster.png",
+    "href": "https://github.com/woonyong-choi/manta-code-blocks"
   },
   "technologies": [
     "c",
@@ -73,5 +74,10 @@
   "contact": {
     "email": "woonyong.contact@gmail.com",
     "source": "https://docs.woonyong.com/resume/"
+  },
+  "hero": {
+    "eyebrow": "Backend Engineer",
+    "title": "기록을 연결하고,\n도구로 만듭니다.",
+    "description": "흩어진 지식과 개발 흐름을 정리해, 다시 꺼내 쓸 수 있는 도구를 만듭니다."
   }
 }

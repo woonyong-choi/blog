@@ -16,7 +16,8 @@ for (const rail of document.querySelectorAll('[data-flow-rail]')) {
     cancelAnimationFrame(frame); last = undefined;
     toggle.disabled = reduced.matches;
     toggle.setAttribute('aria-label', `${label} ${reduced.matches ? '자동 흐름 꺼짐' : paused ? '흐름 다시 시작' : '흐름 멈추기'}`);
-    toggle.textContent = reduced.matches ? '자동 흐름 꺼짐' : paused ? '흐름 다시 시작' : '흐름 멈추기';
+    toggle.querySelector('[data-flow-symbol]').textContent = reduced.matches || paused ? '▷' : 'Ⅱ';
+    toggle.querySelector('[data-flow-state]').textContent = reduced.matches ? '자동 흐름 꺼짐' : paused ? '흐름 다시 시작' : '흐름 멈추기';
     if (distance && !paused && !hovering && !focused && visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
   }
   function tick(now) {
@@ -32,6 +33,7 @@ for (const rail of document.querySelectorAll('[data-flow-rail]')) {
     const gap = parseFloat(getComputedStyle(viewport).columnGap) || 0;
     distance = group.scrollWidth > viewport.clientWidth ? group.getBoundingClientRect().width + gap : 0;
     controls.hidden = !distance;
+    viewport.classList.toggle('has-flow', !!distance);
     if (distance) {
       clone = group.cloneNode(true); clone.removeAttribute('data-flow-group');
       clone.setAttribute('aria-hidden', 'true'); clone.inert = true;

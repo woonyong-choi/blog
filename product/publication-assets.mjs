@@ -1,5 +1,6 @@
 // 발행 HTML과 런타임 색인의 의존 파일만 복사 대상으로 모은다.
 const ORIGIN = 'https://publication.invalid';
+const CLIENT_ASSETS = { 'video.js': ['/assets/remotecontrol-play.svg', '/assets/remotecontrol-pause-gray.svg', '/assets/remotecontrol-replay.svg'] };
 const ASSET_ROOTS = ['/theme/', '/assets/', '/media/'];
 
 export function clientEntrypoints(body) {
@@ -8,6 +9,7 @@ export function clientEntrypoints(body) {
   if (/<[^>]+\sclass="[^"]*\bapp-document-nav\b/.test(body) || /<[^>]+\sdata-(?:gallery|tabs|copy|keyboard|tooltip-trigger)(?:[\s=>])/.test(body)) scripts.push('document.js');
   if (/<[^>]+\sdata-comments(?:[\s=>])/.test(body)) scripts.push('comments.js');
   if (/<[^>]+\sdata-flow-rail(?:[\s=>])/.test(body)) scripts.push('flows.js');
+  if (/<[^>]+\sdata-player(?:[\s=>])/.test(body)) scripts.push('video.js');
   return scripts;
 }
 
@@ -39,7 +41,10 @@ export function publicationAssets(pages, searchEntries, readAsset) {
     const references = path.endsWith('.css') ? styleReferences(content.toString()) : path.endsWith('.svg') ? markupReferences(content.toString()) : [];
     for (const dependency of references) include(dependency, path);
   }
-  for (const [route, html] of pages) for (const reference of markupReferences(html)) include(reference, route);
+  for (const [route, html] of pages) {
+    for (const reference of markupReferences(html)) include(reference, route);
+    for (const client of clientEntrypoints(html)) for (const reference of CLIENT_ASSETS[client] ?? []) include(reference);
+  }
   for (const entry of searchEntries) include(entry.iconUrl);
   // iframe에서 직접 읽는 테마는 부모 HTML에 stylesheet 링크가 없다.
   include('/theme/assets/giscus.css');

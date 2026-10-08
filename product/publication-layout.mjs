@@ -61,7 +61,10 @@ export function knowledgeFields(documents, topics, field) {
 
 export function personalHome(context) {
   const { config } = context;
-  return `<main id="main"><section class="app-personal-hero app-shell"><p class="app-eyebrow">Backend Engineer · Knowledge Workflow Systems</p><h1>${escape(config.description)}</h1><p class="app-personal-intro">${escape(config.introduction)}</p><a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a></section><div class="app-shell app-home-flow">${projectVideo(config.projectVideo)}${technologySection(config.technologies, BRANDS)}${interviewSection(context.interviews)}${contactSection(config.contact)}</div></main>`;
+  const title = (config.hero?.title ?? config.description).split('\n').map(line => `<span>${escape(line)}</span>`).join('');
+  const introduction = config.hero?.description ?? config.introduction;
+  const action = config.projectVideo?.src ? '<a class="app-remote" href="#project-video" data-remote="project-demo" data-language="ko" aria-label="프로젝트 영상 보기"><img src="/assets/remotecontrol-play.svg" alt=""><span>프로젝트 영상 보기</span></a>' : '<a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a>';
+  return `<main id="main"><section class="app-personal-hero app-shell"><p class="app-eyebrow">${escape(config.hero?.eyebrow ?? 'Backend Engineer')}</p><h1>${title}</h1><p class="app-personal-intro">${escape(introduction)}</p>${action}</section><div class="app-shell app-home-flow">${projectVideo(config.projectVideo)}<div class="app-home-stories">${technologySection(config.technologies, BRANDS)}${interviewSection(context.interviews)}</div>${contactSection(config.contact)}</div></main>`;
 }
 
 export function wikiLanding(documents, context, field, recent = '') {
