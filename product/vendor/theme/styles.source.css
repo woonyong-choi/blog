@@ -934,7 +934,6 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-personal-hero h1 { max-width: var(--site-page); margin: var(--site-gap) auto; font-size: var(--site-home-title); font-weight: var(--site-weight-title); line-height: var(--site-line-title); letter-spacing: var(--site-title-tracking); word-break: keep-all; }
 .app-personal-hero h1 > span { display: block; }
 .app-personal-hero .app-remote { font-size: var(--site-body-text); }
-.app-header.is-landing::after { display: none; }
 .app-canvas .app-identity { font-size: var(--site-body-text); }
 .app-eyebrow { margin: 0 0 var(--site-gap-sm); font-size: var(--site-small-text); color: var(--site-muted); }
 .app-personal-intro { text-wrap: balance; max-width: var(--site-intro); margin: 0 auto var(--site-gap); font-size: var(--site-post-lead-size); line-height: var(--site-feature-body-line); color: var(--site-description-color); word-break: keep-all; }
@@ -956,9 +955,9 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-interview-card blockquote { margin: 0 0 var(--site-gap); padding: 0; font-size: var(--site-body-text); font-style: normal; line-height: var(--site-landing-quote-line); color: var(--site-ink); border: 0; word-break: keep-all; overflow-wrap: anywhere; }
 .app-interview-source { margin: auto 0 0; font-size: var(--site-landing-quote-meta); line-height: var(--site-line-compact); color: var(--site-muted); }
 .app-home-flow { display: flex; flex-direction: column; }
-.app-home-stage { width: var(--site-shell-width); max-width: var(--site-home-media-width); margin-inline: auto; padding-bottom: var(--site-landing-section); }
+.app-home-stage { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; padding-bottom: var(--site-landing-section); }
 .app-home-stories { display: flex; flex-direction: column; gap: var(--site-gap-lg); padding-block: var(--site-landing-section); background: var(--site-card); }
-.app-home-rail { width: 100%; max-width: var(--site-video-width); margin-inline: auto; }
+.app-home-rail { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; }
 .app-home-rail-footer { width: var(--site-shell-width); max-width: var(--site-page); margin-inline: auto; }
 .app-project-caption { display: flex; flex-direction: column; align-items: center; gap: var(--site-gap-sm); text-align: center; margin-top: var(--site-gap); font-size: var(--site-small-text); }
 .app-project-caption p { margin: 0; }
