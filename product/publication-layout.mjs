@@ -88,6 +88,11 @@ export function resultRow(page, tags) {
   return `<article class="app-search-entry"><a class="app-search-result-link" href="${page.route}">${subjectIcon(page.contentIcon, 'small')}<strong>${escape(page.title)}</strong><span class="app-search-result-type">${page.type === 'wiki' ? 'Wiki' : 'Blog'}${page.example ? ' · 예시' : ''}</span><p>${escape(page.description)}</p></a><div class="app-search-result-tags">${page.tags.map(id => `<a href="/tags/${id}/?type=${page.type}">${escape(tags[id].label)}</a>`).join('')}</div></article>`;
 }
 
+export function tagPage(tag, entries, tags) {
+  const fallback = entries.length ? entries.map(page => resultRow(page, tags)).join('') : '<p>이 태그로 발행한 글이 없습니다.</p>';
+  return `<main class="app-shell app-body" id="main">${searchBox()}<h1 class="app-page-heading">${escape(tags[tag].label)}</h1><div data-search-page data-tag="${tag}"><nav class="app-type-filters" aria-label="문서 유형"></nav><div data-full-results></div><details class="app-details" data-search-fallback><summary>이 태그의 모든 글 보기</summary><p class="app-caption">검색어와 유형 필터를 적용하지 않은 전체 목록입니다.</p>${fallback}</details></div></main>`;
+}
+
 export function dateLine(page) {
   const published = page.publishedAt ? `<time datetime="${page.publishedAt}">${page.publishedAt}</time>` : '';
   const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? `<span>수정 <time datetime="${page.updatedAt}">${page.updatedAt}</time></span>` : '';

@@ -14,6 +14,14 @@ function link(text, href, className) {
   return node;
 }
 
+export function showResultsLoading(root, message = '검색 결과를 불러오는 중입니다.') {
+  root.setAttribute('aria-busy', 'true');
+  for (const node of root.querySelectorAll('.app-type-filters, [data-filter-summary], [data-result-pages]')) node.replaceChildren();
+  const output = root.querySelector('[data-full-results]');
+  output.classList.add('app-search-panel');
+  output.replaceChildren(element('p', message, 'app-search-message'));
+}
+
 export function renderResults(root, result, state, tags) {
   const filters = root.querySelector('.app-type-filters');
   filters.replaceChildren(...Object.entries({ all: '전체', wiki: '위키', blog: '블로그' }).map(([type, label]) => {
@@ -44,6 +52,9 @@ export function renderResults(root, result, state, tags) {
     }
     if (result.page < result.totalPages) pages.append(link('다음', searchUrl({ ...state, page: result.page + 1 })));
   }
+  root.setAttribute('aria-busy', 'false');
+  const fallback = root.querySelector('[data-search-fallback]');
+  if (fallback) fallback.hidden = !fallback.open && !fallback.contains(document.activeElement);
 }
 
 function markedText(node, text, query) {

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { knowledgeFields } from './publication-layout.mjs';
+import { knowledgeFields, tagPage } from './publication-layout.mjs';
 
 test('a_published_topic_stays_reachable_when_its_overview_is_unpublished', () => {
   const topics = { javascript: { label: 'JavaScript', field: 'languages', icon: 'javascript', article: 'javascript' } };
@@ -9,4 +9,17 @@ test('a_published_topic_stays_reachable_when_its_overview_is_unpublished', () =>
   assert.match(html, /href="\/articles\/promises\/"/);
   assert.match(html, /<h3>JavaScript<\/h3>/);
   assert.doesNotMatch(html, /href="\/articles\/javascript\/"/);
+});
+
+// #67: 전체 태그 목록은 아직 조건을 계산하지 않은 검색 결과와 분리한다.
+test('tag_page_keeps_static_reading_separate_from_filtered_results', () => {
+  const tags = { javascript: { label: 'JavaScript' } };
+  const entry = { route: '/articles/promises/', title: 'Promise', description: '비동기 작업', type: 'wiki', tags: ['javascript'], contentIcon: { name: 'runtime' } };
+  const html = tagPage('javascript', [entry], tags);
+  assert.match(html, /<div data-full-results><\/div>/);
+  assert.match(html, /<details class="app-details" data-search-fallback><summary>이 태그의 모든 글 보기<\/summary>/);
+  const fallback = html.slice(html.indexOf('<details class="app-details" data-search-fallback>'));
+  assert.match(fallback, /href="\/articles\/promises\/"/);
+  assert.doesNotMatch(html.slice(0, html.indexOf('<details class="app-details" data-search-fallback>')), /href="\/articles\/promises\/"/);
+  assert.match(tagPage('javascript', [], tags), /이 태그로 발행한 글이 없습니다/);
 });

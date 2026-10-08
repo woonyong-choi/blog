@@ -1,7 +1,7 @@
 // 정적 탐색 위에 검색 추천과 필터 결과를 연결한다.
 import { readSearchState, searchUrl } from './search-model.mjs';
 import { queryIndex } from './search-client.mjs';
-import { renderResults, renderSuggestions, showSearchError } from './search-view.mjs';
+import { renderResults, renderSuggestions, showResultsLoading, showSearchError } from './search-view.mjs';
 
 for (const box of document.querySelectorAll('[data-public-search]')) {
   const form = box.querySelector('form');
@@ -43,7 +43,9 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
     if (!page) return;
     const request = ++resultRevision;
     const selected = state(); input.value = selected.query; clear.hidden = !input.value;
-    status.textContent = '검색 결과를 불러오는 중입니다.';
+    resultStatus = '검색 결과를 불러오는 중입니다.';
+    status.textContent = resultStatus;
+    showResultsLoading(page, resultStatus);
     try {
       const { result, tags } = await queryIndex('results', selected);
       if (request !== resultRevision || composing) return;
@@ -51,9 +53,20 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
       resultStatus = `검색 결과 ${result.counts[selected.type]}개`;
       status.textContent = resultStatus;
       restorePosition();
-    } catch { if (request === resultRevision) { showSearchError(page.querySelector('[data-full-results]'), results); resultStatus = failureStatus; status.textContent = resultStatus; } }
+    } catch {
+      if (request !== resultRevision) return;
+      showSearchError(page.querySelector('[data-full-results]'), results);
+      page.setAttribute('aria-busy', 'false');
+      const fallback = page.querySelector('[data-search-fallback]');
+      if (fallback) fallback.hidden = false;
+      resultStatus = failureStatus; status.textContent = resultStatus;
+    }
   }
-  input.addEventListener('compositionstart', () => { composing = true; revision++; resultRevision++; close(); });
+  input.addEventListener('compositionstart', () => {
+    composing = true; revision++; resultRevision++;
+    if (page) { resultStatus = '검색어 입력 중입니다.'; showResultsLoading(page, resultStatus); }
+    close();
+  });
   input.addEventListener('compositionend', () => { composing = false; propose(); });
   input.addEventListener('input', event => { if (!composing && !event.isComposing) propose(); });
   clear.addEventListener('click', () => {
@@ -84,7 +97,11 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
   window.addEventListener('pageshow', event => {
     if (!event.persisted) return;
     revision++; close();
-    if (page) { input.value = state().query; clear.hidden = !input.value; restorePosition(); }
+    if (page) {
+      input.value = state().query; clear.hidden = !input.value;
+      if (page.getAttribute('aria-busy') === 'true') results();
+      else restorePosition();
+    }
   });
   results();
 }

@@ -8,7 +8,7 @@ import { gzipSync } from 'node:zlib';
 import { readDocument, publicDocuments, searchEntry, FIELDS, blogDocuments, PAGE_SIZES } from './content-model.mjs';
 import { createMarkdown, escape } from './markdown.mjs';
 import { renderArticle } from './article-renderer.mjs';
-import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, resultRow, iconUrl } from './publication-layout.mjs';
+import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, tagPage, iconUrl } from './publication-layout.mjs';
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
 import { iconAuditPages } from './icon-audit.mjs';
@@ -47,7 +47,7 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, commentsSection(page, CONFIG.comments, commentTheme)), page);
   for (const [tag, topic] of Object.entries(TOPICS)) {
     const entries = documents.filter(page => page.tags.includes(tag));
-    add(`/tags/${tag}/`, topic.label, `<main class="app-shell app-body" id="main">${searchBox()}<h1 class="app-page-heading">${escape(topic.label)}</h1><div data-search-page data-tag="${tag}"><nav class="app-type-filters" aria-label="문서 유형"></nav><div data-full-results>${entries.map(page => resultRow(page, TOPICS)).join('')}</div></div></main>`);
+    add(`/tags/${tag}/`, topic.label, tagPage(tag, entries, TOPICS));
   }
   add('/search/', '검색', `<main class="app-shell app-body" id="main">${searchBox()}<h1 class="app-sr">검색</h1><div data-search-page><nav class="app-type-filters" aria-label="문서 유형"></nav><div class="app-filter-summary" data-filter-summary></div><div data-full-results><p class="app-empty">검색어를 입력하거나 위키에서 주제를 선택해 주세요.</p></div><nav class="app-page-links" data-result-pages aria-label="검색 페이지"></nav></div></main>`);
   for (const [base, size, render] of [['/blog/', PAGE_SIZES.feed, blogFeed], ['/blog/all/', PAGE_SIZES.cards, blogArchive]]) {
