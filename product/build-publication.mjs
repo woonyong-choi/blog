@@ -17,6 +17,7 @@ import { publicInterviews } from './interviews.mjs';
 import { createTopicTrees } from './topic-navigation.mjs';
 import { browserScripts } from './browser-scripts.mjs';
 import { repositoryUrl } from './repository-links.mjs';
+import { publicationStyles } from './publication-styles.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -26,7 +27,7 @@ const THEME = join(ROOT, 'vendor/theme');
 const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
 const digest = value => createHash('sha256').update(value).digest('hex');
 
-export function buildPublication({ origin = '', preview = true } = {}) {
+export async function buildPublication({ origin = '', preview = true } = {}) {
   if (origin && !/^https?:\/\/[^/?#]+$/.test(origin)) throw new Error('invalid site origin');
   if (!preview && !origin.startsWith('https://')) throw new Error('production build requires SITE_ORIGIN');
   verifyTheme();
@@ -56,7 +57,7 @@ export function buildPublication({ origin = '', preview = true } = {}) {
   for (const [base, size, render] of [['/blog/', PAGE_SIZES.feed, blogFeed], ['/blog/all/', PAGE_SIZES.cards, blogArchive]]) {
     for (let page = 1; page <= Math.max(1, Math.ceil(posts.length / size)); page++) add(page === 1 ? base : `${base}page/${page}/`, 'Blog', render(posts, TOPICS, page), { type: 'blog' });
   }
-  writeSite(output, documents, context, scripts);
+  await writeSite(output, documents, context, scripts);
   return { pages: output.size, documents: documents.length, themeHash: MANIFEST.contentHash };
 }
 
@@ -94,14 +95,21 @@ function verifyTheme() {
   for (const [, name] of css.matchAll(/var\((--(?:site|icon)-[\w-]+)/g)) if (!definitions.has(name)) throw new Error(`undefined theme token: ${name}`);
 }
 
-function writeSite(output, documents, context, scripts) {
+async function writeSite(output, documents, context, scripts) {
+  const sourceStyles = readFileSync(join(THEME, 'styles.css'), 'utf8');
+  const styles = await publicationStyles(sourceStyles, output, scripts);
+  const stylePath = '/theme/publication.css';
+  const styleHash = digest(styles.css);
+  for (const [route, html] of output) {
+    output.set(route, html.replace(`/theme/styles.css?v=${context.themeHash}`, `${stylePath}?v=${styleHash}`));
+  }
   rmSync(OUTPUT, { recursive: true, force: true });
   mkdirSync(OUTPUT, { recursive: true });
   for (const [file, source] of scripts) {
     writeFileSync(join(OUTPUT, file), source);
   }
   const index = { entries: documents.map(page => ({ ...searchEntry(page, TOPICS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TOPICS };
-  const assets = publicationAssets(output, index.entries, path => readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path)));
+  const assets = publicationAssets(output, index.entries, path => path === stylePath ? Buffer.from(styles.css) : readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path)));
   for (const [path, content] of assets) {
     const destination = join(OUTPUT, path);
     mkdirSync(dirname(destination), { recursive: true });
@@ -121,7 +129,7 @@ function writeSite(output, documents, context, scripts) {
   writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description>${posts.map(page => `<item><title>${escape(page.title)}</title><link>${escape(context.origin + page.route)}</link><guid isPermaLink="false">${page.id}</guid><pubDate>${new Date(page.publishedAt).toUTCString()}</pubDate><description>${escape(page.description)}</description></item>`).join('')}</channel></rss>`);
   writeFileSync(join(OUTPUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...output.keys()].filter(route => route !== '/search/').map(route => `<url><loc>${escape(context.origin + route)}</loc></url>`).join('')}</urlset>`);
   validateOutput(output);
-  writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, themeHash: context.themeHash, assets: { files: assets.size, bytes: [...assets.values()].reduce((sum, content) => sum + content.length, 0) }, routes: [...output.keys()] }, null, 2));
+  writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, themeHash: context.themeHash, styles: { sourceBytes: Buffer.byteLength(sourceStyles), bytes: Buffer.byteLength(styles.css), removedSelectors: styles.removed, hash: styleHash }, assets: { files: assets.size, bytes: [...assets.values()].reduce((sum, content) => sum + content.length, 0) }, routes: [...output.keys()] }, null, 2));
   writeFileSync(join(OUTPUT, 'robots.txt'), context.preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${context.origin}/sitemap.xml\n`);
 }
 
@@ -139,4 +147,4 @@ function validateOutput(output) {
   }
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) console.log(buildPublication({ origin: process.env.SITE_ORIGIN ?? '', preview: !process.argv.includes('--production') }));
+if (process.argv[1] === fileURLToPath(import.meta.url)) console.log(await buildPublication({ origin: process.env.SITE_ORIGIN ?? '', preview: !process.argv.includes('--production') }));
