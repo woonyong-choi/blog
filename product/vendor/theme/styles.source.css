@@ -95,6 +95,7 @@ a:hover { text-decoration: underline; }
 .app-search-results a { display: block; padding: var(--site-gap-sm); border-bottom: var(--site-border) solid var(--site-line); }
 .app-support-group { margin-bottom: var(--site-support-gap); }
 .app-support-group h2 { font-size: var(--site-subtitle); color: var(--site-ink); margin: 0 0 var(--site-support-title-gap); line-height: var(--site-line-intro); }
+.app-support-group h3 { font-size: var(--site-subtitle); color: var(--site-ink); margin: 0 0 var(--site-support-title-gap); line-height: var(--site-line-intro); }
 .app-support-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--site-gap-xs); }
 .app-support-grid.is-pair { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .app-help-card { position: relative; display: block; padding: var(--site-card-top) var(--site-card-right) var(--site-card-inset) var(--site-card-inset); color: var(--site-body); background: var(--site-help-bg); border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-help-radius); line-height: var(--site-line-card); }

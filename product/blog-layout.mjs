@@ -14,7 +14,7 @@ export function blogCard(page, tags, level = 3) {
 
 export function recentBlog(posts, tags) {
   if (!posts.length) return '';
-  return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>최근 블로그</h2>${posts.length > PAGE_SIZES.preview ? '<a href="/blog/all/">전체 보기 →</a>' : ''}</div><div class="app-blog-grid">${posts.slice(0, PAGE_SIZES.preview).map(page => blogCard(page, tags)).join('')}</div></section>`;
+  return `<section class="app-knowledge-section app-support-group"><h2 class="app-page-heading">Blog</h2><div class="app-blog-grid">${posts.slice(0, PAGE_SIZES.preview).map(page => blogCard(page, tags)).join('')}</div>${posts.length > PAGE_SIZES.preview ? '<p><a href="/blog/all/">전체 보기</a></p>' : ''}</section>`;
 }
 
 export function blogArchive(posts, tags, page) {

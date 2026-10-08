@@ -37,7 +37,7 @@ export function documentShell(page, body, context) {
 }
 
 export function searchBox({ large = false, query = '' } = {}) {
-  return `<section class="app-search app-public-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">글 검색</label><div class="app-search-field">${controlImage('search', 'app-search-icon', '')}<input class="app-search-input" id="site-query" name="q" type="text" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-clear" type="button" data-clear-query aria-label="검색어 지우기" hidden>${controlImage('clear', '', '')}</button></div></form><div class="app-search-panel" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p><noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/wiki/">주제별 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
+  return `<section class="app-search app-public-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">글 검색</label><div class="app-search-field">${controlImage('search', 'app-search-icon', '')}<input class="app-search-input" id="site-query" name="q" type="text" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-clear" type="button" data-clear-query aria-label="검색어 지우기" hidden>${controlImage('clear', '', '')}</button></div></form><div class="app-search-panel" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p>${large ? `<p class="app-search-frequent">추천 검색어: ${['Python', 'Kubernetes', '운영체제', 'LLM'].map(query => `<button type="button" data-query="${escape(query)}">${escape(query)}</button>`).join(' ')}</p>` : ''}<noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/wiki/">주제별 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
 }
 
 export function tagLinks(page, tags, limit = Infinity) {
@@ -47,8 +47,8 @@ export function tagLinks(page, tags, limit = Infinity) {
   return `<div class="app-tags" role="group" aria-label="태그">${visible}${remaining.length ? `<details class="app-tags-more"><summary>+${remaining.length}</summary><div class="app-tags">${remaining.map(link).join('')}</div></details>` : ''}</div>`;
 }
 
-export function wikiCard(page, title = page.title) {
-  return `<a class="app-knowledge-card" href="${page.route}">${subjectIcon(page.contentIcon)}<h3>${escape(title)}</h3><p>${escape(page.description)}</p></a>`;
+export function wikiCard(page, title = page.title, level = 3) {
+  return `<a class="app-help-card" href="${page.route}">${subjectIcon(page.contentIcon)}<strong role="heading" aria-level="${level}">${escape(title)}</strong><p>${escape(page.description)}</p></a>`;
 }
 
 export function knowledgeFields(documents, topics, field) {
@@ -56,11 +56,12 @@ export function knowledgeFields(documents, topics, field) {
   return FIELDS.filter(value => !field || value === field).map(value => {
     const entries = Object.entries(topics).filter(([, topic]) => topic.field === value).map(([id, topic]) => {
       const article = bySlug.get(topic.article) ?? documents.filter(page => page.topic === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
-      return article ? { ...topic, page: { ...article, contentIcon: { name: topic.icon } } } : null;
+      return article ? { ...topic, page: { ...article, description: topic.description ?? article.description, contentIcon: { name: topic.icon } } } : null;
     }).filter(Boolean);
     if (!entries.length) return '';
     const shown = field ? entries : entries.slice(0, 6);
-    return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>${FIELD_NAMES[value]}</h2>${!field && entries.length > 6 ? `<a href="/wiki/${value}/">전체 보기 <span aria-hidden="true">→</span></a>` : ''}</div><div class="app-knowledge-grid">${shown.map(topic => wikiCard(topic.page, topic.label)).join('')}</div></section>`;
+    const level = field ? 2 : 3;
+    return `<section class="app-support-group"><h${level}>${FIELD_NAMES[value]}</h${level}><div class="app-support-grid${shown.length === 2 || shown.length === 4 ? ' is-pair' : ''}">${shown.map(topic => wikiCard(topic.page, topic.label, level + 1)).join('')}</div>${!field && entries.length > 6 ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
   }).join('');
 }
 
@@ -72,7 +73,9 @@ export function personalHome(context) {
 }
 
 export function wikiLanding(documents, context, field, recent = '') {
-  return `<main id="main" class="app-shell">${searchBox({ large: true })}<h1 class="app-page-heading">${field ? FIELD_NAMES[field] : 'Wiki'}</h1>${field ? '<a class="app-back-link" href="/wiki/">← 위키</a>' : '<p class="app-page-description">개념을 연결하고, 구현에서 확인한 내용을 기록합니다.</p>'}${knowledgeFields(documents, context.topics, field)}${recent}</main>`;
+  const fields = knowledgeFields(documents, context.topics, field);
+  if (field) return `<main id="main" class="app-shell">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/wiki/">← Notes</a>${fields}</main>`;
+  return `<main id="main" class="app-shell">${searchBox({ large: true })}<h1 class="app-sr">Notes</h1>${recent}<section aria-labelledby="wiki-heading"><h2 class="app-page-heading" id="wiki-heading">Wiki</h2>${fields}</section></main>`;
 }
 
 export function projectSection(projects, hasMore = false) {

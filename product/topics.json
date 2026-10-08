@@ -6,7 +6,8 @@
     "aliases": [
       "파이썬"
     ],
-    "article": "python"
+    "article": "python",
+    "description": "객체와 함수의 동작을 코드로 확인합니다."
   },
   "javascript": {
     "label": "JavaScript",
@@ -15,7 +16,8 @@
     "aliases": [
       "JS"
     ],
-    "article": "javascript"
+    "article": "javascript",
+    "description": "언어의 기본 문법과 실행 흐름을 살펴봅니다."
   },
   "nodejs": {
     "label": "Node.js",
@@ -24,7 +26,8 @@
     "aliases": [
       "Node.js"
     ],
-    "article": "nodejs"
+    "article": "nodejs",
+    "description": "이벤트 루프와 비동기 서버의 동작을 정리합니다."
   },
   "programming-languages-runtime": {
     "label": "Programming",
@@ -34,7 +37,8 @@
       "프로그래밍",
       "런타임"
     ],
-    "article": "programming-languages-runtime"
+    "article": "programming-languages-runtime",
+    "description": "언어와 런타임의 공통 원리를 연결합니다."
   },
   "os": {
     "label": "OS",
@@ -44,7 +48,8 @@
       "운영체제",
       "OS"
     ],
-    "article": "os"
+    "article": "os",
+    "description": "프로세스, 메모리와 파일 시스템을 살펴봅니다."
   },
   "network": {
     "label": "네트워크",
@@ -53,7 +58,8 @@
     "aliases": [
       "네트워크"
     ],
-    "article": "network"
+    "article": "network",
+    "description": "요청이 오가는 과정과 통신 규칙을 정리합니다."
   },
   "software-design": {
     "label": "소프트웨어 설계",
@@ -63,7 +69,8 @@
       "설계",
       "시스템 설계"
     ],
-    "article": "software-design"
+    "article": "software-design",
+    "description": "책임과 경계를 나누는 설계 방법을 살펴봅니다."
   },
   "ml": {
     "label": "머신러닝",
@@ -73,7 +80,8 @@
       "머신러닝",
       "ML"
     ],
-    "article": "ml"
+    "article": "ml",
+    "description": "데이터로 모델을 학습하고 평가하는 과정을 정리합니다."
   },
   "llm": {
     "label": "LLM",
@@ -83,7 +91,8 @@
       "LLM",
       "언어 모델"
     ],
-    "article": "llm"
+    "article": "llm",
+    "description": "언어 모델의 원리와 활용 방법을 살펴봅니다."
   },
   "computer-science": {
     "label": "CS 기초",
@@ -93,7 +102,8 @@
       "CS",
       "컴퓨터 과학"
     ],
-    "article": "computer-science"
+    "article": "computer-science",
+    "description": "컴퓨터를 이해하는 기본 개념을 모았습니다."
   },
   "spring-boot": {
     "label": "Spring Boot",
@@ -102,7 +112,8 @@
     "aliases": [
       "Spring"
     ],
-    "article": "spring-boot"
+    "article": "spring-boot",
+    "description": "서버 구성과 요청 처리의 흐름을 정리합니다."
   },
   "frontend": {
     "label": "Frontend",
@@ -111,7 +122,8 @@
     "aliases": [
       "프론트엔드"
     ],
-    "article": "frontend"
+    "article": "frontend",
+    "description": "브라우저와 화면을 구성하는 기술을 살펴봅니다."
   },
   "backend-services": {
     "label": "Backend",
@@ -120,7 +132,8 @@
     "aliases": [
       "백엔드"
     ],
-    "article": "backend-services"
+    "article": "backend-services",
+    "description": "서버의 데이터 처리와 서비스 구조를 정리합니다."
   },
   "redis": {
     "label": "Redis",
@@ -129,7 +142,8 @@
     "aliases": [
       "캐시"
     ],
-    "article": "redis"
+    "article": "redis",
+    "description": "자료구조와 캐시의 동작을 살펴봅니다."
   },
   "kubernetes": {
     "label": "Kubernetes",
@@ -138,7 +152,8 @@
     "aliases": [
       "K8s"
     ],
-    "article": "kubernetes"
+    "article": "kubernetes",
+    "description": "컨테이너의 배치와 운영 구조를 정리합니다."
   },
   "linux": {
     "label": "Linux",
@@ -147,7 +162,8 @@
     "aliases": [
       "리눅스"
     ],
-    "article": "linux"
+    "article": "linux",
+    "description": "명령과 시스템 동작을 함께 살펴봅니다."
   },
   "security": {
     "label": "보안",
@@ -156,7 +172,8 @@
     "aliases": [
       "보안"
     ],
-    "article": "security"
+    "article": "security",
+    "description": "인증과 권한, 시스템 보호 방법을 정리합니다."
   },
   "platform-delivery-operations": {
     "label": "DevOps",
@@ -166,7 +183,8 @@
       "DevOps",
       "인프라"
     ],
-    "article": "platform-delivery-operations"
+    "article": "platform-delivery-operations",
+    "description": "빌드부터 배포와 운영까지의 흐름을 살펴봅니다."
   },
   "data": {
     "label": "Data",
@@ -175,7 +193,8 @@
     "aliases": [
       "데이터"
     ],
-    "article": "data"
+    "article": "data",
+    "description": "데이터의 저장과 처리 방법을 정리합니다."
   },
   "projects": {
     "label": "Projects",
@@ -184,7 +203,8 @@
     "aliases": [
       "프로젝트"
     ],
-    "article": "projects"
+    "article": "projects",
+    "description": "구현한 프로젝트의 구조와 판단을 기록합니다."
   },
   "c": {
     "label": "C",

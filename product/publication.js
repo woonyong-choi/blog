@@ -94,7 +94,7 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
     } else if (event.key === 'Enter' && !output.hidden && active >= 0) { event.preventDefault(); options[active].click(); }
   });
   form.addEventListener('submit', event => { event.preventDefault(); if (!composing) propose(); });
-  output.addEventListener('click', event => {
+  box.addEventListener('click', event => {
     const suggestion = event.target.closest('[data-query]');
     if (!suggestion) return;
     event.preventDefault(); input.value = suggestion.dataset.query; input.focus(); propose();

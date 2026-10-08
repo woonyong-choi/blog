@@ -7,7 +7,7 @@ test('a_published_topic_stays_reachable_when_its_overview_is_unpublished', () =>
   const documents = [{ id: 'b', slug: 'promises', route: '/articles/promises/', topic: 'javascript', type: 'wiki', title: 'Promise', description: '비동기 작업', contentIcon: { name: 'runtime' } }];
   const html = knowledgeFields(documents, topics);
   assert.match(html, /href="\/articles\/promises\/"/);
-  assert.match(html, /<h3>JavaScript<\/h3>/);
+  assert.match(html, /role="heading" aria-level="4">JavaScript<\/strong>/);
   assert.doesNotMatch(html, /href="\/articles\/javascript\/"/);
 });
 
