@@ -10,7 +10,15 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
   const output = box.querySelector('[role="listbox"]');
   const status = box.querySelector('[data-search-status]');
   const page = document.querySelector('[data-search-page]');
-  const state = () => readSearchState(location.search, page?.dataset.tag);
+  const state = () => {
+    const selected = readSearchState(location.search, page?.dataset.tag);
+    const url = new URL(location.href);
+    if (url.searchParams.has('type')) {
+      url.searchParams.delete('type'); url.searchParams.delete('page');
+      history.replaceState({ ...history.state, searchPosition: null }, '', url);
+    }
+    return selected;
+  };
   let revision = 0; let resultRevision = 0; let composing = false; let active = -1; let resultStatus = '';
   if (page) { input.setAttribute('role', 'searchbox'); input.removeAttribute('aria-autocomplete'); input.removeAttribute('aria-controls'); input.removeAttribute('aria-expanded'); }
   const failureStatus = '검색 자료를 불러오지 못했습니다. 다시 시도해 주세요.';

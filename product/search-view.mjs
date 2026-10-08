@@ -16,29 +16,21 @@ function link(text, href, className) {
 
 export function showResultsLoading(root, message = '검색 결과를 불러오는 중입니다.') {
   root.setAttribute('aria-busy', 'true');
-  for (const node of root.querySelectorAll('.app-type-filters, [data-filter-summary], [data-result-pages]')) node.replaceChildren();
+  for (const node of root.querySelectorAll('[data-filter-summary], [data-result-pages]')) node.replaceChildren();
   const output = root.querySelector('[data-full-results]');
   output.classList.add('app-search-panel');
   output.replaceChildren(element('p', message, 'app-search-message'));
 }
 
 export function renderResults(root, result, state, tags) {
-  const filters = root.querySelector('.app-type-filters');
-  filters.replaceChildren(...Object.entries({ all: '전체', wiki: '위키', blog: '블로그' }).map(([type, label]) => {
-    const node = link(`${label} ${result.counts[type]}`, searchUrl({ ...state, type, page: 1 }));
-    if (state.type === type) node.setAttribute('aria-current', 'page');
-    return node;
-  }));
-  let summary = root.querySelector('[data-filter-summary]');
-  if (!summary) { summary = element('div', undefined, 'app-filter-summary'); summary.dataset.filterSummary = ''; filters.after(summary); }
+  const summary = root.querySelector('[data-filter-summary]');
   summary.replaceChildren(...state.tags.map(tag => link(`${tags[tag]?.label ?? tag} ×`, searchUrl({ ...state, tags: state.tags.filter(value => value !== tag), page: 1 }), 'app-tag')));
-  if (state.query || state.tags.length || state.type !== 'all') summary.append(link('조건 초기화', '/search/'));
+  if (state.query || state.tags.length) summary.append(link('조건 초기화', '/search/'));
   const output = root.querySelector('[data-full-results]');
   output.classList.add('app-search-panel');
   output.replaceChildren(...result.entries.map(entry => resultRow(entry, tags, state.query)));
   if (!result.entries.length) {
     output.append(element('p', '조건에 맞는 글이 없습니다. 검색어나 태그를 줄여 보세요.', 'app-search-message'));
-    if (result.counts.all) output.append(link(`다른 유형의 글 ${result.counts.all}개 보기`, searchUrl({ ...state, type: 'all', page: 1 })));
   }
   let pages = root.querySelector('[data-result-pages]');
   if (!pages) { pages = element('nav', undefined, 'app-page-links'); pages.dataset.resultPages = ''; pages.setAttribute('aria-label', '검색 페이지'); output.after(pages); }
@@ -75,14 +67,16 @@ function resultLink(entry, query) {
   const image = element('img'); image.src = entry.iconUrl; image.alt = ''; image.width = 24; image.height = 24; icon.append(image);
   const title = element('strong'); markedText(title, entry.title, query);
   const description = element('p'); markedText(description, entry.excerpt ?? entry.description, query);
-  item.append(icon, title, element('span', `${entry.type === 'wiki' ? 'Wiki' : 'Blog'}${entry.example ? ' · 예시' : ''}`, 'app-search-result-type'), description);
+  item.append(icon, title);
+  if (entry.example) item.append(element('span', ' 예시', 'app-search-result-note'));
+  item.append(description);
   return item;
 }
 
 function resultRow(entry, tags, query) {
   const row = element('article', undefined, 'app-search-entry');
   const labels = element('div', undefined, 'app-search-result-tags');
-  labels.append(...entry.tags.map(tag => link(tags[tag].label, `/tags/${tag}/?type=${entry.type}`)));
+  labels.append(...entry.tags.map(tag => link(tags[tag].label, `/tags/${tag}/`)));
   row.append(resultLink(entry, query), labels); return row;
 }
 

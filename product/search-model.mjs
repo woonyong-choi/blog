@@ -6,15 +6,14 @@ export function normalizeQuery(value) {
 export function readSearchState(query, defaultTag = '') {
   const params = new URLSearchParams(query);
   const page = Number(params.get('page'));
-  return { query: params.get('q') ?? '', type: ['wiki', 'blog'].includes(params.get('type')) ? params.get('type') : 'all',
+  return { query: params.get('q') ?? '', type: 'all',
     tags: [...new Set([...params.getAll('tag'), ...(defaultTag ? [defaultTag] : [])])],
-    page: Number.isSafeInteger(page) && page > 0 ? page : 1 };
+    page: !params.has('type') && Number.isSafeInteger(page) && page > 0 ? page : 1 };
 }
 
 export function searchUrl(state) {
   const params = new URLSearchParams();
   if (state.query) params.set('q', state.query);
-  if (state.type !== 'all') params.set('type', state.type);
   for (const tag of state.tags) params.append('tag', tag);
   if (state.page > 1) params.set('page', state.page);
   return `/search/${params.size ? '?' + params : ''}`;

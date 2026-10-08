@@ -1017,7 +1017,7 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-search-result-link:hover, .app-search-result-link:focus-visible, .app-search-result-link[aria-selected=true], .app-search-choice:hover, .app-search-choice[aria-selected=true] { background: var(--site-search-hover); text-decoration: none; }
 .app-search-result-link:active, .app-search-choice:active { background: var(--site-search-active); }
 .app-search-result-link + .app-search-result-link, .app-search-entry + .app-search-entry { border-top: var(--site-border) solid var(--site-search-result-line); }
-.app-search-result-type { margin-left: var(--site-gap-xs); font-size: var(--site-small-text); color: var(--site-search-result-muted); }
+.app-search-result-note { margin-left: var(--site-gap-xs); font-size: var(--site-small-text); color: var(--site-search-result-muted); }
 .app-search-result-tags { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); padding: var(--site-search-result-padding); padding-top: 0; font-size: var(--site-small-text); }
 .app-search-result-tags a { color: var(--site-search-result-muted); }
 .app-search-panel mark { background: var(--site-search-match); color: inherit; }
@@ -1067,9 +1067,6 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-page-links { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: center; justify-content: center; margin-block: var(--site-support-gap); }
 .app-page-links a, .app-page-links [aria-current=page] { padding: var(--site-gap-xs) var(--site-gap-sm); border-radius: var(--site-button-radius); }
 .app-page-links [aria-current=page] { background: var(--site-help-hover); color: var(--site-ink); }
-.app-type-filters { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); margin-block: var(--site-gap); }
-.app-type-filters a, .app-type-filters button { padding: var(--site-gap-xs) var(--site-gap-sm); border: 0; border-radius: var(--site-button-radius); background: transparent; color: var(--site-muted); }
-.app-type-filters [aria-current=page] { background: var(--site-help-hover); color: var(--site-link); }
 .app-filter-summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--site-gap-sm); margin-bottom: var(--site-gap); font-size: var(--site-small-text); }
 .app-comments { padding-top: var(--site-gap-lg); margin-top: var(--site-support-gap); border-top: var(--site-border) solid var(--site-line); }
 .app-publication .app-comments > h2 { margin: 0 0 var(--site-gap-sm); }

@@ -26,8 +26,8 @@ test('검색어와 태그는 AND로 결합하고 별칭과 한글 정규화를 �
   assert.equal(searchDocuments(index, { ...state, query: '파이썬' }).entries[0].id, 'c');
 });
 
-test('검색 URL에서 검색어·태그·유형·페이지를 복원한다', () => {
-  const selected = { ...state, query: 'JS 검색', tags: ['javascript', 'search'], type: 'blog', page: 2 };
+test('검색 URL에서 검색어·태그·페이지를 복원한다', () => {
+  const selected = { ...state, query: 'JS 검색', tags: ['javascript', 'search'], page: 2 };
   assert.deepEqual(readSearchState(searchUrl(selected).split('?')[1]), selected);
   assert.equal(readSearchState('?page=-2&type=unknown').page, 1);
   assert.deepEqual(readSearchState('?tag=javascript', 'javascript').tags, ['javascript']);
@@ -45,4 +45,15 @@ test('본문에서만 일치하면 실제 일치 부분을 결과 설명으로 �
   const result = searchDocuments(index, { ...state, query: '메모리' });
   assert.equal(result.entries[0].excerpt, '메모리');
   assert.equal(result.entries[0].description, '복사');
+});
+
+// 이전 유형 URL도 검색과 태그에서 같은 글 집합을 보여야 한다.
+test('legacy_type_urls_search_both_document_types_from_the_first_page', () => {
+  for (const type of ['wiki', 'blog', 'unknown']) {
+    const selected = readSearchState(`?q=검색&type=${type}&tag=search&page=2`);
+    assert.equal(selected.type, 'all');
+    assert.equal(selected.page, 1);
+    assert.deepEqual(searchDocuments(index, selected).entries.map(entry => entry.id), ['b', 'a']);
+    assert.doesNotMatch(searchUrl({ ...selected, type }), /type=/);
+  }
 });

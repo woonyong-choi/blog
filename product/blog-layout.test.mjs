@@ -39,7 +39,7 @@ test('blog_cards_preserve_thumbnail_position_and_separate_links', () => {
     assert.match(html, /object-position:37\.5% 0%/);
     assert.match(html, /alt="상단의 &quot;검색&quot; 입력창"/);
     assert.match(html, /<a class="app-blog-cover"[^>]+><img[^>]+><\/a>/);
-    assert.match(html, /href="\/tags\/os\/\?type=blog"/);
+    assert.match(html, /href="\/tags\/os\/"/);
   }
   const centered = blogCard({ ...post, thumbnail: { src: post.thumbnail.src, alt: '' } }, TAGS);
   assert.doesNotMatch(centered, /object-position/);
