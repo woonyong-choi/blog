@@ -463,7 +463,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-product-card p a { color: inherit; text-decoration: underline; }
 .app-landing-reviews .app-landing-heading { margin-bottom: var(--site-landing-heading-space); }
 .app-landing-heading .app-landing-social { display: block; margin: var(--site-landing-description-margin) auto; }
-.app-landing-social a { display: inline-block; padding: var(--site-landing-social-y) var(--site-landing-social-x); border-radius: var(--site-tab-button-inset); color: var(--site-control-link); line-height: 0; }
+.app-landing-social a, .app-landing-social span { display: inline-block; padding: var(--site-landing-social-y) var(--site-landing-social-x); border-radius: var(--site-tab-button-inset); color: var(--site-control-link); line-height: 0; }
 .app-landing-social a:hover { background: var(--site-control-hover); }
 .app-landing-social svg { width: var(--site-landing-social-size); height: var(--site-landing-social-size); }
 
@@ -644,7 +644,7 @@ body[data-page=status] > .app-shell { position: absolute; inset: 0 0 auto; z-ind
 
 .app-product-badge { height: auto; max-height: var(--site-landing-heading-space); }
 
-.app-landing-social a { line-height: inherit; }
+.app-landing-social a, .app-landing-social span { line-height: inherit; }
 .app-landing-social svg { display: inline-block; vertical-align: var(--site-social-baseline); }
 
 .app-newsletter-email, .app-contact-field > input { margin-bottom: var(--site-underline); }

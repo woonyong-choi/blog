@@ -27,35 +27,34 @@ sections:
       label: 프로젝트 영상 보기
 
   # 프로젝트: items에 항목을 추가하면 같은 모양의 소개 구간이 늘어난다. 지금은 더미 2개다.
+  # 링크 문구는 link.label, 이동 주소는 link.href이다. 예: label: 기능 보기, href: /wiki/
+  # 이미지와 아이콘은 자체 placeholder이므로 실제 프로젝트 자산으로 바꾼다.
   - id: projects
     type: projects
     enabled: true
     items:
-      - title: 프로젝트 예시 01
-        description: |
-          실제 프로젝트가 아닌 배치 확인용 예시입니다. 제목, 소개, 링크, 아이콘과 큰 이미지를 이 파일에서 바꿉니다.
-
-          빈 줄로 나눈 문단은 각각 하나의 문단으로 보입니다.
+      - title: 더미 제목
+        description: 프로젝트 내용을 설명하세요.
         link:
-          label: 예시 링크
+          label: 자세히 보기
           href: /wiki/
         icon:
-          src: /assets/fancysection-icon-features-io70.png
+          src: /assets/project-placeholder-icon.svg
           alt: ""
         image:
-          src: /assets/whatsnew-collage-io60.png
-          alt: 프로젝트 예시 01의 큰 이미지
-      - title: 프로젝트 예시 02
-        description: 두 번째 배치 확인용 예시입니다. enabled를 false로 두면 이 항목만 숨깁니다.
+          src: /assets/project-placeholder.svg
+          alt: 더미 프로젝트 이미지
+      - title: 더미 제목
+        description: 프로젝트 내용을 설명하세요.
         link:
-          label: 예시 링크
+          label: 자세히 보기
           href: /blog/
         icon:
-          src: /assets/fancysection-icon-design-io70.png
+          src: /assets/project-placeholder-icon.svg
           alt: ""
         image:
-          src: /assets/meettheallnewthings2-io75.jpg
-          alt: 프로젝트 예시 02의 큰 이미지
+          src: /assets/project-placeholder.svg
+          alt: 더미 프로젝트 이미지
 
   # 기술: 아이콘, 제목, 설명을 가진 머리 아래에 기술 로고가 흐른다. items는 아이콘 카탈로그의 이름이고
   # 아이콘을 누르면 같은 태그의 글로 간다. title과 description을 생략하면 기본 문구를 쓴다.
@@ -63,33 +62,25 @@ sections:
     type: technologies
     enabled: true
     icon:
-      src: /assets/fancysection-icon-littlethings-io70.png
+      src: /assets/technology-layers-icon.svg
       alt: ""
-    title: 사용하는 기술
-    description: 아이콘을 누르면 해당 기술의 기록을 모아 볼 수 있습니다.
+    title: 함께 쓰는 기술
+    description: 기술별 기록을 모았습니다.
     items: [c, csharp, python, typescript, javascript, kotlin, postgresql, kubernetes, docker, git]
 
-  # 인터뷰: 머리(icon, title, description, links) 아래에 카드가 흐른다. links는 {label, href, icon?}이고
-  # icon은 github, rss 또는 이미지 파일이다. 생략하면 label이 글자로 보인다.
-  # items가 비어 있으면 미리보기에서만 예시 카드를 보인다. 필수는 id와 summary뿐이고 나머지는 모두 선택이다.
-  # 회사와 직무(company, role)만 쓰는 카드, 프로필(author)과 날짜(date)를 쓰는 카드를 섞어도 빈 공간이 생기지 않는다.
-  # author는 name, handle, url, avatar 중 하나 이상이다. url은 작성자 프로필 주소이고 글 주소는 source.url에 따로 쓴다.
-  # avatar는 /assets/, /media/ 또는 HTTPS 이미지이며 이름과 아이디가 없으면 alt가 필요하다. date는 실제 있는 날짜(YYYY-MM-DD)다.
-  # source는 GitHub 댓글, LinkedIn 등 어느 플랫폼이든 같은 모양이고 url(HTTPS)이 있을 때만 링크가 된다.
-  # 주소를 읽어 오지 않으므로 이름, 아이디, 날짜는 직접 적는다. 아래 주소는 모두 자리 표시용이다.
-  #   - id: github-comment
+  # 인터뷰: 머리(icon, title, description, links) 아래에 카드가 흐른다.
+  # links는 {label, href?, icon?}이다. icon은 github, rss, linkedin 또는 이미지 파일이고 생략하면 label이 글자로 보인다.
+  # 내장 아이콘은 href를 비워 둘 수 있다. 그러면 아이콘만 보이고 링크가 되지 않으며 주소가 생기면 href만 채운다.
+  # 카드는 요약(summary)과 그 아래 세 자리 profile(image, title, subtitle)이다. 의미는 설정이 정한다.
+  # url은 선택이며 title에 연결되고 별도 줄을 만들지 않는다. image가 없으면 그 자리는 비지 않고 사라진다.
+  # items가 비어 있으면 미리보기에서만 예시 카드를 보인다.
+  #   - id: company-example
+  #     summary: 동료평가 내용을 작성하세요.
+  #     profile: { image: { src: /assets/company.png, alt: "" }, title: 회사명, subtitle: 직무 }
+  #   - id: platform-example
   #     summary: 선별해 정리한 요약
-  #     author:
-  #       name: 표시 이름
-  #       handle: "@github-id"
-  #       url: https://github.com/github-id
-  #       avatar: { src: /assets/profile.png, alt: "" }
-  #     date: "2026-01-15"
-  #     source: { platform: GitHub, label: 댓글 보기, url: "https://github.com/owner/repo/discussions/1#discussioncomment-1" }
-  #   - id: first-interview
-  #     summary: 오프라인에서 들은 이야기
-  #     company: 회사 이름
-  #     role: 직무
+  #     profile: { image: { src: /assets/profile.png, alt: "" }, title: "@github-id", subtitle: "2026-01-15" }
+  #     url: https://github.com/github-id/repo/discussions/1
   - id: interviews
     type: interviews
     enabled: true
@@ -97,9 +88,10 @@ sections:
       src: /assets/fancysection-icon-whatpeoplearesaying-io70.png
       alt: ""
     title: 사람들이 하는 말
-    description: 흩어진 지식을 연결하고, 다시 꺼내 쓸 수 있는 도구를 만듭니다.
+    description: 동료평가 소개 섹션입니다.
     links:
       - { label: GitHub, href: "https://github.com/woonyong-choi", icon: github }
+      - { label: LinkedIn, icon: linkedin }
     items: []
 
   # 연락: mode가 email이면 메일 버튼, newsletter이면 구독 입력을 보인다.

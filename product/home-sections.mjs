@@ -29,9 +29,15 @@ export function heroSection(hero) {
 
 // 프로젝트, 기술, 인터뷰, 구독이 함께 쓰는 섹션 머리: 아이콘, 제목, 설명, 링크 행, 동작 링크.
 function sectionIntro({ icon, title, titleId, description, links = [], action }) {
-  const row = links.length ? `<p class="app-landing-social">${links.map(item => `<a href="${escape(item.href)}"${item.icon ? ` aria-label="${escape(item.label)}"` : ''}>${linkIcon(item) || escape(item.label)}</a>`).join('')}</p>` : '';
+  const row = links.length ? `<p class="app-landing-social">${links.map(socialLink).join('')}</p>` : '';
   const more = action ? `<p><a class="app-landing-action" href="${escape(action.href)}">${escape(action.label)}</a></p>` : '';
   return `<div class="app-landing-heading"><h2${titleId ? ` id="${escape(titleId)}"` : ''}>${icon ? `${picture(icon)} ` : ''}${escape(title)}</h2>${description ? paragraphs(description) : ''}${row}${more}</div>`;
+}
+
+// href가 없는 항목은 아이콘만 보이는 자리표시이며 링크로 읽히지 않고 클릭되지 않는다.
+function socialLink(item) {
+  if (item.href) return `<a href="${escape(item.href)}"${item.icon ? ` aria-label="${escape(item.label)}"` : ''}>${linkIcon(item) || escape(item.label)}</a>`;
+  return `<span role="img" aria-label="${escape(item.label)} · 주소 준비 중">${linkIcon(item)}</span>`;
 }
 
 function linkIcon({ icon }) {

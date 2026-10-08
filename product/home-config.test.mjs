@@ -42,38 +42,29 @@ test('section_ids_must_be_unique_and_not_collide_with_derived_dom_ids', () => {
   rejects('sections:\n  - { id: Bad_Id, type: technologies }', /sections\[0\]\.id/);
 });
 
-test('interview_items_require_unique_ids_and_summary_while_company_role_are_optional', () => {
-  const item = extra => `sections:\n  - { id: a, type: interviews, items: [{ id: talk, summary: s, company: c, role: r${extra} }] }`;
-  assert.equal(parse(item(''))[0].items[0].source, undefined);
-  assert.equal(parse(item('').replace(', company: c, role: r', ''))[0].items[0].company, undefined);
-  rejects(item('').replace('summary: s, ', ''), /items\[0\]\.summary: 값이 필요/);
-  rejects(item(', question: q'), /items\[0\]\.question: 알 수 없는 설정/);
-  rejects(item(', source: { platform: GitHub, url: "javascript:alert(1)" }'), /items\[0\]\.source\.url/);
-  rejects(item(', source: { url: "https://example.com" }'), /items\[0\]\.source\.platform/);
-  rejects(item(', source: { platform: GitHub, url: "http://example.com" }'), /items\[0\]\.source\.url.*HTTPS/);
-  rejects('sections:\n  - { id: a, type: interviews, items: [{ id: t, summary: s, company: c, role: r }, { id: t, summary: s, company: c, role: r }] }', /items\[1\]\.id: 중복/);
+test('interview_items_use_the_profile_slots_with_optional_image_and_url', () => {
+  const item = extra => `sections:\n  - { id: a, type: interviews, items: [{ id: talk, summary: s${extra} }] }`;
+  assert.equal(parse(item(''))[0].items[0].profile, undefined);
+  const [card] = parse(item(', profile: { image: { src: /assets/a.png, alt: 로고 }, title: 회사명, subtitle: 직무 }, url: "https://example.com/post"'))[0].items;
+  assert.deepEqual([card.profile.image.src, card.profile.title, card.profile.subtitle, card.url], ['/assets/a.png', '회사명', '직무', 'https://example.com/post']);
+  assert.equal(parse(item(', profile: { title: t }'))[0].items[0].profile.image, undefined);
+  rejects(item(', profile: { subtitle: x }'), /profile\.title: 값이 필요/);
+  rejects(item(', company: c'), /items\[0\]\.company: 알 수 없는 설정/);
+  rejects(item(', profile: { title: t, date: d }'), /profile\.date: 알 수 없는 설정/);
+  rejects(item(', url: "https://example.com"'), /items\[0\]\.url: .*profile\.title/);
+  rejects(item(', profile: { title: t }, url: "http://example.com"'), /items\[0\]\.url.*HTTPS/);
+  rejects(item(', profile: { title: t }, url: "javascript:alert(1)"'), /items\[0\]\.url/);
+  rejects(item(', profile: { title: t, image: { src: /elsewhere/a.png } }'), /profile\.image\.src/);
+  rejects(item(', profile: { title: t, image: { src: "http://example.com/a.png" } }'), /profile\.image\.src.*HTTPS/);
+  rejects(item(', profile: { title: t, image: { src: /assets/missing.png } }'), /profile\.image\.src: 파일이 없습니다/, { exists: () => false });
+  rejects('sections:\n  - { id: a, type: interviews, items: [{ id: t, summary: s }, { id: t, summary: s }] }', /items\[1\]\.id: 중복/);
 });
 
 test('prototype_properties_are_not_section_types_and_link_icons_are_checked', () => {
   for (const type of ['toString', '__proto__', 'constructor', 'hasOwnProperty']) rejects(`sections:\n  - { id: a, type: ${type} }`, /sections\[0\]\.type/);
   rejects('sections:\n  - { id: a, type: interviews, links: [{ label: x, href: /a/, icon: twitter }] }', /links\[0\]\.icon/);
   rejects('sections:\n  - { id: a, type: interviews, links: [{ label: x, href: "javascript:alert(1)" }] }', /links\[0\]\.href/);
-});
-
-test('interview_author_and_date_are_optional_validated_and_keep_profile_apart_from_source', () => {
-  const item = extra => `sections:\n  - { id: a, type: interviews, items: [{ id: talk, summary: s${extra} }] }`;
-  const [first] = parse(item(', date: "2026-02-28", author: { handle: "@id", url: "https://example.com/id", avatar: { src: /assets/a.png, alt: "" } }, source: { platform: GitHub, url: "https://example.com/post" }')).at(0).items;
-  assert.equal(first.date, '2026-02-28');
-  assert.equal(first.author.url, 'https://example.com/id');
-  assert.equal(first.source.url, 'https://example.com/post');
-  assert.equal(parse(item(', date: "2028-02-29"'))[0].items[0].date, '2028-02-29');
-  for (const date of ['2026-02-30', '2026-13-01', '2026-2-3', 'tomorrow']) rejects(item(`, date: "${date}"`), /items\[0\]\.date/);
-  rejects(item(', author: {}'), /items\[0\]\.author: name, handle, avatar/);
-  rejects(item(', author: { name: n, url: "http://example.com" }'), /author\.url.*HTTPS/);
-  rejects(item(', author: { name: n, bio: b }'), /author\.bio: 알 수 없는 설정/);
-  rejects(item(', author: { handle: "a b" }'), /author\.handle/);
-  rejects(item(', author: { name: n, avatar: { src: /elsewhere/a.png } }'), /author\.avatar\.src/);
-  rejects(item(', author: { name: n, avatar: { src: "http://example.com/a.png" } }'), /author\.avatar\.src.*HTTPS/);
-  rejects(item(', author: { avatar: { src: /assets/a.png } }'), /author\.avatar\.alt/);
-  rejects(item(', author: { name: n, avatar: { src: /assets/missing.png } }'), /author\.avatar\.src: 파일이 없습니다/, { exists: () => false });
+  rejects('sections:\n  - { id: a, type: interviews, links: [{ label: x }] }', /links\[0\]\.href: 값이 필요/);
+  rejects('sections:\n  - { id: a, type: interviews, links: [{ label: x, icon: /assets/a.png }] }', /links\[0\]\.href: 값이 필요/);
+  assert.equal(parse('sections:\n  - { id: a, type: interviews, links: [{ label: LinkedIn, icon: linkedin }] }')[0].links[0].href, undefined);
 });

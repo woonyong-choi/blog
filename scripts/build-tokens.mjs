@@ -70,3 +70,4 @@ async function embedAssetTokens(directory) {
   }
 }
 await embedAssetTokens(new URL('../assets/', import.meta.url));
+await embedAssetTokens(new URL('../product/assets/', import.meta.url));

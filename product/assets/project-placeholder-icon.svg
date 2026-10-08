@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><style data-site-tokens="">:root{--color-border:#e4e4e4;--color-border-strong:#b7b7b7}@media(prefers-color-scheme:dark){:root{--color-border:#393939;--color-border-strong:#5d5d5d}}</style>
+  <path d="M18 2H46A16 16 0 0 1 62 18V46A16 16 0 0 1 46 62H18A16 16 0 0 1 2 46V18A16 16 0 0 1 18 2Z" fill="var(--color-border)"/>
+  <g fill="none" stroke="var(--color-border-strong)" style="stroke-width:4;stroke-linecap:round;stroke-linejoin:round">
+    <path d="M22 18H42A6 6 0 0 1 48 24V40A6 6 0 0 1 42 46H22A6 6 0 0 1 16 40V24A6 6 0 0 1 22 18Z"/>
+    <path d="M16 38l9-9 7 6 5-4 11 9"/>
+  </g>
+  <circle cx="38" cy="26" r="3" fill="var(--color-border-strong)"/>
+</svg>

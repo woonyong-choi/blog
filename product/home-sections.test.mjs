@@ -6,7 +6,7 @@ import { personalHome } from './publication-layout.mjs';
 import { clientEntrypoints, publicationAssets } from './publication-assets.mjs';
 
 const TECHNOLOGIES = new Set(['python', 'git']);
-const render = (yaml, preview = true) => personalHome({ config: { name: '이름' }, home: parseHomeConfig(yaml, { technologies: TECHNOLOGIES }), interviewExamples: [{ id: 'e', summary: '예시 요약', company: '예시 회사', role: '예시 직무', example: true }], preview });
+const render = (yaml, preview = true) => personalHome({ config: { name: '이름' }, home: parseHomeConfig(yaml, { technologies: TECHNOLOGIES }), interviewExamples: [{ id: 'e', summary: '예시 요약', profile: { title: '예시 회사', subtitle: '예시 직무' }, example: true }], preview });
 const positions = (html, marks) => marks.map(mark => html.indexOf(mark));
 const ascending = values => values.every((value, index) => value >= 0 && (!index || value > values[index - 1]));
 
@@ -64,23 +64,37 @@ test('projects_render_zero_two_or_many_entries_and_skip_disabled_ones', () => {
   assert.match(one, /<h2>제목0<\/h2><p>설명0<\/p><p><a class="app-landing-action" href="https:\/\/example.com\/0">열기<\/a><\/p><\/div><div class="app-landing-collage"><img src="https:\/\/example.com\/0.png"/);
 });
 
-test('interview_cards_need_only_summary_company_and_role_and_link_an_optional_source', () => {
-  const item = extra => `sections:\n  - id: interviews\n    type: interviews\n    items:\n      - { id: talk, summary: 요약, company: 회사, role: 직무${extra} }`;
+test('interview_cards_show_summary_and_exactly_the_image_title_subtitle_slots', () => {
+  const item = extra => `sections:\n  - id: interviews\n    type: interviews\n    items:\n      - { id: talk, summary: 요약, profile: { title: 회사명, subtitle: 직무 }${extra} }`;
   const plain = render(item(''), false);
-  assert.match(plain, /<p class="app-interview-summary">요약<\/p><div class="app-interview-meta"><div class="app-interview-lines"><strong>회사<\/strong><span>직무<\/span><\/div><\/div>/);
-  assert.doesNotMatch(plain, /<a href/);
-  const linked = render(item(', source: { platform: GitHub, label: 댓글 보기, url: "https://example.com/talk" }'), false);
-  assert.match(linked, /<a href="https:\/\/example.com\/talk">댓글 보기 →<\/a>/);
-  assert.match(render(item(', source: { platform: 오프라인 }'), false), /<span>오프라인<\/span>/);
+  assert.match(plain, /<p class="app-interview-summary">요약<\/p><div class="app-interview-meta"><div class="app-interview-lines"><strong>회사명<\/strong><span>직무<\/span><\/div><\/div>/);
+  assert.doesNotMatch(plain, /<a href|app-interview-avatar|undefined/);
+  const linked = render(item(', url: "https://example.com/talk"'), false);
+  assert.match(linked, /<strong><a href="https:\/\/example.com\/talk">회사명<\/a><\/strong><span>직무<\/span>/);
+  assert.equal((linked.match(/<a href="https:\/\/example.com\/talk"/g) ?? []).length, 1);
+  const picture = render(item('').replace('profile: {', 'profile: { image: { src: /assets/tweetgrid-avatar-default.png }, '), false);
+  assert.match(picture, /<div class="app-interview-meta"><span class="app-interview-avatar"><img src="\/assets\/tweetgrid-avatar-default\.png" alt=""[^>]*><\/span><div class="app-interview-lines">/);
+  const bare = render('sections:\n  - { id: interviews, type: interviews, items: [{ id: a, summary: <b>요약</b> }, { id: b, summary: 둘, profile: { title: "<i>제목</i>" } }] }', false);
+  assert.doesNotMatch(bare.split('</li>')[0], /app-interview-meta/);
+  assert.match(bare, /&lt;b&gt;요약&lt;\/b&gt;/);
+  assert.match(bare, /<strong>&lt;i&gt;제목&lt;\/i&gt;<\/strong><\/div>/);
   const empty = 'sections:\n  - { id: interviews, type: interviews, items: [] }';
   assert.match(render(empty, true), /예시 회사/);
   assert.doesNotMatch(render(empty, false), /interviews|예시/);
 });
 
+test('social_links_support_registry_icons_and_show_a_link_less_icon_as_a_placeholder', () => {
+  const html = render('sections:\n  - { id: talk, type: interviews, links: [{ label: GitHub, href: "https://github.com/x", icon: github }, { label: LinkedIn, icon: linkedin }], items: [] }');
+  const row = html.match(/<p class="app-landing-social">.*?<\/p>/)[0];
+  assert.match(row, /<a href="https:\/\/github.com\/x" aria-label="GitHub"><svg/);
+  assert.match(row, /<span role="img" aria-label="LinkedIn · 주소 준비 중"><svg class="app-landing-symbol"/);
+  assert.equal((row.match(/<a /g) ?? []).length, 1);
+});
+
 test('technologies_and_interviews_share_the_section_intro_with_projects', () => {
   const intro = html => html.match(/<div class="app-landing-heading">.*?<\/div>/)[0];
   const tech = render('sections:\n  - { id: tech, type: technologies, items: [python] }');
-  assert.match(intro(tech), /<h2 id="tech-title">사용하는 기술<\/h2><p>[^<]+<\/p>/);
+  assert.match(intro(tech), /<h2 id="tech-title">함께 쓰는 기술<\/h2><p>기술별 기록을 모았습니다\.<\/p>/);
   const rich = render('sections:\n  - id: talk\n    type: interviews\n    icon: { src: https://example.com/i.png }\n    title: 이야기\n    description: 설명\n    links: [{ label: GitHub, href: "https://github.com/x", icon: github }, { label: 글, href: /blog/ }]\n    items: []');
   assert.match(intro(rich), /<h2 id="talk-title"><img src="https:\/\/example.com\/i.png" alt="" loading="lazy" decoding="async"> 이야기<\/h2><p>설명<\/p><p class="app-landing-social"><a href="https:\/\/github.com\/x" aria-label="GitHub"><svg class="app-landing-symbol"/);
   assert.match(intro(rich), /<a href="\/blog\/">글<\/a>/);
@@ -121,10 +135,12 @@ test('newsletter_without_endpoint_keeps_controls_disabled_and_never_posts', () =
   assert.match(render('sections:\n  - { id: contact, type: contact, email: hello@example.com }'), /href="mailto:hello@example.com"/);
 });
 
-test('the_shipped_interviews_section_shows_its_description_by_default', () => {
+test('the_shipped_interviews_section_shows_its_title_description_and_two_social_links', () => {
   const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
   const interviews = loadHomeConfig(new Set(brands)).find(section => section.type === 'interviews');
-  assert.equal(interviews.description, '흩어진 지식을 연결하고, 다시 꺼내 쓸 수 있는 도구를 만듭니다.');
+  assert.equal(interviews.description, '동료평가 소개 섹션입니다.');
+  assert.equal(interviews.title, '사람들이 하는 말');
+  assert.deepEqual(interviews.links.map(item => [item.icon, Boolean(item.href)]), [['github', true], ['linkedin', false]]);
   assert.match(personalHome({ config: { name: '이름' }, home: [interviews], interviewExamples: [], preview: true }) || '', /^<main/);
 });
 
@@ -133,5 +149,8 @@ test('the_shipped_home_config_builds_two_dummy_projects_in_the_default_order', (
   const home = loadHomeConfig(new Set(brands));
   assert.deepEqual(home.map(section => section.type), ['hero', 'projects', 'technologies', 'interviews', 'contact']);
   assert.equal(home[1].items.length, 2);
-  assert.match(home[1].items[0].title, /프로젝트 예시 01/);
+  for (const project of home[1].items) assert.deepEqual([project.title, project.description, project.link.label, project.image.alt], ['더미 제목', '프로젝트 내용을 설명하세요.', '자세히 보기', '더미 프로젝트 이미지']);
+  assert.deepEqual(home[1].items.map(project => project.link.href), ['/wiki/', '/blog/']);
+  assert.equal(home[2].title, '함께 쓰는 기술');
+  assert.equal(home[2].description, '기술별 기록을 모았습니다.');
 });

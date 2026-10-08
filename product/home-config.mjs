@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { parse } from 'yaml';
+import { SOCIAL_ICONS } from './publication-footer.mjs';
 
 export const HOME_CONFIG = 'home.config.yaml';
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
@@ -74,30 +75,6 @@ function picture(value, path, context) {
   return { src: media(item.src, `${path}.src`, IMAGE_TYPES, context), alt: text(item.alt, `${path}.alt`, false) ?? '' };
 }
 
-// YYYY-MM-DD 형식이면서 실제 달력에 있는 날짜만 받는다. 시간대 계산 없이 문자열 그대로 보존한다.
-function calendarDate(value, path) {
-  const date = text(value, path);
-  const [, year, month, day] = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date) ?? fail(path, `YYYY-MM-DD 형식이어야 합니다.: ${date}`);
-  const real = new Date(Date.UTC(year, month - 1, day));
-  if (real.getUTCFullYear() !== Number(year) || real.getUTCMonth() !== month - 1 || real.getUTCDate() !== Number(day)) fail(path, `달력에 없는 날짜입니다: ${date}`);
-  return date;
-}
-
-// 작성자는 이름, 아이디, 프로필 주소, 아이콘 중 하나 이상이 있으면 된다. 프로필 주소는 글 주소(source.url)와 따로 둔다.
-function author(value, path, context) {
-  if (value === undefined) return undefined;
-  const item = record(value, path, ['name', 'handle', 'url', 'avatar']);
-  const name = text(item.name, `${path}.name`, false);
-  const handle = text(item.handle, `${path}.handle`, false);
-  if (handle && /\s/.test(handle)) fail(`${path}.handle`, `공백을 쓸 수 없습니다: ${handle}`);
-  const avatar = picture(item.avatar, `${path}.avatar`, context);
-  const url = item.url === undefined ? undefined : secure(text(item.url, `${path}.url`), `${path}.url`);
-  if (!name && !handle && !avatar) fail(path, 'name, handle, avatar 중 하나가 필요합니다');
-  if (avatar && !avatar.alt && !name && !handle) fail(`${path}.avatar.alt`, '이름과 아이디가 없으면 아이콘 대체 글이 필요합니다');
-  if (url && !name && !handle && !avatar) fail(`${path}.url`, '연결할 이름, 아이디, 아이콘이 없습니다');
-  return { name, handle, url, avatar };
-}
-
 function link(value, path, hrefRequired = true) {
   if (value === undefined) return undefined;
   const item = record(value, path, ['label', 'href']);
@@ -109,15 +86,15 @@ function intro(item, path, context, title, description) {
   return { icon: picture(item.icon, `${path}.icon`, context), title: text(item.title, `${path}.title`, false) ?? title, description: text(item.description, `${path}.description`, false) ?? description };
 }
 
-const SOCIAL_ICONS = ['github', 'rss'];
-
-// 제목 아래 링크 행. icon은 내장 이름(github, rss) 또는 이미지 파일이고 없으면 label이 글자로 보인다.
+// 제목 아래 링크 행. icon은 내장 이름(github, rss, linkedin) 또는 이미지 파일이고 없으면 label이 글자로 보인다.
+// 주소를 아직 모르는 내장 아이콘은 href 없이 두면 아이콘만 보이고 링크가 되지 않는다.
 function links(value, path, context) {
   return list(value ?? [], path).map((entry, index) => {
     const where = `${path}[${index}]`;
     const item = record(entry, where, ['label', 'href', 'icon']);
     const icon = item.icon === undefined ? undefined : SOCIAL_ICONS.includes(item.icon) ? item.icon : media(item.icon, `${where}.icon`, IMAGE_TYPES, context);
-    return { label: text(item.label, `${where}.label`), href: href(item.href, `${where}.href`), icon };
+    if (item.href === undefined && !(icon && SOCIAL_ICONS.includes(icon))) fail(`${where}.href`, '값이 필요합니다. 내장 아이콘만 href 없이 쓸 수 있습니다');
+    return { label: text(item.label, `${where}.label`), href: item.href === undefined ? undefined : href(item.href, `${where}.href`), icon };
   });
 }
 
@@ -166,35 +143,34 @@ const SECTIONS = {
       seen.add(id);
       return id;
     });
-    return { ...intro(item, path, context, '사용하는 기술', '아이콘을 누르면 해당 기술의 기록을 모아 볼 수 있습니다.'), items };
+    return { ...intro(item, path, context, '함께 쓰는 기술', '기술별 기록을 모았습니다.'), items };
   },
   interviews(section, path, context) {
     const item = record(section, path, ['id', 'type', 'enabled', 'icon', 'title', 'description', 'links', 'items']);
     const seen = new Set();
     const items = list(item.items ?? [], `${path}.items`).map((entry, index) => {
       const where = `${path}.items[${index}]`;
-      const interview = record(entry, where, ['id', 'summary', 'company', 'role', 'author', 'date', 'source', 'example']);
+      const interview = record(entry, where, ['id', 'summary', 'profile', 'url', 'example']);
       const id = text(interview.id, `${where}.id`);
       if (!/^[a-z0-9-]+$/.test(id)) fail(`${where}.id`, '영문 소문자, 숫자, -만 쓸 수 있습니다');
       if (seen.has(id)) fail(`${where}.id`, `중복된 인터뷰 id입니다: ${id}`);
       seen.add(id);
       if (interview.example !== undefined && typeof interview.example !== 'boolean') fail(`${where}.example`, 'true 또는 false여야 합니다');
-      const source = interview.source === undefined ? undefined : record(interview.source, `${where}.source`, ['platform', 'label', 'url']);
+      // 카드 아래는 이미지, 제목, 부제목 세 자리다. 회사, 플랫폼 같은 의미는 설정이 정한다.
+      const profile = interview.profile === undefined ? undefined : record(interview.profile, `${where}.profile`, ['image', 'title', 'subtitle']);
+      if (interview.url !== undefined && !profile) fail(`${where}.url`, 'url을 연결할 profile.title이 필요합니다');
       return {
         id, example: interview.example === true,
         summary: text(interview.summary, `${where}.summary`),
-        company: text(interview.company, `${where}.company`, false),
-        role: text(interview.role, `${where}.role`, false),
-        author: author(interview.author, `${where}.author`, context),
-        date: interview.date === undefined ? undefined : calendarDate(interview.date, `${where}.date`),
-        source: source && {
-          platform: text(source.platform, `${where}.source.platform`),
-          label: text(source.label, `${where}.source.label`, false),
-          url: source.url === undefined ? undefined : secure(text(source.url, `${where}.source.url`), `${where}.source.url`),
+        profile: profile && {
+          image: picture(profile.image, `${where}.profile.image`, context),
+          title: text(profile.title, `${where}.profile.title`),
+          subtitle: text(profile.subtitle, `${where}.profile.subtitle`, false),
         },
+        url: interview.url === undefined ? undefined : secure(text(interview.url, `${where}.url`), `${where}.url`),
       };
     });
-    return { ...intro(item, path, context, '사람들이 하는 말', '흩어진 지식을 연결하고, 다시 꺼내 쓸 수 있는 도구를 만듭니다.'), links: links(item.links, `${path}.links`, context), items };
+    return { ...intro(item, path, context, '사람들이 하는 말', '동료평가 소개 섹션입니다.'), links: links(item.links, `${path}.links`, context), items };
   },
   contact(section, path, context) {
     const mode = section?.mode ?? 'email';

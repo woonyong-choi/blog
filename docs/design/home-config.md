@@ -53,47 +53,36 @@ sections:
 |---|---|
 | hero | `description` 필수. `title`(선택. 페이지 제목과 아이콘 대체 글이고, `icon`이 없으면 아이콘 자리에 화면 제목으로 보인다), `icon`, `image`(`{src, alt}`), `video`(`{src, title}` 필수, `poster` 선택), `action`(`{label, href}`) |
 | projects | `items` 목록. 항목마다 `title`, `description` 필수와 `enabled`, `link`(`{label, href}`), `icon`, `image` |
-| technologies | 머리 `icon`, `title`(기본 `사용하는 기술`), `description`. `items`는 아이콘 카탈로그 이름 목록이며 같은 이름의 태그 글로 연결 |
-| interviews | 머리 `icon`, `title`(기본 `사람들이 하는 말`), `description`(기본 `흩어진 지식을 연결하고, 다시 꺼내 쓸 수 있는 도구를 만듭니다.`), `links`(`{label, href, icon?}`). `items`: `id`, `summary` 필수, `company`, `role`, `author`(`{name?, handle?, url?, avatar?}`), `date`, `source`(`{platform, label?, url?}`), `example` 선택 |
+| technologies | 머리 `icon`, `title`(기본 `함께 쓰는 기술`), `description`(기본 `기술별 기록을 모았습니다.`). `items`는 아이콘 카탈로그 이름 목록이며 같은 이름의 태그 글로 연결 |
+| interviews | 머리 `icon`, `title`(기본 `사람들이 하는 말`), `description`(기본 `동료평가 소개 섹션입니다.`), `links`(`{label, href?, icon?}`). `items`: `id`, `summary` 필수, `profile`(`{image?, title, subtitle?}`), `url`, `example` 선택 |
 | contact | `mode`: `email` 또는 `newsletter` |
 
 - hero: 영상이 있고 `action.href`가 없으면 재생 버튼(`action.label`은 처음 문구)이 된다. `href`를 쓰면 그 링크가 된다. `image`는 영상이 없을 때 소개 아래에 크게 보인다.
-- projects: 링크 문구는 `link.label`, 이동 주소는 `link.href`이며 둘 다 직접 정한다(예: `label: 기능 보기`, `href: /wiki/`). 기본 예시는 `예시 링크`다. 항목 하나가 제목 → 소개 → 링크 → 큰 이미지 구간 하나다. 항목을 추가한 만큼 구간이 늘고, 목록이 비면 섹션이 없다. 기본값은 더미 2개다.
+- projects: 링크 문구는 `link.label`, 이동 주소는 `link.href`이며 둘 다 직접 정한다(예: `label: 기능 보기`, `href: /wiki/`). 기본 예시는 `자세히 보기`다. 항목 하나가 제목 → 소개 → 링크 → 큰 이미지 구간 하나다. 항목을 추가한 만큼 구간이 늘고, 목록이 비면 섹션이 없다. 기본값은 더미 2개이며 자체 placeholder 이미지(`project-placeholder.svg`)와 아이콘(`project-placeholder-icon.svg`)을 쓴다.
 - technologies, interviews, contact(newsletter)는 projects와 같은 머리(아이콘, 제목, 설명)를 쓰고 그 아래에 기술 로고 흐름, 인터뷰 카드 흐름, 구독 입력이 이어진다. 머리 바탕과 간격은 섹션 종류가 정한다.
-- interviews: `links`는 제목 아래의 링크 행이다. `icon`은 `github`, `rss` 또는 이미지 파일이고 생략하면 `label`이 글자로 보인다. 카드는 요약 위, 프로필과 날짜, 회사와 직무, 출처 아래이며 높이는 내용에 따른다. `items`가 비면 미리보기에서만 예시 카드(예시 회사, 예시 직무)를 보인다. 외부 주소를 읽어 오지 않으므로 내용은 직접 고르고 적는다.
-- interviews 프로필: `author`는 `name`, `handle`, `url`(작성자 프로필 HTTPS 주소), `avatar`(`{src, alt}`, `/assets/`·`/media/` 또는 HTTPS) 중 하나 이상이다. 아이콘은 36px이고 옆에 이름, 아이디, 날짜 순으로 보이며 이름 없이 `handle`만 써도 된다. 이름과 아이디가 없으면 `avatar.alt`가 필요하다. `avatar`가 없으면 아이콘 자리를 비워 두지 않는다. 쓰지 않은 필드는 줄도 만들지 않으므로 요약만 있는 카드도 빈 공간이 없다. 프로필 주소는 이름(없으면 아이디, 둘 다 없으면 아이콘)에 걸리고 글 주소는 `source.url`이라 서로 섞이지 않는다. 계정 정보를 읽어 오지 않으므로 값은 직접 적는다.
-- interviews 날짜: `date`는 `"YYYY-MM-DD"` 문자열이고 달력에 있는 날짜만 허용한다(`2026-02-30` 거부). `<time datetime>`에는 그대로, 화면에는 `2026년 1월 15일`로 보이며 시간대 변환이 없어 하루가 밀리지 않는다.
-- interviews 출처: `source`는 선택이다. `url`(HTTPS)이 있으면 `label`(없으면 `platform`)이 원문 링크가 되고, 없으면 글자만 보인다. 오프라인에서 받은 이야기는 `source` 없이 쓴다.
+- interviews: `links`는 제목 아래의 링크 행이다. `icon`은 내장 이름(`github`, `rss`, `linkedin`) 또는 이미지 파일이고 생략하면 `label`이 글자로 보인다. 내장 아이콘은 `href`를 비워 둘 수 있으며 그러면 아이콘만 보이고 링크도 클릭도 없다(`aria-label`은 `<label> · 주소 준비 중`). 주소가 생기면 `href`만 채운다. 어떤 계정 주소도 추정해 넣지 않는다.
+- interviews 카드: 요약 아래는 `profile`의 이미지, 제목, 부제목 세 자리뿐이다. 회사형이면 회사 아이콘, 회사명, 직무이고 플랫폼형이면 프로필 이미지, 아이디, 날짜처럼 같은 자리를 바꿔 쓴다. 두 값을 겹쳐 쌓지 않으며 `title`, `subtitle`은 의미가 없는 문자열이다. `url`(HTTPS)이 있으면 `title`이 링크가 되고 별도 줄은 생기지 않는다. `image`가 없으면 그 자리는 비지 않고 왼쪽 여백도 없으며, `profile`이 없으면 요약만 보인다. `image`는 `/assets/`, `/media/` 또는 HTTPS 이미지다. `items`가 비면 미리보기에서만 예시 카드(`회사명`, `직무`)를 보인다. 외부 계정을 읽어 오지 않으므로 값은 직접 적는다.
 - contact `email`: `email` 필수, `title`, `description`, `button` 선택.
 - contact `newsletter`: 위 필드에 `icon`, `endpoint`, `field`(입력 이름, 기본 `email`), `note`, `privacy`(`{label, href}`)가 더해지고 `email`은 직접 문의 대안으로 쓴다. `endpoint`(HTTPS)가 없으면 입력과 버튼이 비활성이고 `구독 서비스를 준비 중입니다`를 보이며 어떤 주소도 저장하거나 전송하지 않는다. `endpoint`가 있으면 이메일을 그 주소로 form POST할 뿐이며 사이트는 성공 화면을 만들지 않는다. 실제 수신과 발송은 구독 서비스가 맡는다. `privacy`와 `note`는 적은 경우에만 보인다.
 
 ## 인터뷰 항목 예
 
-실제 주소 대신 자리 표시 값을 쓴 복사용 예다. 이전의 회사와 직무 형식도 그대로 쓸 수 있다.
+회사형과 플랫폼형은 같은 세 자리를 다르게 채울 뿐이다. 주소는 모두 자리 표시 값이다.
 
 ```yaml
+links:
+  - { label: GitHub, href: "https://github.com/github-id", icon: github }
+  - { label: LinkedIn, icon: linkedin }   # href가 없으면 아이콘만 보인다
 items:
-  - id: github-comment
+  - id: company-card
+    summary: 동료평가 내용을 작성하세요.
+    profile: { image: { src: /assets/company.png, alt: "" }, title: 회사명, subtitle: 직무 }
+  - id: platform-card
     summary: 선별해 정리한 요약문
-    author:
-      name: 표시 이름
-      handle: "@github-id"
-      url: https://github.com/github-id          # 작성자 프로필
-      avatar: { src: /assets/profile.png, alt: "" }
-    date: "2026-01-15"
-    source: { platform: GitHub, label: 댓글 보기, url: "https://github.com/owner/repo/discussions/1#discussioncomment-1" }   # 글 주소
-  - id: handle-only
-    summary: 아이디만 있는 카드
-    author: { handle: "@github-id", url: https://github.com/github-id }
-  - id: linkedin-recommendation
-    summary: 다른 플랫폼에서 고른 글의 요약문
-    company: 회사 이름
-    role: 직무
-    source: { platform: LinkedIn, url: "https://www.linkedin.com/in/example/" }
-  - { id: offline, summary: 직접 들은 이야기의 요약, company: 회사 이름, role: 직무 }
+    profile: { image: { src: /assets/profile.png, alt: "" }, title: "@github-id", subtitle: "2026-01-15" }
+    url: https://github.com/github-id/repo/discussions/1
+  - { id: summary-only, summary: 직접 들은 이야기의 요약 }
 ```
-
-플랫폼마다 다른 표시는 없고 모두 같은 카드다.
 
 ## 값 규칙
 
