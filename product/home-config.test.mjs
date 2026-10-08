@@ -68,3 +68,10 @@ test('prototype_properties_are_not_section_types_and_link_icons_are_checked', ()
   rejects('sections:\n  - { id: a, type: interviews, links: [{ label: x, icon: /assets/a.png }] }', /links\[0\]\.href: 값이 필요/);
   assert.equal(parse('sections:\n  - { id: a, type: interviews, links: [{ label: LinkedIn, icon: linkedin }] }')[0].links[0].href, undefined);
 });
+
+test('interview_summary_links_use_the_link_href_rules', () => {
+  const item = summary => `sections:\n  - { id: a, type: interviews, items: [{ id: talk, summary: "${summary}" }] }`;
+  assert.equal(parse(item('[@만난 곳](/wiki/)에서 [@모임](https://example.com/m)'))[0].items[0].summary, '[@만난 곳](/wiki/)에서 [@모임](https://example.com/m)');
+  assert.equal(parse(item('@만난 곳'))[0].items[0].summary, '@만난 곳');
+  for (const url of ['javascript:x', 'data:text/html,x', '//evil.example.com', 'http://example.com']) rejects(item(`[@x](${url})`), /items\[0\]\.summary 링크/);
+});

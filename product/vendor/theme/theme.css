@@ -570,6 +570,7 @@
   --primitive-simple-landing-chevron-align: -0.07em;
   --primitive-simple-landing-action-pressed: rgba(38,52,74,.1);
   --primitive-simple-landing-review-meta-ink: #8e9196;
+  --primitive-simple-landing-review-link-ink: #8792a1;
   --primitive-simple-landing-newsletter-note-ink: #9299a4;
   --primitive-simple-landing-footer-ink: rgba(0,15,36,.46);
   --primitive-simple-landing-footer-logo-width: 125px;
@@ -1541,6 +1542,7 @@
   --site-landing-chevron-align: var(--primitive-simple-landing-chevron-align);
   --site-landing-action-pressed: var(--primitive-simple-landing-action-pressed);
   --site-landing-review-meta-ink: var(--primitive-simple-landing-review-meta-ink);
+  --site-landing-review-link-ink: var(--primitive-simple-landing-review-link-ink);
   --site-landing-newsletter-note-ink: var(--primitive-simple-landing-newsletter-note-ink);
   --site-landing-footer-ink: var(--primitive-simple-landing-footer-ink);
   --site-landing-footer-logo-width: var(--primitive-simple-landing-footer-logo-width);

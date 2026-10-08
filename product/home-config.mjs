@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 import { SOCIAL_ICONS } from './publication-footer.mjs';
+import { summaryParts } from './interviews.mjs';
 
 export const HOME_CONFIG = 'home.config.yaml';
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
@@ -73,6 +74,13 @@ function picture(value, path, context) {
   if (value === undefined) return undefined;
   const item = record(value, path, ['src', 'alt']);
   return { src: media(item.src, `${path}.src`, IMAGE_TYPES, context), alt: text(item.alt, `${path}.alt`, false) ?? '' };
+}
+
+// 요약 안의 [라벨](주소) 링크는 링크와 같은 주소 규칙을 따른다.
+function summary(value, path) {
+  const content = text(value, path);
+  for (const part of summaryParts(content)) if (part.url !== undefined) href(part.url, `${path} 링크`);
+  return content;
 }
 
 function link(value, path, hrefRequired = true) {
@@ -161,7 +169,7 @@ const SECTIONS = {
       if (interview.url !== undefined && !profile) fail(`${where}.url`, 'url을 연결할 profile.title이 필요합니다');
       return {
         id, example: interview.example === true,
-        summary: text(interview.summary, `${where}.summary`),
+        summary: summary(interview.summary, `${where}.summary`),
         profile: profile && {
           image: picture(profile.image, `${where}.profile.image`, context),
           title: text(profile.title, `${where}.profile.title`),

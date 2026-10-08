@@ -952,6 +952,8 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-flow-group { display: flex; flex: none; gap: var(--site-gap); margin: 0; padding: 0; list-style: none; }
 .app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: calc((var(--site-page) - 3 * var(--site-landing-review-font)) / 4); max-width: calc(100vw - var(--site-gap-lg)); padding: var(--site-landing-review-padding); border-radius: var(--site-landing-review-radius); background: var(--site-card); color: var(--site-ink); box-shadow: var(--site-landing-review-shadow); font-size: var(--site-landing-review-font); line-height: var(--site-feature-line); }
 .app-interview-summary { margin: 0 0 var(--site-landing-review-padding); font-size: var(--site-landing-review-copy); word-break: keep-all; overflow-wrap: anywhere; }
+.app-interview-summary a { color: var(--site-landing-review-link-ink); }
+.app-interview-summary a:hover { text-decoration: underline; }
 .app-interview-summary:last-child { margin-bottom: 0; }
 .app-interview-meta { display: flex; gap: .5em; margin: auto 0 0; font-size: var(--site-landing-review-meta); line-height: var(--site-line-compact); color: var(--site-landing-review-meta-ink); text-align: left; }
 .app-interview-avatar { display: block; flex: none; width: var(--site-landing-review-avatar); height: var(--site-landing-review-avatar); }

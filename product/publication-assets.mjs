@@ -6,7 +6,7 @@ const ASSET_ROOTS = ['/theme/', '/assets/', '/media/'];
 const ASSET_NOTICES = new Map([
   ['/theme/assets/fonts/pretendard-variable.woff2', '/theme/assets/fonts/pretendard-license.txt'],
   ['/theme/assets/fonts/jetbrains-mono-regular.woff2', '/theme/assets/fonts/jetbrains-mono-license.txt'],
-  ['/media/manta-code-blocks-intro.mp4', '/media/manta-code-blocks-LICENSE.txt'],
+  ['/media/manta-code-blocks-intro-web.mp4', '/media/manta-code-blocks-LICENSE.txt'],
   ['/media/manta-code-blocks-poster.png', '/media/manta-code-blocks-LICENSE.txt'],
 ]);
 

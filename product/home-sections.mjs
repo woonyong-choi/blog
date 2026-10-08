@@ -1,6 +1,7 @@
 // 홈 설정의 섹션 종류마다 독립된 HTML 구성 요소를 만든다.
 import { controlImage } from './controls.mjs';
 import { escape } from './markdown.mjs';
+import { href } from './home-config.mjs';
 import { interviewCards, publicInterviews } from './interviews.mjs';
 import { socialIcon } from './publication-footer.mjs';
 
@@ -11,7 +12,7 @@ function heroAction(hero) {
   const label = hero.action?.label ?? '프로젝트 영상 보기';
   if (hero.action?.href) return `<a class="app-hero-link" href="${escape(hero.action.href)}">${escape(label)} <span aria-hidden="true">${hero.action.href.startsWith('#') ? '↓' : '→'}</span></a>`;
   if (!hero.video) return '';
-  return `<a class="app-remote" href="#${escape(hero.id)}-video" data-remote="${escape(hero.id)}-player" data-scroll="down" data-language="ko" data-label="${escape(label)}" aria-label="${escape(label)}">${controlImage('play', '', '')}<span>${escape(label)}</span></a>`;
+  return `<a class="app-remote" href="#${escape(hero.id)}-video" data-remote="${escape(hero.id)}-player" data-scroll="down" data-label="${escape(label)}" aria-label="${escape(label)}">${controlImage('play', '', '')}<span>${escape(label)}</span></a>`;
 }
 
 function heroShowcase({ id, video, image }) {
@@ -68,7 +69,7 @@ export function technologySection(section, brands) {
 
 export function interviewsSection(section, { examples = [], preview = false } = {}) {
   const entries = publicInterviews(section.items.length ? section.items : examples, preview);
-  const cards = interviewCards(entries);
+  const cards = interviewCards(entries, href);
   if (!cards) return '';
   const id = escape(section.id);
   return `<section id="${id}" class="app-landing-section app-landing-interviews" aria-labelledby="${id}-title"><div class="app-shell">${sectionIntro({ ...section, titleId: `${section.id}-title` })}${flowRail('class="app-interviews" data-flow-rail data-flow-label="인터뷰"', '인터뷰 카드', cards)}</div></section>`;

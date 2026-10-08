@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { loadHomeConfig, parseHomeConfig } from './home-config.mjs';
 import { personalHome } from './publication-layout.mjs';
 import { clientEntrypoints, publicationAssets } from './publication-assets.mjs';
@@ -34,6 +34,7 @@ test('disabled_hero_removes_player_remote_script_and_media_assets', () => {
   const yaml = id => `sections:\n  - id: hero\n    type: hero\n    enabled: ${id}\n    description: 소개\n    video: { src: /media/demo.mp4, poster: /media/poster.png, title: 영상 }`;
   const on = render(yaml(true));
   assert.match(on, /data-remote="hero-player"[^>]*>/);
+  assert.doesNotMatch(on, /data-language/);
   assert.match(on, /id="hero-player" data-player/);
   assert.deepEqual(clientEntrypoints(on), ['video.js']);
   const off = render(yaml(false));
@@ -153,4 +154,11 @@ test('the_shipped_home_config_builds_two_dummy_projects_in_the_default_order', (
   assert.deepEqual(home[1].items.map(project => project.link.href), ['/wiki/', '/blog/']);
   assert.equal(home[2].title, '함께 쓰는 기술');
   assert.equal(home[2].description, '기술별 기록을 모았습니다.');
+});
+
+test('the_shipped_hero_plays_the_web_compatible_video_that_exists_beside_the_preserved_original', () => {
+  const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
+  const hero = loadHomeConfig(new Set(brands)).find(section => section.type === 'hero');
+  assert.equal(hero.video.src, '/media/manta-code-blocks-intro-web.mp4');
+  for (const name of ['manta-code-blocks-intro-web.mp4', 'manta-code-blocks-intro.mp4']) assert.ok(existsSync(new URL(`./media/${name}`, import.meta.url)));
 });

@@ -19,7 +19,7 @@ sections:
     #   src: /assets/meettheallnewthings2-io75.jpg
     #   alt: 설명
     video:
-      src: /media/manta-code-blocks-intro.mp4
+      src: /media/manta-code-blocks-intro-web.mp4
       poster: /media/manta-code-blocks-poster.png
       title: Manta Code Blocks
     # action: 영상이 있으면 재생 버튼의 문구. href를 쓰면 그 주소로 가는 링크가 된다.
@@ -74,8 +74,9 @@ sections:
   # 카드는 요약(summary)과 그 아래 세 자리 profile(image, title, subtitle)이다. 의미는 설정이 정한다.
   # url은 선택이며 title에 연결되고 별도 줄을 만들지 않는다. image가 없으면 그 자리는 비지 않고 사라진다.
   # items가 비어 있으면 미리보기에서만 예시 카드를 보인다.
+  # summary 안에서는 [@만난 곳](https://example.com/community)처럼 링크를 쓸 수 있다. 다른 문법은 쓰지 않는다.
   #   - id: company-example
-  #     summary: 동료평가 내용을 작성하세요.
+  #     summary: "[@커뮤니티](https://example.com/community)에서 함께했습니다."
   #     profile: { image: { src: /assets/company.png, alt: "" }, title: 회사명, subtitle: 직무 }
   #   - id: platform-example
   #     summary: 선별해 정리한 요약

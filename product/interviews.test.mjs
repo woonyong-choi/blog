@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
-import { publicInterviews, interviewCards } from './interviews.mjs';
+import { publicInterviews, interviewCards, summaryParts } from './interviews.mjs';
+import { href } from './home-config.mjs';
 
 const examples = JSON.parse(readFileSync(new URL('./interview-examples.json', import.meta.url)));
 
@@ -16,7 +17,7 @@ test('interview_examples_are_five_static_company_placeholders_shown_only_in_prev
 });
 
 test('profile_title_subtitle_and_image_are_escaped_and_the_url_links_only_the_title', () => {
-  const html = interviewCards([{ id: 'a', summary: '<요약> & 내용', url: 'https://example.com/a?x=1&y=2', profile: { image: { src: '/assets/a.png', alt: '"로고"' }, title: '<회사>', subtitle: '직무 & 팀' } }]);
+  const html = interviewCards([{ id: 'a', summary: '<요약> & 내용', url: 'https://example.com/a?x=1&y=2', profile: { image: { src: '/assets/a.png', alt: '"로고"' }, title: '<회사>', subtitle: '직무 & 팀' } }], href);
   assert.match(html, /&lt;요약&gt; &amp; 내용/);
   assert.match(html, /<a href="https:\/\/example\.com\/a\?x=1&amp;y=2">&lt;회사&gt;<\/a>/);
   assert.match(html, /alt="&quot;로고&quot;"/);
@@ -25,8 +26,22 @@ test('profile_title_subtitle_and_image_are_escaped_and_the_url_links_only_the_ti
 });
 
 test('cards_without_image_or_profile_leave_no_empty_slot', () => {
-  const [titleOnly, summaryOnly] = interviewCards([{ id: 'a', summary: 's', profile: { title: '제목' } }, { id: 'b', summary: 's' }]).split('</li>');
+  const [titleOnly, summaryOnly] = interviewCards([{ id: 'a', summary: 's', profile: { title: '제목' } }, { id: 'b', summary: 's' }], href).split('</li>');
   assert.match(titleOnly, /<div class="app-interview-meta"><div class="app-interview-lines"><strong>제목<\/strong><\/div><\/div>/);
   assert.doesNotMatch(titleOnly, /app-interview-avatar|<span>|undefined/);
   assert.doesNotMatch(summaryOnly, /app-interview-meta|undefined/);
+});
+
+test('summary_links_are_the_only_markup_and_unsafe_or_plain_mentions_never_become_links', () => {
+  const render = summary => interviewCards([{ id: 'a', summary }], href);
+  assert.match(render('[@만난 곳](/wiki/)에서 [@커뮤니티](https://example.com/c?a=1&b=2) 함께'), /<a href="\/wiki\/">@만난 곳<\/a>에서 <a href="https:\/\/example\.com\/c\?a=1&amp;b=2">@커뮤니티<\/a> 함께/);
+  assert.doesNotMatch(render('@만난 곳에서 함께'), /<a /);
+  assert.match(render('\\[대괄호\\](/wiki/) [a\\]b](/x/)'), /^<li[^>]*><p class="app-interview-summary">\[대괄호\]\(\/wiki\/\) <a href="\/x\/">a\]b<\/a><\/p>/);
+  for (const url of ['javascript:alert(1)', 'data:text/html,x', '//evil.example.com', 'http://example.com']) assert.doesNotMatch(render(`[@x](${url})`), /<a |href=/);
+  assert.match(render('[<b>](https://example.com) <i>x</i> ![img](/a.png)'), /<a href="https:\/\/example\.com">&lt;b&gt;<\/a> &lt;i&gt;x&lt;\/i&gt; !<a href="\/a\.png">img<\/a>/);
+  assert.deepEqual(summaryParts('앞 [a](/b/) 뒤'), [{ text: '앞 ' }, { label: 'a', url: '/b/' }, { text: ' 뒤' }]);
+});
+
+test('the_first_example_links_a_meeting_place_to_a_site_path', () => {
+  assert.match(interviewCards([examples[0]], href), /<a href="\/wiki\/">@만난 곳<\/a>에서 함께한 동료평가 내용을 작성하세요\./);
 });

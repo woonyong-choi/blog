@@ -57,10 +57,11 @@ sections:
 | interviews | 머리 `icon`, `title`(기본 `사람들이 하는 말`), `description`(기본 `동료평가 소개 섹션입니다.`), `links`(`{label, href?, icon?}`). `items`: `id`, `summary` 필수, `profile`(`{image?, title, subtitle?}`), `url`, `example` 선택 |
 | contact | `mode`: `email` 또는 `newsletter` |
 
-- hero: 영상이 있고 `action.href`가 없으면 재생 버튼(`action.label`은 처음 문구)이 된다. `href`를 쓰면 그 링크가 된다. `image`는 영상이 없을 때 소개 아래에 크게 보인다.
+- hero: 영상이 있고 `action.href`가 없으면 재생 버튼(`action.label`은 처음 문구)이 된다. `href`를 쓰면 그 링크가 된다. `image`는 영상이 없을 때 소개 아래에 크게 보인다. 재생 버튼의 문구는 항상 `action.label`로 고정이고 아이콘만 재생과 일시정지 두 가지다. 영상이 끝나면 재생 아이콘으로 돌아가며 다시 누르면 처음부터 재생한다. 영상은 크롬 등에서 색이 어긋나지 않도록 `yuv420p`, BT.709 H.264로 둔다(변환 방법은 `product/media/README.md`).
 - projects: 링크 문구는 `link.label`, 이동 주소는 `link.href`이며 둘 다 직접 정한다(예: `label: 기능 보기`, `href: /wiki/`). 기본 예시는 `자세히 보기`다. 항목 하나가 제목 → 소개 → 링크 → 큰 이미지 구간 하나다. 항목을 추가한 만큼 구간이 늘고, 목록이 비면 섹션이 없다. 기본값은 더미 2개이며 자체 placeholder 이미지(`project-placeholder.svg`)와 아이콘(`project-placeholder-icon.svg`)을 쓴다.
 - technologies, interviews, contact(newsletter)는 projects와 같은 머리(아이콘, 제목, 설명)를 쓰고 그 아래에 기술 로고 흐름, 인터뷰 카드 흐름, 구독 입력이 이어진다. 머리 바탕과 간격은 섹션 종류가 정한다.
 - interviews: `links`는 제목 아래의 링크 행이다. `icon`은 내장 이름(`github`, `rss`, `linkedin`) 또는 이미지 파일이고 생략하면 `label`이 글자로 보인다. 내장 아이콘은 `href`를 비워 둘 수 있으며 그러면 아이콘만 보이고 링크도 클릭도 없다(`aria-label`은 `<label> · 주소 준비 중`). 주소가 생기면 `href`만 채운다. 어떤 계정 주소도 추정해 넣지 않는다.
+- interviews 요약 링크: `summary` 안에서 `[@만난 곳](https://...)` 문법의 링크만 읽는다. 주소는 링크 `href`와 같은 규칙(HTTPS 또는 `/`로 시작하는 사이트 경로, `#` 페이지 안 연결)이고 `javascript:`, `data:`, `//host`는 설정 오류다. 라벨의 `@`는 글자 그대로이고 `@word`만 쓰면 링크도 주소 추정도 없다. 라벨 안의 `[`, `]`는 `\[`, `\]`로 쓰며 한 요약에 링크를 여러 개 넣을 수 있다. HTML, 이미지, 강조 등 다른 문법은 해석하지 않고 글자로 보인다. 프로필 세 자리와 별개인 본문 기능이다.
 - interviews 카드: 요약 아래는 `profile`의 이미지, 제목, 부제목 세 자리뿐이다. 회사형이면 회사 아이콘, 회사명, 직무이고 플랫폼형이면 프로필 이미지, 아이디, 날짜처럼 같은 자리를 바꿔 쓴다. 두 값을 겹쳐 쌓지 않으며 `title`, `subtitle`은 의미가 없는 문자열이다. `url`(HTTPS)이 있으면 `title`이 링크가 되고 별도 줄은 생기지 않는다. `image`가 없으면 그 자리는 비지 않고 왼쪽 여백도 없으며, `profile`이 없으면 요약만 보인다. `image`는 `/assets/`, `/media/` 또는 HTTPS 이미지다. `items`가 비면 미리보기에서만 예시 카드(`회사명`, `직무`)를 보인다. 외부 계정을 읽어 오지 않으므로 값은 직접 적는다.
 - contact `email`: `email` 필수, `title`, `description`, `button` 선택.
 - contact `newsletter`: 위 필드에 `icon`, `endpoint`, `field`(입력 이름, 기본 `email`), `note`, `privacy`(`{label, href}`)가 더해지고 `email`은 직접 문의 대안으로 쓴다. `endpoint`(HTTPS)가 없으면 입력과 버튼이 비활성이고 `구독 서비스를 준비 중입니다`를 보이며 어떤 주소도 저장하거나 전송하지 않는다. `endpoint`가 있으면 이메일을 그 주소로 form POST할 뿐이며 사이트는 성공 화면을 만들지 않는다. 실제 수신과 발송은 구독 서비스가 맡는다. `privacy`와 `note`는 적은 경우에만 보인다.
@@ -75,7 +76,7 @@ links:
   - { label: LinkedIn, icon: linkedin }   # href가 없으면 아이콘만 보인다
 items:
   - id: company-card
-    summary: 동료평가 내용을 작성하세요.
+    summary: "[@커뮤니티](https://example.com/community)에서 함께했습니다."
     profile: { image: { src: /assets/company.png, alt: "" }, title: 회사명, subtitle: 직무 }
   - id: platform-card
     summary: 선별해 정리한 요약문

@@ -27,15 +27,19 @@ export function revealVideo(element, downward = false) {
 }
 for (const event of ['wheel', 'touchstart', 'pointerdown']) window.addEventListener(event, () => cancelAnimationFrame(scrollFrame), { passive: true });
 
+// 설정 문구(data-label)가 있는 히어로 버튼은 문구와 aria-label이 고정이고 아이콘만 재생/일시정지 두 상태다.
+// 끝난 영상은 재생 상태로 돌아가며 다시 누르면 처음부터 재생한다.
 export function updateRemote(button, video, selected = true) {
   const playing = selected && !video.paused;
   const ended = selected && video.ended;
   button.classList.toggle('is-playing', playing);
-  const korean = button.dataset.language === 'ko';
-  button.setAttribute('aria-label', korean ? (playing ? '영상 일시정지' : ended ? '영상 다시 보기' : button.dataset.label ?? '프로젝트 영상 보기') : (playing ? 'Pause video' : ended ? 'Replay video' : 'Play video'));
-  if (korean) button.querySelector('span').textContent = playing ? '영상 일시정지' : ended ? '영상 다시 보기' : button.dataset.label ?? '프로젝트 영상 보기';
+  const fixed = button.dataset.label;
+  if (fixed === undefined) {
+    const text = playing ? 'Pause video' : ended ? 'Replay video' : 'Play video';
+    button.setAttribute('aria-label', text);
+  } else button.setAttribute('aria-label', fixed);
   const icon = button.querySelector('img');
-  icon.src = new URL(`${playing ? 'pause' : ended ? 'replay' : 'play'}.svg`, icon.src).href;
+  icon.src = new URL(`${playing ? 'pause' : !fixed && ended ? 'replay' : 'play'}.svg`, icon.src).href;
 }
 for (const root of document.querySelectorAll('[data-player]')) {
   const video = root.querySelector('video');
