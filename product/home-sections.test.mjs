@@ -94,6 +94,10 @@ test('hero_title_names_the_page_and_icon_and_missing_files_of_disabled_items_are
   assert.match(hero, /<h1 class="app-sr">내 이름<\/h1>/);
   assert.match(hero, /alt="내 이름"/);
   assert.match(render(compose(['contact'])), /<h1 class="app-sr">이름<\/h1>/);
+  assert.doesNotMatch(hero, /app-hero-title/);
+  const noIcon = render('sections:\n  - { id: hero, type: hero, title: 내 이름, description: 소개 }');
+  assert.match(noIcon, /<p class="app-hero-title" aria-hidden="true">내 이름<\/p>/);
+  assert.doesNotMatch(render('sections:\n  - { id: hero, type: hero, description: 소개 }'), /app-hero-title/);
   const yaml = 'sections:\n  - id: projects\n    type: projects\n    items:\n      - { enabled: false, title: 숨김, description: 설명, image: { src: /assets/gone.png } }\n      - { title: 보임, description: 설명 }';
   const html = personalHome({ config: { name: '이름' }, home: parseHomeConfig(yaml, { exists: () => false }), interviewExamples: [], preview: true });
   assert.doesNotMatch(html, /gone\.png|숨김/);
@@ -115,6 +119,13 @@ test('newsletter_without_endpoint_keeps_controls_disabled_and_never_posts', () =
   assert.match(live, /<a href="https:\/\/example.com\/privacy">개인정보<\/a>/);
   assert.throws(() => render(`${base}\n    endpoint: http://subscribe.example.com`), /sections\[0\]\.endpoint.*HTTPS/);
   assert.match(render('sections:\n  - { id: contact, type: contact, email: hello@example.com }'), /href="mailto:hello@example.com"/);
+});
+
+test('the_shipped_interviews_section_shows_its_description_by_default', () => {
+  const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
+  const interviews = loadHomeConfig(new Set(brands)).find(section => section.type === 'interviews');
+  assert.equal(interviews.description, '프로젝트와 개발에 관한 이야기를 모읍니다.');
+  assert.match(personalHome({ config: { name: '이름' }, home: [interviews], interviewExamples: [], preview: true }) || '', /^<main/);
 });
 
 test('the_shipped_home_config_builds_two_dummy_projects_in_the_default_order', () => {

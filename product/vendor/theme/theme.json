@@ -295,11 +295,11 @@
     "assets/icons/team.svg": "8e68695132860c9b6d7d0e7baecab82185bf7f6c92aa65108cc00bc7f414dd9b",
     "assets/icons/terminal.svg": "6b693572610ad42f784f2b418526b7a0f9c51fa41b6aa1135fa514b0d556d5c0",
     "assets/icons/testing.svg": "2cbba40f5c42fea9156bd8de0e2d36d53f77aa4808f51ebd1ef9b4b92edba113",
-    "styles.css": "26ad60da42f389e0ecce2177cd67074be0bb2db6d81e9ab5610194baffbaaa62",
-    "styles.source.css": "42835334715ba3b5c6e96697e9ed1745305d31ea944a19ac634f2b653eb4df44",
-    "theme.css": "4427be31c5bc4a37ee51033b07b55ab17686732e950f4dc5826b76f8b05d1d4c",
-    "tokens.json": "f930b098aa1ab1bb36d53a55913adf128097ac62f4c75366b3b5a1dd17789a8f",
-    "tokens.light.json": "f930b098aa1ab1bb36d53a55913adf128097ac62f4c75366b3b5a1dd17789a8f"
+    "styles.css": "a38b860f24c41d4e6db34e336b88b5977dec5be5d1203b7237431fca8be5c3c7",
+    "styles.source.css": "716a5416a52651a9cfc147f7ee0addbdadcb239ad13429cdac1d6c7e0e6bccbf",
+    "theme.css": "c845c87d192ed3cacbc904be5727690a9265d4942d783c1b7282cfc7eebbcbb9",
+    "tokens.json": "bd20749feb2710b7f9d8c2d2fcd419c4933133c430293cb9d01091c738f5586e",
+    "tokens.light.json": "bd20749feb2710b7f9d8c2d2fcd419c4933133c430293cb9d01091c738f5586e"
   },
-  "contentHash": "8de4dcf21a1c012bb1e3d7d237987a66ef3c3468769f94e8a425c1e4945082b8"
+  "contentHash": "1bc50c0c2d78df4887d623a9118ef14422836b125abf5861d73ecffe4f3fd60d"
 }

@@ -359,6 +359,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-landing-hero { background: var(--site-canvas); }
 .app-hero-copy { width: var(--site-intro); max-width: var(--site-hero-max); margin: auto; padding-block: var(--site-hero-top); font-size: var(--site-intro-text); line-height: var(--site-line-intro); text-align: center; }
 .app-hero-copy .app-hero-logo { max-width: 75%; margin-bottom: calc(var(--site-intro-text) * 1.5); }
+.app-hero-title { margin: 0 auto calc(var(--site-intro-text) * 1.5); font-size: var(--site-section-title); font-weight: var(--site-weight-title); line-height: var(--site-landing-title-line); color: var(--site-landing-title-color); }
 .app-hero-description { color: var(--site-description-color); margin: var(--site-landing-description-margin) auto; }
 .app-hero-description .app-play { margin: 0; font-size: inherit; }
 .app-landing .app-cinema { margin-top: 0; }
@@ -964,6 +965,8 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-newsletter button:disabled:hover { background: var(--site-link); box-shadow: none; }
 .app-landing-newsletter .app-caption { text-align: center; }
 .app-landing-newsletter .app-newsletter { margin-bottom: var(--site-landing-nav-gap); }
+.app-landing-newsletter .app-newsletter-email { height: auto; line-height: normal; }
+.app-landing-newsletter .app-newsletter-note { color: var(--site-landing-newsletter-note-ink); }
 .app-project-caption { display: flex; flex-direction: column; align-items: center; gap: var(--site-gap-sm); text-align: center; margin-top: var(--site-gap); font-size: var(--site-small-text); }
 .app-project-caption p { margin: 0; }
 .app-project-caption strong { color: var(--site-ink); }

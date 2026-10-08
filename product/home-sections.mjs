@@ -24,7 +24,7 @@ function heroShowcase({ id, video, image }) {
 
 export function heroSection(hero) {
   const action = heroAction(hero);
-  return `<section id="${escape(hero.id)}" class="app-landing-hero"><div class="app-shell"><div class="app-hero-copy">${hero.icon ? picture({ ...hero.icon, alt: hero.icon.alt || hero.title || '' }, 'app-hero-logo', 'eager') : ''}<p class="app-hero-description">${escape(hero.description)}</p>${action ? `<p class="app-hero-description">${action}</p>` : ''}</div></div></section>${heroShowcase(hero)}`;
+  return `<section id="${escape(hero.id)}" class="app-landing-hero"><div class="app-shell"><div class="app-hero-copy">${hero.icon ? picture({ ...hero.icon, alt: hero.icon.alt || hero.title || '' }, 'app-hero-logo', 'eager') : hero.title ? `<p class="app-hero-title" aria-hidden="true">${escape(hero.title)}</p>` : ''}<p class="app-hero-description">${escape(hero.description)}</p>${action ? `<p class="app-hero-description">${action}</p>` : ''}</div></div></section>${heroShowcase(hero)}`;
 }
 
 // 프로젝트, 기술, 인터뷰, 구독이 함께 쓰는 섹션 머리: 아이콘, 제목, 설명, 링크 행, 동작 링크.

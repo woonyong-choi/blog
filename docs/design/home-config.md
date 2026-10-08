@@ -51,7 +51,7 @@ sections:
 
 | 종류 | 필드 |
 |---|---|
-| hero | `description` 필수. `title`(화면에 보이지 않는 페이지 제목과 아이콘 대체 글, 선택), `icon`, `image`(`{src, alt}`), `video`(`{src, title}` 필수, `poster` 선택), `action`(`{label, href}`) |
+| hero | `description` 필수. `title`(선택. 페이지 제목과 아이콘 대체 글이고, `icon`이 없으면 아이콘 자리에 화면 제목으로 보인다), `icon`, `image`(`{src, alt}`), `video`(`{src, title}` 필수, `poster` 선택), `action`(`{label, href}`) |
 | projects | `items` 목록. 항목마다 `title`, `description` 필수와 `enabled`, `link`(`{label, href}`), `icon`, `image` |
 | technologies | 머리 `icon`, `title`(기본 `사용하는 기술`), `description`. `items`는 아이콘 카탈로그 이름 목록이며 같은 이름의 태그 글로 연결 |
 | interviews | 머리 `icon`, `title`(기본 `인터뷰`), `description`, `links`(`{label, href, icon?}`). `items`: `id`, `summary`, `company`, `role` 필수, `source`(`{platform, label?, url?}`), `example` |

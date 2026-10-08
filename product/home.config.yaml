@@ -5,7 +5,7 @@
 
 sections:
   # 히어로: 아이콘, 소개, 동영상, 포스터, 액션을 한 묶음으로 바꾼다.
-  # title은 선택이며 화면에는 보이지 않고 페이지의 제목과 아이콘 대체 글로 쓴다.
+  # title은 선택이다. 페이지 제목과 아이콘 대체 글로 쓰이고, icon이 없을 때는 아이콘 자리에 화면 제목으로 보인다.
   - id: hero
     type: hero
     enabled: true
@@ -85,6 +85,7 @@ sections:
       src: /assets/fancysection-icon-whatpeoplearesaying-io70.png
       alt: ""
     title: 인터뷰
+    description: 프로젝트와 개발에 관한 이야기를 모읍니다.
     links:
       - { label: GitHub, href: "https://github.com/woonyong-choi", icon: github }
     items: []
