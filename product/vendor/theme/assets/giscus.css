@@ -48,12 +48,45 @@ main {
   line-height: 1.4;
 }
 .gsc-main { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; color: #303336; }
-.gsc-comment-box, .gsc-comment { border-radius: 12px; border-color: #dfe3e8; }
-.gsc-comment-box-textarea { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; border-radius: 8px; }
-.gsc-comment-box-buttons button, .gsc-comment-box-bottom button { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; border-radius: 8px; box-shadow: none; }
-.gsc-comment-content { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; }
-.gsc-comment-content code { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
-.gsc-comment-header { color: #55606e; font-size: 15px; }
-.gsc-comment-box-tabs { border-color: #dfe3e8; }
+.gsc-main .gsc-header { margin-bottom: 24px; align-items: baseline; flex-wrap: wrap; gap: 12px; }
+.gsc-main .gsc-left-header { flex-wrap: wrap; gap: 8px; }
+.gsc-main .gsc-comments-count, .gsc-main .gsc-replies-count { font-size: 15px; font-weight: 600; }
+.gsc-main .gsc-right-header { background: transparent; border: 0; font-size: 15px; }
+.gsc-main .gsc-right-header button { border: 0; box-shadow: none; border-radius: 8px; padding: 8px 12px; font: inherit; color: #55606e; background: transparent; }
+.gsc-main .gsc-right-header [aria-current=true] button { background: #ebf1ff; color: #303336; }
+.gsc-main .gsc-right-header > li { background: transparent; border: 0; box-shadow: none; }
+.gsc-main .gsc-comment-box { font-size: 15px; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin-bottom: 48px; }
+.gsc-main .gsc-comment-box-tabs { background: transparent; border: 0; border-radius: 0; padding: 0; margin-bottom: 12px; }
+.gsc-main .gsc-comment-box-tabs > div { margin: 0; }
+.gsc-main .gsc-comment-box-tabs button { border: 0; border-radius: 8px; background: transparent; padding: 8px 12px; color: #55606e; font: inherit; }
+.gsc-main .gsc-comment-box-tabs button.color-bg-canvas { color: #2576eb; background: #ebf1ff; font-weight: 600; }
+.gsc-main .gsc-comment-box-main { padding: 0; margin: 0; }
+.gsc-main .gsc-comment-box-write { border: 0; border-radius: 0; background: transparent; }
+.gsc-main .gsc-comment-box-textarea { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #edeef1; border: 1px solid transparent; border-radius: 12px; padding: 18px; box-shadow: none; }
+.gsc-main .gsc-comment-box-textarea:focus { outline: 0; border-color: transparent; box-shadow: 0 0 0 3px rgb(100,159,255); }
+.gsc-main .gsc-comment-box-textarea::placeholder { color: #55606e; opacity: 1; }
+.gsc-main .gsc-comment-box-textarea-extras { background: transparent; border: 0; padding: 8px 0; }
+.gsc-main .gsc-comment-box-bottom { margin: 8px 0 0; padding: 0; gap: 12px; }
+.gsc-main .gsc-comment-box-buttons :is(button,a) { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 15px; font-weight: 600; padding: 8px 12px; border-radius: 8px; box-shadow: none; }
+.gsc-main .gsc-comment-box-buttons a.btn-primary { background: transparent; border-color: transparent; color: #2576eb; }
+.gsc-main .gsc-comment-box-buttons a.btn-primary:hover { background: #ebf1ff; text-decoration: none; }
+.gsc-main .gsc-comment { font-size: 18px; margin-bottom: 24px; }
+.gsc-main .gsc-comment > div { border: 1px solid #ebecef; border-radius: 12px; background: #f6f7fa; overflow: hidden; }
+.gsc-main .gsc-comment-header { padding: 18px 18px 0; color: #55606e; font-size: 15px; gap: 12px; }
+.gsc-main .gsc-comment-author { flex-wrap: wrap; gap: 8px; }
+.gsc-main .gsc-comment-content, .gsc-main .gsc-reply-content { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; }
+.gsc-main .gsc-comment-content { padding: 12px 18px; border-radius: 0; }
+.gsc-main :is(.gsc-comment-content,.gsc-reply-content) code { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+.gsc-main .gsc-comment-footer { padding-inline: 18px; padding-bottom: 12px; font-size: 15px; }
+.gsc-main .gsc-replies { margin: 0 18px; padding: 12px 0; background: transparent; border-top: 1px solid #ebecef; border-radius: 0; }
+.gsc-main .gsc-reply { padding: 12px 0; font-size: 18px; }
+.gsc-main .gsc-reply-header { font-size: 15px; color: #55606e; }
+.gsc-main .gsc-reply-content { padding-block: 8px; }
+.gsc-main .gsc-reply-footer { font-size: 15px; }
+.gsc-main .gsc-tl-line { background: #ebecef; }
+.gsc-main :is(.gsc-comment-author-avatar,.gsc-reply-author-avatar) img { width: 24px; height: 24px; }
+.gsc-main .gsc-reactions-popover { border-color: #ebecef; border-radius: 12px; }
+.gsc-main :is(.gsc-comment-box-tabs button,.gsc-right-header button):hover { background: #ebf1ff; color: #2576eb; }
+.gsc-main :is(button,a,summary):focus-visible { outline: 3px solid #2576eb; outline-offset: 3px; }
 .gsc-main a { text-decoration: none; }
 .gsc-main a:hover { text-decoration: underline; }

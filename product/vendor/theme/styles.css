@@ -1346,11 +1346,12 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-section-heading h2 { margin: 0; font-size: var(--site-subtitle); line-height: var(--site-line-intro); color: var(--site-ink); }
 .app-section-heading > a { font-size: var(--site-small-text); white-space: nowrap; }
 .app-knowledge-grid, .app-portfolio-grid, .app-blog-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--site-gap); }
-.app-knowledge-card { display: block; box-sizing: border-box; min-width: 0; padding: var(--site-card-inset); color: var(--site-ink); background: var(--site-card); border: var(--site-border) solid var(--site-line); border-radius: var(--site-help-radius); transition: background var(--site-help-motion), border-color var(--site-help-motion); }
+.app-knowledge-card { position: relative; display: block; box-sizing: border-box; min-width: 0; padding: var(--site-card-top) var(--site-card-right) var(--site-card-inset) var(--site-card-inset); color: var(--site-body); background: var(--site-help-bg); border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-help-radius); transition: background var(--site-help-motion), border-color var(--site-help-motion); }
+.app-knowledge-card > .app-content-icon { position: absolute; top: var(--site-card-inset); left: var(--site-card-inset); }
 .app-knowledge-card:hover { background: var(--site-help-hover); border-color: var(--site-help-hover-border); text-decoration: none; }
 .app-knowledge-card:active { background: var(--site-help-active); }
-.app-knowledge-card h3 { margin: var(--site-gap-sm) 0 var(--site-gap-xs); font-size: var(--site-intro-text); font-weight: var(--site-weight-title); line-height: var(--site-line-card); }
-.app-knowledge-card p { margin: 0; font-size: var(--site-small-text); line-height: var(--site-caption-line); color: var(--site-muted); }
+.app-knowledge-card h3 { margin: 0 0 var(--site-help-title-gap); font-size: var(--site-body-text); font-weight: var(--site-weight-title); line-height: var(--site-line-card); color: var(--site-help-title-color); }
+.app-knowledge-card p { margin: 0; font-size: var(--site-body-text); line-height: var(--site-line-card); color: var(--site-help-copy-color); }
 .app-project-grid { display: grid; gap: var(--site-gap); }
 .app-project-entry { display: grid; gap: var(--site-gap); }
 .app-project-links { display: flex; flex-direction: column; justify-content: center; gap: var(--site-gap-sm); font-size: var(--site-small-text); }
@@ -1387,13 +1388,13 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-result-row p { margin: var(--site-gap-xs) 0 var(--site-gap-sm); color: var(--site-muted); font-size: var(--site-small-text); }
 .app-source-link, .app-back-link { font-size: var(--site-small-text); }
 .app-related { margin-top: var(--site-support-gap); }
-.app-blog-card { min-width: 0; overflow: hidden; border: var(--site-border) solid var(--site-line); border-radius: var(--site-help-radius); background: var(--site-card); }
+.app-blog-card { min-width: 0; overflow: hidden; border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-help-radius); background: var(--site-help-bg); }
 .app-blog-cover { display: flex; align-items: center; justify-content: center; aspect-ratio: var(--site-ratio-video); overflow: hidden; background: var(--site-soft); }
 .app-blog-cover > img { width: 100%; height: 100%; object-fit: cover; }
 .app-blog-cover .app-content-icon { width: var(--site-hero-icon); height: var(--site-hero-icon); }
 .app-blog-card-body { padding: var(--site-card-inset); }
-.app-blog-card h3 { margin: 0 0 var(--site-gap-sm); font-size: var(--site-intro-text); line-height: var(--site-line-card); overflow-wrap: anywhere; }
-.app-blog-card h3 a { color: var(--site-ink); }
+.app-blog-card h3 { margin: 0 0 var(--site-gap-sm); font-size: var(--site-body-text); line-height: var(--site-line-card); overflow-wrap: anywhere; }
+.app-blog-card h3 a { color: var(--site-help-title-color); }
 .app-blog-card time { display: block; margin-top: var(--site-gap-sm); color: var(--site-muted); font-size: var(--site-small-text); }
 .app-list-toolbar { display: flex; flex-wrap: wrap; gap: var(--site-gap); justify-content: space-between; margin-block: var(--site-gap-lg); font-size: var(--site-small-text); }
 .app-page-links { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: center; justify-content: center; margin-block: var(--site-support-gap); }
