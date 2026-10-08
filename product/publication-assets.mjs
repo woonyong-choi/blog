@@ -2,6 +2,12 @@
 const ORIGIN = 'https://publication.invalid';
 const CLIENT_ASSETS = { 'video.js': ['/assets/remotecontrol-play.svg', '/assets/remotecontrol-pause-gray.svg', '/assets/remotecontrol-replay.svg'] };
 const ASSET_ROOTS = ['/theme/', '/assets/', '/media/'];
+const ASSET_NOTICES = new Map([
+  ['/theme/assets/fonts/pretendard-variable.woff2', '/theme/assets/fonts/pretendard-license.txt'],
+  ['/theme/assets/fonts/jetbrains-mono-regular.woff2', '/theme/assets/fonts/jetbrains-mono-license.txt'],
+  ['/media/manta-code-blocks-intro.mp4', '/media/manta-code-blocks-LICENSE.txt'],
+  ['/media/manta-code-blocks-poster.png', '/media/manta-code-blocks-LICENSE.txt'],
+]);
 
 export function clientEntrypoints(body) {
   const scripts = [];
@@ -38,6 +44,10 @@ export function publicationAssets(pages, searchEntries, readAsset) {
     if (files.has(path)) return;
     const content = readAsset(path);
     files.set(path, content);
+    // 화면에서 요청하지 않는 고지도 해당 자산의 배포 의존성이다.
+    const notice = /^\/theme\/assets\/icons\/brands\/[^/]+\.svg$/.test(path)
+      ? '/theme/assets/icons/brands/LICENSE' : ASSET_NOTICES.get(path);
+    if (notice) include(notice);
     const references = path.endsWith('.css') ? styleReferences(content.toString()) : path.endsWith('.svg') ? markupReferences(content.toString()) : [];
     for (const dependency of references) include(dependency, path);
   }

@@ -14,7 +14,7 @@
     "version": "0.1.1"
   },
   "files": {
-    "assets/fonts/jetbrains-mono-license.txt": "c8d5fa5b71c563a50b2645296729024e4503f626319baf1e09c2bcde0ea79d33",
+    "assets/fonts/jetbrains-mono-license.txt": "b2fe5e8987594e9ffd1d2ca52a2f5d73eb8335243893c5d6254b5ad69269591d",
     "assets/fonts/jetbrains-mono-regular.woff2": "bceff0710e3a7fe5b3622265c48b6fbc055cf071df80ef5f36ffc69550296664",
     "assets/fonts/pretendard-license.txt": "b04538c9abec39a3db75108cf0af0fd9c77032fe8aa2cf38345b4d250e98e38e",
     "assets/fonts/pretendard-variable.woff2": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
@@ -291,5 +291,5 @@
     "tokens.json": "9e84a6955dfe6a9f991a896ba0621cda12ed0b8529986310517b1db133e34d45",
     "tokens.light.json": "9e84a6955dfe6a9f991a896ba0621cda12ed0b8529986310517b1db133e34d45"
   },
-  "contentHash": "511f2f8641f5d6cc9428c7f9f149451059f7b2f6866b6ccb71062d0c5482db2a"
+  "contentHash": "1683f043709b7667679ac4d051adde3653368c26b951575c9fba49384926f5bf"
 }

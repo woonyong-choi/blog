@@ -50,3 +50,25 @@ test('video_state_icons_are_included_before_the_first_play', () => {
   for (const path of ['/media/poster.png', '/media/demo.mp4', '/assets/remotecontrol-pause-gray.svg', '/assets/remotecontrol-replay.svg']) assert.ok(assets.has(path));
   assert.deepEqual(clientEntrypoints(pages.get('/')), ['video.js']);
 });
+
+test('used_licensed_assets_include_notices_and_unused_assets_do_not', () => {
+  const dependencies = [
+    ['/theme/assets/fonts/pretendard-variable.woff2', '/theme/assets/fonts/pretendard-license.txt'],
+    ['/theme/assets/fonts/jetbrains-mono-regular.woff2', '/theme/assets/fonts/jetbrains-mono-license.txt'],
+    ['/theme/assets/icons/brands/python.svg', '/theme/assets/icons/brands/LICENSE'],
+    ['/media/manta-code-blocks-intro.mp4', '/media/manta-code-blocks-LICENSE.txt'],
+    ['/media/manta-code-blocks-poster.png', '/media/manta-code-blocks-LICENSE.txt'],
+  ];
+  for (const [asset, notice] of dependencies) {
+    const pages = new Map([['/', `<a href="${asset}">자산</a>`]]);
+    const files = publicationAssets(pages, [], path => Buffer.from(path));
+    assert.ok(files.has(notice), notice);
+    assert.equal(files.get(notice).toString(), notice);
+    assert.throws(() => publicationAssets(pages, [], path => {
+      if (path === notice) throw new Error('missing notice');
+      return Buffer.from(path);
+    }), /missing notice/);
+  }
+  const unused = publicationAssets(new Map([['/', '<main>자산 없음</main>']]), [], () => Buffer.from(''));
+  for (const [, notice] of dependencies) assert.ok(!unused.has(notice));
+});
