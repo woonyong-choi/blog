@@ -5,7 +5,9 @@ const pending = new Map();
 
 export function queryIndex(action, state) {
   if (!worker) {
-    worker = new Worker(new URL('./search-worker.mjs', import.meta.url), { type: 'module' });
+    const url = new URL('./search-worker.mjs', import.meta.url);
+    url.search = new URL(import.meta.url).search;
+    worker = new Worker(url, { type: 'module' });
     worker.addEventListener('message', ({ data }) => {
       const request = pending.get(data.id);
       if (!request) return;
