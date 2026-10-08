@@ -23,7 +23,8 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
   async function propose() {
     const request = ++revision;
     clear.hidden = !input.value;
-    if (!input.value.trim()) { close(); return; }
+    close();
+    if (!input.value.trim()) return;
     status.textContent = '검색 중입니다.';
     try {
       const { result } = await queryIndex('suggest', { ...state(), query: input.value, page: 1 });
