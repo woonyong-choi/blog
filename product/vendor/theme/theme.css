@@ -836,6 +836,9 @@
   --primitive-simple-icon-cloud-edge: #528aee;
   --primitive-simple-sidebar-width: 200px;
   --primitive-simple-icon-device-screen: #e9eaeb;
+  --primitive-simple-navy-alpha-15: rgba(4,15,26,.15);
+  --primitive-simple-blue-alpha-4: rgba(0,52,126,.04);
+  --primitive-simple-navy-alpha-6: rgba(0,28,70,.06);
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1815,6 +1818,10 @@
   --site-sidebar-width: var(--primitive-simple-sidebar-width);
   --site-home-title: var(--primitive-simple-hero-title-mobile);
   --site-flow-control-size: var(--primitive-simple-hero-title-mobile);
+  --site-article-title-border: var(--primitive-simple-navy-alpha-15);
+  --site-article-section-border: var(--primitive-simple-platform-hover);
+  --site-related-background: var(--primitive-simple-blue-alpha-4);
+  --site-related-border: var(--primitive-simple-navy-alpha-6);
   --icon-paper: var(--color-gray-0);
   --icon-outline: var(--primitive-simple-icon-outline);
   --icon-detail: var(--primitive-simple-icon-detail);

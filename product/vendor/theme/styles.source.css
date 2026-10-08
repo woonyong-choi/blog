@@ -948,10 +948,10 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-article { margin-top: var(--site-article-search-bottom); }
 .app-article-title { gap: var(--site-gap-xs); line-height: var(--site-article-title-line); padding-bottom: var(--site-article-title-padding); margin-bottom: var(--site-article-title-gap); }
 .app-article > .app-article-lead { font-size: var(--site-post-lead-size); margin: 0 0 var(--site-post-lead-margin); }
-.app-article .app-prose { line-height: var(--site-feature-body-line); }
-.app-article .app-prose h2 { margin: var(--site-post-h2-margin); }
-.app-article .app-prose h3 { margin: var(--site-post-h3-margin); font-size: var(--site-feature-intro); }
-.app-article .app-prose p { margin: 0 0 var(--site-post-paragraph-margin); }
+.app-article .app-prose, .app-document-body { line-height: var(--site-feature-body-line); }
+.app-article .app-prose h2, .app-document-body h2 { margin: var(--site-post-h2-margin); }
+.app-article .app-prose h3, .app-document-body h3 { margin: var(--site-post-h3-margin); font-size: var(--site-feature-intro); }
+.app-article .app-prose p, .app-document-body p { margin: 0 0 var(--site-post-paragraph-margin); }
 .app-figure.is-compact img { width: var(--site-article-media-compact); max-width: 100%; margin: auto; border-radius: 0; }
 .app-syntax-row { margin-bottom: var(--site-gap-lg); }
 .app-syntax-row pre { margin: 0 0 var(--site-syntax-example-gap); padding: var(--site-syntax-example-padding); background: var(--site-syntax-example-background); border: var(--site-border) solid var(--site-syntax-example-border); border-radius: var(--site-syntax-example-radius); color: var(--site-body); white-space: pre-wrap; }
@@ -1419,8 +1419,20 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-suggestion-label { margin: var(--site-gap-sm) var(--site-search-results-padding) 0; color: var(--site-muted); font-size: var(--site-small-text); }
 .app-document-layout { min-width: 0; }
 .app-document { min-width: 0; max-width: var(--site-body-width); margin-inline: auto; overflow-wrap: anywhere; }
-.app-document-header { margin-bottom: var(--site-gap-lg); }
-.app-document-header .app-article-title { align-items: flex-start; }
+.app-document-header { margin-bottom: var(--site-article-title-gap); }
+.app-document-header .app-article-title { align-items: flex-start; margin: 0; border-color: var(--site-article-title-border); }
+.app-document-lead { font-size: var(--site-post-lead-size); margin: 0 0 var(--site-post-lead-margin); }
+.app-document-metadata { margin-bottom: var(--site-post-lead-margin); }
+.app-document-body h2, .app-related > h2 { padding-bottom: calc(var(--site-subtitle) * .4); border-bottom: var(--site-border) solid var(--site-article-section-border); }
+.app-related > h2 { font-size: var(--site-subtitle); line-height: var(--site-line-intro); margin: var(--site-post-h2-margin); color: var(--site-ink); }
+.app-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--site-gap) var(--site-gap-xs); }
+.app-related-entry { min-width: 0; }
+.app-help-card.app-related-link { min-height: 0; padding: var(--site-help-mobile-block) var(--site-card-right) var(--site-help-mobile-block) var(--site-help-mobile-left); font-size: var(--site-body-text); line-height: var(--site-line-intro); }
+.app-related-link { background: var(--site-related-background); border-color: var(--site-related-border); }
+.app-related-link .app-content-icon { width: var(--site-help-mobile-icon); height: var(--site-help-mobile-icon); top: var(--site-help-mobile-icon-inset); left: var(--site-help-mobile-icon-inset); }
+.app-related-link > span:last-child { color: var(--site-help-copy-color); }
+.app-related-metadata { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--site-gap-xs); margin-top: var(--site-gap-xs); }
+@media (max-width: breakpoint(feature-split)) { .app-related-grid { grid-template-columns: minmax(0, 1fr); } }
 .app-document-dates { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); color: var(--site-muted); font-size: var(--site-small-text); }
 .app-document-nav { margin-bottom: var(--site-gap-lg); font-size: var(--site-small-text); }
 .app-document-nav summary { padding-block: var(--site-gap-xs); cursor: pointer; color: var(--site-muted); }

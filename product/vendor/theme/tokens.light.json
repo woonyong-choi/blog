@@ -4148,6 +4148,21 @@
         "$type": "color",
         "$value": "#e9eaeb",
         "$description": "공식 기기 화면의 옅은 중립 면을 흰 바탕에서 재현한 불투명 화면색"
+      },
+      "navy-alpha-15": {
+        "$type": "color",
+        "$value": "rgba(4,15,26,.15)",
+        "$description": "Things 지원 문서 제목 구분선 실측. 기존 같은 RGB의 .1과 .7은 제목 선의 농도를 재현하지 못함."
+      },
+      "blue-alpha-4": {
+        "$type": "color",
+        "$value": "rgba(0,52,126,.04)",
+        "$description": "원본 large 카드의 반투명 표면. 기존 불투명 help-bg는 배경 합성이 다름."
+      },
+      "navy-alpha-6": {
+        "$type": "color",
+        "$value": "rgba(0,28,70,.06)",
+        "$description": "원본 large 카드 테두리. 기존 불투명 help-border보다 옅은 실측값."
       }
     }
   },
@@ -8899,6 +8914,26 @@
       "$type": "dimension",
       "$value": "{primitive.simple.hero-title-mobile}",
       "$description": "흐름 아이콘 버튼의 터치 영역. 기존 44px 크기를 재사용한다."
+    },
+    "article-title-border": {
+      "$type": "color",
+      "$value": "{primitive.simple.navy-alpha-15}",
+      "$description": "지원 문서 제목의 2px 구분선"
+    },
+    "article-section-border": {
+      "$type": "color",
+      "$value": "{primitive.simple.platform-hover}",
+      "$description": "지원 문서 h2 구분선의 실측 색을 기존 기본값으로 재사용"
+    },
+    "related-background": {
+      "$type": "color",
+      "$value": "{primitive.simple.blue-alpha-4}",
+      "$description": "원본 large 카드의 반투명 표면. 기존 불투명 help-bg는 배경 합성이 다름."
+    },
+    "related-border": {
+      "$type": "color",
+      "$value": "{primitive.simple.navy-alpha-6}",
+      "$description": "원본 large 카드 테두리. 기존 불투명 help-border보다 옅은 실측값."
     }
   },
   "icon": {

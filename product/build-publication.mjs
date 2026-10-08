@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { readDocument, publicDocuments, searchEntry, FIELDS, blogDocuments, PAGE_SIZES } from './content-model.mjs';
 import { createMarkdown, escape } from './markdown.mjs';
+import { renderArticle } from './article-renderer.mjs';
 import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, resultRow, iconUrl } from './publication-layout.mjs';
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
@@ -56,23 +57,23 @@ export function buildPublication({ origin = '', preview = true } = {}) {
 function renderDocuments(documents) {
   const md = createMarkdown();
   for (const page of documents) {
-    const env = { pageId: page.id, docId: page.id };
-    page.html = md.render(page.body, env);
-    page.headings = env.headings ?? [];
+    Object.assign(page, renderArticle(md, page));
   }
   const bySlug = new Map(documents.map(page => [page.slug, page]));
   for (const page of documents) {
-    page.html = page.html.replace(/href="\/wiki\/([^/]+)\/(?:#([^"?]+))?"/g, (original, slug, fragment) => {
+    const rewrite = html => html.replace(/href="\/wiki\/([^/]+)\/(?:#([^"?]+))?"/g, (original, slug, fragment) => {
       const target = bySlug.get(slug);
       if (!target) return `href="https://docs.woonyong.com/wiki/${slug}/${fragment ? '#' + fragment : ''}"`;
       if (!fragment) return `href="${target.route}"`;
       const id = `${target.id}-${decodeURIComponent(fragment)}`;
-      return target.html.includes(`id="${id}"`) ? `href="${target.route}#${id}"` : `href="https://docs.woonyong.com/wiki/${slug}/#${fragment}"`;
+      return (target.leadHtml + target.html).includes(`id="${id}"`) ? `href="${target.route}#${id}"` : `href="https://docs.woonyong.com/wiki/${slug}/#${fragment}"`;
     }).replace(/href="#([^" ]+)"/g, (original, fragment) => {
-      if (page.html.includes(`id="${fragment}"`)) return original;
+      if ((page.leadHtml + page.html).includes(`id="${fragment}"`)) return original;
       const prefixed = `${page.id}-${decodeURIComponent(fragment)}`;
-      return page.html.includes(`id="${prefixed}"`) ? `href="#${prefixed}"` : original;
+      return (page.leadHtml + page.html).includes(`id="${prefixed}"`) ? `href="#${prefixed}"` : original;
     }).replaceAll('/things/assets/', '/assets/');
+    page.leadHtml = rewrite(page.leadHtml);
+    page.html = rewrite(page.html);
   }
 }
 
