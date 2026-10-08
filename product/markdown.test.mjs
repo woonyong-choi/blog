@@ -68,3 +68,13 @@ test('inline interface labels escape HTML and preserve code and literal syntax',
   assert.ok(html.includes('<code>:kbd[literal]</code>'));
   assert.ok(!md.render(String.raw`\:kbd[literal]`).includes('<kbd>'));
 });
+
+test('code_and_syntax_copy_controls_start_hidden_with_independent_status_regions', () => {
+  const source = '```javascript\nconst value = "한글 < >";\n```\n\n' + fence('keys', { keys: ['⌘', 'C'] });
+  const html = createMarkdown().render(source, { showSyntax: true });
+  assert.equal((html.match(/data-copy aria-label="[^"]+" hidden/g) ?? []).length, 2);
+  assert.equal((html.match(/data-copy-status role="status" aria-live="polite" aria-atomic="true"/g) ?? []).length, 2);
+  assert.match(html, /aria-label="코드 복사"/);
+  assert.match(html, /aria-label="작성 문법 복사"/);
+  assert.match(html, /한글 &lt; &gt;/);
+});

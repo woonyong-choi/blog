@@ -17,6 +17,10 @@ export function asset(name) {
   if (typeof name !== 'string' || !/^[\w.-]+$/.test(name)) throw new Error(`Invalid asset: ${name}`);
   return `/things/assets/${name}`;
 }
+function codeBlock(code, label = '코드 복사') {
+  return `<div class="app-code"><button type="button" data-copy aria-label="${escape(label)}" hidden>복사</button><pre>${code}</pre><span class="app-sr" data-copy-status role="status" aria-live="polite" aria-atomic="true"></span></div>`;
+}
+
 const referenceIcon = (name = 'question') => `<span class="app-article-icon app-icon-${escape(name)}" aria-hidden="true"></span>`;
 export function icon(name = 'question') {
   if (typeof name === 'object' && name !== null) return contentIcon(name);
@@ -108,11 +112,11 @@ export function createMarkdown() {
       if (!data || typeof data !== 'object') throw new Error(`Invalid ${kind} data`);
       const html = component(kind.slice(3), data, md, env);
       if (!env.showSyntax) return html;
-      return html + `<details class="app-source-example"><summary>작성 문법 보기: ${escape(kind)}</summary><div class="app-code"><button type="button" data-copy aria-label="작성 문법 복사">Copy</button><pre><code>${escape('```' + kind + '\n' + token.content + '```')}</code></pre></div></details>`;
+      return html + `<details class="app-source-example"><summary>작성 문법 보기: ${escape(kind)}</summary>${codeBlock(`<code>${escape('```' + kind + '\n' + token.content + '```')}</code>`, '작성 문법 복사')}</details>`;
     }
     const language = kind.split(' ')[0];
     const value = hljs.getLanguage(language) ? hljs.highlight(token.content, { language }).value : escape(token.content);
-    return `<div class="app-code"><button type="button" data-copy aria-label="코드 복사">Copy</button><pre><code class="language-${escape(language)}">${value}</code></pre></div>`;
+    return codeBlock(`<code class="language-${escape(language)}">${value}</code>`);
   };
   md.core.ruler.push('heading-ids', (state) => {
     state.env.headings ??= [];

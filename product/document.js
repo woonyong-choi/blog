@@ -55,10 +55,31 @@ for (const tabs of document.querySelectorAll('[data-tabs]')) {
     });
   });
 }
-for (const button of document.querySelectorAll('[data-copy]')) button.addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(button.parentElement.querySelector('code').textContent); button.textContent = 'Copied'; }
-  catch { button.textContent = '복사 실패 — 코드를 선택하세요'; }
-});
+for (const button of document.querySelectorAll('[data-copy]')) {
+  const status = button.parentElement.querySelector('[data-copy-status]');
+  const label = button.getAttribute('aria-label');
+  let copying = false;
+  button.hidden = false;
+  button.addEventListener('click', async () => {
+    if (copying) return;
+    copying = true;
+    button.setAttribute('aria-disabled', 'true');
+    status.textContent = `${label} 중입니다.`;
+    try {
+      await navigator.clipboard.writeText(button.parentElement.querySelector('code').textContent);
+      button.textContent = '복사됨';
+      button.setAttribute('aria-label', `${label}됨`);
+      status.textContent = `${label}를 완료했습니다.`;
+    } catch {
+      button.textContent = '복사 실패';
+      button.setAttribute('aria-label', `${label} 실패. 다시 시도`);
+      status.textContent = `${label}에 실패했습니다. 다시 시도하거나 코드를 선택해 복사하세요.`;
+    } finally {
+      copying = false;
+      button.removeAttribute('aria-disabled');
+    }
+  });
+}
 for (const section of document.querySelectorAll('[data-keyboard]')) {
   const select = section.querySelector('[data-keyboard-language]');
   select.addEventListener('change', () => {
