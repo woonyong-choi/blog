@@ -4138,6 +4138,11 @@
         "$type": "color",
         "$value": "#528aee",
         "$description": "구름과 연결 장비의 채색 면. 기호색과 분리"
+      },
+      "sidebar-width": {
+        "$type": "dimension",
+        "$value": "200px",
+        "$description": "680px 본문 옆의 주제 탐색 열. 기존 폼과 소개 폭보다 좁아 별도 정의"
       }
     }
   },
@@ -8875,6 +8880,10 @@
       "$type": "dimension",
       "$value": "calc({primitive.simple.icon} * 5)",
       "$description": "아이콘 목록의 최소 열 폭. 기존 24px 아이콘 크기에서 파생"
+    },
+    "sidebar-width": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.sidebar-width}"
     }
   },
   "icon": {
