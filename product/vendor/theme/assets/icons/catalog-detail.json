@@ -94,7 +94,7 @@
     "event": {
       "label": "이벤트",
       "family": "object",
-      "metaphor": "분홍 타일과 흰 종으로 비교. 바깥 진동선 제거",
+      "metaphor": "분홍 타일 안의 흰 종",
       "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-critical-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-critical)\"/><path d=\"M24 11C17 11 15 16 15 23V28L11 32H37L33 28V23C33 16 31 11 24 11Z\" fill=\"var(--icon-paper)\"/><circle cx=\"24\" cy=\"35\" r=\"3\" fill=\"var(--icon-paper)\"/>",
       "group": "애플리케이션과 백엔드",
       "priority": 2
@@ -158,7 +158,7 @@
     "cache": {
       "label": "캐시",
       "family": "object",
-      "metaphor": "진한 주황 타일과 흰 번개 복원",
+      "metaphor": "주황 타일 안의 흰 번개",
       "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-warm-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-warm)\"/><path d=\"M25 10L14 26H23L21 38L35 21H26Z\" fill=\"var(--icon-paper)\"/>",
       "group": "데이터와 저장소",
       "priority": 1
@@ -232,7 +232,7 @@
     "container": {
       "label": "컨테이너",
       "family": "object",
-      "metaphor": "파란 화물 컨테이너의 양쪽 문과 잠금 봉. 지붕 장식 제거",
+      "metaphor": "파란 화물 컨테이너의 양쪽 문과 잠금 봉",
       "body": "<rect x=\"4\" y=\"11\" width=\"40\" height=\"28\" rx=\"5\" fill=\"var(--icon-accent)\"/><path d=\"M13 18V32M24 18V32M35 18V32\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "인프라와 운영",
       "priority": 1
@@ -296,7 +296,7 @@
     "globe": {
       "label": "인터넷",
       "family": "object",
-      "metaphor": "지구와 주소 지점",
+      "metaphor": "경선과 위선이 있는 지구",
       "body": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"24\" cy=\"24\" rx=\"8\" ry=\"19\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 24H43 M9 13H39 M9 35H39\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "인프라와 운영",
       "priority": 2,
@@ -353,7 +353,7 @@
     "interaction": {
       "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M21 13A3 3 0 0 1 27 13V23L30 21L33 24L36 24L38 28V34C34 42 24 40 20 35L12 27A3 3 0 0 1 16 23L21 27Z\" fill=\"var(--icon-paper)\"/>",
       "label": "입력",
-      "metaphor": "짙은 타일 안 흰 손. 가는 외곽선과 바깥 동작 표시 제거",
+      "metaphor": "짙은 타일 안의 흰 손",
       "group": "웹과 앱",
       "priority": 2,
       "family": "object"
@@ -434,7 +434,7 @@
     "training": {
       "body": "<path d=\"M5 11Q14 5 24 11Q34 5 43 11V38Q34 32 24 38Q14 32 5 38Z\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 12V37 M10 16H18 M10 22H18 M30 16H38 M30 22H38\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M30 28L33 31L38 26\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "학습",
-      "metaphor": "모델과 조절 장치",
+      "metaphor": "펼친 책과 학습 내용을 나타내는 줄",
       "group": "AI와 머신러닝",
       "priority": 2,
       "family": "object"
@@ -500,7 +500,7 @@
     "vision": {
       "body": "<path d=\"M15 5H6V15 M33 5H42V15 M6 33V42H15 M42 33V42H33\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"12\" y=\"10\" width=\"24\" height=\"29\" rx=\"4\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 18H30 M17 25H30 M17 32H24\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "이미지",
-      "metaphor": "스캔 프레임과 문서 복원",
+      "metaphor": "스캔 프레임과 문서",
       "group": "AI와 머신러닝",
       "priority": 2,
       "family": "object",
@@ -509,7 +509,7 @@
     "audio": {
       "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 21V27 M18 16V32 M24 11V37 M30 16V32 M36 21V27\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "음성",
-      "metaphor": "파란 면과 세로 파형 복원",
+      "metaphor": "파란 면 안의 세로 파형",
       "group": "AI와 머신러닝",
       "priority": 2,
       "family": "object"
@@ -517,7 +517,7 @@
     "terminal": {
       "label": "CLI",
       "family": "object",
-      "metaphor": "짙은 타일과 흰 명령 기호 복원",
+      "metaphor": "짙은 타일 안의 흰 명령 기호",
       "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M12 16L21 24L12 32 M25 32H35\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
       "group": "개발 도구와 품질",
       "priority": 1
@@ -549,7 +549,7 @@
     "debugging": {
       "body": "<path d=\"M11 19L5 14 M11 27H4 M12 35L6 40 M37 19L43 14 M37 27H44 M36 35L42 40\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"13\" y=\"15\" width=\"22\" height=\"28\" rx=\"10\" fill=\"var(--icon-critical)\" stroke=\"var(--icon-critical-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"13\" r=\"7\" fill=\"var(--icon-neutral)\"/><path d=\"M24 23V36\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "디버깅",
-      "metaphor": "버그와 탐색 표시",
+      "metaphor": "분홍 몸체와 검정 다리의 버그",
       "group": "개발 도구와 품질",
       "priority": 1,
       "family": "object"
@@ -613,7 +613,7 @@
     "project": {
       "label": "개발 프로젝트",
       "family": "object",
-      "metaphor": "제품을 이루는 모듈",
+      "metaphor": "코드 기호가 있는 폴더",
       "body": "<path d=\"M5 15V11A5 5 0 0 1 10 6H20L25 12H38A5 5 0 0 1 43 17V37A5 5 0 0 1 38 42H10A5 5 0 0 1 5 37Z\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 18H42\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M18 24L13 29L18 34 M30 24L35 29L30 34\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "사람과 결과물",
       "priority": 1
@@ -630,7 +630,7 @@
     "idea": {
       "label": "문제 해결",
       "family": "object",
-      "metaphor": "노란 타일과 흰 전구 복원",
+      "metaphor": "노란 타일 안의 흰 전구",
       "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-idea-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-idea)\"/><path d=\"M24 10C13 10 12 23 18 28C20 30 20 31 20 33H28C28 31 28 30 30 28C36 23 35 10 24 10Z\" fill=\"var(--icon-paper)\"/><path d=\"M21 36H27 M22 39H26\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "사람과 결과물",
       "priority": 2

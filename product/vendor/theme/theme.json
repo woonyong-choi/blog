@@ -44,11 +44,12 @@
     "assets/icons/brands/spring.svg": "4bae92720d27acb7d8cde3bed758a26aed07cd81c353f59ab379b8dd651ff973",
     "assets/icons/brands/typescript.svg": "c9191199f4049920c2fc19035b8a6664f37f4689fcd9e8434e786097e78863f0",
     "assets/icons/cache.svg": "7ef2df7509bbb71ea148f96d032f07305bda78fff06180af23c0f02d42da38a7",
-    "assets/icons/catalog-detail.json": "4dd3b34fcbf56174b8f54e7df1431f1d20789016d7fe38d11635e14e79d0aa03",
+    "assets/icons/catalog-detail.json": "f2aade64b79b5a6f163701ad3cfbbd54fbc901aea000035b0dc7d7c3b0e275a8",
     "assets/icons/catalog-proposal.json": "f06c66deb02e64932c095246d705a5404b1c947451c1d71a7b9560d7a36d82b2",
-    "assets/icons/catalog.json": "db18f2337f48467b08bacf93a872e77498f0b0e0cfcb17a52ec72bf7c99b660c",
+    "assets/icons/catalog.json": "68ded4bb1c1fec04ee359ac8a73d00c378f10a0cda887eb481b3f54743e47589",
     "assets/icons/cloud.svg": "55643795a43218ab7b46f5a747079e8713ee83dade1fc5e404e7d0cc77134bb1",
     "assets/icons/container.svg": "8335966f4f89850de9f6e57a3d3d4222c975277e5b7be248e9e156fe6a25e4da",
+    "assets/icons/current-review.json": "e5623b5274d9b25ddcdd51480ad26de34a81494834027d816952cf542041a429",
     "assets/icons/daphnis.css": "230e28c10637467524e8f21d5ea66143b98a2212e45b4abaf2d407a8ffed4c72",
     "assets/icons/data-structures.svg": "c74c790d5d899d66815c26d6ed8edaec254a92ababe4c701b3d76b853180261b",
     "assets/icons/database.svg": "88a97fd1eba9b808732bd3dd7d08444af2f86c36a0a27282fa285c3d0fbcd903",
@@ -290,5 +291,5 @@
     "tokens.json": "c2670a725e111ea5fad9f847208b152f7b66f6dfa69622b367e73ead4381b5b3",
     "tokens.light.json": "c2670a725e111ea5fad9f847208b152f7b66f6dfa69622b367e73ead4381b5b3"
   },
-  "contentHash": "44dd56b5cb4fec9ecee1b1b62fac438892488abee05c8d5ea8952f1481df7a3c"
+  "contentHash": "d082520b85d82c3675f6099ff481dc134e1ae24f3278678cbb086c23baf724c5"
 }
