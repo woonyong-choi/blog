@@ -2750,6 +2750,11 @@
         "$value": "12.8px",
         "$description": "홈 원본 실측값. 같은 역할·값의 기존 토큰이 없어 추가"
       },
+      "landing-review-avatar-radius": {
+        "$type": "dimension",
+        "$value": "3px",
+        "$description": "홈 원본 실측값. 인터뷰 카드 프로필 아이콘 모서리. 3px인 outline은 외곽선 두께라 의미가 달라 추가"
+      },
       "landing-review-min": {
         "$type": "dimension",
         "$value": "3em",
@@ -7467,6 +7472,16 @@
     "landing-review-radius": {
       "$type": "dimension",
       "$value": "{primitive.simple.landing-review-padding}",
+      "$description": "홈 섹션의 실측 배치와 반응 상태"
+    },
+    "landing-review-avatar": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.control}",
+      "$description": "홈 섹션의 실측 배치와 반응 상태"
+    },
+    "landing-review-avatar-radius": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.landing-review-avatar-radius}",
       "$description": "홈 섹션의 실측 배치와 반응 상태"
     },
     "landing-review-min": {

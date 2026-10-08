@@ -537,6 +537,7 @@
   --primitive-simple-landing-review-copy: 15.2px;
   --primitive-simple-landing-review-row: 224px;
   --primitive-simple-landing-review-padding: 12.8px;
+  --primitive-simple-landing-review-avatar-radius: 3px;
   --primitive-simple-landing-review-min: 3em;
   --primitive-simple-landing-review-max: 9em;
   --primitive-simple-landing-review-copy-bottom: 1.5em;
@@ -1495,6 +1496,8 @@
   --site-landing-review-row: var(--primitive-simple-landing-review-row);
   --site-landing-review-padding: var(--primitive-simple-landing-review-padding);
   --site-landing-review-radius: var(--primitive-simple-landing-review-padding);
+  --site-landing-review-avatar: var(--primitive-simple-control);
+  --site-landing-review-avatar-radius: var(--primitive-simple-landing-review-avatar-radius);
   --site-landing-review-min: var(--primitive-simple-landing-review-min);
   --site-landing-review-max: var(--primitive-simple-landing-review-max);
   --site-landing-review-fade: var(--primitive-simple-header-tail);
