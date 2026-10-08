@@ -77,5 +77,6 @@ export function renderSuggestions(output, result, state) {
 
 export function showSearchError(output, retry) {
   const button = element('button', '다시 시도', 'app-inline-button'); button.type = 'button'; button.addEventListener('click', retry);
+  if (output.getAttribute('role') === 'listbox') { button.setAttribute('role', 'option'); button.id = `${output.id}-retry`; button.tabIndex = -1; }
   output.replaceChildren(element('p', '검색 자료를 불러오지 못했습니다. 연결을 확인해 주세요.'), button);
 }
