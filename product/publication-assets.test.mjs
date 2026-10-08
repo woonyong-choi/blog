@@ -33,10 +33,10 @@ test('missing_dependencies_and_encoded_path_escape_fail_before_publication', () 
   }
 });
 
-test('static_pages_load_no_client_modules_and_document_controls_keep_their_own_entrypoint', () => {
+test('static_pages_load_only_the_footer_year_module_and_document_controls_keep_their_own_entrypoint', () => {
   const context = { config: { name: '이름', description: '소개', github: 'https://github.com/example' }, themeHash: 'theme', scriptHash: 'client' };
   const home = documentShell({ route: '/', title: '홈' }, '<main id="main"><a href="/wiki/">Wiki</a></main>', context);
-  assert.doesNotMatch(home, /<script/);
+  assert.deepEqual([...home.matchAll(/<script[^>]*src="\/([^?"]+)/g)].map(match => match[1]), ['footer-year.js']);
   assert.deepEqual(clientEntrypoints('<section data-public-search></section>'), ['publication.js']);
   const article = documentShell({ route: '/articles/example/', title: '글' }, '<section data-public-search></section><details class="app-document-nav"></details><div data-comments></div>', context);
   for (const file of ['publication.js', 'document.js', 'comments.js']) assert.ok(article.includes(`src="/${file}?v=client"`));

@@ -17,6 +17,7 @@ export function clientEntrypoints(body) {
   if (/<[^>]+\sdata-comments(?:[\s=>])/.test(body)) scripts.push('comments.js');
   if (/<[^>]+\sdata-flow-rail(?:[\s=>])/.test(body)) scripts.push('flows.js');
   if (/<[^>]+\sdata-player(?:[\s=>])/.test(body)) scripts.push('video.js');
+  if (/<[^>]+\sdata-current-year(?:[\s=>])/.test(body)) scripts.push('footer-year.js');
   return scripts;
 }
 

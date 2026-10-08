@@ -7,6 +7,9 @@ function socialIcon(name) {
   return `<svg class="app-social-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">${path}</svg>`;
 }
 
-export function personalFooter(config) {
-  return `<footer class="app-footer"><div class="app-shell"><div class="app-footer-grid"><section><h3>Notes</h3><ul><li><a href="/wiki/">기술과 학습 기록</a></li></ul></section><section><h3>Blog</h3><ul><li><a href="/blog/">최근 글</a></li><li><a href="/blog/all/">모든 글</a></li></ul></section><section><h3>Links</h3><ul><li class="app-footer-social"><a href="${escape(config.github)}" aria-label="GitHub">${socialIcon('github')}</a> <a href="/blog/feed.xml" aria-label="RSS">${socialIcon('rss')}</a></li></ul></section><section><h3>Contact</h3><ul>${config.contact?.email ? `<li><a href="mailto:${escape(config.contact.email)}">메일 보내기</a></li>` : ''}</ul></section></div><div class="app-footer-note"><a class="app-identity" href="/">${escape(config.handle ?? '@bywoonyong')}</a></div></div></footer>`;
+const OWNER = 'woonyong';
+
+// 연도는 빌드 시점 값을 기본으로 두고, 접속 시점에 현재 연도로 다시 쓴다.
+export function personalFooter(config, year = new Date().getFullYear()) {
+  return `<footer class="app-footer"><div class="app-shell"><div class="app-footer-bar"><p class="app-footer-copy">© <span data-current-year>${Number(year)}</span> ${OWNER}</p><div class="app-footer-links"><a href="${escape(config.github)}" aria-label="GitHub">${socialIcon('github')}</a><a href="/blog/feed.xml" aria-label="RSS">${socialIcon('rss')}</a></div></div></div></footer>`;
 }
