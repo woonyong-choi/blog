@@ -30,6 +30,9 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.equal((feed.match(/class="app-blog-post"/g) ?? []).length, 4);
   assert.match(feed, /href="\/blog\/page\/2\/"/);
   assert.match(feed, /<h3[^>]* id="post-0-section">/);
+  assert.doesNotMatch(feed, /app-search|app-list-toolbar/);
+  assert.match(feed.slice(feed.lastIndexOf('</article>')), /href="\/blog\/all\/"/);
+  assert.equal((feed.match(/<footer class="app-post-footer">/g) ?? []).length, 4);
 });
 
 // #65: 최근 글과 전체 목록은 이미지 위치와 제목·태그의 독립 링크를 공유한다.

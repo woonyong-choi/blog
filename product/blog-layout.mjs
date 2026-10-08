@@ -24,7 +24,7 @@ export function blogArchive(posts, tags, page) {
 
 export function blogFeed(posts, tags, page) {
   const result = paginate(posts, page, PAGE_SIZES.feed);
-  return `<main id="main" class="app-shell">${searchBox()}<h1 class="app-sr">Blog</h1><div class="app-list-toolbar"><span>Blog</span><a href="/blog/all/">전체 글 보기 →</a></div>${posts.length ? result.items.map(post => feedArticle(post, tags)).join('') : emptyBlog()}${pagination(result, '/blog/', true)}</main>`;
+  return `<main id="main" class="app-shell"><h1 class="app-sr">Blog</h1>${posts.length ? result.items.map(post => feedArticle(post, tags)).join('') : emptyBlog()}${pagination(result, '/blog/', true)}${posts.length ? '<p class="app-page-links"><a href="/blog/all/">전체 글 보기 →</a></p>' : ''}</main>`;
 }
 
 export function pagination(result, route, feed = false) {
@@ -38,7 +38,7 @@ export function pagination(result, route, feed = false) {
 
 function feedArticle(post, tags) {
   const body = post.html.replace(/<(\/?)h([1-5])([^>]*)>/g, (_, end, level, attrs) => `<${end}h${Number(level) + 1}${!end ? ` class="app-heading-${level}"` : ''}${attrs}>`);
-  return `<article class="app-blog-post" aria-labelledby="post-${post.id}"><header class="app-post-header"><time class="app-post-date" datetime="${post.publishedAt}">${post.publishedAt}${post.example ? ' · 예시 글' : ''}</time><h2 class="app-post-title" id="post-${post.id}"><a href="${post.route}">${escape(post.title)}</a></h2></header><div class="app-prose app-feed-body"><p class="app-article-lead">${post.leadHtml ?? escape(post.description)}</p>${body}</div>${tagLinks(post, tags)}${post.updatedAt && post.updatedAt !== post.publishedAt ? dateLine({ updatedAt: post.updatedAt }) : ''}<p class="app-caption"><a href="${post.route}">글 상세</a> · <a href="${post.route}#comments">댓글 보기·작성</a></p></article>`;
+  return `<article class="app-blog-post" aria-labelledby="post-${post.id}"><header class="app-post-header"><time class="app-post-date" datetime="${post.publishedAt}">${post.publishedAt}${post.example ? ' · 예시 글' : ''}</time><h2 class="app-post-title" id="post-${post.id}"><a href="${post.route}">${escape(post.title)}</a></h2></header><div class="app-prose app-feed-body"><p class="app-article-lead">${post.leadHtml ?? escape(post.description)}</p>${body}</div><footer class="app-post-footer">${tagLinks(post, tags)}${post.updatedAt && post.updatedAt !== post.publishedAt ? dateLine({ updatedAt: post.updatedAt }) : ''}<p class="app-caption"><a href="${post.route}">글 상세</a> · <a href="${post.route}#comments">댓글 보기·작성</a></p></footer></article>`;
 }
 
 function emptyBlog() {

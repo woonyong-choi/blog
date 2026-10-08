@@ -132,10 +132,10 @@ a:hover { text-decoration: underline; }
 .app-prose hr { border: 0; border-top: var(--site-border) solid var(--site-line); margin-block: var(--site-gap-lg); }
 .app-prose code { padding: var(--site-prose-code-padding); border: var(--site-border) solid var(--site-prose-code-border); border-radius: var(--site-prose-code-radius); background: var(--site-prose-code-background); color: var(--site-prose-code-color); font-family: var(--site-prose-code-font); font-size: var(--site-prose-code-size); line-height: var(--site-feature-body-line); white-space: pre-wrap; overflow-wrap: break-word; }
 .app-prose kbd { display: inline-block; box-sizing: content-box; min-width: var(--site-key-size); padding: var(--site-key-padding); margin: var(--site-key-margin); border: 0; border-radius: var(--site-key-radius); background: var(--site-key-background); color: var(--site-key-color); box-shadow: var(--site-key-shadow); font-family: var(--site-key-font); font-size: var(--site-key-size); font-weight: var(--site-key-weight); font-style: normal; line-height: 1; text-align: center; vertical-align: var(--site-border); white-space: nowrap; }
-.app-code { display: flow-root; margin: 0 0 var(--site-post-paragraph-margin); }
-.app-code pre { clear: both; margin: 0; background: var(--site-prose-code-background); color: var(--site-prose-code-color); padding: var(--site-prose-pre-padding); border: var(--site-border) solid var(--site-prose-code-border); border-radius: var(--site-prose-pre-radius); font-family: var(--site-prose-code-font); font-size: var(--site-prose-code-size); line-height: var(--site-feature-body-line); white-space: pre-wrap; overflow-wrap: break-word; }
+.app-code { display: grid; margin: 0 0 var(--site-post-paragraph-margin); background: var(--site-prose-code-background); border: var(--site-border) solid var(--site-prose-code-border); border-radius: var(--site-prose-pre-radius); color: var(--site-prose-code-color); }
+.app-code pre { min-width: 0; margin: 0; padding: var(--site-prose-pre-padding); overflow-x: auto; background: transparent; color: inherit; font-family: var(--site-prose-code-font); font-size: var(--site-prose-code-size); line-height: var(--site-feature-body-line); white-space: pre-wrap; overflow-wrap: break-word; }
 .app-code code { padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; font: inherit; white-space: pre-wrap; overflow-wrap: break-word; }
-.app-code button { float: right; margin-bottom: var(--site-gap-xs); font-size: var(--site-tiny-text); }
+.app-code button { justify-self: end; margin: var(--site-gap-xs) var(--site-gap-xs) 0 0; font-size: var(--site-tiny-text); }
 .hljs-keyword, .hljs-literal { color: var(--site-syntax-keyword); }
 .hljs-string { color: var(--site-syntax-string); }
 .hljs-number { color: var(--site-syntax-number); }
@@ -170,7 +170,7 @@ a:hover { text-decoration: underline; }
 .app-definitions dt { font-weight: var(--site-weight-medium); }
 .app-definitions dd { margin: 0; }
 .app-blog-post { max-width: var(--site-body-width); margin: var(--site-section) auto; }
-.app-blog-post + .app-blog-post { border-top: var(--site-border) solid var(--site-line); padding-top: var(--site-section); }
+.app-blog-post + .app-blog-post { border-top: var(--site-outline) solid var(--site-help-border); }
 .app-post-date { display: block; text-align: center; font-size: var(--site-small-text); color: var(--site-muted); }
 .app-post-title { margin: var(--site-gap-sm) 0 var(--site-gap-lg); font-size: var(--site-article-title); text-align: center; line-height: var(--site-line-title); color: var(--site-ink); }
 .app-post-title a { color: inherit; }
@@ -1079,7 +1079,9 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-comments-status { font-size: var(--site-small-text); color: var(--site-muted); }
 .app-empty { padding-block: var(--site-gap-lg); color: var(--site-muted); }
 .app-blog-post .app-feed-body .app-heading-2 { font-size: var(--site-subtitle); margin: var(--site-post-h2-margin); line-height: var(--site-line-intro); }
-.app-blog-post .app-feed-body .app-heading-3 { font-size: var(--site-intro-text); margin: var(--site-post-h3-margin); }
+.app-post-footer { margin-top: var(--site-support-gap); text-align: center; }
+.app-post-footer .app-tags { justify-content: center; }
+.app-blog-post .app-feed-body .app-heading-3 { font-size: var(--site-feature-intro); margin: var(--site-post-h3-margin); }
 .app-inline-button { border: var(--site-border) solid var(--site-line); border-radius: var(--site-button-radius); padding: var(--site-gap-xs) var(--site-gap-sm); color: var(--site-link); background: var(--site-soft); font: inherit; cursor: pointer; }
 .app-inline-button:hover { background: var(--site-help-hover); }
 .app-publication .app-article-title { overflow-wrap: anywhere; }
