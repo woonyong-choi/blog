@@ -1059,10 +1059,10 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-blog-cover { display: flex; align-items: center; justify-content: center; aspect-ratio: var(--site-ratio-video); overflow: hidden; background: var(--site-soft); }
 .app-blog-cover > img { width: 100%; height: 100%; object-fit: cover; }
 .app-blog-cover .app-content-icon { width: var(--site-hero-icon); height: var(--site-hero-icon); }
-.app-blog-card-body { padding: var(--site-card-inset); }
-.app-blog-card h3 { margin: 0 0 var(--site-gap-sm); font-size: var(--site-body-text); line-height: var(--site-line-card); overflow-wrap: anywhere; }
+.app-blog-card-body { padding: var(--site-card-inset); text-align: center; }
+.app-blog-card .app-tags { justify-content: flex-start; text-align: left; }
+.app-blog-card h3 { margin: 0 0 var(--site-gap-sm); overflow: hidden; font-size: var(--site-body-text); line-height: var(--site-line-card); text-overflow: ellipsis; white-space: nowrap; }
 .app-blog-card h3 a { color: var(--site-help-title-color); }
-.app-blog-card time { display: block; margin-top: var(--site-gap-sm); color: var(--site-muted); font-size: var(--site-small-text); }
 .app-list-toolbar { display: flex; flex-wrap: wrap; gap: var(--site-gap); justify-content: space-between; margin-block: var(--site-gap-lg); font-size: var(--site-small-text); }
 .app-page-links { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: center; justify-content: center; margin-block: var(--site-support-gap); }
 .app-page-links a, .app-page-links [aria-current=page] { padding: var(--site-gap-xs) var(--site-gap-sm); border-radius: var(--site-button-radius); }
@@ -1089,7 +1089,7 @@ body[data-page=features] > main { background: var(--site-card); }
   .app-project-entry { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
 }
 @media (min-width: breakpoint(gallery-wide)) {
-  .app-knowledge-grid, .app-blog-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .app-knowledge-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
 }
 @media (min-width: breakpoint(review-wide)) {
   .app-document-shell { max-width: var(--site-wide); }

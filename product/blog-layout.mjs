@@ -8,7 +8,7 @@ export function blogCard(page, tags) {
   const position = page.thumbnail?.position;
   const crop = position ? ` style="object-position:${position.x}% ${position.y}%"` : '';
   const cover = page.thumbnail ? `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="lazy" decoding="async"${crop}>` : subjectIcon(page.contentIcon);
-  return `<article class="app-blog-card"><a class="app-blog-cover" href="${page.route}" aria-label="${escape(page.title)}">${cover}</a><div class="app-blog-card-body">${page.example ? '<p class="app-eyebrow">예시 글</p>' : ''}<h3><a href="${page.route}">${escape(page.title)}</a></h3>${tagLinks(page, tags, 3)}<time datetime="${page.publishedAt}">${page.publishedAt}</time></div></article>`;
+  return `<article class="app-blog-card"><a class="app-blog-cover" href="${page.route}" aria-label="${escape(page.title)}">${cover}</a><div class="app-blog-card-body"><h3><a href="${page.route}">${escape(page.title)}</a></h3>${tagLinks(page, tags, 3)}</div></article>`;
 }
 
 export function recentBlog(posts, tags) {
