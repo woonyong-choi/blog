@@ -17,7 +17,7 @@
     "assets/fonts/jetbrains-mono-regular.woff2": "bceff0710e3a7fe5b3622265c48b6fbc055cf071df80ef5f36ffc69550296664",
     "assets/fonts/pretendard-license.txt": "b04538c9abec39a3db75108cf0af0fd9c77032fe8aa2cf38345b4d250e98e38e",
     "assets/fonts/pretendard-variable.woff2": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
-    "assets/giscus.css": "147364accafc4f4b68976b24fd8616348c393e48625a59dedd46ed95999f925f",
+    "assets/giscus.css": "40bd77da45236cc374e851656f3d4ae76ba7a198c603a5a488b63dd7249e6a4f",
     "assets/icons/administrator.svg": "2ba8fcd3c21d11098377004f2cf75cc8e849a5f15a89d349936cd1dce62478d1",
     "assets/icons/algorithm.svg": "54b72a095fbd00e60abde5836d5b63128f521e8edaf721446f2798595667d782",
     "assets/icons/architecture.svg": "db173e74117398b9db78f49f8e1c91e6517b8f82601ce31acbced3d19cbb0902",
@@ -289,5 +289,5 @@
     "tokens.json": "f4ba5da6b3ff76e7bea3a9aeac8bcb5ce8ddafcb74a68f945873044cdcb727d4",
     "tokens.light.json": "f4ba5da6b3ff76e7bea3a9aeac8bcb5ce8ddafcb74a68f945873044cdcb727d4"
   },
-  "contentHash": "e5bb15761a7c2139a8ce1856c25500d7cec062d910b8d87e264faa925cefee7e"
+  "contentHash": "5e55c6ebaacfcd784250cf6abd67c53a876569d5a7753f78d17e45d43a5aeef0"
 }
