@@ -471,7 +471,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-footer li { margin: var(--site-landing-footer-item-gap) 0; }
 .app-footer a { color: inherit; font-size: inherit; }
 .app-footer a:hover { color: var(--site-link); }
-.app-footer-note { padding: 0; margin: var(--site-landing-nav-gap) auto 0; }
+.app-footer-note { padding: 0; margin: var(--site-landing-nav-gap) auto 0; text-align: center; }
 .app-footer-note img { width: var(--site-landing-footer-logo-width); height: var(--site-landing-footer-logo-height); margin: auto; }
 .app-footer-social .app-social-icon { width: var(--site-landing-product-copy); height: var(--site-landing-product-copy); margin: 0; }
 

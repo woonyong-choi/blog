@@ -1,4 +1,5 @@
 // 개인 사이트의 탐색과 본문을 하나의 테마와 문서 식별자로 조합한다.
+import { personalFooter } from './publication-footer.mjs';
 import { controlImage } from './controls.mjs';
 import { readFileSync } from 'node:fs';
 import { escape } from './markdown.mjs';
@@ -27,12 +28,12 @@ export function subjectIcon(spec, size = 'card') {
 
 export function documentShell(page, body, context) {
   const { config, themeHash, scriptHash } = context;
-  const navigation = [['Projects', '/projects/'], ['Wiki', '/wiki/'], ['Blog', '/blog/']];
+  const navigation = [['Notes', '/wiki/'], ['Blog', '/blog/']];
   const active = page.type === 'blog' ? '/blog/' : page.type === 'wiki' ? '/wiki/' : page.route;
   const entries = clientEntrypoints(body);
   const searchScript = entries.includes('publication.js') ? `<script type="module" async src="/publication.js?v=${scriptHash}"></script>` : '';
   const scripts = entries.filter(file => file !== 'publication.js').map(file => `<script type="module" src="/${file}?v=${scriptHash}"></script>`).join('');
-  return `<!doctype html><html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">${publicationMetadata(page, context)}<link rel="alternate" type="application/rss+xml" title="Blog" href="/blog/feed.xml"><link rel="stylesheet" href="/theme/theme.css?v=${themeHash}"><link rel="stylesheet" href="/theme/styles.css?v=${themeHash}">${scripts}</head><body class="app-publication${page.route === '/' ? ' app-canvas' : ''}"><a class="app-skip" href="#main">본문으로 이동</a><div class="app-shell"><header class="app-header"><a class="app-identity" href="/">${escape(config.name)}</a><nav class="app-nav" aria-label="주요 메뉴">${navigation.map(([name, route]) => `<span class="app-nav-item"><a href="${route}"${active.startsWith(route) ? ' aria-current="page"' : ''}>${name}</a></span>`).join('')}</nav></header></div>${body}<footer class="app-personal-footer app-shell"><a class="app-identity" href="/">${escape(config.name)}</a><nav aria-label="관련 링크"><a href="${escape(config.github)}">GitHub</a><a href="/blog/feed.xml">RSS</a><a href="/search/">검색</a></nav></footer>${searchScript}</body></html>`;
+  return `<!doctype html><html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light">${publicationMetadata(page, context)}<link rel="alternate" type="application/rss+xml" title="Blog" href="/blog/feed.xml"><link rel="stylesheet" href="/theme/theme.css?v=${themeHash}"><link rel="stylesheet" href="/theme/styles.css?v=${themeHash}">${scripts}</head><body class="app-publication${page.route === '/' ? ' app-canvas' : ''}"><a class="app-skip" href="#main">본문으로 이동</a><div class="app-shell"><header class="app-header"><a class="app-logo" href="/" aria-label="홈 · Things 임시 로고"><span class="app-sr">홈</span></a><nav class="app-nav" aria-label="주요 메뉴">${navigation.map(([name, route]) => `<span class="app-nav-item"><a href="${route}"${active.startsWith(route) ? ' aria-current="page"' : ''}>${name}</a></span>`).join('')}</nav></header></div>${body}${personalFooter(config)}${searchScript}</body></html>`;
 }
 
 export function searchBox({ large = false, query = '' } = {}) {
