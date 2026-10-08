@@ -1,0 +1,189 @@
+{
+  "python": {
+    "label": "Python",
+    "field": "languages",
+    "icon": "python",
+    "aliases": [
+      "파이썬"
+    ],
+    "article": "python"
+  },
+  "javascript": {
+    "label": "JavaScript",
+    "field": "languages",
+    "icon": "javascript",
+    "aliases": [
+      "JS"
+    ],
+    "article": "javascript"
+  },
+  "nodejs": {
+    "label": "Node.js",
+    "field": "languages",
+    "icon": "nodejs",
+    "aliases": [
+      "Node.js"
+    ],
+    "article": "nodejs"
+  },
+  "programming-languages-runtime": {
+    "label": "Programming",
+    "field": "languages",
+    "icon": "terminal",
+    "aliases": [
+      "프로그래밍",
+      "런타임"
+    ],
+    "article": "programming-languages-runtime"
+  },
+  "os": {
+    "label": "OS",
+    "field": "cs",
+    "icon": "operating-system",
+    "aliases": [
+      "운영체제",
+      "OS"
+    ],
+    "article": "os"
+  },
+  "network": {
+    "label": "네트워크",
+    "field": "cs",
+    "icon": "network",
+    "aliases": [
+      "네트워크"
+    ],
+    "article": "network"
+  },
+  "software-design": {
+    "label": "소프트웨어 설계",
+    "field": "cs",
+    "icon": "architecture",
+    "aliases": [
+      "설계",
+      "시스템 설계"
+    ],
+    "article": "software-design"
+  },
+  "ml": {
+    "label": "머신러닝",
+    "field": "cs",
+    "icon": "model",
+    "aliases": [
+      "머신러닝",
+      "ML"
+    ],
+    "article": "ml"
+  },
+  "llm": {
+    "label": "LLM",
+    "field": "cs",
+    "icon": "model",
+    "aliases": [
+      "LLM",
+      "언어 모델"
+    ],
+    "article": "llm"
+  },
+  "computer-science": {
+    "label": "CS 기초",
+    "field": "cs",
+    "icon": "processor",
+    "aliases": [
+      "CS",
+      "컴퓨터 과학"
+    ],
+    "article": "computer-science"
+  },
+  "spring-boot": {
+    "label": "Spring Boot",
+    "field": "frameworks",
+    "icon": "spring",
+    "aliases": [
+      "Spring"
+    ],
+    "article": "spring-boot"
+  },
+  "frontend": {
+    "label": "Frontend",
+    "field": "frameworks",
+    "icon": "components",
+    "aliases": [
+      "프론트엔드"
+    ],
+    "article": "frontend"
+  },
+  "backend-services": {
+    "label": "Backend",
+    "field": "frameworks",
+    "icon": "api",
+    "aliases": [
+      "백엔드"
+    ],
+    "article": "backend-services"
+  },
+  "redis": {
+    "label": "Redis",
+    "field": "infrastructure",
+    "icon": "redis",
+    "aliases": [
+      "캐시"
+    ],
+    "article": "redis"
+  },
+  "kubernetes": {
+    "label": "Kubernetes",
+    "field": "infrastructure",
+    "icon": "kubernetes",
+    "aliases": [
+      "K8s"
+    ],
+    "article": "kubernetes"
+  },
+  "linux": {
+    "label": "Linux",
+    "field": "infrastructure",
+    "icon": "linux",
+    "aliases": [
+      "리눅스"
+    ],
+    "article": "linux"
+  },
+  "security": {
+    "label": "보안",
+    "field": "infrastructure",
+    "icon": "security",
+    "aliases": [
+      "보안"
+    ],
+    "article": "security"
+  },
+  "platform-delivery-operations": {
+    "label": "DevOps",
+    "field": "infrastructure",
+    "icon": "deploy",
+    "aliases": [
+      "DevOps",
+      "인프라"
+    ],
+    "article": "platform-delivery-operations"
+  },
+  "data": {
+    "label": "Data",
+    "field": "infrastructure",
+    "icon": "database",
+    "aliases": [
+      "데이터"
+    ],
+    "article": "data"
+  },
+  "projects": {
+    "label": "Projects",
+    "field": "cs",
+    "icon": "project",
+    "aliases": [
+      "프로젝트"
+    ],
+    "article": "projects"
+  }
+}
