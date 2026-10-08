@@ -5,7 +5,9 @@ export function validateIconCatalog(catalog) {
     for (const [id, entry] of Object.entries(catalog[group])) {
       if (!/^[a-z][a-z0-9-]*$/.test(id) || !entry.label) throw new Error(`invalid icon identity: ${id}`);
       if (group === 'icons' && (!['object', 'tile', 'outline'].includes(entry.family) || !entry.metaphor || (catalog.usage !== 'web' && !entry.diagramBody))) throw new Error(`incomplete icon contract: ${id}`);
-      for (const variant of group === 'icons' && catalog.usage !== 'web' ? ['body', 'diagramBody'] : ['body']) {
+      const variants = group === 'icons' && catalog.usage !== 'web' ? ['body', 'diagramBody'] : ['body'];
+      if (entry.smallBody) variants.push('smallBody');
+      for (const variant of variants) {
         const body = entry[variant];
         if (typeof body !== 'string' || /[&#]|url\(|(?:script|style|href|filter|opacity|transform|on\w+)\s*=/i.test(body)) throw new Error(`unsafe icon: ${id}`);
         const tags = body.match(/<[^>]+>/g) ?? [];
@@ -30,10 +32,10 @@ export function validateIconCatalog(catalog) {
   }
 }
 
-export function renderContentIcon(catalog, name, kind) {
+export function renderContentIcon(catalog, name, kind, size) {
   const entry = catalog.icons[name];
   if (!entry) throw new Error(`unknown content icon: ${name}`);
   const badge = kind ? catalog.badges[kind] : undefined;
   if (kind && !badge) throw new Error(`unknown article kind: ${kind}`);
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${catalog.viewBox}" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${entry.body}${badge?.body ?? ''}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${catalog.viewBox}" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${size === 'small' ? entry.smallBody ?? entry.body : entry.body}${size === 'small' ? '' : badge?.body ?? ''}</svg>`;
 }

@@ -1406,6 +1406,12 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-comments { padding-top: var(--site-gap-lg); margin-top: var(--site-support-gap); border-top: var(--site-border) solid var(--site-line); }
 .app-comments-status { font-size: var(--site-small-text); color: var(--site-muted); }
 .app-empty { padding-block: var(--site-gap-lg); color: var(--site-muted); }
+.app-blog-post .app-feed-body .app-heading-2 { font-size: var(--site-subtitle); margin: var(--site-post-h2-margin); line-height: var(--site-line-intro); }
+.app-blog-post .app-feed-body .app-heading-3 { font-size: var(--site-intro-text); margin: var(--site-post-h3-margin); }
+.app-inline-button { border: var(--site-border) solid var(--site-line); border-radius: var(--site-button-radius); padding: var(--site-gap-xs) var(--site-gap-sm); color: var(--site-link); background: var(--site-soft); font: inherit; cursor: pointer; }
+.app-inline-button:hover { background: var(--site-help-hover); }
+.app-publication .app-article-title { overflow-wrap: anywhere; }
+.app-publication .app-document-header .app-tags a, .app-publication .app-related a { text-decoration: none; }
 @media (min-width: breakpoint(feature-split)) {
   .app-knowledge-grid, .app-blog-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .app-portfolio-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -1416,9 +1422,9 @@ body[data-page=features] > main { background: var(--site-card); }
 }
 @media (min-width: breakpoint(review-wide)) {
   .app-document-shell { max-width: var(--site-wide); }
-  .app-document-layout { display: grid; grid-template-columns: var(--site-sidebar-width) minmax(0,var(--site-body-width)); justify-content: center; gap: var(--site-gap-lg); }
+  .app-document-layout:has(.app-document-nav) { display: grid; grid-template-columns: var(--site-sidebar-width) minmax(0,var(--site-body-width)); justify-content: center; gap: var(--site-gap-lg); }
   .app-document-nav > summary { display: none; }
-  .app-document-nav:not([open]) > nav { display: block; }
+  .app-document-nav { position: sticky; top: var(--site-gap); max-height: calc(100dvh - var(--site-gap-lg)); overflow-y: auto; align-self: start; }
 }
 @media (prefers-reduced-motion: reduce) {
   .app-knowledge-card { transition: none; }

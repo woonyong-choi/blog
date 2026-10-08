@@ -5,16 +5,16 @@
     "data-structures": {
       "label": "자료구조",
       "family": "object",
-      "metaphor": "연결 블록",
-      "body": "<path d=\"M13 17V32H33\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"5\" width=\"16\" height=\"16\" rx=\"4\" fill=\"var(--icon-critical-soft)\" stroke=\"var(--icon-critical)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"27\" y=\"25\" width=\"16\" height=\"16\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 13H16 M32 33H38\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "같은 크기의 두 연결 블록",
+      "body": "<path d=\"M13 21V33H27\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"5\" width=\"16\" height=\"16\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"27\" y=\"25\" width=\"16\" height=\"16\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 13H16 M32 33H38\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "컴퓨터 과학",
       "priority": 1
     },
     "algorithm": {
       "label": "알고리즘",
       "family": "object",
-      "metaphor": "판단과 경로",
-      "body": "<path d=\"M24 11V23 M24 23H10V34 M24 23H38V34\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 5L32 13L24 21L16 13Z\" fill=\"var(--icon-idea)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"4\" y=\"32\" width=\"13\" height=\"11\" rx=\"3\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"31\" y=\"32\" width=\"13\" height=\"11\" rx=\"3\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "판단 하나와 두 결과",
+      "body": "<path d=\"M24 19V25H10V32 M24 25H38V32\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 5L32 13L24 21L16 13Z\" fill=\"var(--icon-warm)\"/><rect x=\"4\" y=\"32\" width=\"13\" height=\"11\" rx=\"3\" fill=\"var(--icon-accent)\"/><rect x=\"31\" y=\"32\" width=\"13\" height=\"11\" rx=\"3\" fill=\"var(--icon-accent)\"/>",
       "group": "컴퓨터 과학",
       "priority": 1
     },
@@ -22,7 +22,7 @@
       "label": "운영체제",
       "family": "object",
       "metaphor": "스탠드 없는 운영체제 데스크톱 패널",
-      "body": "<rect x=\"4\" y=\"6\" width=\"40\" height=\"36\" rx=\"7\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"7\" y=\"9\" width=\"34\" height=\"30\" rx=\"4\" fill=\"var(--icon-paper)\"/><rect x=\"7\" y=\"9\" width=\"34\" height=\"7\" rx=\"3\" fill=\"var(--icon-neutral)\"/><rect x=\"11\" y=\"20\" width=\"10\" height=\"15\" rx=\"2\" fill=\"var(--icon-accent-soft)\"/><rect x=\"25\" y=\"20\" width=\"12\" height=\"6\" rx=\"2\" fill=\"var(--icon-cloud)\"/><path d=\"M26 32H35\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"4\" y=\"6\" width=\"40\" height=\"36\" rx=\"7\" fill=\"var(--icon-neutral)\"/><rect x=\"9\" y=\"18\" width=\"19\" height=\"17\" rx=\"3\" fill=\"var(--icon-paper)\"/><rect x=\"23\" y=\"23\" width=\"16\" height=\"14\" rx=\"3\" fill=\"var(--icon-accent-soft)\"/><path d=\"M11 12H22M33 12H37\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "컴퓨터 과학",
       "priority": 1
     },
@@ -32,27 +32,28 @@
       "metaphor": "프로세서",
       "body": "<path d=\"M16 5V10 M24 5V10 M32 5V10 M16 38V43 M24 38V43 M32 38V43 M5 16H10 M5 24H10 M5 32H10 M38 16H43 M38 24H43 M38 32H43\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"10\" width=\"28\" height=\"28\" rx=\"5\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"17\" y=\"17\" width=\"14\" height=\"14\" rx=\"3\" fill=\"var(--icon-paper)\"/>",
       "group": "컴퓨터 과학",
-      "priority": 2
+      "priority": 2,
+      "smallBody": "<path d=\"M18 5V10 M30 5V10 M18 38V43 M30 38V43 M5 18H10 M5 30H10 M38 18H43 M38 30H43\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"10\" width=\"28\" height=\"28\" rx=\"5\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"17\" y=\"17\" width=\"14\" height=\"14\" rx=\"3\" fill=\"var(--icon-paper)\"/>"
     },
     "memory": {
-      "body": "<rect x=\"4\" y=\"12\" width=\"40\" height=\"23\" rx=\"4\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"18\" width=\"10\" height=\"11\" rx=\"2\" fill=\"var(--icon-positive)\"/><rect x=\"26\" y=\"18\" width=\"10\" height=\"11\" rx=\"2\" fill=\"var(--icon-positive)\"/><path d=\"M12 36V41 M20 36V41 M28 36V41 M36 36V41\" fill=\"none\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"4\" y=\"10\" width=\"40\" height=\"24\" rx=\"4\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"16\" width=\"10\" height=\"11\" rx=\"2\" fill=\"var(--icon-positive)\"/><rect x=\"28\" y=\"16\" width=\"10\" height=\"11\" rx=\"2\" fill=\"var(--icon-positive)\"/><path d=\"M12 35V39 M20 35V39 M28 35V39 M36 35V39\" fill=\"none\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "메모리",
-      "metaphor": "메모리 칸과 회수 표시",
+      "metaphor": "기판과 두 칩 및 같은 간격의 접점",
       "group": "컴퓨터 과학",
       "priority": 1,
       "family": "object"
     },
     "runtime": {
-      "body": "<rect x=\"5\" y=\"5\" width=\"26\" height=\"30\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 12L10 17L14 22 M23 12L27 17L23 22\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 29V35A4 4 0 0 0 16 39H22 M18 35L22 39L18 43\" fill=\"none\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"27\" y=\"28\" width=\"16\" height=\"16\" rx=\"4\" fill=\"var(--icon-warm-soft)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M33 33L39 36L33 39Z\" fill=\"var(--icon-warm)\"/>",
-      "label": "컴파일",
-      "metaphor": "코드에서 실행물로 바뀌는 기어",
+      "body": "<rect x=\"5\" y=\"7\" width=\"38\" height=\"34\" rx=\"6\" fill=\"var(--icon-neutral)\"/><path d=\"M11 14H37\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M19 21L31 28L19 35Z\" fill=\"var(--icon-paper)\"/>",
+      "label": "런타임",
+      "metaphor": "실행 중인 프로그램 창",
       "group": "컴퓨터 과학",
       "priority": 2,
       "family": "object"
     },
     "concurrency": {
       "label": "동시성",
-      "body": "<circle cx=\"17\" cy=\"18\" r=\"12\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 11V18L22 21\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"31\" cy=\"31\" r=\"12\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M31 24V31L36 34\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-accent)\"/><rect x=\"10\" y=\"13\" width=\"12\" height=\"8\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"26\" y=\"13\" width=\"12\" height=\"8\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"10\" y=\"27\" width=\"18\" height=\"8\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"32\" y=\"27\" width=\"6\" height=\"8\" rx=\"2\" fill=\"var(--icon-paper)\"/>",
       "metaphor": "시간 구간이 겹쳐 진행하는 세 작업",
       "family": "object",
       "group": "컴퓨터 과학",
@@ -61,15 +62,15 @@
     "network": {
       "label": "네트워크",
       "family": "object",
-      "metaphor": "연결 장비",
-      "body": "<path d=\"M11 25V8 M37 25V8\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"4\" y=\"23\" width=\"40\" height=\"19\" rx=\"7\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"12\" cy=\"32\" r=\"2\" fill=\"var(--icon-positive)\"/><circle cx=\"20\" cy=\"32\" r=\"2\" fill=\"var(--icon-positive)\"/><path d=\"M29 32H36\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M18 13A10 10 0 0 1 30 13 M21 17A5 5 0 0 1 27 17\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "안테나와 상태등 하나를 가진 라우터",
+      "body": "<path d=\"M12 8V23 M36 8V23\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"24\" width=\"38\" height=\"16\" rx=\"7\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M19 12A8 8 0 0 1 29 12 M21 17A5 5 0 0 1 27 17\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"13\" cy=\"32\" r=\"2\" fill=\"var(--icon-positive)\"/><path d=\"M25 32H35\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "컴퓨터 과학",
       "priority": 1
     },
     "api": {
-      "body": "<rect x=\"5\" y=\"7\" width=\"16\" height=\"30\" rx=\"5\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"27\" y=\"11\" width=\"16\" height=\"30\" rx=\"5\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 15H17 M33 33H39\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 23H33 M29 19L33 23L29 27\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M34 29H15 M19 25L15 29L19 33\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<path d=\"M5 24H12M36 24H43\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-strong-stroke)\"/><rect x=\"11\" y=\"14\" width=\"11\" height=\"20\" rx=\"4\" fill=\"var(--icon-accent)\"/><rect x=\"27\" y=\"14\" width=\"10\" height=\"20\" rx=\"4\" fill=\"var(--icon-neutral)\"/><path d=\"M21 20H28M21 28H28\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "API",
-      "metaphor": "API 약어를 직접 나타낸 타일",
+      "metaphor": "서로 연결되는 두 인터페이스",
       "group": "애플리케이션과 백엔드",
       "priority": 1,
       "family": "object"
@@ -78,15 +79,15 @@
       "label": "시스템 설계",
       "family": "object",
       "metaphor": "역할이 구분된 계층",
-      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"6\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M13 34V18L24 10L35 18V34 M12 34H36 M19 34V23H29V34\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M13 18H35\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"16\" y=\"4\" width=\"16\" height=\"11\" rx=\"3\" fill=\"var(--icon-accent)\"/><path d=\"M24 15V25M11 25H37M11 25V31M37 25V31\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"4\" y=\"31\" width=\"14\" height=\"13\" rx=\"3\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"30\" y=\"31\" width=\"14\" height=\"13\" rx=\"3\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "애플리케이션과 백엔드",
       "priority": 1
     },
     "queue": {
       "label": "메시지 큐",
       "family": "object",
-      "metaphor": "차례로 놓인 봉투",
-      "body": "<rect x=\"5\" y=\"9\" width=\"38\" height=\"22\" rx=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"14\" width=\"7\" height=\"12\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"20\" y=\"14\" width=\"7\" height=\"12\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"30\" y=\"14\" width=\"7\" height=\"12\" rx=\"2\" fill=\"var(--icon-structure)\"/><path d=\"M12 40H35 M31 36L35 40L31 44\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "레일 안에서 차례를 기다리는 세 메시지",
+      "body": "<rect x=\"5\" y=\"12\" width=\"38\" height=\"22\" rx=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"17\" width=\"6\" height=\"12\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"21\" y=\"17\" width=\"6\" height=\"12\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"32\" y=\"17\" width=\"6\" height=\"12\" rx=\"2\" fill=\"var(--icon-structure)\"/><path d=\"M12 40H36 M32 36L36 40L32 44\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "애플리케이션과 백엔드",
       "priority": 1
     },
@@ -99,17 +100,17 @@
       "priority": 2
     },
     "scheduler": {
-      "body": "<rect x=\"5\" y=\"7\" width=\"32\" height=\"32\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 17H36 M13 4V10 M29 4V10\" fill=\"none\" stroke=\"var(--icon-critical)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"31\" cy=\"32\" r=\"11\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M31 25V32L36 35\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"8\" width=\"31\" height=\"31\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 18H35 M13 5V11 M28 5V11\" fill=\"none\" stroke=\"var(--icon-critical)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"33\" cy=\"33\" r=\"10\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M33 27V33L37 36\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "배치",
-      "metaphor": "시계와 작업 칸",
+      "metaphor": "달력 아래에 놓인 작업 시계",
       "group": "애플리케이션과 백엔드",
       "priority": 1,
       "family": "object"
     },
     "workflow": {
-      "body": "<path d=\"M13 14H32A7 7 0 0 1 39 21V28 M35 24L39 28L43 24 M35 36H16A7 7 0 0 1 9 29V23 M5 27L9 23L13 27\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"5\" width=\"16\" height=\"16\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"27\" y=\"28\" width=\"16\" height=\"15\" rx=\"4\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M32 35L35 38L39 33\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<path d=\"M17 13H34A5 5 0 0 1 39 18V29 M35 25L39 29L43 25\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"5\" width=\"15\" height=\"15\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"26\" y=\"31\" width=\"17\" height=\"13\" rx=\"4\" fill=\"var(--icon-positive)\"/><path d=\"M30 37L34 40L39 35\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "워크플로",
-      "metaphor": "이어진 실행 단계",
+      "metaphor": "시작에서 완료로 향하는 한 방향 작업",
       "group": "애플리케이션과 백엔드",
       "priority": 2,
       "family": "object"
@@ -140,7 +141,7 @@
     },
     "transaction": {
       "label": "트랜잭션",
-      "body": "<rect x=\"6\" y=\"5\" width=\"36\" height=\"38\" rx=\"7\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"12\" y=\"11\" width=\"24\" height=\"10\" rx=\"3\" fill=\"var(--icon-paper)\"/><path d=\"M16 16H22 M27 16H32\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"32\" r=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M20 32L23 35L28 29\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"9\" fill=\"var(--icon-structure)\"/><rect x=\"11\" y=\"12\" width=\"11\" height=\"10\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"26\" y=\"12\" width=\"11\" height=\"10\" rx=\"2\" fill=\"var(--icon-paper)\"/><path d=\"M17 32L22 37L32 27\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
       "metaphor": "여러 작업을 한 번에 확정하는 경계",
       "family": "object",
       "group": "데이터와 저장소",
@@ -165,29 +166,29 @@
     "search": {
       "label": "검색",
       "family": "object",
-      "metaphor": "확대경",
-      "body": "<circle cx=\"20\" cy=\"20\" r=\"13\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M29 29L41 41\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M13 17A8 8 0 0 1 19 12\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "반사광 없는 확대경",
+      "body": "<circle cx=\"20\" cy=\"20\" r=\"14\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M30 30L43 43\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "데이터와 저장소",
       "priority": 1
     },
     "replication": {
-      "body": "<rect x=\"5\" y=\"5\" width=\"25\" height=\"30\" rx=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 13H22 M11 20H22\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"19\" y=\"14\" width=\"25\" height=\"30\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M25 22H36 M25 29H36 M25 36H33\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"5\" width=\"25\" height=\"30\" rx=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 13H22 M11 21H22\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"19\" y=\"14\" width=\"25\" height=\"30\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M25 22H36 M25 30H36\" fill=\"none\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "복제",
-      "metaphor": "연결된 저장소 두 개",
+      "metaphor": "같은 내용을 가진 동일 크기의 문서 두 장",
       "group": "데이터와 저장소",
       "priority": 2,
       "family": "object"
     },
     "migration": {
-      "body": "<path d=\"M5 13V27A7 3 0 0 0 19 27V13Z\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"12\" cy=\"13\" rx=\"7\" ry=\"3\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M29 13V27A7 3 0 0 0 43 27V13Z\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"36\" cy=\"13\" rx=\"7\" ry=\"3\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M10 38H38 M33 33L38 38L33 43\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<path d=\"M4 14V32A6 3 0 0 0 16 32V14Z\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"10\" cy=\"14\" rx=\"6\" ry=\"3\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M32 14V32A6 3 0 0 0 44 32V14Z\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"38\" cy=\"14\" rx=\"6\" ry=\"3\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M21 24H27 M24 20L28 24L24 28\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "마이그레이션",
-      "metaphor": "원본 문서에서 새 문서로 이전하는 방향",
+      "metaphor": "두 저장소 사이의 단방향 이전",
       "group": "데이터와 저장소",
       "priority": 1,
       "family": "object"
     },
     "backup": {
-      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-accent-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-accent)\"/><rect x=\"12\" y=\"12\" width=\"24\" height=\"25\" rx=\"4\" fill=\"var(--icon-paper)\"/><path d=\"M17 18H31 M18 30A7 7 0 1 0 23 23 M19 22L23 23L22 27\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"27\" width=\"38\" height=\"16\" rx=\"5\" fill=\"var(--icon-accent)\"/><rect x=\"13\" y=\"26\" width=\"22\" height=\"6\" rx=\"2\" fill=\"var(--icon-paper)\"/><path d=\"M12 19A12 12 0 1 1 35 23\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-strong-stroke)\"/><path d=\"M12 11V19H20\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
       "label": "백업",
       "metaphor": "파란 저장 매체와 복구 원호. 저장과 복구를 한 실루엣에 결합",
       "group": "데이터와 저장소",
@@ -195,7 +196,7 @@
       "family": "object"
     },
     "pipeline": {
-      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-positive)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M12 15H21V24H30V33H37\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/><circle cx=\"12\" cy=\"15\" r=\"3\" fill=\"var(--icon-paper)\"/><circle cx=\"21\" cy=\"24\" r=\"3\" fill=\"var(--icon-paper)\"/><path d=\"M33 29L37 33L33 37\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-positive)\"/><path d=\"M12 24H36\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/><rect x=\"10\" y=\"18\" width=\"7\" height=\"12\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"21\" y=\"15\" width=\"7\" height=\"18\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"32\" y=\"18\" width=\"7\" height=\"12\" rx=\"2\" fill=\"var(--icon-paper)\"/>",
       "label": "데이터 파이프라인",
       "metaphor": "초록 타일 안 단계적으로 연결된 데이터 처리 경로",
       "group": "데이터와 저장소",
@@ -208,7 +209,8 @@
       "metaphor": "축이 있는 막대 그래프",
       "group": "데이터와 저장소",
       "priority": 2,
-      "family": "object"
+      "family": "object",
+      "smallBody": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"12\" y=\"27\" width=\"6\" height=\"10\" rx=\"2\" fill=\"var(--icon-accent)\"/><rect x=\"22\" y=\"20\" width=\"6\" height=\"17\" rx=\"2\" fill=\"var(--icon-accent)\"/><rect x=\"32\" y=\"12\" width=\"6\" height=\"25\" rx=\"2\" fill=\"var(--icon-accent)\"/>"
     },
     "server": {
       "label": "서버",
@@ -216,13 +218,14 @@
       "metaphor": "상태등이 있는 랙",
       "body": "<rect x=\"6\" y=\"5\" width=\"36\" height=\"38\" rx=\"6\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"10\" width=\"28\" height=\"7\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"10\" y=\"21\" width=\"28\" height=\"7\" rx=\"2\" fill=\"var(--icon-paper)\"/><rect x=\"10\" y=\"32\" width=\"28\" height=\"7\" rx=\"2\" fill=\"var(--icon-paper)\"/><circle cx=\"15\" cy=\"13.5\" r=\"1.5\" fill=\"var(--icon-positive)\"/><circle cx=\"15\" cy=\"24.5\" r=\"1.5\" fill=\"var(--icon-positive)\"/><circle cx=\"15\" cy=\"35.5\" r=\"1.5\" fill=\"var(--icon-positive)\"/><path d=\"M23 13.5H32 M23 24.5H32 M23 35.5H32\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "인프라와 운영",
-      "priority": 1
+      "priority": 1,
+      "smallBody": "<rect x=\"5\" y=\"6\" width=\"38\" height=\"36\" rx=\"6\" fill=\"var(--icon-neutral)\"/><rect x=\"10\" y=\"13\" width=\"28\" height=\"8\" rx=\"3\" fill=\"var(--icon-paper)\"/><rect x=\"10\" y=\"27\" width=\"28\" height=\"8\" rx=\"3\" fill=\"var(--icon-paper)\"/><circle cx=\"15\" cy=\"17\" r=\"2\" fill=\"var(--icon-positive)\"/><circle cx=\"15\" cy=\"31\" r=\"2\" fill=\"var(--icon-positive)\"/>"
     },
     "cloud": {
       "label": "클라우드",
       "family": "object",
-      "metaphor": "겹친 파란 구름의 색면",
-      "body": "<path d=\"M13 23A9 9 0 0 1 31 23Z\" fill=\"var(--icon-cloud-edge)\"/><path d=\"M13 40A9 9 0 0 1 13 22H15A11 11 0 0 1 35 23A8.5 8.5 0 0 1 35 40Z\" fill=\"var(--icon-cloud)\"/>",
+      "metaphor": "원호가 연결된 구름 한 덩어리",
+      "body": "<path d=\"M13 39A9 9 0 0 1 12 21A12 12 0 0 1 35 20A9.5 9.5 0 0 1 35 39Z\" fill=\"var(--icon-cloud)\"/>",
       "group": "인프라와 운영",
       "priority": 1
     },
@@ -230,14 +233,14 @@
       "label": "컨테이너",
       "family": "object",
       "metaphor": "파란 화물 컨테이너의 양쪽 문과 잠금 봉. 지붕 장식 제거",
-      "body": "<rect x=\"4\" y=\"9\" width=\"40\" height=\"32\" rx=\"6\" fill=\"var(--icon-cloud-edge)\"/><rect x=\"7\" y=\"12\" width=\"34\" height=\"26\" rx=\"3\" fill=\"var(--icon-cloud)\"/><path d=\"M10 18H38 M24 19V35 M13 24V32 M35 24V32\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"4\" y=\"11\" width=\"40\" height=\"28\" rx=\"5\" fill=\"var(--icon-accent)\"/><path d=\"M13 18V32M24 18V32M35 18V32\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "인프라와 운영",
       "priority": 1
     },
     "cluster": {
-      "body": "<path d=\"M24 16V26 M11 32V26H37V32\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"15\" y=\"5\" width=\"18\" height=\"14\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"4\" y=\"31\" width=\"15\" height=\"12\" rx=\"3\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"29\" y=\"31\" width=\"15\" height=\"12\" rx=\"3\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M20 12H28 M9 37H14 M34 37H39\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<path d=\"M24 18V26H11V30 M24 26H37V30\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"17\" y=\"4\" width=\"14\" height=\"15\" rx=\"4\" fill=\"var(--icon-neutral)\"/><path d=\"M21 10H27 M21 14H27\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"4\" y=\"30\" width=\"14\" height=\"14\" rx=\"4\" fill=\"var(--icon-neutral)\"/><rect x=\"30\" y=\"30\" width=\"14\" height=\"14\" rx=\"4\" fill=\"var(--icon-neutral)\"/><path d=\"M8 35H14 M8 39H14 M34 35H40 M34 39H40\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "클러스터",
-      "metaphor": "함께 묶인 실행 장비",
+      "metaphor": "같은 장비 세 대의 연결",
       "group": "인프라와 운영",
       "priority": 2,
       "family": "object"
@@ -245,16 +248,16 @@
     "gateway": {
       "label": "게이트웨이",
       "family": "object",
-      "metaphor": "경계를 통과하는 입구",
-      "body": "<path d=\"M12 41V11A6 6 0 0 1 18 5H30A6 6 0 0 1 36 11V41\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M19 41V14H29V41\" fill=\"var(--icon-paper)\"/><path d=\"M5 27H42 M37 22L42 27L37 32\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "여러 연결이 하나의 게이트를 통과함",
+      "body": "<path d=\"M5 10H11L20 24 M5 24H20 M5 38H11L20 24 M30 24H43 M39 20L43 24L39 28\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"19\" y=\"8\" width=\"11\" height=\"32\" rx=\"4\" fill=\"var(--icon-neutral)\"/>",
       "group": "인프라와 운영",
       "priority": 2
     },
     "scaling": {
       "label": "확장",
       "family": "object",
-      "metaphor": "퍼져 나가는 실행 단위",
-      "body": "<rect x=\"5\" y=\"24\" width=\"19\" height=\"19\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 16V8A3 3 0 0 1 15 5H40A3 3 0 0 1 43 8V33A3 3 0 0 1 40 36H32\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M23 25L36 12 M28 12H36V20\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "증가하는 세 실행 인스턴스",
+      "body": "<rect x=\"5\" y=\"28\" width=\"9\" height=\"15\" rx=\"3\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"20\" y=\"17\" width=\"9\" height=\"26\" rx=\"3\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"35\" y=\"5\" width=\"9\" height=\"38\" rx=\"3\" fill=\"var(--icon-accent)\"/>",
       "group": "인프라와 운영",
       "priority": 2
     },
@@ -269,8 +272,8 @@
     "monitoring": {
       "label": "관측",
       "family": "object",
-      "metaphor": "운영 신호의 변화를 보여주는 화면",
-      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"30\" rx=\"5\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 25H16L20 15L25 27L30 20H37\" fill=\"none\" stroke=\"var(--icon-positive-soft)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 36V42 M16 42H32\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"37\" cy=\"10\" r=\"2\" fill=\"var(--icon-positive)\"/>",
+      "metaphor": "화면 안의 단일 관측 파형",
+      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"30\" rx=\"5\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 25H16L20 15L25 27L30 20H37\" fill=\"none\" stroke=\"var(--icon-positive-soft)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 36V42 M16 42H32\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "인프라와 운영",
       "priority": 1
     },
@@ -283,9 +286,9 @@
       "family": "object"
     },
     "tracing": {
-      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 12V34 M12 21H21 M21 21V32H28\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"10\" width=\"25\" height=\"5\" rx=\"2\" fill=\"var(--icon-accent)\"/><rect x=\"19\" y=\"20\" width=\"18\" height=\"5\" rx=\"2\" fill=\"var(--icon-positive)\"/><rect x=\"27\" y=\"30\" width=\"10\" height=\"5\" rx=\"2\" fill=\"var(--icon-warm)\"/>",
+      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 13V36\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"12\" y=\"11\" width=\"23\" height=\"5\" rx=\"2\" fill=\"var(--icon-accent)\"/><rect x=\"18\" y=\"21\" width=\"17\" height=\"5\" rx=\"2\" fill=\"var(--icon-positive)\"/><rect x=\"26\" y=\"31\" width=\"9\" height=\"5\" rx=\"2\" fill=\"var(--icon-warm)\"/>",
       "label": "분산 추적",
-      "metaphor": "하나의 요청을 잇는 경로",
+      "metaphor": "같은 시작축을 공유하는 세 추적 구간",
       "group": "인프라와 운영",
       "priority": 2,
       "family": "object"
@@ -296,12 +299,13 @@
       "metaphor": "지구와 주소 지점",
       "body": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"24\" cy=\"24\" rx=\"8\" ry=\"19\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 24H43 M9 13H39 M9 35H39\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "인프라와 운영",
-      "priority": 2
+      "priority": 2,
+      "smallBody": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><ellipse cx=\"24\" cy=\"24\" rx=\"8\" ry=\"19\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M5 24H43\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>"
     },
     "cost": {
-      "body": "<circle cx=\"22\" cy=\"23\" r=\"17\" fill=\"var(--icon-idea)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 20H32 M12 14L17 33L22 20L27 33L32 14\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"37\" cy=\"36\" r=\"7\" fill=\"var(--icon-positive)\"/><path d=\"M33.5 36H40.5\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<circle cx=\"24\" cy=\"24\" r=\"19\" fill=\"var(--icon-idea)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M13 20H35 M14 14L19 34L24 22L29 34L34 14\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "비용",
-      "metaphor": "사용량 계기와 동전",
+      "metaphor": "비용을 나타내는 동전; 감소 상태 표식 제외",
       "group": "인프라와 운영",
       "priority": 2,
       "family": "object"
@@ -315,9 +319,9 @@
       "family": "object"
     },
     "components": {
-      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"11\" y=\"11\" width=\"26\" height=\"8\" rx=\"2\" fill=\"var(--icon-accent)\"/><rect x=\"11\" y=\"24\" width=\"10\" height=\"13\" rx=\"2\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"27\" y=\"24\" width=\"10\" height=\"13\" rx=\"2\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"6\" width=\"38\" height=\"8\" rx=\"3\" fill=\"var(--icon-accent)\"/><rect x=\"5\" y=\"21\" width=\"38\" height=\"9\" rx=\"3\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"25\" y=\"37\" width=\"18\" height=\"7\" rx=\"3\" fill=\"var(--icon-positive)\"/><path d=\"M6 40H17\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "UI 구성 요소",
-      "metaphor": "조립되는 화면 조각",
+      "metaphor": "제목 막대와 입력 및 버튼의 조합",
       "group": "웹과 앱",
       "priority": 1,
       "family": "object"
@@ -341,8 +345,8 @@
     "mobile": {
       "label": "모바일",
       "family": "object",
-      "metaphor": "짙은 몸체와 화면, 상단 수화부가 있는 전화기",
-      "body": "<rect x=\"12\" y=\"4\" width=\"24\" height=\"40\" rx=\"5\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"15\" y=\"7\" width=\"18\" height=\"34\" rx=\"3\" fill=\"var(--icon-neutral)\"/><rect x=\"20\" y=\"6\" width=\"8\" height=\"3\" rx=\"1.5\" fill=\"var(--icon-neutral-edge)\"/>",
+      "metaphor": "검정 베젤과 밝은 화면의 폰",
+      "body": "<rect x=\"12\" y=\"4\" width=\"24\" height=\"40\" rx=\"5\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"15\" y=\"7\" width=\"18\" height=\"34\" rx=\"3\" fill=\"var(--icon-device-screen)\"/><rect x=\"20\" y=\"6\" width=\"8\" height=\"3\" rx=\"1.5\" fill=\"var(--icon-neutral-edge)\"/>",
       "group": "웹과 앱",
       "priority": 2
     },
@@ -355,9 +359,9 @@
       "family": "object"
     },
     "design-system": {
-      "body": "<path d=\"M10 6H28A5 5 0 0 1 33 11V37A5 5 0 0 1 28 42H10A5 5 0 0 1 5 37V11A5 5 0 0 1 10 6Z\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"12\" width=\"17\" height=\"7\" rx=\"2\" fill=\"var(--icon-critical)\"/><rect x=\"10\" y=\"23\" width=\"17\" height=\"7\" rx=\"2\" fill=\"var(--icon-idea)\"/><rect x=\"10\" y=\"34\" width=\"17\" height=\"3\" rx=\"1.5\" fill=\"var(--icon-accent)\"/><rect x=\"31\" y=\"17\" width=\"12\" height=\"26\" rx=\"3\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M36 23H39 M36 30H39 M36 37H39\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"5\" width=\"25\" height=\"38\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"11\" width=\"15\" height=\"6\" rx=\"2\" fill=\"var(--icon-critical)\"/><rect x=\"10\" y=\"21\" width=\"15\" height=\"6\" rx=\"2\" fill=\"var(--icon-idea)\"/><rect x=\"10\" y=\"31\" width=\"15\" height=\"6\" rx=\"2\" fill=\"var(--icon-accent)\"/><rect x=\"34\" y=\"10\" width=\"10\" height=\"34\" rx=\"2\" fill=\"var(--icon-warm-soft)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M35 18H39 M35 26H39 M35 34H39\" fill=\"none\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "디자인 시스템",
-      "metaphor": "색 견본과 구성 격자",
+      "metaphor": "색 견본과 같은 간격의 자 눈금",
       "group": "웹과 앱",
       "priority": 2,
       "family": "object"
@@ -365,16 +369,16 @@
     "security": {
       "label": "보안",
       "family": "object",
-      "metaphor": "채운 초록 방패와 굵은 흰 체크",
-      "body": "<path d=\"M24 4L41 11V23C41 33 33 40 24 44C15 40 7 33 7 23V11Z\" fill=\"var(--icon-positive)\"/><path d=\"M16 24L22 30L33 18\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "metaphor": "둥근 윗모서리의 방패와 완료 체크",
+      "body": "<path d=\"M24 4L39 10Q41 11 41 14V23C41 33 33 40 24 44C15 40 7 33 7 23V14Q7 11 9 10Z\" fill=\"var(--icon-positive)\"/><path d=\"M16 24L22 30L33 18\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
       "group": "보안",
       "priority": 1
     },
     "key": {
       "label": "인증",
-      "family": "object",
-      "metaphor": "주황 타일과 흰 열쇠. 원형 머리와 두꺼운 몸체",
-      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-warm-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-warm)\"/><path d=\"M21 22A8 8 0 1 1 26 27L19 34H14V29Z\" fill=\"var(--icon-paper)\"/><circle cx=\"29\" cy=\"18\" r=\"2.5\" fill=\"var(--icon-warm)\"/>",
+      "family": "tile",
+      "metaphor": "동심원 머리와 두 치아를 가진 열쇠",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-warm)\"/><circle cx=\"30\" cy=\"17\" r=\"8\" fill=\"var(--icon-paper)\"/><circle cx=\"30\" cy=\"17\" r=\"3\" fill=\"var(--icon-warm)\"/><path d=\"M25 22L13 34H18V30H22V26L28 20Z\" fill=\"var(--icon-paper)\"/>",
       "group": "보안",
       "priority": 1
     },
@@ -395,17 +399,17 @@
       "priority": 2
     },
     "encryption": {
-      "body": "<rect x=\"5\" y=\"5\" width=\"27\" height=\"36\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 13H25 M11 20H25 M11 27H19\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M28 28V23A7 7 0 0 1 42 23V28\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"24\" y=\"27\" width=\"20\" height=\"17\" rx=\"5\" fill=\"var(--icon-neutral)\"/><circle cx=\"34\" cy=\"34\" r=\"2\" fill=\"var(--icon-paper)\"/><path d=\"M34 35V38\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"5\" width=\"27\" height=\"36\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 13H25 M11 21H21\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M29 30V25A6 6 0 0 1 41 25V30\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"25\" y=\"29\" width=\"19\" height=\"15\" rx=\"4\" fill=\"var(--icon-neutral)\"/><circle cx=\"34.5\" cy=\"36\" r=\"2\" fill=\"var(--icon-paper)\"/>",
       "label": "암호화",
-      "metaphor": "가려진 데이터와 잠금",
+      "metaphor": "문서 아래에 겹친 작은 자물쇠",
       "group": "보안",
       "priority": 2,
       "family": "object"
     },
     "vulnerability": {
-      "body": "<path d=\"M24 4L41 11V23C41 33 33 40 24 44C15 40 7 33 7 23V11Z\" fill=\"var(--icon-critical)\"/><path d=\"M27 12L20 22L28 27L21 37\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
+      "body": "<path d=\"M24 4L39 10Q41 11 41 14V23C41 33 33 40 24 44C15 40 7 33 7 23V14Q7 11 9 10Z\" fill=\"var(--icon-critical)\"/><path d=\"M25 9L21 18L28 24L22 32L24 39\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
       "label": "취약점",
-      "metaphor": "채운 빨강 방패와 내부 흰 균열",
+      "metaphor": "보안과 같은 방패 안의 열린 균열",
       "group": "보안",
       "priority": 2,
       "family": "object"
@@ -424,7 +428,8 @@
       "metaphor": "연결된 학습 노드",
       "group": "AI와 머신러닝",
       "priority": 1,
-      "family": "object"
+      "family": "object",
+      "smallBody": "<path d=\"M11 12L37 36 M37 12L11 36\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"11\" cy=\"12\" r=\"6\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"37\" cy=\"12\" r=\"6\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"11\" cy=\"36\" r=\"6\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"37\" cy=\"36\" r=\"6\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"24\" r=\"6\" fill=\"var(--icon-accent)\"/>"
     },
     "training": {
       "body": "<path d=\"M5 11Q14 5 24 11Q34 5 43 11V38Q34 32 24 38Q14 32 5 38Z\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 12V37 M10 16H18 M10 22H18 M30 16H38 M30 22H38\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M30 28L33 31L38 26\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
@@ -435,17 +440,17 @@
       "family": "object"
     },
     "inference": {
-      "body": "<rect x=\"5\" y=\"7\" width=\"24\" height=\"32\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"13\" cy=\"15\" r=\"2\" fill=\"var(--icon-accent)\"/><circle cx=\"21\" cy=\"15\" r=\"2\" fill=\"var(--icon-accent)\"/><path d=\"M13 15L17 24L21 15\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M22 29H35 M31 25L35 29L31 33\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"38\" cy=\"29\" r=\"6\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<path d=\"M10 12L23 24 M10 36L23 24 M30 24H42\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"9\" cy=\"12\" r=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"9\" cy=\"36\" r=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"19\" y=\"15\" width=\"13\" height=\"18\" rx=\"4\" fill=\"var(--icon-accent)\"/><circle cx=\"40\" cy=\"24\" r=\"4\" fill=\"var(--icon-positive)\"/>",
       "label": "추론",
-      "metaphor": "입력에서 답을 내는 모델",
+      "metaphor": "두 입력에서 처리와 단일 결과로 향하는 흐름",
       "group": "AI와 머신러닝",
       "priority": 1,
       "family": "object"
     },
     "dataset": {
-      "body": "<rect x=\"10\" y=\"4\" width=\"31\" height=\"34\" rx=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"11\" width=\"31\" height=\"32\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 22H35 M6 32H35 M16 12V42\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"7\" y=\"13\" width=\"7\" height=\"7\" rx=\"1\" fill=\"var(--icon-idea)\"/>",
+      "body": "<rect x=\"11\" y=\"5\" width=\"32\" height=\"33\" rx=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"11\" width=\"32\" height=\"32\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 27H36 M21 12V42\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"8\" y=\"14\" width=\"10\" height=\"10\" rx=\"2\" fill=\"var(--icon-idea)\"/>",
       "label": "데이터셋",
-      "metaphor": "라벨을 붙인 데이터 집합",
+      "metaphor": "두 장의 표와 프레임 안의 강조 셀",
       "group": "AI와 머신러닝",
       "priority": 1,
       "family": "object"
@@ -456,7 +461,8 @@
       "metaphor": "공간에 배치된 점",
       "group": "AI와 머신러닝",
       "priority": 2,
-      "family": "object"
+      "family": "object",
+      "smallBody": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"6\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 12V36H36\" fill=\"none\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"20\" cy=\"17\" r=\"3\" fill=\"var(--icon-accent)\"/><circle cx=\"20\" cy=\"27\" r=\"3\" fill=\"var(--icon-accent)\"/><circle cx=\"31\" cy=\"28\" r=\"3\" fill=\"var(--icon-positive)\"/>"
     },
     "rag": {
       "body": "<rect x=\"5\" y=\"5\" width=\"24\" height=\"32\" rx=\"5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M11 13H23 M11 20H20\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M24 22H38A6 6 0 0 1 44 28V34A6 6 0 0 1 38 40H30L23 43V40A5 5 0 0 1 18 35V28A6 6 0 0 1 24 22Z\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M25 29H37 M25 35H33\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
@@ -472,7 +478,8 @@
       "metaphor": "도구를 사용하는 로봇",
       "group": "AI와 머신러닝",
       "priority": 1,
-      "family": "object"
+      "family": "object",
+      "smallBody": "<path d=\"M24 5V10\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"5\" r=\"2\" fill=\"var(--icon-outline)\"/><rect x=\"7\" y=\"10\" width=\"34\" height=\"33\" rx=\"9\" fill=\"var(--icon-neutral)\"/><rect x=\"11\" y=\"14\" width=\"26\" height=\"23\" rx=\"5\" fill=\"var(--icon-paper)\"/><circle cx=\"18\" cy=\"23\" r=\"2\" fill=\"var(--icon-neutral)\"/><circle cx=\"30\" cy=\"23\" r=\"2\" fill=\"var(--icon-neutral)\"/><path d=\"M18 29A8 8 0 0 0 30 29\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/>"
     },
     "prompt": {
       "body": "<path d=\"M12 5H36A7 7 0 0 1 43 12V31A7 7 0 0 1 36 38H23L11 43V38A6 6 0 0 1 5 32V12A7 7 0 0 1 12 5Z\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M13 16H33 M13 24H28 M13 31H21\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
@@ -496,7 +503,8 @@
       "metaphor": "스캔 프레임과 문서 복원",
       "group": "AI와 머신러닝",
       "priority": 2,
-      "family": "object"
+      "family": "object",
+      "smallBody": "<path d=\"M15 5H6V15 M33 5H42V15 M6 33V42H15 M42 33V42H33\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"12\" y=\"10\" width=\"24\" height=\"29\" rx=\"4\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M17 20H30 M17 30H27\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/>"
     },
     "audio": {
       "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M12 21V27 M18 16V32 M24 11V37 M30 16V32 M36 21V27\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
@@ -523,9 +531,9 @@
       "family": "object"
     },
     "build": {
-      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-accent-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-accent)\"/><path d=\"M14 12L10 16L18 24L22 20Z\" fill=\"var(--icon-paper)\"/><path d=\"M18 32L32 18\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/><path d=\"M27 11L36 11L39 14L34 19L30 18L26 22L22 18Z\" fill=\"var(--icon-paper)\"/>",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-accent)\"/><path d=\"M16 12L26 12L33 19L28 24L24 20L14 32L10 28L20 16Z\" fill=\"var(--icon-paper)\"/><rect x=\"28\" y=\"31\" width=\"8\" height=\"5\" rx=\"1\" fill=\"var(--icon-paper)\"/>",
       "label": "빌드",
-      "metaphor": "파란 타일 안 조립 도구. 상자 대신 망치와 공구",
+      "metaphor": "파란 타일 안의 조립 도구",
       "group": "개발 도구와 품질",
       "priority": 1,
       "family": "object"
@@ -533,8 +541,8 @@
     "testing": {
       "label": "테스트",
       "family": "object",
-      "metaphor": "체크와 검사 항목",
-      "body": "<rect x=\"8\" y=\"5\" width=\"32\" height=\"38\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M13 14L16 17L21 12 M13 27L16 30L21 25\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M27 15H34 M27 28H34 M13 37H34\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "검사 완료를 나타내는 초록 타일과 체크",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-positive)\"/><path d=\"M13 24L21 32L35 17\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
       "group": "개발 도구와 품질",
       "priority": 1
     },
@@ -547,25 +555,25 @@
       "family": "object"
     },
     "performance": {
-      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-idea-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-idea)\"/><path d=\"M25 10C30 15 34 24 34 29L29 34H19L14 29C14 24 19 15 25 10Z\" fill=\"var(--icon-paper)\"/><circle cx=\"24\" cy=\"22\" r=\"3\" fill=\"var(--icon-neutral)\"/><path d=\"M17 24L11 32V35L19 32 M31 24L37 32V35L29 32\" fill=\"var(--icon-paper)\"/><path d=\"M20 36L24 41L28 36Z\" fill=\"var(--icon-warm)\"/>",
+      "body": "<circle cx=\"26\" cy=\"27\" r=\"16\" fill=\"var(--icon-idea)\"/><rect x=\"21\" y=\"4\" width=\"10\" height=\"5\" rx=\"2\" fill=\"var(--icon-neutral)\"/><path d=\"M26 15V27L33 23\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-strong-stroke)\"/><path d=\"M6 20H10M4 29H8\" fill=\"none\" stroke=\"var(--icon-warm-edge)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "성능",
-      "metaphor": "노란 타일과 가속하는 로켓. 속도계 대신 추진 모티프",
+      "metaphor": "짧은 속도선과 초시계",
       "group": "개발 도구와 품질",
       "priority": 1,
       "family": "object"
     },
     "refactoring": {
-      "body": "<rect x=\"5\" y=\"7\" width=\"15\" height=\"14\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"5\" y=\"28\" width=\"15\" height=\"14\" rx=\"4\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M22 14H27A4 4 0 0 1 31 18V30 M22 35H27A4 4 0 0 0 31 31\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"34\" y=\"16\" width=\"9\" height=\"19\" rx=\"3\" fill=\"var(--icon-positive-soft)\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<rect x=\"5\" y=\"7\" width=\"17\" height=\"34\" rx=\"4\" fill=\"var(--icon-accent-soft)\"/><rect x=\"26\" y=\"7\" width=\"17\" height=\"34\" rx=\"4\" fill=\"var(--icon-positive-soft)\"/><path d=\"M10 14H16 M13 22H18 M10 30H18\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M31 14H38 M31 22H38 M31 30H38\" fill=\"none\" stroke=\"var(--icon-positive)\" stroke-width=\"var(--icon-stroke)\"/>",
       "label": "리팩터링",
-      "metaphor": "재배치하는 코드 블록",
+      "metaphor": "같은 코드의 정렬 전후 두 열",
       "group": "개발 도구와 품질",
       "priority": 2,
       "family": "object"
     },
     "code-review": {
-      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"11\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M11 16H31A4 4 0 0 1 35 20V29A4 4 0 0 1 31 33H21L15 38V33H11Z\" fill=\"var(--icon-paper)\"/><path d=\"M18 21L14 25L18 29 M27 21L31 25L27 29\" fill=\"none\" stroke=\"var(--icon-neutral)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "body": "<path d=\"M9 7H38A6 6 0 0 1 44 13V31A6 6 0 0 1 38 37H21L10 44V37H9A6 6 0 0 1 3 31V13A6 6 0 0 1 9 7Z\" fill=\"var(--icon-accent-soft)\"/><path d=\"M19 16L13 22L19 28M29 16L35 22L29 28\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-strong-stroke)\"/>",
       "label": "코드 리뷰",
-      "metaphor": "코드가 담긴 흰 대화창. 검토와 논의를 표현",
+      "metaphor": "코드를 함께 읽는 말풍선",
       "group": "개발 도구와 품질",
       "priority": 2,
       "family": "object"
@@ -573,32 +581,32 @@
     "person": {
       "label": "사용자",
       "family": "tile",
-      "metaphor": "짙은 타일 안의 흰 인물",
-      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"10\" fill=\"var(--icon-neutral)\" stroke=\"var(--icon-neutral-edge)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"18\" r=\"6\" fill=\"var(--icon-paper)\"/><path d=\"M13 36V34A11 8 0 0 1 35 34V36Z\" fill=\"var(--icon-paper)\"/>",
+      "metaphor": "원형 머리와 반원 어깨",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-neutral)\"/><circle cx=\"24\" cy=\"16\" r=\"6\" fill=\"var(--icon-paper)\"/><path d=\"M13 36A11 11 0 0 1 35 36Z\" fill=\"var(--icon-paper)\"/>",
       "group": "사람과 결과물",
       "priority": 1
     },
     "team": {
       "label": "팀",
       "family": "object",
-      "metaphor": "여러 프로필",
-      "body": "<circle cx=\"11\" cy=\"15\" r=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"37\" cy=\"15\" r=\"5\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M4 37V31A7 7 0 0 1 18 31V37Z\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M30 37V31A7 7 0 0 1 44 31V37Z\" fill=\"var(--icon-structure-soft)\" stroke=\"var(--icon-structure)\" stroke-width=\"var(--icon-stroke)\"/><circle cx=\"24\" cy=\"17\" r=\"7\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M13 43V35A11 9 0 0 1 35 35V43Z\" fill=\"var(--icon-cloud)\" stroke=\"var(--icon-cloud-edge)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "같은 인체 비율의 앞뒤 세 사람",
+      "body": "<circle cx=\"11\" cy=\"15\" r=\"5\" fill=\"var(--icon-outline)\"/><circle cx=\"37\" cy=\"15\" r=\"5\" fill=\"var(--icon-outline)\"/><path d=\"M4 33A7 7 0 0 1 18 33Z\" fill=\"var(--icon-outline)\"/><path d=\"M30 33A7 7 0 0 1 44 33Z\" fill=\"var(--icon-outline)\"/><circle cx=\"24\" cy=\"18\" r=\"7\" fill=\"var(--icon-neutral)\"/><path d=\"M12 42A12 12 0 0 1 36 42Z\" fill=\"var(--icon-neutral)\"/>",
       "group": "사람과 결과물",
       "priority": 1
     },
     "administrator": {
       "label": "관리자",
-      "family": "object",
-      "metaphor": "권한 표식이 있는 프로필",
-      "body": "<circle cx=\"20\" cy=\"13\" r=\"7\" fill=\"var(--icon-accent-soft)\" stroke=\"var(--icon-accent-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M6 42V34A14 10 0 0 1 34 34V42Z\" fill=\"var(--icon-cloud)\" stroke=\"var(--icon-cloud-edge)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M29 24L36 21L43 24V31Q43 37 36 41Q29 37 29 31Z\" fill=\"var(--icon-warm-soft)\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M33 30L35 32L39 27\" fill=\"none\" stroke=\"var(--icon-warm)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "family": "tile",
+      "metaphor": "공통 프로필과 작은 권한 방패",
+      "body": "<rect x=\"4\" y=\"4\" width=\"40\" height=\"40\" rx=\"10\" fill=\"var(--icon-neutral)\"/><circle cx=\"24\" cy=\"16\" r=\"6\" fill=\"var(--icon-paper)\"/><path d=\"M13 36A11 11 0 0 1 35 36Z\" fill=\"var(--icon-paper)\"/><path d=\"M36 27L44 30V36Q44 41 36 44Q28 41 28 36V30Z\" fill=\"var(--icon-paper)\"/><path d=\"M36 30L41 32V36Q41 39 36 41Q31 39 31 36V32Z\" fill=\"var(--icon-warm)\"/>",
       "group": "사람과 결과물",
       "priority": 2
     },
     "portfolio": {
       "label": "포트폴리오",
       "family": "object",
-      "metaphor": "대표 작업과 두 결과물을 모은 작품 보드. 서류 가방 제외",
-      "body": "<rect x=\"5\" y=\"5\" width=\"38\" height=\"38\" rx=\"8\" fill=\"var(--icon-warm-edge)\"/><rect x=\"8\" y=\"8\" width=\"32\" height=\"32\" rx=\"5\" fill=\"var(--icon-paper)\"/><rect x=\"12\" y=\"12\" width=\"24\" height=\"13\" rx=\"3\" fill=\"var(--icon-warm)\"/><rect x=\"12\" y=\"29\" width=\"10\" height=\"7\" rx=\"2\" fill=\"var(--icon-warm-soft)\"/><rect x=\"26\" y=\"29\" width=\"10\" height=\"7\" rx=\"2\" fill=\"var(--icon-warm-soft)\"/>",
+      "metaphor": "작업 결과를 모은 작품 보드",
+      "body": "<rect x=\"5\" y=\"7\" width=\"30\" height=\"32\" rx=\"4\" fill=\"var(--icon-warm-soft)\" stroke=\"var(--icon-warm-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"10\" y=\"5\" width=\"30\" height=\"35\" rx=\"4\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-warm-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"14\" y=\"10\" width=\"29\" height=\"33\" rx=\"4\" fill=\"var(--icon-warm)\" stroke=\"var(--icon-warm-edge)\" stroke-width=\"var(--icon-stroke)\"/><rect x=\"19\" y=\"15\" width=\"19\" height=\"12\" rx=\"2\" fill=\"var(--icon-paper)\"/><path d=\"M20 34H34\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "사람과 결과물",
       "priority": 1
     },
@@ -616,7 +624,8 @@
       "metaphor": "접힌 문서",
       "body": "<path d=\"M13 5H28L39 16V37A6 6 0 0 1 33 43H13A6 6 0 0 1 7 37V11A6 6 0 0 1 13 5Z\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M27 6V13A4 4 0 0 0 31 17H38\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 24H31 M14 30H31 M14 36H25\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "사람과 결과물",
-      "priority": 1
+      "priority": 1,
+      "smallBody": "<path d=\"M13 5H28L39 16V37A6 6 0 0 1 33 43H13A6 6 0 0 1 7 37V11A6 6 0 0 1 13 5Z\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M27 6V13A4 4 0 0 0 31 17H38\" fill=\"none\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M14 25H31 M14 34H27\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/>"
     },
     "idea": {
       "label": "문제 해결",
@@ -632,13 +641,14 @@
       "metaphor": "회색 유리 외곽과 파란 액체",
       "body": "<path d=\"M18 5H30 M20 5V17L9 36C7 40 9 43 14 43H34C39 43 41 40 39 36L28 17V5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M16 29H32L37 38Q38 40 33 40H15Q10 40 12 37Z\" fill=\"var(--icon-accent-soft)\"/><circle cx=\"21\" cy=\"34\" r=\"2\" fill=\"var(--icon-accent)\"/><circle cx=\"29\" cy=\"36\" r=\"2\" fill=\"var(--icon-accent)\"/>",
       "group": "사람과 결과물",
-      "priority": 1
+      "priority": 1,
+      "smallBody": "<path d=\"M18 5H30 M20 5V17L9 36C7 40 9 43 14 43H34C39 43 41 40 39 36L28 17V5\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M16 29H32L37 38Q38 40 33 40H15Q10 40 12 37Z\" fill=\"var(--icon-accent-soft)\"/><circle cx=\"21\" cy=\"34\" r=\"2\" fill=\"var(--icon-accent)\"/>"
     },
     "retrospective": {
       "label": "회고",
       "family": "object",
-      "metaphor": "되돌아보는 노트",
-      "body": "<rect x=\"7\" y=\"6\" width=\"33\" height=\"36\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 7V41 M21 16H32 M21 23H32\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M34 36V34A6 6 0 0 0 28 28H22 M26 24L22 28L26 32\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
+      "metaphor": "노트 아래의 일정한 반지름 되돌림 원호",
+      "body": "<rect x=\"7\" y=\"6\" width=\"33\" height=\"36\" rx=\"6\" fill=\"var(--icon-paper)\" stroke=\"var(--icon-outline)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M15 7V41 M21 15H32\" fill=\"none\" stroke=\"var(--icon-detail)\" stroke-width=\"var(--icon-stroke)\"/><path d=\"M22 28A7 7 0 1 1 24 36 M22 22V28H28\" fill=\"none\" stroke=\"var(--icon-accent)\" stroke-width=\"var(--icon-stroke)\"/>",
       "group": "사람과 결과물",
       "priority": 1
     },
@@ -653,24 +663,24 @@
     "watch": {
       "label": "워치",
       "family": "object",
-      "metaphor": "밴드와 둥근 시계 본체",
-      "body": "<rect x=\"18\" y=\"4\" width=\"12\" height=\"40\" rx=\"4\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"12\" y=\"11\" width=\"24\" height=\"26\" rx=\"7\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"15\" y=\"14\" width=\"18\" height=\"20\" rx=\"4\" fill=\"var(--icon-neutral)\"/><rect x=\"36\" y=\"20\" width=\"2\" height=\"6\" rx=\"1\" fill=\"var(--icon-neutral-edge)\"/>",
+      "metaphor": "검정 본체와 밝은 화면의 워치",
+      "body": "<rect x=\"18\" y=\"4\" width=\"12\" height=\"40\" rx=\"4\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"12\" y=\"11\" width=\"24\" height=\"26\" rx=\"7\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"15\" y=\"14\" width=\"18\" height=\"20\" rx=\"4\" fill=\"var(--icon-device-screen)\"/><rect x=\"36\" y=\"20\" width=\"2\" height=\"6\" rx=\"1\" fill=\"var(--icon-neutral-edge)\"/>",
       "group": "웹과 앱",
       "priority": 2
     },
     "tablet": {
       "label": "태블릿",
       "family": "object",
-      "metaphor": "가로 화면과 균일한 베젤",
-      "body": "<rect x=\"5\" y=\"8\" width=\"38\" height=\"32\" rx=\"5\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"8\" y=\"11\" width=\"32\" height=\"26\" rx=\"3\" fill=\"var(--icon-neutral)\"/>",
+      "metaphor": "가로 화면과 한쪽 베젤 표시의 태블릿",
+      "body": "<rect x=\"5\" y=\"8\" width=\"38\" height=\"32\" rx=\"5\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"9\" y=\"11\" width=\"31\" height=\"26\" rx=\"3\" fill=\"var(--icon-device-screen)\"/><circle cx=\"7\" cy=\"24\" r=\"1\" fill=\"var(--icon-device-screen)\"/>",
       "group": "웹과 앱",
       "priority": 2
     },
     "laptop": {
       "label": "노트북",
       "family": "object",
-      "metaphor": "검은 화면 본체와 낮은 받침",
-      "body": "<rect x=\"7\" y=\"7\" width=\"34\" height=\"28\" rx=\"4\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"10\" y=\"10\" width=\"28\" height=\"22\" rx=\"2\" fill=\"var(--icon-neutral)\"/><path d=\"M4 37H44V38A4 4 0 0 1 40 42H8A4 4 0 0 1 4 38Z\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"19\" y=\"36\" width=\"10\" height=\"2\" rx=\"1\" fill=\"var(--icon-neutral)\"/>",
+      "metaphor": "가로 화면과 대칭 받침의 노트북",
+      "body": "<rect x=\"6\" y=\"9\" width=\"36\" height=\"25\" rx=\"4\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"9\" y=\"12\" width=\"30\" height=\"19\" rx=\"2\" fill=\"var(--icon-device-screen)\"/><path d=\"M4 37H44V38A4 4 0 0 1 40 42H8A4 4 0 0 1 4 38Z\" fill=\"var(--icon-neutral-edge)\"/><rect x=\"19\" y=\"36\" width=\"10\" height=\"2\" rx=\"1\" fill=\"var(--icon-device-screen)\"/>",
       "group": "웹과 앱",
       "priority": 2
     }
@@ -678,23 +688,23 @@
   "badges": {
     "concept": {
       "label": "개념",
-      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-accent)\"/><path d=\"M36 35V40 M36 32V32\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+      "body": "<circle cx=\"35.5\" cy=\"35.5\" r=\"9.5\" fill=\"var(--icon-paper)\"/><circle cx=\"35.5\" cy=\"35.5\" r=\"8\" fill=\"var(--icon-accent)\"/><path d=\"M36 35V40 M36 32V32\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
     },
     "build": {
       "label": "구현",
-      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M33 33L30 36L33 39 M39 33L42 36L39 39\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+      "body": "<circle cx=\"35.5\" cy=\"35.5\" r=\"9.5\" fill=\"var(--icon-paper)\"/><circle cx=\"35.5\" cy=\"35.5\" r=\"8\" fill=\"var(--icon-neutral)\"/><path d=\"M33 33L30 36L33 39 M39 33L42 36L39 39\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
     },
     "troubleshooting": {
       "label": "문제 해결",
-      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-warm)\"/><path d=\"M36 31V37 M36 41V41\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+      "body": "<circle cx=\"35.5\" cy=\"35.5\" r=\"9.5\" fill=\"var(--icon-paper)\"/><circle cx=\"35.5\" cy=\"35.5\" r=\"8\" fill=\"var(--icon-warm)\"/><path d=\"M36 31V37 M36 41V41\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
     },
     "experiment": {
       "label": "실험",
-      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-structure)\"/><path d=\"M34 31H38 M35 31V35L32 40H40L37 35V31\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+      "body": "<circle cx=\"35.5\" cy=\"35.5\" r=\"9.5\" fill=\"var(--icon-paper)\"/><circle cx=\"35.5\" cy=\"35.5\" r=\"8\" fill=\"var(--icon-structure)\"/><path d=\"M34 31H38 M35 31V35L32 40H40L37 35V31\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
     },
     "retrospective": {
       "label": "회고",
-      "body": "<circle cx=\"36\" cy=\"36\" r=\"10\" fill=\"var(--icon-paper)\"/><circle cx=\"36\" cy=\"36\" r=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M32 35A5 5 0 1 1 32 39 M32 31V35H36\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
+      "body": "<circle cx=\"35.5\" cy=\"35.5\" r=\"9.5\" fill=\"var(--icon-paper)\"/><circle cx=\"35.5\" cy=\"35.5\" r=\"8\" fill=\"var(--icon-positive)\"/><path d=\"M32 35A5 5 0 1 1 32 39 M32 31V35H36\" fill=\"none\" stroke=\"var(--icon-paper)\" stroke-width=\"var(--icon-detail-stroke)\"/>"
     }
   },
   "daphnis": {},

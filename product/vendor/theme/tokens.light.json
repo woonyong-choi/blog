@@ -4143,6 +4143,11 @@
         "$type": "dimension",
         "$value": "200px",
         "$description": "680px 본문 옆의 주제 탐색 열. 기존 폼과 소개 폭보다 좁아 별도 정의"
+      },
+      "icon-device-screen": {
+        "$type": "color",
+        "$value": "#e9eaeb",
+        "$description": "공식 기기 화면의 옅은 중립 면을 흰 바탕에서 재현한 불투명 화면색"
       }
     }
   },
@@ -9056,6 +9061,11 @@
       "$type": "color",
       "$value": "{primitive.simple.icon-cloud-edge}",
       "$description": "구름과 연결 장비의 채색 면"
+    },
+    "device-screen": {
+      "$type": "color",
+      "$value": "{primitive.simple.icon-device-screen}",
+      "$description": "검정 베젤과 구분되는 기기 화면 면"
     }
   }
 }

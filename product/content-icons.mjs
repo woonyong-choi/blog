@@ -20,7 +20,7 @@ export function contentIcon(spec, size = 'card', variant = 'default') {
   if (!['default', 'detail', 'review', 'set-reference', 'proposal', 'direction-reference'].includes(variant)) throw new Error(`invalid icon variant: ${variant}`);
   if (!['small','medium','card','proof'].includes(size)) throw new Error(`invalid icon size: ${size}`);
   const { name, kind } = typeof spec === 'string' ? { name: spec } : spec;
-  return `<span class="app-content-icon is-${size}">${renderContentIcon(variant === 'detail' ? DETAIL : variant === 'review' ? REVIEW : variant === 'set-reference' ? SET_REFERENCE : variant === 'proposal' ? PROPOSAL : variant === 'direction-reference' ? DIRECTION_REFERENCE : CATALOG, name, size === 'small' ? undefined : kind)}</span>`;
+  return `<span class="app-content-icon is-${size}">${renderContentIcon(variant === 'detail' ? DETAIL : variant === 'review' ? REVIEW : variant === 'set-reference' ? SET_REFERENCE : variant === 'proposal' ? PROPOSAL : variant === 'direction-reference' ? DIRECTION_REFERENCE : CATALOG, name, size === 'small' ? undefined : kind, size)}</span>`;
 }
 
 export function iconLab() {

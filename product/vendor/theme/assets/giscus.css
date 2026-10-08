@@ -43,6 +43,7 @@ main {
   --color-prettylights-syntax-storage-modifier-import: #303336;
   --color-prettylights-syntax-variable: #303336;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  color: #303336;
   font-size: 18px;
   line-height: 1.4;
 }

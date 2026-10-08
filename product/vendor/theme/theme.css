@@ -835,6 +835,7 @@
   --primitive-simple-icon-cloud: #639bfa;
   --primitive-simple-icon-cloud-edge: #528aee;
   --primitive-simple-sidebar-width: 200px;
+  --primitive-simple-icon-device-screen: #e9eaeb;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1846,6 +1847,7 @@
   --icon-structure-soft: var(--primitive-simple-icon-structure-soft);
   --icon-cloud: var(--primitive-simple-icon-cloud);
   --icon-cloud-edge: var(--primitive-simple-icon-cloud-edge);
+  --icon-device-screen: var(--primitive-simple-icon-device-screen);
   --typography-xs-fontFamily: var(--font-sans);
   --typography-xs-fontSize: 12px;
   --typography-xs-fontWeight: 400;
