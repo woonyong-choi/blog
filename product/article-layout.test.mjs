@@ -124,3 +124,10 @@ test('post_title_fills_the_column_between_percentage_margins_like_the_reference'
   assert.doesNotMatch(title, /(^|[\s;])width:/);
   assert.equal(token('--site-post-title-width'), '84%');
 });
+
+test('post_author_renders_only_when_the_page_has_one_and_before_the_footer_content', async () => {
+  const { postArticle } = await import('./post-article.mjs');
+  const base = { id: 'a', title: 'T', route: '/a/', publishedAt: '2026-01-01', description: 'd', html: '<p>x</p>' };
+  assert.doesNotMatch(postArticle(base, { detail: true, footer: '<i>f</i>' }), /app-post-author/);
+  assert.match(postArticle({ ...base, author: 'A & B' }, { detail: true, footer: '<i>f</i>' }), /<footer class="app-post-footer"><p class="app-post-author">A &amp; B<\/p><i>f<\/i><\/footer>/);
+});

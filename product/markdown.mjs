@@ -14,7 +14,7 @@ import { contentIcon, iconLab } from './content-icons.mjs';
 const IMAGE_SIZES = JSON.parse(readFileSync(new URL('./image-sizes.json', import.meta.url)));
 export const escape = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 export function safeUrl(value) {
-  if (typeof value !== 'string' || /[\u0000-\u0020\\]/u.test(value) || !/^(?:https?:\/\/|mailto:|\/things\/|#)/.test(value)) throw new Error(`Unsupported URL: ${value}`);
+  if (typeof value !== 'string' || /[\u0000-\u0020\\]/u.test(value) || !/^(?:https?:\/\/|mailto:|\/(?!\/)|#)/.test(value)) throw new Error(`Unsupported URL: ${value}`);
   return escape(value);
 }
 export function asset(name) {
@@ -229,6 +229,19 @@ export function createMarkdown() {
     const value = id === 'plaintext' ? escape(token.content) : hljs.highlight(token.content, { language: id, ignoreIllegals: true }).value;
     return codeBlock(`<code class="language-${id}">${value}</code>`, { language: label, filename: filename?.[1] ?? filename?.[2] ?? '' });
   };
+  // 문서 최상위에서 이미지 하나(또는 링크로 감싼 이미지 하나)만 있는 문단은 원본 글처럼 figure로 그린다.
+  md.core.ruler.after('inline', 'standalone-figure', (state) => {
+    if (state.env.nested) return;
+    const { tokens } = state;
+    for (let index = 0; index + 2 < tokens.length; index += 1) {
+      const [open, inline, close] = [tokens[index], tokens[index + 1], tokens[index + 2]];
+      if (open.type !== 'paragraph_open' || open.level !== 0 || open.hidden || inline.type !== 'inline' || close.type !== 'paragraph_close') continue;
+      const kinds = inline.children.map(child => child.type).join();
+      if (kinds !== 'image' && kinds !== 'link_open,image,link_close') continue;
+      open.tag = close.tag = 'figure';
+      open.attrJoin('class', 'app-figure');
+    }
+  });
   md.core.ruler.push('heading-ids', (state) => {
     state.env.headings ??= [];
     state.env.headingIds ??= new Map();
@@ -252,16 +265,28 @@ export function createMarkdown() {
   return md;
 }
 
+// 원본 newgrid의 열 수 변형(has-N-columns)과 같은 이름만 허용한다.
+const FIGURE_GRID_COLUMNS = { 1: 'one-column', 2: 'two-columns', 3: 'three-columns', 4: 'four-columns', 5: 'five-columns', 6: 'six-columns' };
+
 function component(kind, data, md, env) {
   env.componentCount = (env.componentCount ?? 0) + 1;
   const id = `component-${env.pageId ?? 'page'}-${env.componentCount}`;
   let nestedIndex = 0;
   const render = (text = '') => {
-    const nested = { ...env, docId: `${id}-${++nestedIndex}` };
+    const nested = { ...env, docId: `${id}-${++nestedIndex}`, nested: true };
     delete nested.footnotes;
     const html = md.render(String(text), nested);
     env.componentCount = nested.componentCount;
     return html;
+  };
+  const nestedEnv = () => {
+    const nested = { ...env, docId: `${id}-${++nestedIndex}`, nested: true };
+    delete nested.footnotes;
+    return nested;
+  };
+  const figureImage = item => {
+    const picture = image(item.src, item.alt, item.rounded ? 'is-rounded' : '');
+    return item.href ? `<a href="${safeUrl(item.href)}">${picture}</a>` : picture;
   };
   switch (kind) {
     case 'group':
@@ -286,7 +311,16 @@ function component(kind, data, md, env) {
     case 'details':
       return `<details class="app-details"${data.open ? ' open' : ''}><summary>${escape(data.title)}</summary>${render(data.body)}</details>`;
     case 'figure':
-      return `<figure class="app-figure${data.size === 'compact' ? ' is-compact' : ''}${data.wide ? ' app-breakout' : ''}">${image(data.src, data.alt)}<figcaption>${escape(data.caption)}</figcaption></figure>`;
+      return `<figure class="app-figure${data.size === 'compact' ? ' is-compact' : ''}${data.wide ? ' app-breakout' : ''}">${figureImage(data)}<figcaption>${escape(data.caption)}</figcaption></figure>`;
+    case 'fineprint':
+      return `<p class="app-fineprint">${md.renderInline(String(data.body ?? ''), nestedEnv())}</p>`;
+    case 'figure-grid': {
+      if (!Array.isArray(data.items) || !data.items.length) throw new Error('ui:figure-grid needs items');
+      const columns = ['number', 'string'].includes(typeof data.columns) && Object.hasOwn(FIGURE_GRID_COLUMNS, data.columns) ? FIGURE_GRID_COLUMNS[data.columns] : undefined;
+      if (data.columns !== undefined && !columns) throw new Error(`Invalid ui:figure-grid columns: ${data.columns}`);
+      const size = ['small', 'large'].includes(data.size) ? ` is-${data.size}` : '';
+      return `<div class="app-figure-grid${size}${columns ? ` has-${columns}` : ''}">${data.items.map(item => `<div class="app-figure-grid-item"><figure class="app-figure">${figureImage(item)}<figcaption>${escape(item.caption ?? '')}</figcaption></figure></div>`).join('')}</div>`;
+    }
     case 'video':
       return `<figure class="app-figure">${player(data, id, data.controls === true)}<figcaption>${escape(data.caption ?? '')}<div class="app-media-controls">${remote(id)}</div></figcaption></figure>`;
     case 'gallery': {

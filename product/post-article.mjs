@@ -20,5 +20,5 @@ export function postArticle(post, { detail = false, footer = '', after = '' } = 
     ? `<h1 class="app-post-title" id="${id}">${label}</h1>`
     : `<h2 class="app-post-title" id="${id}"><a href="${post.route}">${label}</a></h2>`;
   const body = shiftHeadings(post.html, detail ? detailLevels : feedLevels);
-  return `<article class="app-blog-post${detail ? ' is-detail' : ''}" aria-labelledby="${id}"><header class="app-post-header"><time class="app-post-date" datetime="${post.publishedAt}">${post.publishedAt}${post.example ? ' · 예시 글' : ''}</time>${title}</header><div class="app-prose app-feed-body"><p class="app-article-lead">${post.leadHtml ?? escape(post.description)}</p>${body}</div><footer class="app-post-footer">${footer}</footer>${after}</article>`;
+  return `<article class="app-blog-post${detail ? ' is-detail' : ''}" aria-labelledby="${id}"><header class="app-post-header"><time class="app-post-date" datetime="${post.publishedAt}">${post.publishedAt}${post.example ? ' · 예시 글' : ''}</time>${title}</header><div class="app-prose app-feed-body"><p class="app-article-lead">${post.leadHtml ?? escape(post.description)}</p>${body}</div><footer class="app-post-footer">${post.author ? `<p class="app-post-author">${escape(post.author)}</p>` : ''}${footer}</footer>${after}</article>`;
 }

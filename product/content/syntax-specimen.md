@@ -110,6 +110,22 @@ npm run build:product
 }
 ```
 
+## Fineprint and figure grid
+
+```ui:fineprint
+{ "body": "작은 글씨 문단 예시입니다." }
+```
+
+```ui:figure-grid
+{
+  "columns": 2,
+  "items": [
+    { "src": "2-today-mac.png", "alt": "첫 이미지", "caption": "첫 캡션", "rounded": true },
+    { "src": "10-reminders-mac.png", "alt": "둘째 이미지", "caption": "둘째 캡션" }
+  ]
+}
+```
+
 ## Notes and warnings
 
 ```ui:callout

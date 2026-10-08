@@ -34,7 +34,7 @@ npm run dev -- --host 127.0.0.1 --port 8794
 | `assets.json` | 참고 자산의 원본 URL·해시 |
 | `assets/` | 로컬 참고 자산. 원본의 고유 색과 도형을 보존 |
 
-스타일 정본은 design-tokens의 `themes/base/simple/`이다. `base`를 상속하고 단일 라이트 모드를 제공한다. 첨부한 토큰·CSS·디자인 설명은 그 안의 `reference/`에 보존한다. 이 사이트에서 임의로 스타일 값을 추가하지 않는다.
+스타일 정본은 design-tokens의 `themes/base/simple/`이다. 수정 위치는 [스타일 수정 지도](../docs/design/styles.md)를 따른다. `base`를 상속하고 단일 라이트 모드를 제공한다. 첨부한 토큰·CSS·디자인 설명은 그 안의 `reference/`에 보존한다. 이 사이트에서 임의로 스타일 값을 추가하지 않는다.
 
 ```sh
 npm run theme:product -- /path/to/design-tokens

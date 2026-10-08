@@ -16,6 +16,7 @@
 | `visibility` | 예 | `public` 또는 `draft` |
 | `comments` | blog는 `true` | giscus 댓글 |
 | `publishedAt`, `updatedAt` | blog는 발행일 | `YYYY-MM-DD` |
+| `author` | 선택. 글 꼬리말 맨 위에 그대로 표시할 문구 | 문자열 |
 | `parent` | 아니오 | 위키 부모 문서의 slug |
 | `thumbnail` | 아니오 | `src`, `alt`, 선택 `position` |
 | `example` | 아니오 | `true`면 미리보기 전용 |
@@ -55,6 +56,31 @@
 | 코드 블록 | 펜스와 언어, 4칸 들여쓰기 | 아래 절. 들여쓴 블록은 plaintext로 같은 머리글·복사 |
 
 HTML은 글자로 출력하고 실행하지 않는다. `<details>`와 `<summary>`만 위 조건에서 구조로 받아들인다. 속성이 있거나 닫히지 않은 `<details>`, 태그가 섞인 `<summary>`는 글자로 남는다.
+
+### 원본 글 요소
+
+Things 블로그 글의 작은 글씨 문단과 이미지 묶음은 선택 구성 요소로 쓴다. 임의 HTML은 받지 않는다.
+
+- `ui:fineprint`: `body` 한 문단(인라인 Markdown 허용). 원본 `p.fineprint` 값을 쓴다.
+- `ui:figure-grid`: `items`의 `src`, `alt`, `caption`, `href`, `rounded`. `columns`(1~6)와 `size`(`small`, `large`)는 원본 `newgrid`의 `has-N-columns`, `is-small`, `is-large`와 같다. 지정하지 않으면 원본 기본처럼 열 최소 너비 210px로 늘고 준다.
+- 링크 `href`는 `https://`, `mailto:`, `#`, 또는 `/articles/foo/`처럼 `/`로 시작하는 사이트 경로만 받는다. `//`로 시작하는 주소, 역슬래시, 공백·제어 문자, `javascript:`는 빌드 오류다.
+
+````markdown
+```ui:fineprint
+body: 이 글은 평소보다 기술적입니다. [요약](#summary)만 읽어도 됩니다.
+```
+
+```ui:figure-grid
+columns: 2
+items:
+  - { src: 2-today-mac.png, alt: 오늘 화면, caption: 첫 캡션, href: /articles/foo/, rounded: true }
+  - { src: 10-reminders-mac.png, alt: 알림 화면, caption: 둘째 캡션 }
+```
+````
+
+작성자는 글 메타데이터에 `"author": "Posted by 이름"`으로 쓴다.
+
+- `ui:figure`도 `href`와 `rounded`를 받는다. `rounded` 이미지는 원본 글의 인라인 1em 곡률이다.
 
 ### 수식
 

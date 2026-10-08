@@ -9,7 +9,8 @@ test('HTML and script URLs cannot execute in document content', () => {
   const html = md.render('<script>alert(1)</script>\n\n[bad](javascript:alert(1))');
   assert.ok(!html.includes('<script>'));
   assert.ok(!html.includes('href="javascript:'));
-  for (const url of ['javascript:alert(1)', '//evil.test', '/things/\nfoo', 'data:text/html,hi']) assert.throws(() => safeUrl(url));
+  for (const url of ['javascript:alert(1)', '//evil.test', '/things/\nfoo', '/articles/\\evil', '/a\u0000b', '/a b', ' /articles/', 'data:text/html,hi', 'JavaScript:alert(1)']) assert.throws(() => safeUrl(url), url);
+  for (const url of ['/articles/foo/', '/wiki/', '/things/', '#top', 'https://example.com/']) assert.equal(safeUrl(url), url);
   assert.throws(() => asset('../outside.svg'));
 });
 test('nested components preserve unique IDs and do not duplicate footnotes', () => {
@@ -33,8 +34,22 @@ test('unknown component and malformed data fail the build', () => {
 test('specimen renders every declared document component', () => {
   const source=readFileSync(new URL('./content/syntax-specimen.md',import.meta.url),'utf8').split('\n---\n').slice(1).join('\n---\n');
   const html=createMarkdown().render(source,{});
-  for (const kind of ['group','feature','syntax-examples','feature-list','device','demos','feature-pair','callout','details','figure','video','gallery','platform','tabs','cards','definitions','speech','keys','tooltip','keyboard','status-board','contact-form','form']) assert.ok(source.includes('ui:' + kind), 'missing specimen: ' + kind);
+  for (const kind of ['group','feature','syntax-examples','feature-list','device','demos','feature-pair','callout','details','figure','fineprint','figure-grid','video','gallery','platform','tabs','cards','definitions','speech','keys','tooltip','keyboard','status-board','contact-form','form']) assert.ok(source.includes('ui:' + kind), 'missing specimen: ' + kind);
   for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','app-help-card is-centered','app-help-card is-grouped','app-inline-links','data-tabs','data-gallery','<video','<details','<dl','<kbd','popover','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
+});
+
+test('fineprint and figure grid map to the reference DOM without raw html', () => {
+  const md = createMarkdown();
+  assert.equal(md.render(fence('fineprint', { body: '작은 *글씨* [링크](https://example.com/)' })), '<p class="app-fineprint">작은 <em>글씨</em> <a href="https://example.com/">링크</a></p>');
+  const html = md.render(fence('figure-grid', { columns: 2, items: [{ src: '2-today-mac.png', alt: 'a', caption: 'one', rounded: true, href: 'https://example.com/' }, { src: '10-reminders-mac.png', alt: 'b', caption: 'two' }] }));
+  assert.match(html, /^<div class="app-figure-grid has-two-columns"><div class="app-figure-grid-item"><figure class="app-figure"><a href="https:\/\/example.com\/"><img [^>]*class="is-rounded"/);
+  assert.equal((html.match(/<figcaption>/g) ?? []).length, 2);
+  assert.match(md.render(fence('figure-grid', { size: 'large', items: [{ src: '2-today-mac.png', alt: 'a' }] })), /app-figure-grid is-large"/);
+  assert.throws(() => md.render(fence('figure-grid', { columns: 7, items: [{ src: '2-today-mac.png', alt: 'a' }] })));
+  assert.match(md.render(fence('figure-grid', { columns: '3', items: [{ src: '2-today-mac.png', alt: 'a' }] })), /has-three-columns/);
+  for (const columns of ['constructor', '__proto__', 'toString', 'hasOwnProperty', ['2'], { 2: 1 }, null, 0]) assert.throws(() => md.render(fence('figure-grid', { columns, items: [{ src: '2-today-mac.png', alt: 'a' }] })), /Invalid ui:figure-grid columns/, String(columns));
+  assert.throws(() => md.render(fence('figure-grid', { items: [] })));
+  assert.match(md.render(fence('fineprint', { body: '<script>x</script>' })), /&lt;script&gt;x&lt;\/script&gt;/);
 });
 
 test('highlight and cancelled tasks preserve escaping, code and nested formatting', () => {
@@ -87,4 +102,15 @@ test('code_and_syntax_copy_controls_start_hidden_with_independent_status_regions
   assert.match(html, /aria-label="코드 복사"/);
   assert.match(html, /aria-label="작성 문법 복사"/);
   assert.match(html, /한글 &lt; &gt;/);
+});
+
+test('standalone_top_level_images_render_as_figures_and_everything_else_stays_a_paragraph', () => {
+  const md = createMarkdown();
+  assert.equal(md.render('![알림](/a.png)\n').trim(), '<figure class="app-figure"><img src="/a.png" alt="알림" loading="lazy" decoding="async"></figure>');
+  assert.equal(md.render('[![알림](/a.png)](https://example.com/)\n').trim(), '<figure class="app-figure"><a href="https://example.com/"><img src="/a.png" alt="알림" loading="lazy" decoding="async"></a></figure>');
+  for (const source of ['앞 글 ![알림](/a.png)\n', '![알림](/a.png) 뒤 글\n', '![하나](/a.png)![둘](/b.png)\n', '[글 ![알림](/a.png)](https://example.com/)\n', '> ![알림](/a.png)\n', '- ![알림](/a.png)\n', '- ![알림](/a.png)\n\n  본문\n', '1. ![알림](/a.png)\n']) assert.doesNotMatch(md.render(source), /<figure/, source);
+  assert.match(md.render('- ![알림](/a.png)\n\n- 둘째\n'), /<li>\s*<p><img /);
+  const callout = md.render('```ui:callout\ntitle: 알림\nbody: "![알림](/a.png)"\n```\n');
+  assert.doesNotMatch(callout, /<figure/);
+  assert.match(callout, /<p><img /);
 });

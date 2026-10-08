@@ -16,7 +16,8 @@
   "visibility": "public",
   "comments": true,
   "example": true,
-  "publishedAt": "2026-09-30"
+  "publishedAt": "2026-09-30",
+  "author": "Posted by 예시 작성자"
 }
 ---
 
@@ -483,6 +484,27 @@ sequenceDiagram
   독자->>사이트: 도표가 화면에 보이면 렌더러 요청
   사이트-->>독자: 로컬 스크립트
 ```
+
+## 원본 글 요소 (선택 문법)
+
+Things 블로그 글에 있는 작은 글씨 문단과 두 열 이미지 묶음은 `ui:` 구성 요소로 씁니다. 임의 HTML은 쓰지 않습니다.
+
+```ui:fineprint
+{
+  "body": "이 글은 평소보다 기술적입니다. 관심이 없다면 위 요약만 읽어도 핵심을 알 수 있습니다."
+}
+```
+
+```ui:figure-grid
+{
+  "items": [
+    { "src": "2-today-mac.png", "alt": "오늘 목록 화면", "caption": "둥근 모서리와 링크가 있는 이미지", "rounded": true, "href": "https://example.com/" },
+    { "src": "10-reminders-mac.png", "alt": "알림 화면", "caption": "모서리가 없는 이미지", "href": "/articles/markdown-guide/" }
+  ]
+}
+```
+
+열 수는 `columns`(1~6)로, 최소 열 너비는 `size`(`small`, `large`)로 정합니다. 정하지 않으면 원본처럼 폭에 맞춰 열이 늘고 줄어듭니다.
 
 ## 지원하지 않는 것
 
