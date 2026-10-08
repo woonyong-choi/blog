@@ -11,9 +11,9 @@ export function projectVideo(project) {
   if (!project) return '';
   const title = escape(project.title);
   const media = project.src
-    ? `<div class="app-player has-controls" id="project-demo" data-player><video controls playsinline preload="none" data-native-controls aria-label="${title}"${project.poster ? ` poster="${escape(mediaUrl(project.poster))}"` : ''}><source src="${escape(mediaUrl(project.src))}">${title} · <a href="${escape(mediaUrl(project.src))}">영상 파일 열기</a></video><button class="app-player-button is-compact" type="button" data-player-play aria-label="${title} 영상 재생" hidden></button><span class="app-sr" role="status"></span></div>`
+    ? `<div class="app-player app-cinema has-controls is-hidden-until-played" id="project-demo" data-player><video controls playsinline preload="none" data-native-controls aria-label="${title}"${project.poster ? ` poster="${escape(mediaUrl(project.poster))}"` : ''}><source src="${escape(mediaUrl(project.src))}">${title} · <a href="${escape(mediaUrl(project.src))}">영상 파일 열기</a></video><button class="app-player-button" type="button" data-player-play aria-label="${title} 영상 재생" hidden></button><span class="app-sr" role="status"></span></div>`
     : `<div class="app-project-video-placeholder"><p class="app-eyebrow">${title}</p><p>프로젝트 영상이 들어갈 공간</p><span class="app-caption">${escape(project.description)}</span></div>`;
-  return `<section id="project-video" class="app-project-showcase" aria-label="${title}"><div class="app-project-video">${media}</div>${project.src ? `<div class="app-project-caption"><p><strong>${title}</strong><span>${escape(project.description)}</span></p>${project.href ? `<a href="${escape(mediaUrl(project.href))}">프로젝트 자세히 보기 <span aria-hidden="true">→</span></a>` : ''}</div>` : ''}</section>`;
+  return `<section id="project-video" class="app-project-showcase" aria-label="${title}">${media}</section>`;
 }
 
 export function technologySection(ids = [], brands = []) {

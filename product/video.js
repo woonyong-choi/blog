@@ -45,16 +45,19 @@ for (const root of document.querySelectorAll('[data-player]')) {
     const next = button?.dataset.videoSrc;
     const changed = next && new URL(next, location.href).href !== video.currentSrc;
     if (changed) { video.src = next; video.load(); }
+    root.classList.add('has-played');
+    if (button?.dataset.scroll) revealVideo(root, button.dataset.scroll === 'down');
     if (!changed && !video.paused) { video.pause(); return; }
     if (video.ended) video.currentTime = 0;
     try {
-      await video.play(); status.textContent = ''; status.classList.remove('app-video-error'); status.classList.add('app-sr'); revealVideo(root);
+      await video.play(); status.textContent = ''; status.classList.remove('app-video-error'); status.classList.add('app-sr'); if (!button?.dataset.scroll) revealVideo(root);
     }
     catch {
       status.textContent = '영상을 재생하지 못했습니다. 재생 버튼을 다시 눌러 주세요.';
       status.classList.remove('app-sr'); status.classList.add('app-video-error');
     }
   }
+  root.classList.add('is-initialized');
   root.querySelector('[data-player-play]')?.removeAttribute('hidden');
   if (video.hasAttribute('data-native-controls') && root.querySelector('[data-player-play]')) video.controls = false;
   root.querySelector('[data-player-play]')?.addEventListener('click', () => toggle());

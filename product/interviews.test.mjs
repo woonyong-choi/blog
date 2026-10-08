@@ -11,7 +11,7 @@ test('interview_examples_are_preview_only_and_empty_public_data_has_no_section',
   assert.deepEqual(publicInterviews(examples), []);
   assert.equal(interviewSection(publicInterviews(examples)), '');
   const preview = interviewSection(publicInterviews(examples, true));
-  assert.match(preview, /실제 인터뷰 발언이 아닙니다/);
+  assert.doesNotMatch(preview, /실제 인터뷰 발언이 아닙니다|interviews-description/);
   assert.deepEqual(clientEntrypoints(preview), ['flows.js']);
 });
 

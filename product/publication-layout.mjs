@@ -66,10 +66,9 @@ export function knowledgeFields(documents, topics, field) {
 
 export function personalHome(context) {
   const { config } = context;
-  const title = (config.hero?.title ?? config.description).split('\n').map(line => `<span>${escape(line)}</span>`).join('');
   const introduction = config.hero?.description ?? config.introduction;
-  const action = config.projectVideo?.src ? '<a class="app-remote" href="#project-video" data-remote="project-demo" data-language="ko" aria-label="프로젝트 영상 보기">' + controlImage('play', '', '') + '<span>프로젝트 영상 보기</span></a>' : '<a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a>';
-  return `<main id="main"><section class="app-personal-hero app-shell"><p class="app-eyebrow">${escape(config.hero?.eyebrow ?? 'Backend Engineer')}</p><h1>${title}</h1><p class="app-personal-intro">${escape(introduction)}</p>${action}</section><div class="app-home-flow"><div class="app-home-stage">${projectVideo(config.projectVideo)}</div><div class="app-home-stories">${technologySection(config.technologies, BRANDS)}${interviewSection(context.interviews)}</div>${contactSection(config.contact)}</div></main>`;
+  const action = config.projectVideo?.src ? '<a class="app-remote" href="#project-video" data-remote="project-demo" data-scroll="down" data-language="ko" aria-label="프로젝트 영상 보기">' + controlImage('play', '', '') + '<span>프로젝트 영상 보기</span></a>' : '<a class="app-hero-link" href="#project-video">진행 중인 프로젝트 <span aria-hidden="true">↓</span></a>';
+  return `<main id="main" class="app-landing"><section class="app-landing-hero"><div class="app-shell"><div class="app-hero-copy"><h1 class="app-sr">${escape(config.name)}</h1><img class="app-hero-logo" src="/assets/hero-logo-things-io90.png" alt="Things 임시 로고"><p class="app-hero-description">${escape(introduction)}</p><p class="app-hero-description">${action}</p></div></div></section>${projectVideo(config.projectVideo)}<div class="app-home-flow"><div class="app-home-stories">${technologySection(config.technologies, BRANDS)}${interviewSection(context.interviews)}</div>${contactSection(config.contact)}</div></main>`;
 }
 
 export function wikiLanding(documents, context, field, recent = '') {

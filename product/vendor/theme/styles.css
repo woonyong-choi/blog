@@ -252,6 +252,7 @@ html::-webkit-scrollbar { width: var(--site-scrollbar); }
 .app-remote { display: inline-flex; align-items: center; gap: var(--site-gap-xs); font-weight: var(--site-weight-medium); }
 .app-remote img { width: var(--site-subtitle); height: var(--site-subtitle); }
 .app-player { position: relative; }
+.app-player.is-initialized.is-hidden-until-played:not(.has-played) { visibility: hidden; overflow: hidden; height: 0; }
 .app-player video { display: block; }
 .app-video-error { display: block; padding: var(--site-gap-sm); color: var(--site-muted); background: var(--site-card); font-size: var(--site-small-text); }
 .app-player-button { position: absolute; top: 50%; left: 50%; width: var(--site-player-overlay); height: var(--site-player-overlay); min-width: var(--site-player-min); min-height: var(--site-player-min); padding: 0; border: 0; background: url('./assets/controls/video-play.svg') center / contain no-repeat; transform: translate(-50%, -50%); opacity: var(--site-player-opacity); cursor: pointer; }
