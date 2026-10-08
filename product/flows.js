@@ -7,7 +7,7 @@ for (const rail of document.querySelectorAll('[data-flow-rail]')) {
   const direction = rail.dataset.flowDirection === 'right' ? -1 : 1;
   const label = rail.dataset.flowLabel;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let clone; let distance = 0; let position = 0; let frame; let last;
+  let clones = []; let distance = 0; let position = 0; let frame; let last;
   let paused = false; let hovering = false; let focused = false; let visible = false;
   const durationValue = getComputedStyle(rail).getPropertyValue('--site-motion-rail').trim();
   const duration = parseFloat(durationValue) * (durationValue.endsWith('ms') ? 1 : 1000) * 2;
@@ -29,15 +29,18 @@ for (const rail of document.querySelectorAll('[data-flow-rail]')) {
   }
   function measure() {
     const progress = distance ? viewport.scrollLeft / distance : 0;
-    clone?.remove(); clone = undefined;
+    clones.forEach(clone => clone.remove()); clones = [];
     const gap = parseFloat(getComputedStyle(viewport).columnGap) || 0;
-    distance = group.scrollWidth > viewport.clientWidth ? group.getBoundingClientRect().width + gap : 0;
+    distance = group.children.length > 1 ? group.getBoundingClientRect().width + gap : 0;
     controls.hidden = !distance;
     viewport.classList.toggle('has-flow', !!distance);
     if (distance) {
-      clone = group.cloneNode(true); clone.removeAttribute('data-flow-group');
-      clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
-      viewport.append(clone);
+      const count = Math.ceil(viewport.clientWidth / distance);
+      for (let index = 0; index < count; index++) {
+        const clone = group.cloneNode(true); clone.removeAttribute('data-flow-group');
+        clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
+        viewport.append(clone); clones.push(clone);
+      }
       position = paused || reduced.matches ? Math.floor(progress * group.children.length) * distance / group.children.length : progress * distance;
       viewport.scrollLeft = position;
     }
@@ -55,8 +58,8 @@ for (const rail of document.querySelectorAll('[data-flow-rail]')) {
     viewport.scrollTo({ left: position, behavior: 'instant' });
   }
   toggle.addEventListener('click', () => { paused = !paused; position = viewport.scrollLeft % distance; update(); });
-  rail.querySelector('[data-flow-prev]').addEventListener('click', () => step(-1));
-  rail.querySelector('[data-flow-next]').addEventListener('click', () => step(1));
+  rail.querySelector('[data-flow-prev]')?.addEventListener('click', () => step(-1));
+  rail.querySelector('[data-flow-next]')?.addEventListener('click', () => step(1));
   viewport.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; update(); } });
   viewport.addEventListener('pointerleave', () => { hovering = false; update(); });
   viewport.addEventListener('pointerdown', stop);
