@@ -88,7 +88,8 @@ main {
 .gsc-main .gsc-reply-content { padding-block: 8px; }
 .gsc-main .gsc-reply-footer { font-size: 15px; }
 .gsc-main .gsc-reply-box { background: transparent; border-top: 1px solid #ebecef; padding: 18px; }
-.gsc-main .gsc-reply-box > button { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #55606e; background: #edeef1; border: 1px solid transparent; border-radius: 12px; padding: 12px 18px; }
+/* 답글 버튼의 rounded와 px/py 유틸리티를 입력 역할로 대체한다. */
+.gsc-main .gsc-reply-box > button { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #55606e; background: #edeef1; border: 1px solid transparent; border-radius: 12px !important; padding: 12px 18px !important; }
 .gsc-main .gsc-comment-box-is-reply { padding: 18px; border-top: 1px solid #ebecef; }
 .gsc-main .gsc-tl-line { background: #ebecef; }
 .gsc-main :is(.gsc-comment-author-avatar,.gsc-reply-author-avatar) img { width: 24px; height: 24px; }
