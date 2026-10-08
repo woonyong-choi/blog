@@ -1061,8 +1061,8 @@ body[data-page=features] > main { background: var(--site-card); }
 .app-blog-cover .app-content-icon { width: var(--site-hero-icon); height: var(--site-hero-icon); }
 .app-blog-card-body { padding: var(--site-card-inset); text-align: center; }
 .app-blog-card .app-tags { justify-content: flex-start; text-align: left; }
-.app-blog-card h3 { margin: 0 0 var(--site-gap-sm); overflow: hidden; font-size: var(--site-body-text); line-height: var(--site-line-card); text-overflow: ellipsis; white-space: nowrap; }
-.app-blog-card h3 a { color: var(--site-help-title-color); }
+.app-blog-card-title { margin: 0 0 var(--site-gap-sm); overflow: hidden; font-size: var(--site-body-text); line-height: var(--site-line-card); text-overflow: ellipsis; white-space: nowrap; }
+.app-blog-card-title a { color: var(--site-help-title-color); }
 .app-list-toolbar { display: flex; flex-wrap: wrap; gap: var(--site-gap); justify-content: space-between; margin-block: var(--site-gap-lg); font-size: var(--site-small-text); }
 .app-page-links { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: center; justify-content: center; margin-block: var(--site-support-gap); }
 .app-page-links a, .app-page-links [aria-current=page] { padding: var(--site-gap-xs) var(--site-gap-sm); border-radius: var(--site-button-radius); }

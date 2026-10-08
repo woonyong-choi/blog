@@ -22,6 +22,9 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.equal((first.match(/class="app-blog-card"/g) ?? []).length, 12);
   assert.equal((last.match(/class="app-blog-card"/g) ?? []).length, 1);
   assert.match(first, /href="\/blog\/all\/page\/2\/"/);
+  assert.equal((first.match(/<h2\b/g) ?? []).length, 12);
+  assert.doesNotMatch(first, /<h3\b/);
+  assert.equal((recentBlog(entries, TAGS).match(/<h3\b/g) ?? []).length, 3);
   assert.doesNotMatch(last, /rel="next"/);
   const feed = blogFeed(entries, TAGS, 1);
   assert.equal((feed.match(/class="app-blog-post"/g) ?? []).length, 4);

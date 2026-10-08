@@ -3,12 +3,13 @@ import { escape } from './markdown.mjs';
 import { subjectIcon, tagLinks, dateLine, searchBox } from './publication-layout.mjs';
 import { PAGE_SIZES, paginate } from './content-model.mjs';
 
-export function blogCard(page, tags) {
+export function blogCard(page, tags, level = 3) {
+  const heading = level === 2 ? 'h2' : 'h3';
   // 검증된 이미지별 좌표는 테마 값이 아닌 콘텐츠의 자르기 데이터다.
   const position = page.thumbnail?.position;
   const crop = position ? ` style="object-position:${position.x}% ${position.y}%"` : '';
   const cover = page.thumbnail ? `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="lazy" decoding="async"${crop}>` : subjectIcon(page.contentIcon);
-  return `<article class="app-blog-card"><a class="app-blog-cover" href="${page.route}" aria-label="${escape(page.title)}">${cover}</a><div class="app-blog-card-body"><h3><a href="${page.route}">${escape(page.title)}</a></h3>${tagLinks(page, tags, 3)}</div></article>`;
+  return `<article class="app-blog-card"><a class="app-blog-cover" href="${page.route}" aria-label="${escape(page.title)}">${cover}</a><div class="app-blog-card-body"><${heading} class="app-blog-card-title"><a href="${page.route}">${escape(page.title)}</a></${heading}>${tagLinks(page, tags, 3)}</div></article>`;
 }
 
 export function recentBlog(posts, tags) {
@@ -18,7 +19,7 @@ export function recentBlog(posts, tags) {
 
 export function blogArchive(posts, tags, page) {
   const result = paginate(posts, page, PAGE_SIZES.cards);
-  return `<main id="main" class="app-shell">${searchBox()}<h1 class="app-page-heading">모든 글</h1><div class="app-list-toolbar"><span>${posts.length}편 · 최신 발행순</span><a href="/blog/">본문 이어 읽기 →</a></div>${posts.length ? `<div class="app-blog-grid">${result.items.map(post => blogCard(post, tags)).join('')}</div>` : emptyBlog()}${pagination(result, '/blog/all/')}</main>`;
+  return `<main id="main" class="app-shell">${searchBox()}<h1 class="app-page-heading">모든 글</h1><div class="app-list-toolbar"><span>${posts.length}편 · 최신 발행순</span><a href="/blog/">본문 이어 읽기 →</a></div>${posts.length ? `<div class="app-blog-grid">${result.items.map(post => blogCard(post, tags, 2)).join('')}</div>` : emptyBlog()}${pagination(result, '/blog/all/')}</main>`;
 }
 
 export function blogFeed(posts, tags, page) {
