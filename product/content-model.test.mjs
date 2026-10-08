@@ -13,6 +13,9 @@ test('publication_contract_excludes_drafts_and_future_posts', () => {
   const documents = [{}, { id: 'b', slug: 'b', visibility: 'draft' }, { id: 'c', slug: 'c', publishedAt: '2027-01-01' }].map(change => readDocument(source(change), TAGS, now));
   assert.deepEqual(publicDocuments(documents).map(page => page.id), ['a']);
   assert.throws(() => publicDocuments([documents[0], documents[0]]), /duplicate/);
+  const example = readDocument(source({ example: true }), TAGS, now);
+  assert.deepEqual(publicDocuments([example]), []);
+  assert.deepEqual(publicDocuments([example], { includeExamples: true }).map(page => page.id), ['a']);
 });
 
 test('publication_contract_rejects_missing_comments_invalid_dates_and_tags', () => {

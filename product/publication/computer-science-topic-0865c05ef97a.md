@@ -4,7 +4,7 @@
   "slug": "computer-science-topic-0865c05ef97a",
   "type": "wiki",
   "title": "Quick Sort",
-  "description": "이처럼 비교의 기준으로 고른 값을 피벗(pivot), 그 값을 기준으로 구간을 재배치하는 과정을 파티션(partition)이라고 한다. 퀵 정렬(Quick Sort)은 파티션 뒤에 남은 왼쪽과 오른쪽 구간을 각각 정렬하는 분할 정복 알고리즘이다. 학생 한 명을 기준으로 키가 작은 학생과 같거나 큰 학생을 나눈 다음, 양쪽",
+  "description": "이처럼 비교의 기준으로 고른 값을 피벗(pivot), 그 값을 기준으로 구간을 재배치하는 과정을 파티션(partition)이라고 한다.",
   "tags": [
     "computer-science"
   ],

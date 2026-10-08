@@ -4,7 +4,7 @@
   "slug": "ai-machine-learning-topic-ff856a774938",
   "type": "wiki",
   "title": "활성화 함수",
-  "description": "신경망에서 Affine 연산은 입력을 가중합으로 바꾼다. 두 층을 y=(xW1+b1)W2+b2로 연결하면 y=x(W1W2)+(b1W2+b2)로 합칠 수 있다. 편향이 있는 변환은 엄밀히 affine이며, 이러한 층만 반복해도 함수의 형태는 그대로다. 층 사이에 비선형성을 넣으면 XOR처럼 한 직선으로 나눌 수 없는 패턴을",
+  "description": "신경망에서 Affine 연산은 입력을 가중합으로 바꾼다. 두 층을 y=(xW1+b1)W2+b2로 연결하면 y=x(W1W2)+(b1W2+b2)로 합칠 수 있다.",
   "tags": [
     "computer-science"
   ],

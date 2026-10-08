@@ -4,7 +4,7 @@
   "slug": "ai-machine-learning-topic-f7bb4c8cd38e",
   "type": "wiki",
   "title": "역전파",
-  "description": "역전파는 스칼라 손실 L을 이루는 계산 그래프에서 연쇄법칙을 역순으로 적용해 각 입력과 파라미터의 gradient를 구한다. gradient를 계산하는 단계이며 실제 파라미터 변경은 optimizer가 맡는다. L=f(g(x))라면 dL/dx=(dL/dg)(dg/dx)이고, 입력이 여러 경로에서 사용되면 각 경로의 기여를",
+  "description": "역전파는 스칼라 손실 L을 이루는 계산 그래프에서 연쇄법칙을 역순으로 적용해 각 입력과 파라미터의 gradient를 구한다.",
   "tags": [
     "computer-science"
   ],

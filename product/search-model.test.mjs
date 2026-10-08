@@ -40,3 +40,9 @@ test('추천은 존재하는 제목·별칭·태그와 필터에 맞는 글만 �
   assert.equal(result.tags[0][0], 'javascript');
   assert.deepEqual(suggestions(index, {}, state).entries, []);
 });
+
+test('본문에서만 일치하면 실제 일치 부분을 결과 설명으로 보여준다', () => {
+  const result = searchDocuments(index, { ...state, query: '메모리' });
+  assert.equal(result.entries[0].excerpt, '메모리');
+  assert.equal(result.entries[0].description, '복사');
+});

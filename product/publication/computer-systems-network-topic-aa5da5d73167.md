@@ -4,7 +4,7 @@
   "slug": "computer-systems-network-topic-aa5da5d73167",
   "type": "wiki",
   "title": "보조 페이지 테이블",
-  "description": "Page Table에 유효한 Mapping이 없다는 사실만으로는 접근을 거부해야 할지 판단할 수 없다. 실행 파일을 나중에 읽을 주소인지, Swap에서 되살릴 페이지인지, Stack을 늘려야 하는 주소인지 커널이 알고 있어야 한다. PintOS의 Supplemental Page Table, 줄여서 SPT는 이 판단에 필요",
+  "description": "Page Table에 유효한 Mapping이 없다는 사실만으로는 접근을 거부해야 할지 판단할 수 없다.",
   "tags": [
     "os"
   ],

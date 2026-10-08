@@ -4,7 +4,7 @@
   "slug": "amazon-bedrock",
   "type": "wiki",
   "title": "Amazon Bedrock",
-  "description": "Amazon Bedrock은 모델 호출에 더해 문서 검색, 실행 흐름과 응답 필터를 연결하는 기능을 제공한다. Knowledge Base는 답변에 필요한 문서를 찾고, Flow는 처리 순서를 표현하며, Guardrail은 입력과 출력에 적용할 정책을 검사한다. 계산이나 외부 조회가 필요하면 Agent의 도구 호출과 연결한",
+  "description": "Amazon Bedrock은 모델 호출에 더해 문서 검색, 실행 흐름과 응답 필터를 연결하는 기능을 제공한다.",
   "tags": [
     "platform-delivery-operations"
   ],

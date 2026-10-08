@@ -4,7 +4,7 @@
   "slug": "indexes",
   "type": "wiki",
   "title": "DB 인덱스",
-  "description": "회원 100만 명이 있는 users Table에서 이메일이 a@b.com인 행을 찾는다고 하자. 이메일로 찾을 경로가 없으면 DB는 Table을 훑으며 각 행이 조건에 맞는지 확인해야 한다. 이 접근을 Full Table Scan이라고 한다. 행이 늘면 확인할 데이터도 늘어나지만, 행 수가 두 배라고 실행 시간이 반드시 ",
+  "description": "회원 100만 명이 있는 users Table에서 이메일이 a@b.com인 행을 찾는다고 하자.",
   "tags": [
     "data"
   ],

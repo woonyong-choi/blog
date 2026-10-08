@@ -90,6 +90,7 @@ mkdirSync(OUTPUT, { recursive: true });
 cpSync(join(ROOT,'assets'), join(OUTPUT,'assets'), { recursive: true });
 cpSync(THEME, join(OUTPUT,'theme'), { recursive: true });
 cpSync(join(ROOT,'site.js'), join(OUTPUT,'site.js'));
+cpSync(join(ROOT,'document.js'), join(OUTPUT,'document.js'));
 mkdirSync(join(OUTPUT,'sources'), { recursive: true });
 for (const page of pages) {
   const destination = join(OUTPUT, page.route.slice('/things/'.length), 'index.html');

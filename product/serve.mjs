@@ -21,6 +21,7 @@ createServer((request, response) => {
     if (stat.isDirectory()) { path = resolve(path, 'index.html'); stat = statSync(path); }
     if (!stat.isFile()) throw new Error('file');
     const headers = { 'content-type': mime[extname(path)] ?? 'application/octet-stream', 'accept-ranges':'bytes', 'cache-control':'no-cache', 'x-content-type-options':'nosniff' };
+    if (pathname.endsWith('/giscus.css')) headers['access-control-allow-origin'] = 'https://giscus.app';
     let start = 0; let end = stat.size - 1; let status = 200;
     if (request.headers.range) {
       const range = request.headers.range.match(/^bytes=(\d*)-(\d*)$/);

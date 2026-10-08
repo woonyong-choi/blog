@@ -4,7 +4,7 @@
   "slug": "platform-delivery-operations-topic-f89d71c7eb29",
   "type": "wiki",
   "title": "Debugger",
-  "description": "여기서는 Kernel Symbol이 있는 PintOS를 QEMU의 GDB Stub에 연결해 조사하는 절차를 다룬다. C 타입과 함수 이름은 실행 중인 Kernel과 같은 빌드의 Debug 정보가 설명하고, Register와 Memory 값은 연결한 Target에서 가져온다. Symbol 파일만 열고 연결하지 않은 상태에서",
+  "description": "여기서는 Kernel Symbol이 있는 PintOS를 QEMU의 GDB Stub에 연결해 조사하는 절차를 다룬다.",
   "tags": [
     "platform-delivery-operations"
   ],

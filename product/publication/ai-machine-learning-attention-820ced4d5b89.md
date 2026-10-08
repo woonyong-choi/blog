@@ -4,7 +4,7 @@
   "slug": "ai-machine-learning-attention-820ced4d5b89",
   "type": "wiki",
   "title": "Attention",
-  "description": "Attention은 query와 각 key의 점수로 가중치를 만들고 그 가중치로 value를 합치는 연산이다. Self-attention은 Q·K·V가 같은 입력 시퀀스에서 나온다. causal 여부와 head 수는 이와 별개의 축이다. 따라서 학습 가능한 QKV·multi-head·causal mask를 동시에 사용할 ",
+  "description": "Attention은 query와 각 key의 점수로 가중치를 만들고 그 가중치로 value를 합치는 연산이다.",
   "tags": [
     "llm"
   ],

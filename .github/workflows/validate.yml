@@ -11,6 +11,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: npm ci
       - run: node scripts/build-tokens.mjs --check
       - run: node build.mjs
       - run: node --check main.js && node --check doc-page.js && node --check build.mjs
+      - run: npm run check:product
+      - run: npm run build:product
+      - run: npm run build:site

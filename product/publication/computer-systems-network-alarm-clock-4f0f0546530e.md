@@ -4,7 +4,7 @@
   "slug": "computer-systems-network-alarm-clock-4f0f0546530e",
   "type": "wiki",
   "title": "Alarm Clock",
-  "description": "PintOS의 초기 과제 코드는 timer_elapsed(start)를 반복 검사하면서 thread_yield()를 호출한다. CPU를 양보해도 Thread가 READY 상태에 남으므로, 다시 선택될 때마다 시간이 지났는지만 확인한다. 이런 Polling은 대기 중인 Thread의 수뿐 아니라 Scheduler가 선택하는",
+  "description": "PintOS의 초기 과제 코드는 timer_elapsed(start)를 반복 검사하면서 thread_yield()를 호출한다.",
   "tags": [
     "os"
   ],

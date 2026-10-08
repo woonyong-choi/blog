@@ -35,7 +35,17 @@ export function searchDocuments(entries, state) {
   const selected = matches.filter(({ entry }) => state.type === 'all' || state.type === entry.type).map(({ entry }) => entry);
   const totalPages = Math.max(1, Math.ceil(selected.length / 12));
   const page = Math.min(totalPages, state.page);
-  return { entries: selected.slice((page - 1) * 12, page * 12), all: selected, counts, page, totalPages };
+  return { entries: selected.slice((page - 1) * 12, page * 12).map(entry => ({ ...entry, excerpt: searchExcerpt(entry, terms) })), all: selected, counts, page, totalPages };
+}
+
+function searchExcerpt(entry, terms) {
+  if (!terms.length || terms.some(term => entry.normalized.description.includes(term))) return entry.description;
+  const text = String(entry.text ?? '').normalize('NFC').replace(/\s+/g, ' ').trim();
+  const lower = text.toLocaleLowerCase('ko');
+  const positions = terms.map(term => lower.indexOf(term)).filter(index => index >= 0);
+  if (!positions.length) return entry.description;
+  const start = Math.max(0, Math.min(...positions) - 50);
+  return `${start ? '…' : ''}${text.slice(start, start + 180)}${start + 180 < text.length ? '…' : ''}`;
 }
 
 export function suggestions(entries, tags, state) {

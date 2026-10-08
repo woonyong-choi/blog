@@ -4,7 +4,7 @@
   "slug": "ai-machine-learning-topic-3b9f4a2496bc",
   "type": "wiki",
   "title": "검증 데이터",
-  "description": "검증 데이터(validation set)는 학습률·모델 크기·학습 종료 시점처럼 학습 절차를 선택하는 데 사용한다. 학습 데이터는 손실의 gradient로 가중치를 갱신하고, test 데이터는 선택이 끝난 모델을 평가한다. 검증 결과가 설정 선택에 영향을 주는 것은 정상이다. 검증 데이터를 가중치 학습이나 전처리 통계 계",
+  "description": "검증 데이터(validation set)는 학습률·모델 크기·학습 종료 시점처럼 학습 절차를 선택하는 데 사용한다.",
   "tags": [
     "ml"
   ],

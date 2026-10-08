@@ -4,7 +4,7 @@
   "slug": "computer-science-topic-b526fbd435ec",
   "type": "wiki",
   "title": "Heap Sort",
-  "description": "힙 정렬(Heap Sort)은 배열 앞부분을 최댓값이 맨 앞에 있는 최대 힙(Max Heap)으로 관리한다. 맨 앞 값을 읽는 데에는 O(1), 그 값을 뒤로 보내고 남은 힙을 정돈하는 데에는 최대 O(log n)이 든다. 가장 키가 큰 사람을 줄의 맨 뒤로 보낸 다음, 남은 사람 중 가장 큰 사람을 그 앞에 보내는 과정",
+  "description": "힙 정렬(Heap Sort)은 배열 앞부분을 최댓값이 맨 앞에 있는 최대 힙(Max Heap)으로 관리한다.",
   "tags": [
     "computer-science"
   ],

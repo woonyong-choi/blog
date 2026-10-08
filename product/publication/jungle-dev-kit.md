@@ -4,7 +4,7 @@
   "slug": "jungle-dev-kit",
   "type": "wiki",
   "title": "Jungle Dev Kit",
-  "description": "Jungle Dev Kit은 @todo, @review, @warn, @breakpoint 등의 주석을 모아 사이드바와 코드 옆의 표시로 연결하는 VS Code 확장이다. 저장소 이름은 jungle-dev-kit, 확장 식별자는 woonyong.jungle-dev-kit, 표시명은 Annotation이다. 아래에서는 0.",
+  "description": "Jungle Dev Kit은 @todo, @review, @warn, @breakpoint 등의 주석을 모아 사이드바와 코드 옆의 표시로 연결하는 VS Code 확장이다.",
   "tags": [
     "platform-delivery-operations"
   ],

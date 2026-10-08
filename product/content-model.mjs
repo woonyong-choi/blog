@@ -20,7 +20,7 @@ export function readDocument(source, tags, now = new Date()) {
   if (!Array.isArray(page.tags) || page.tags.length < 1 || page.tags.length > 5) throw new Error(`invalid tags: ${page.id}`);
   if (new Set(page.tags).size !== page.tags.length || page.tags.some(tag => !tags[tag])) throw new Error(`unknown or duplicate tag: ${page.id}`);
   if (!FIELDS.includes(page.field)) throw new Error(`invalid field: ${page.id}`);
-  if (!ID.test(page.topic ?? '')) throw new Error(`invalid topic: ${page.id}`);
+  if (!ID.test(page.topic ?? '') || !tags[page.topic]) throw new Error(`invalid topic: ${page.id}`);
   if (typeof page.contentIcon?.name !== 'string') throw new Error(`missing content icon: ${page.id}`);
   if (page.type === 'blog' && page.comments !== true) throw new Error(`blog comments are required: ${page.id}`);
   for (const name of ['publishedAt', 'updatedAt']) {
@@ -33,12 +33,12 @@ export function readDocument(source, tags, now = new Date()) {
     published: page.visibility === 'public' && (!page.publishedAt || page.publishedAt <= now.toISOString().slice(0, 10)) };
 }
 
-export function publicDocuments(documents) {
+export function publicDocuments(documents, { includeExamples = false } = {}) {
   for (const key of ['id', 'slug']) {
     const values = documents.map(page => page[key]);
     if (new Set(values).size !== values.length) throw new Error(`duplicate document ${key}`);
   }
-  return documents.filter(page => page.published);
+  return documents.filter(page => page.published && (includeExamples || !page.example));
 }
 
 export function blogDocuments(documents) {
@@ -56,7 +56,7 @@ export function searchEntry(page, tags) {
     type: page.type, tags: page.tags, topic: page.topic, contentIcon: page.contentIcon,
     date: page.type === 'blog' ? page.publishedAt : page.updatedAt ?? '',
     keywords: [...(page.keywords ?? []), ...page.tags.flatMap(tag => [tags[tag].label, ...(tags[tag].aliases ?? [])])],
-    text: page.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/<[^>]*>/g, ' ').replace(/[#*_`>|]/g, ' ') };
+    text: page.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/<[^>]*>/g, ' ').replace(/[#*_`>|]/g, ' ') };
 }
 
 function validDate(value) {

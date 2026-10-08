@@ -4,7 +4,7 @@
   "slug": "aurora",
   "type": "wiki",
   "title": "Aurora",
-  "description": "이 실습 구성에서는 Aurora MySQL을 사용하며, 데이터베이스를 private subnet에 두고 웹 계층만 접근하게 제한한다. 웹 서버는 비밀번호를 코드나 설정 파일에 넣는 대신 Secrets Manager에서 접속 정보를 읽는다. EC2에 연결한 IAM Role이 Secret을 읽을 권한을 제공한다. 이 권한과 ",
+  "description": "이 실습 구성에서는 Aurora MySQL을 사용하며, 데이터베이스를 private subnet에 두고 웹 계층만 접근하게 제한한다.",
   "tags": [
     "platform-delivery-operations"
   ],

@@ -4,7 +4,7 @@
   "slug": "platform-delivery-operations-iam-5c7a5ae7d73b",
   "type": "wiki",
   "title": "IAM",
-  "description": "IAM은 인증된 주체가 어떤 자원에 어떤 행동을 할 수 있는지 판단하는 권한 체계다. AWS 계정의 root 로그인이나 키를 여러 사람과 배포 프로그램이 공유하면 권한을 좁히고 행위자를 추적하기 어렵다. 사람은 federation과 임시 자격증명, 워크로드는 IAM Role을 우선하고, root는 필요한 계정 작업으로 사",
+  "description": "IAM은 인증된 주체가 어떤 자원에 어떤 행동을 할 수 있는지 판단하는 권한 체계다. AWS 계정의 root 로그인이나 키를 여러 사람과 배포 프로그램이 공유하면 권한을 좁히고 행위자를 추적하기 어렵다.",
   "tags": [
     "platform-delivery-operations"
   ],

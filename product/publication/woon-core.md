@@ -4,7 +4,7 @@
   "slug": "woon-core",
   "type": "wiki",
   "title": "Woon Core",
-  "description": "이 사이트의 문서는 사람이 파일을 직접 고쳐서 만들지 않는다. 원자료를 source로 보존하고, 그 source를 가리키는 claim을 승인한 다음, LLM을 한 번도 호출하지 않는 컴파일러가 claim을 결합해 페이지를 생성한다. 그래서 문장마다 어느 기록에서 나왔는지 되짚을 수 있고, 같은 입력에서 같은 바이트가 나온",
+  "description": "이 사이트의 문서는 사람이 파일을 직접 고쳐서 만들지 않는다. 원자료를 source로 보존하고, 그 source를 가리키는 claim을 승인한 다음, LLM을 한 번도 호출하지 않는 컴파일러가 claim을 결합해 페이지를 생성한다.",
   "tags": [
     "projects"
   ],

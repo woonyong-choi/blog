@@ -7,15 +7,15 @@ import { FIELDS } from './content-model.mjs';
 const BRANDS = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons;
 const FIELD_NAMES = Object.freeze({ languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
 
-export function iconUrl(spec) {
+export function iconUrl(spec, size = 'small') {
   const name = typeof spec === 'string' ? spec : spec.name;
-  return `/theme/assets/icons/${BRANDS.some(item => item.file === `${name}.svg`) ? 'brands' : 'detail'}/${name}.svg`;
+  return `/theme/assets/icons/${BRANDS.some(item => item.file === `${name}.svg`) ? 'brands' : size === 'small' ? 'small' : 'detail'}/${name}.svg`;
 }
 
 export function subjectIcon(spec, size = 'card') {
   const name = typeof spec === 'string' ? spec : spec.name;
   const brand = BRANDS.find(item => item.file === `${name}.svg`);
-  if (brand) return `<span class="app-content-icon is-${size}"><img src="/theme/assets/icons/brands/${escape(brand.file)}" alt="" loading="lazy" decoding="async"></span>`;
+  if (brand) return `<span class="app-content-icon is-${size}"><img src="/theme/assets/icons/brands/${escape(brand.file)}" alt="" decoding="async"></span>`;
   return contentIcon(spec, size, 'detail');
 }
 
@@ -45,10 +45,13 @@ export function wikiCard(page, title = page.title) {
 export function knowledgeFields(documents, topics, field) {
   const bySlug = new Map(documents.map(page => [page.slug, page]));
   return FIELDS.filter(value => !field || value === field).map(value => {
-    const entries = Object.values(topics).filter(topic => topic.field === value && bySlug.has(topic.article));
+    const entries = Object.entries(topics).filter(([, topic]) => topic.field === value).map(([id, topic]) => {
+      const article = bySlug.get(topic.article) ?? documents.filter(page => page.topic === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
+      return article ? { ...topic, page: { ...article, contentIcon: { name: topic.icon } } } : null;
+    }).filter(Boolean);
     if (!entries.length) return '';
     const shown = field ? entries : entries.slice(0, 6);
-    return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>${FIELD_NAMES[value]}</h2>${!field && entries.length > 6 ? `<a href="/wiki/${value}/">전체 보기 <span aria-hidden="true">→</span></a>` : ''}</div><div class="app-knowledge-grid">${shown.map(topic => wikiCard(bySlug.get(topic.article), topic.label)).join('')}</div></section>`;
+    return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>${FIELD_NAMES[value]}</h2>${!field && entries.length > 6 ? `<a href="/wiki/${value}/">전체 보기 <span aria-hidden="true">→</span></a>` : ''}</div><div class="app-knowledge-grid">${shown.map(topic => wikiCard(topic.page, topic.label)).join('')}</div></section>`;
   }).join('');
 }
 
@@ -88,6 +91,7 @@ function tableOfContents(page) {
 }
 
 function topicNavigation(page, documents, topics) {
+  if (page.type !== 'wiki') return '';
   const entries = documents.filter(other => other.topic === page.topic);
   const bySlug = new Map(entries.map(other => [other.slug, other]));
   const roots = entries.filter(other => !bySlug.has(other.parent) || other.parent === other.slug);
@@ -100,5 +104,5 @@ function topicNavigation(page, documents, topics) {
     if (depth >= 2) return `<li>${link}</li>${nested.map(other => children(other, depth, path)).join('')}`;
     return `<li><details open><summary>${escape(parent.title)}</summary><ul><li>${link}</li>${nested.map(other => children(other, depth + 1, path)).join('')}</ul></details></li>`;
   }
-  return `<details class="app-document-nav"><summary>문서 목록 · ${escape(topics[page.topic].label)}</summary><nav aria-label="${escape(topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Wiki</a><ul>${roots.map(root => children(root, 0)).join('')}</ul></nav></details>`;
+  return `<details class="app-document-nav" open><summary>문서 목록 · ${escape(topics[page.topic].label)}</summary><nav aria-label="${escape(topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Wiki</a><ul>${roots.map(root => children(root, 0)).join('')}</ul></nav></details>`;
 }

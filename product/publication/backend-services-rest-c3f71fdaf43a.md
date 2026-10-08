@@ -4,7 +4,7 @@
   "slug": "backend-services-rest-c3f71fdaf43a",
   "type": "wiki",
   "title": "REST",
-  "description": "REST(Representational State Transfer)는 분산된 시스템의 구성 요소가 자원의 표현을 주고받는 방식을 설명하는 아키텍처 스타일이다. 웹 API에서 URI와 HTTP Method를 조합하는 설계와 자주 연결되지만, 주소를 명사로 정하고 JSON을 반환하는 것만으로 REST의 조건이 모두 갖춰지는 ",
+  "description": "REST(Representational State Transfer)는 분산된 시스템의 구성 요소가 자원의 표현을 주고받는 방식을 설명하는 아키텍처 스타일이다.",
   "tags": [
     "backend-services"
   ],

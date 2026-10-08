@@ -4,7 +4,7 @@
   "slug": "computer-science-topic-00c3fce8f9af",
   "type": "wiki",
   "title": "Two Pointers",
-  "description": "두 위치를 함께 추적하고 그 관계에 맞춰 이동시키는 접근을 Two Pointers라고 부른다. 여기서는 한 칸씩 이동하는 slow와 두 칸씩 이동하는 fast로 연결 리스트의 분할 경계를 찾는다. 정렬된 Array의 양 끝에서 서로 가까워지는 방식 등도 있으므로, Two Pointers가 언제나 이동 속도 1과 2를 뜻하",
+  "description": "두 위치를 함께 추적하고 그 관계에 맞춰 이동시키는 접근을 Two Pointers라고 부른다.",
   "tags": [
     "computer-science"
   ],

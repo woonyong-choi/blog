@@ -4,7 +4,7 @@
   "slug": "computer-systems-network-topic-6276ce481024",
   "type": "wiki",
   "title": "우선순위 스케줄링",
-  "description": "우선순위가 31인 A가 40인 B를 만들면 누가 먼저 실행될까? 현재 PintOS 구현에서는 B를 READY로 만든 뒤 우선순위를 비교하고 A가 CPU를 양보한다. 하지만 B가 생성되었다는 사실만으로 CPU 실행이 저절로 바뀌지는 않는다. Ready Queue에 넣는 단계와 다음 Thread를 고르는 단계를 따라가야 한다",
+  "description": "우선순위가 31인 A가 40인 B를 만들면 누가 먼저 실행될까? 현재 PintOS 구현에서는 B를 READY로 만든 뒤 우선순위를 비교하고 A가 CPU를 양보한다.",
   "tags": [
     "os"
   ],

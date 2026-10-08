@@ -4,7 +4,7 @@
   "slug": "computer-systems-network-topic-1217820258bd",
   "type": "wiki",
   "title": "인자 전달",
-  "description": "프로그램에 args-multiple some arguments for you!를 전달하면 main()은 문자열 하나를 받지 않는다. 실행 파일 이름을 포함한 인자 수 argc와, 각 문자열을 가리키는 포인터 배열 argv를 받는다. Kernel은 새 사용자 주소 공간에 문자열과 포인터를 배치하고, 프로그램이 시작할 때 이",
+  "description": "프로그램에 args-multiple some arguments for you!를 전달하면 main()은 문자열 하나를 받지 않는다.",
   "tags": [
     "os"
   ],

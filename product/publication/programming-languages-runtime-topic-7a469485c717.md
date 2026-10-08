@@ -4,7 +4,7 @@
   "slug": "programming-languages-runtime-topic-7a469485c717",
   "type": "wiki",
   "title": "동시성과 병렬성",
-  "description": "동시성은 여러 작업이 겹치는 기간에 진행될 수 있는 구조이고, 병렬성은 여러 실행 주체가 같은 순간에 실제 작업을 수행하는 것이다. 동시성이 반드시 Thread 하나를 뜻하지는 않는다. 하나의 JavaScript 실행 Agent에서는 현재 실행 흐름을 마친 뒤 다른 Job을 실행하지만, Worker를 추가하면 별도 Age",
+  "description": "동시성은 여러 작업이 겹치는 기간에 진행될 수 있는 구조이고, 병렬성은 여러 실행 주체가 같은 순간에 실제 작업을 수행하는 것이다.",
   "tags": [
     "programming-languages-runtime"
   ],

@@ -26,5 +26,5 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   const feed = blogFeed(entries, TAGS, 1);
   assert.equal((feed.match(/class="app-blog-post"/g) ?? []).length, 4);
   assert.match(feed, /href="\/blog\/page\/2\/"/);
-  assert.match(feed, /<h3 id="post-0-section">/);
+  assert.match(feed, /<h3[^>]* id="post-0-section">/);
 });

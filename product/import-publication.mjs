@@ -1,6 +1,7 @@
 // 검증된 공개 투영만 가져오고 원문과 공개 출처의 해시를 함께 보존한다.
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, unlinkSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -23,6 +24,10 @@ const TOPICS = [
 ];
 
 export function importPublication(sourceRoot) {
+  const validator = join(sourceRoot, 'scripts/check-public-projection.mjs');
+  if (!existsSync(validator)) throw new Error('missing public projection validator');
+  const checked = spawnSync(process.execPath, [validator], { cwd: sourceRoot, encoding: 'utf8' });
+  if (checked.status !== 0) throw new Error(`public projection validation failed: ${checked.stderr}`);
   const input = join(sourceRoot, 'generated/public-content');
   const output = join(ROOT, 'publication');
   const documents = readdirSync(input).filter(name => name.endsWith('.md') && name !== 'README.md').map(name => {
@@ -45,12 +50,21 @@ export function importPublication(sourceRoot) {
     const body = page.body.replace(/^\s*# [^\n]+\n/, '').replace(/^\{: [^\n]+\}\s*$/gm, '').trim();
     const paragraph = body.split(/\n\s*\n/).find(part => !/^(?:#|\||`|>|-|\{)/.test(part.trim())) ?? page.title;
     const metadata = { id: createHash('sha256').update(page.projection_id).digest('hex').slice(0, 20), slug: page.slug,
-      type: 'wiki', title: page.title, description: plainText(paragraph).slice(0, 180), tags: [topic],
+      type: 'wiki', title: page.title, description: excerpt(plainText(paragraph)), tags: [topic],
       field: topics[topic].field, topic, contentIcon: { name: topics[topic].icon }, visibility: 'public', comments: false,
       sourceUrl: `https://docs.woonyong.com${page.permalink}`, sourceHash: createHash('sha256').update(page.source).digest('hex'),
       parent: byId.get(page.public_parent_id)?.slug ?? null };
     writeFileSync(join(output, page.name), `---\n${JSON.stringify(metadata, null, 2)}\n---\n\n${body}\n`);
-    manifest.documents.push({ id: metadata.id, slug: page.slug, sourceUrl: metadata.sourceUrl, sourceHash: metadata.sourceHash });
+    manifest.documents.push({ id: metadata.id, slug: page.slug, file: page.name, sourceUrl: metadata.sourceUrl, sourceHash: metadata.sourceHash });
+  }
+  const previousPath = join(ROOT, 'publication-manifest.json');
+  const previous = existsSync(previousPath) ? JSON.parse(readFileSync(previousPath)).documents : [];
+  const retained = new Map(manifest.documents.map(page => [page.id, page.file]));
+  const imported = new Set(previous.map(page => page.id));
+  for (const name of readdirSync(output).filter(name => name.endsWith('.md'))) {
+    const match = readFileSync(join(output, name), 'utf8').match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    const metadata = parse(match?.[1] ?? '{}');
+    if (imported.has(metadata.id) && retained.get(metadata.id) !== name) unlinkSync(join(output, name));
   }
   writeFileSync(join(ROOT, 'topics.json'), JSON.stringify(topics, null, 2) + '\n');
   writeFileSync(join(ROOT, 'publication-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
@@ -71,6 +85,13 @@ function findTopic(page, byId, topics) {
 
 function plainText(value) {
   return value.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[*`#]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function excerpt(value) {
+  if (value.length <= 180) return value;
+  const first = value.match(/^.{50,180}?[.!?](?:\s|$)/)?.[0]?.trim();
+  if (first) return first;
+  return value.slice(0, 177).replace(/\s+\S*$/, '') + '…';
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

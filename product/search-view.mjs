@@ -50,7 +50,7 @@ function resultRow(entry, tags) {
   const icon = element('span', undefined, 'app-content-icon is-small');
   const image = element('img'); image.src = entry.iconUrl; image.alt = ''; image.loading = 'lazy'; image.width = 24; image.height = 24; icon.append(image);
   const body = element('div');
-  body.append(link(entry.title, entry.route, 'app-result-title'), element('span', `${entry.type === 'wiki' ? 'Wiki' : 'Blog'}${entry.example ? ' · 예시' : ''}`, 'app-result-type'), element('p', entry.description));
+  body.append(link(entry.title, entry.route, 'app-result-title'), element('span', `${entry.type === 'wiki' ? 'Wiki' : 'Blog'}${entry.example ? ' · 예시' : ''}`, 'app-result-type'), element('p', entry.excerpt ?? entry.description));
   const labels = element('div', undefined, 'app-tags');
   labels.append(...entry.tags.map(tag => link(tags[tag].label, `/tags/${tag}/?type=${entry.type}`, 'app-tag')));
   body.append(labels); row.append(icon, body); return row;

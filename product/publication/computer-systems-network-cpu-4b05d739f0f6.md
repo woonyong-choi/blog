@@ -4,7 +4,7 @@
   "slug": "computer-systems-network-cpu-4b05d739f0f6",
   "type": "wiki",
   "title": "CPU",
-  "description": "CPU는 명령어를 실행하면서 계산에 쓸 값, 다음 명령의 위치, 메모리에 접근할 조건을 바꾼다. 여기서는 PintOS의 x86-64 실행을 따라 그 상태를 읽는다. CPU의 내부 회로와 소프트웨어가 관찰하는 상태를 같은 것으로 간주하지는 않는다. Register Renaming이나 Pipeline처럼 실제 실행을 구성하는",
+  "description": "CPU는 명령어를 실행하면서 계산에 쓸 값, 다음 명령의 위치, 메모리에 접근할 조건을 바꾼다.",
   "tags": [
     "computer-science"
   ],

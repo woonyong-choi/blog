@@ -4,7 +4,7 @@
   "slug": "programming-languages-runtime-async-await-16ab8decaafb",
   "type": "wiki",
   "title": "async와 await",
-  "description": "Promise가 fulfilled이면 await 표현식은 그 값을 돌려주고, rejected이면 실패 이유를 던진다. 이미 fulfilled인 Promise나 일반 값을 기다려도 함수의 나머지는 후속 Job으로 이어진다. 현재 호출자는 먼저 실행을 계속할 수 있다. 이를 메인 Thread 전체를 재우는 Blocking 호",
+  "description": "Promise가 fulfilled이면 await 표현식은 그 값을 돌려주고, rejected이면 실패 이유를 던진다.",
   "tags": [
     "javascript"
   ],

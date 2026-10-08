@@ -4,7 +4,7 @@
   "slug": "platform-delivery-operations-dev-container-35451d7f11e4",
   "type": "wiki",
   "title": "Dev Container",
-  "description": "F5로 C 프로그램을 실행할 때는 VS Code가 어느 환경에서 어떤 compiler를 호출하는지 알아야 한다. Dev Container는 프로젝트에 필요한 도구와 실행 환경을 컨테이너 안에 준비하고 VS Code를 그 환경에 연결한다. 로컬 폴더를 컨테이너에서 여는 흐름에서는 devcontainer.json이 생성·연결",
+  "description": "F5로 C 프로그램을 실행할 때는 VS Code가 어느 환경에서 어떤 compiler를 호출하는지 알아야 한다.",
   "tags": [
     "platform-delivery-operations"
   ],

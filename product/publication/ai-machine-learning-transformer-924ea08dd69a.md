@@ -4,7 +4,7 @@
   "slug": "ai-machine-learning-transformer-924ea08dd69a",
   "type": "wiki",
   "title": "Transformer",
-  "description": "Transformer는 Attention과 토큰별 feed-forward 계산에 residual·normalization을 결합한 구조다. GPT 계열의 작은 decoder LM과 BERT 계열 encoder는 이 부품을 사용하지만 참조 범위·학습 목적·입력/출력 구성까지 같지는 않다. mask 하나만 바꾸면 사전학습된 ",
+  "description": "Transformer는 Attention과 토큰별 feed-forward 계산에 residual·normalization을 결합한 구조다.",
   "tags": [
     "llm"
   ],

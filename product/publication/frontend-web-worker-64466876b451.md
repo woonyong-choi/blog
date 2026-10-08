@@ -4,7 +4,7 @@
   "slug": "frontend-web-worker-64466876b451",
   "type": "wiki",
   "title": "Web Worker",
-  "description": "Web Worker는 Browser의 메인 JavaScript 실행 흐름과 분리된 환경에서 작업을 수행한다. 무거운 배열 정렬·픽셀 계산 같은 CPU 작업을 옮겨 메인 Thread가 입력과 DOM 작업을 처리할 여지를 만드는 데 사용한다. Worker를 만든다고 계산이 항상 더 빨라지거나 매 순간 서로 다른 CPU Cor",
+  "description": "Web Worker는 Browser의 메인 JavaScript 실행 흐름과 분리된 환경에서 작업을 수행한다.",
   "tags": [
     "frontend"
   ],

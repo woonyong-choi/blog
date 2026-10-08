@@ -4,7 +4,7 @@
   "slug": "ai-machine-learning-topic-de3a4dbc880f",
   "type": "wiki",
   "title": "신경망",
-  "description": "두 입력이 모두 1일 때만 켜지는 AND와, 하나라도 1이면 켜지는 OR은 같은 계산에 다른 문턱을 둘 수 있다. z=w1x1+w2x2+b를 구한 뒤 z>0이면 1, 나머지는 0을 출력하는 방식이다. 입력마다 곱하는 w가 가중치이고, 입력에 관계없이 더하는 b가 편향이다. 이런 가중합과 계단 함수로 만든 판별기를 단일 퍼",
+  "description": "두 입력이 모두 1일 때만 켜지는 AND와, 하나라도 1이면 켜지는 OR은 같은 계산에 다른 문턱을 둘 수 있다.",
   "tags": [
     "computer-science"
   ],

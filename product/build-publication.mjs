@@ -9,6 +9,7 @@ import { createMarkdown, escape } from './markdown.mjs';
 import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, resultRow, iconUrl } from './publication-layout.mjs';
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
+import { iconAuditPages } from './icon-audit.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -17,22 +18,24 @@ const TOPICS = JSON.parse(readFileSync(join(ROOT, 'topics.json')));
 const THEME = join(ROOT, 'vendor/theme');
 const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
 const digest = value => createHash('sha256').update(value).digest('hex');
+const CLIENT_FILES = ['publication.js', 'document.js', 'search-model.mjs', 'search-view.mjs', 'search-client.mjs', 'search-worker.mjs', 'comments.js'];
 
 export function buildPublication({ origin = '', preview = true } = {}) {
   if (origin && !/^https?:\/\/[^/?#]+$/.test(origin)) throw new Error('invalid site origin');
   if (!preview && !origin.startsWith('https://')) throw new Error('production build requires SITE_ORIGIN');
   verifyTheme();
   const folders = ['publication', ...(preview && existsSync(join(ROOT, 'examples')) ? ['examples'] : [])];
-  const documents = publicDocuments(folders.flatMap(folder => readdirSync(join(ROOT, folder)).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, folder, name), 'utf8'), TOPICS))));
+  const documents = publicDocuments(folders.flatMap(folder => readdirSync(join(ROOT, folder)).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, folder, name), 'utf8'), TOPICS))), { includeExamples: preview });
   const posts = blogDocuments(documents);
   renderDocuments(documents);
-  const context = { config: CONFIG, topics: TOPICS, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest(readFileSync(join(ROOT, 'publication.js'))) };
+  const context = { config: CONFIG, topics: TOPICS, origin, preview, themeHash: MANIFEST.contentHash, scriptHash: digest(CLIENT_FILES.map(file => readFileSync(join(ROOT, file), 'utf8')).join('\n')) };
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
   add('/', CONFIG.name, personalHome(documents, context, recentBlog(posts, TOPICS)));
   add('/wiki/', 'Wiki', wikiLanding(documents, context, undefined, recentBlog(posts, TOPICS)));
   for (const field of FIELDS) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
+  if (preview) for (const page of iconAuditPages()) add(page.route, '아이콘 검증', page.body);
   const commentTheme = CONFIG.comments.themeUrl || `${origin || 'http://127.0.0.1:8796'}/theme/assets/giscus.css?v=${MANIFEST.contentHash}`;
   for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, commentsSection(page, CONFIG.comments, commentTheme)), page);
   for (const [tag, topic] of Object.entries(TOPICS)) {
@@ -85,9 +88,17 @@ function writeSite(output, documents, context) {
   rmSync(OUTPUT, { recursive: true, force: true });
   mkdirSync(OUTPUT, { recursive: true });
   cpSync(THEME, join(OUTPUT, 'theme'), { recursive: true });
-  cpSync(join(ROOT, 'publication.js'), join(OUTPUT, 'publication.js'));
-  for (const file of ['search-model.mjs', 'search-view.mjs', 'comments.js']) cpSync(join(ROOT, file), join(OUTPUT, file));
-  cpSync(join(ROOT, 'site.js'), join(OUTPUT, 'document.js'));
+  for (const file of CLIENT_FILES) {
+    let source = readFileSync(join(ROOT, file), 'utf8');
+    for (const dependency of CLIENT_FILES) source = source.replaceAll(`'./${dependency}'`, `'./${dependency}?v=${context.scriptHash}'`);
+    writeFileSync(join(OUTPUT, file), source);
+  }
+  const media = new Set([...output.values()].flatMap(html => [...html.matchAll(/(?:src|poster)="\/media\/([a-zA-Z0-9./_-]+)"/g)].map(match => match[1])));
+  for (const name of media) {
+    if (name.includes('..') || !existsSync(join(ROOT, 'media', name))) throw new Error(`invalid publication media: ${name}`);
+    mkdirSync(dirname(join(OUTPUT, 'media', name)), { recursive: true });
+    cpSync(join(ROOT, 'media', name), join(OUTPUT, 'media', name));
+  }
   const assets = new Set();
   const css = readFileSync(join(THEME, 'styles.css'), 'utf8');
   for (const [, name] of css.matchAll(/\.\.\/assets\/([\w.-]+)/g)) assets.add(name);
@@ -109,6 +120,7 @@ function writeSite(output, documents, context) {
   writeFileSync(join(OUTPUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...output.keys()].filter(route => route !== '/search/').map(route => `<url><loc>${escape(context.origin + route)}</loc></url>`).join('')}</urlset>`);
   validateOutput(output);
   writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, themeHash: context.themeHash, routes: [...output.keys()] }, null, 2));
+  writeFileSync(join(OUTPUT, 'robots.txt'), context.preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${context.origin}/sitemap.xml\n`);
 }
 
 function validateOutput(output) {

@@ -4,7 +4,7 @@
   "slug": "computer-systems-network-topic-d38307e3894c",
   "type": "wiki",
   "title": "장치",
-  "description": "장치는 명령을 받는 Register, 데이터를 옮기는 통로, 완료를 알리는 방법을 제공한다. OS Driver는 이 약속에 맞춰 접근하고 여러 요청의 순서를 보호한다. 아래 PintOS 코드는 lrn-pintos 9d1b14c, QEMU 내부 경로는 v10.0.0을 기준으로 한다. 실제 Guest를 부팅해 얻은 관찰 기록",
+  "description": "장치는 명령을 받는 Register, 데이터를 옮기는 통로, 완료를 알리는 방법을 제공한다.",
   "tags": [
     "os"
   ],

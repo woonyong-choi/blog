@@ -4,7 +4,7 @@
   "slug": "qemu-block-backend",
   "type": "wiki",
   "title": "BlockBackend",
-  "description": "Guest의 디스크와 Host의 파일은 같은 인터페이스가 아니다. Guest는 장치에 Sector를 요청하고, Host는 이미지 파일이나 다른 저장소에 바이트 단위의 I/O를 수행한다. QEMU의 BlockBackend는 장치 모델과 블록 계층을 연결한다. 그 아래의 Driver들이 이미지 형식과 실제 접근 경로를 처리한",
+  "description": "Guest의 디스크와 Host의 파일은 같은 인터페이스가 아니다. Guest는 장치에 Sector를 요청하고, Host는 이미지 파일이나 다른 저장소에 바이트 단위의 I/O를 수행한다.",
   "tags": [
     "os"
   ],
