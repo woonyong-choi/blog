@@ -66,7 +66,9 @@ main {
 .gsc-main .gsc-comment-box-write:focus-within { box-shadow: none; outline: 0; }
 .gsc-main .gsc-comment-box-preview { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #f6f7fa; border: 0; border-radius: 12px; padding: 18px; }
 .gsc-main .gsc-comment-box-textarea { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #edeef1; border: 1px solid transparent; border-radius: 12px; padding: 18px; box-shadow: none; resize: none; }
-.gsc-main .gsc-comment-box-textarea:focus { outline: 0; border-color: transparent; box-shadow: 0 0 0 3px rgb(100,159,255); }
+.gsc-main .gsc-comment-box-textarea:focus { outline: 3px solid #2576eb; outline-offset: calc(-1 * 3px); border-color: transparent; box-shadow: none; }
+/* iframe의 important 유틸리티보다 요청한 표시 상태를 우선한다. */
+.gsc-main .gsc-comment-box-md-toolbar, .gsc-main .gsc-comment-box-markdown-hint { display: none !important; }
 .gsc-main .gsc-comment-box-textarea::placeholder { color: #55606e; opacity: 1; }
 .gsc-main .gsc-comment-box-textarea-extras { background: transparent; border: 0; padding: 8px 0; }
 .gsc-main .gsc-comment-box-bottom { margin: 8px 0 0; padding: 0; gap: 12px; }
@@ -84,14 +86,17 @@ main {
 .gsc-main .gsc-comment-footer { padding-inline: 18px; padding-bottom: 12px; font-size: 15px; }
 .gsc-main .gsc-replies { margin: 0 18px; padding: 12px 0; background: transparent; border-top: 1px solid #ebecef; border-radius: 0; }
 .gsc-main .gsc-reply { padding: 12px 0; font-size: 18px; }
-.gsc-main .gsc-reply-header { font-size: 15px; color: #55606e; }
+.gsc-main .gsc-reply > .flex { align-items: flex-start; gap: 12px; }
+.gsc-main .gsc-reply-author-avatar + div { margin-left: 0 !important; }
+.gsc-main .gsc-reply-header { padding: 0; margin-bottom: 8px; font-size: 15px; color: #55606e; }
+.gsc-main .gsc-reply-author { flex-wrap: wrap; gap: 8px; }
 .gsc-main .gsc-reply-content { padding-block: 8px; }
 .gsc-main .gsc-reply-footer { font-size: 15px; }
 .gsc-main .gsc-reply-box { background: transparent; border-top: 1px solid #ebecef; padding: 18px; }
 /* 답글 버튼의 rounded와 px/py 유틸리티를 입력 역할로 대체한다. */
 .gsc-main .gsc-reply-box > button { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #55606e; background: #edeef1; border: 1px solid transparent; border-radius: 12px !important; padding: 12px 18px !important; }
 .gsc-main .gsc-comment-box-is-reply { padding: 18px; border-top: 1px solid #ebecef; }
-.gsc-main .gsc-tl-line { background: #ebecef; }
+.gsc-main .gsc-tl-line { left: calc((24px - 3px) / 2); top: calc(12px + 24px + 8px) !important; bottom: 0; height: auto !important; background: #ebecef; }
 .gsc-main :is(.gsc-comment-author-avatar,.gsc-reply-author-avatar) img { width: 24px; height: 24px; }
 .gsc-main .gsc-reactions-popover { border-color: #ebecef; border-radius: 12px; }
 .gsc-main :is(.gsc-comment-box-tabs button,.gsc-right-header button):hover { background: #ebf1ff; color: #2576eb; }

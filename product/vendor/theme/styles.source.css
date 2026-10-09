@@ -403,6 +403,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-prose li > ul, .app-prose li > ol { margin: 0; }
 .app-prose blockquote { border: 0; margin: var(--site-prose-quote-margin); padding: 0; font-style: italic; }
 .app-prose hr { border: 0; border-top: var(--site-border) solid var(--site-prose-rule-color); width: var(--site-prose-rule-width); margin: var(--site-prose-rule-margin); }
+.app-publication .app-prose hr { width: 100%; }
 :where(.app-prose) small { font-size: var(--site-post-date-size); color: var(--site-prose-caption-color); }
 :where(.app-prose) mark { padding: var(--site-prose-code-padding); color: inherit; background: var(--site-prose-mark-background); border-radius: var(--site-prose-code-radius); }
 :where(.app-prose) sub, :where(.app-prose) sup { font-size: var(--site-prose-script-size); font-weight: var(--site-prose-script-weight); }
@@ -652,14 +653,13 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-blog-card-body { padding: var(--site-card-inset); text-align: left; }
 .app-blog-card .app-tags { justify-content: flex-start; margin: 0 var(--site-card-inset) var(--site-card-inset); text-align: left; }
 .app-blog-card-title { margin: 0 0 var(--site-gap-sm); overflow: hidden; font-size: var(--site-body-text); line-height: var(--site-line-card); text-overflow: ellipsis; white-space: nowrap; color: var(--site-help-title-color); }
-.app-blog-card-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--site-gap-xs); padding: 0 var(--site-card-inset) var(--site-help-mobile-block); font-size: var(--site-small-text); color: var(--site-muted); }
+.app-blog-card-meta { display: flex; align-items: center; gap: calc(var(--site-gap-xs) / 2); padding: 0 var(--site-card-inset) var(--site-card-inset); font-size: var(--site-tiny-text); white-space: nowrap; color: var(--site-muted); }
 .app-blog-card-meta a { color: inherit; }
 .app-blog-card-meta a:hover { color: var(--site-link); }
-.app-blog-card-date, .app-blog-card-comments { white-space: nowrap; }
-.app-blog-card-footer { padding: var(--site-compact-inset) var(--site-card-inset); border-top: var(--site-border) solid var(--site-help-border); font-size: var(--site-small-text); color: var(--site-help-title-color); }
-.app-blog-card-author { display: flex; align-items: center; gap: var(--site-gap-xs); min-width: 0; color: inherit; }
+.app-blog-card-date, .app-blog-card-comments { flex: none; }
+.app-blog-card-author { display: flex; align-items: center; gap: calc(var(--site-gap-xs) / 2); min-width: 0; color: inherit; }
 .app-blog-card-author > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.app-blog-card-avatar { flex: none; width: var(--site-icon); height: var(--site-icon); object-fit: cover; border-radius: calc(var(--site-icon) / 2); }
+.app-blog-card-avatar { flex: none; width: calc(var(--site-icon) - var(--site-gap-xs)); height: calc(var(--site-icon) - var(--site-gap-xs)); object-fit: cover; border-radius: var(--site-pill); }
 .app-blog-card-body > p { margin: 0; color: var(--site-help-copy-color); line-height: var(--site-line-card); }
 .app-list-toolbar { display: flex; flex-wrap: wrap; gap: var(--site-gap); justify-content: space-between; margin-block: var(--site-gap-lg); font-size: var(--site-small-text); }
 .app-page-links { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: center; justify-content: center; margin-block: var(--site-support-gap); }
@@ -680,6 +680,12 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-publication .app-document-header .app-tags a { text-decoration: none; }
 .app-post-footer .app-document-dates { justify-content: center; }
 .app-post-footer .app-example-notice { text-align: left; }
+@media (max-width: breakpoint(gallery-wide)) {
+  .app-support-grid:has(> .app-blog-card) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: breakpoint(feature-split)) {
+  .app-support-grid:has(> .app-blog-card) { grid-template-columns: minmax(0, 1fr); }
+}
 /* 홈: 소개 히어로, 제품·후기·인용 절, 개인 발행 히어로, 인터뷰·기술 흐름, 연락 절. */
 .app-hero { text-align: center; padding-top: var(--site-hero-top); overflow: hidden; }
 .app-hero-logo { width: var(--site-reference-logo); margin: auto auto var(--site-hero-logo-gap); }

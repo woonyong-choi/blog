@@ -37,7 +37,7 @@
     "repoId": "R_kgDOU8zFrQ",
     "category": "Comments",
     "categoryId": "DIC_kwDOU8zFrc4DHTnu",
-    "themeUrl": "https://cdn.jsdelivr.net/gh/woonyong-choi/blog@2a9f0d68aa01f484813944cabe158b4c57dd4d66/product/vendor/theme/assets/giscus.css"
+    "themeUrl": "https://cdn.jsdelivr.net/gh/woonyong-choi/design-tokens@fba60d4cbf14cfa97132cefb9103e156349b5e19/dist/simple/assets/giscus.css"
   },
   "repository": "woonyong-choi/blog",
   "notes": {

@@ -272,10 +272,11 @@ export function BlogCard({ href, title, level = 3, cover, tags, description = ''
   const date = publishedAt ? `<time class="app-blog-card-date" datetime="${escape(publishedAt)}">${escape(dateLabel || publishedAt)}</time>` : '';
   const count = Number.isSafeInteger(commentCount) && commentCount >= 0 ? `댓글 ${commentCount}개` : '댓글 보기';
   const comments = commentsHref ? `<a class="app-blog-card-comments" href="${safeUrl(commentsHref)}" aria-label="${escape(title)} · ${count}">${count}</a>` : '';
-  const metadata = date || comments ? `<div class="app-blog-card-meta">${date}${date && comments ? '<span aria-hidden="true">·</span>' : ''}${comments}</div>` : '';
   const byline = author?.name ? `${author.avatar ? `<img class="app-blog-card-avatar" src="${safeUrl(author.avatar)}" alt="" loading="lazy" decoding="async">` : ''}<span>${escape(author.name)}</span>` : '';
-  const footer = byline ? `<footer class="app-blog-card-footer">${author.href ? `<a class="app-blog-card-author" href="${safeUrl(author.href)}" aria-label="작성자 ${escape(author.name)}">${byline}</a>` : `<span class="app-blog-card-author">${byline}</span>`}</footer>` : '';
-  return out(`<article class="app-blog-card"><a class="app-blog-card-link" href="${link}" aria-label="${escape(title)}"><div class="app-blog-cover">${slot(cover, 'cover')}</div><div class="app-blog-card-body"><${heading} class="app-blog-card-title">${escape(title)}</${heading}>${description ? `<p class="app-card-summary">${escape(description)}</p>` : ''}</div></a>${metadata}${tags === undefined ? '' : slot(tags, 'tags')}${footer}</article>`);
+  const writer = byline ? (author.href ? `<a class="app-blog-card-author" href="${safeUrl(author.href)}" aria-label="작성자 ${escape(author.name)}">${byline}</a>` : `<span class="app-blog-card-author">${byline}</span>`) : '';
+  const fields = [writer, date, comments].filter(Boolean).join('<span aria-hidden="true">·</span>');
+  const metadata = fields ? `<div class="app-blog-card-meta">${fields}</div>` : '';
+  return out(`<article class="app-blog-card"><a class="app-blog-card-link" href="${link}" aria-label="${escape(title)}"><div class="app-blog-cover">${slot(cover, 'cover')}</div><div class="app-blog-card-body"><${heading} class="app-blog-card-title">${escape(title)}</${heading}>${description ? `<p class="app-card-summary">${escape(description)}</p>` : ''}</div></a>${metadata}${tags === undefined ? '' : slot(tags, 'tags')}</article>`);
 }
 /** 쪽 이동. `before`·`after`는 `{ href, text }`, `numbers`는 `{ page, href, current }`, `summary`는 번호 대신 쓰는 글자다. */
 export function PageLinks({ label, before, after, numbers = [], summary, resultPages = false }) {

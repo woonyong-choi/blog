@@ -48,9 +48,10 @@ test('blog_cards_keep_the_primary_link_separate_from_comment_and_author_links', 
     const card = html.match(/<article class="app-blog-card">[\s\S]*?<\/article>/)[0];
     assert.equal((card.match(/<a /g) ?? []).length, 3);
     assert.equal((card.match(/<a class="app-blog-card-link"/g) ?? []).length, 1);
-    assert.match(card, /<p class="app-card-summary">설명<\/p><\/div><\/a><div class="app-blog-card-meta"><time class="app-blog-card-date" datetime="2026-10-01">2026년 10월 1일<\/time>/);
+    assert.match(card, /<p class="app-card-summary">설명<\/p><\/div><\/a><div class="app-blog-card-meta">.*<time class="app-blog-card-date" datetime="2026-10-01">2026년 10월 1일<\/time>/);
     assert.match(card, /href="\/articles\/post-0\/#comments"[^>]*>댓글 2개<\/a>/);
-    assert.match(card, /<footer class="app-blog-card-footer"><a class="app-blog-card-author" href="\/author\/"/);
+    assert.match(card, /<div class="app-blog-card-meta"><a class="app-blog-card-author" href="\/author\/"/);
+    assert.doesNotMatch(card, /app-blog-card-footer/);
     assert.match(html, /app-card-summary/);
     assert.doesNotMatch(html, /app-tags/);
   }
