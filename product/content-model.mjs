@@ -3,6 +3,7 @@ import { parse } from 'yaml';
 
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 export const PAGE_SIZES = Object.freeze({ preview: 4, cards: 12, feed: 4, search: 12 });
+export const TOPIC_GROUPS = Object.freeze(['cs', 'tech']);
 export const FIELDS = Object.freeze(['languages', 'cs', 'frameworks', 'infrastructure']);
 
 export function readDocument(source, tags, now = new Date()) {

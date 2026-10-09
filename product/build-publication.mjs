@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 
-import { readDocument, publicDocuments, searchEntry, FIELDS, blogDocuments, PAGE_SIZES } from './content-model.mjs';
+import { readDocument, publicDocuments, searchEntry, FIELDS, TOPIC_GROUPS, blogDocuments, PAGE_SIZES } from './content-model.mjs';
 import { createMarkdown, escape } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 import { renderArticle } from './article-renderer.mjs';
@@ -50,8 +50,8 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
   add('/', CONFIG.name, personalHome(context));
-  add('/wiki/', 'Wiki', wikiLanding(documents, context, undefined, recentBlog(posts)));
-  for (const field of FIELDS) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
+  add('/wiki/', 'Notes', wikiLanding(documents, context, undefined, recentBlog(posts)));
+  for (const field of new Set([...TOPIC_GROUPS, ...FIELDS])) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
   if (preview) for (const page of iconAuditPages()) add(page.route, '아이콘 검증', page.body);
   const commentTheme = CONFIG.comments.themeUrl || `${origin || 'http://127.0.0.1:8796'}/theme/assets/giscus.css?v=${MANIFEST.contentHash}`;

@@ -10,7 +10,7 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
   const fetchNext = fetchPage ?? view.fetch.bind(view);
   const Intersection = Observer ?? view.IntersectionObserver;
   const visited = new Set([view.location.href]);
-  const articles = new Set([...grid.querySelectorAll('.app-blog-cover')].map(item => item.href));
+  const articles = new Set([...grid.querySelectorAll('.app-blog-card-link')].map(item => item.href));
   let pending = false;
   let failed = false;
   let next = link.href;
@@ -40,7 +40,7 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
       if (following === url) throw new Error('repeated next page');
       const incoming = new Set();
       const added = cards.filter(card => {
-        const cover = card.querySelector('.app-blog-cover');
+        const cover = card.querySelector('.app-blog-card-link');
         if (!cover) throw new Error('missing article link');
         const key = new URL(cover.getAttribute('href'), url).href;
         if (articles.has(key) || incoming.has(key)) return false;
@@ -57,7 +57,7 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
       if (next) link.href = next;
       else { observer?.disconnect(); nav.hidden = true; }
       link.textContent = '더 보기';
-      if (manual) added[0].querySelector('.app-blog-card-title a')?.focus();
+      if (manual) added[0].querySelector('.app-blog-card-link')?.focus();
       if (next) { observer?.unobserve(nav); observer?.observe(nav); }
     } catch {
       failed = true;

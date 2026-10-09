@@ -49,7 +49,7 @@ test('failed_load_waits_for_manual_retry_and_keyboard_focus_moves_to_new_content
   assert.equal(link.textContent, '다시 불러오기');
   link.focus(); link.click(); await tick();
   assert.equal(calls, 2);
-  assert.equal(state.dom.window.document.activeElement.textContent, '글 12');
+  assert.equal(state.dom.window.document.activeElement.getAttribute('aria-label'), '글 12');
   assert.equal(link.href, 'https://example.com/blog/all/page/3/');
   state.dom.window.close();
 });

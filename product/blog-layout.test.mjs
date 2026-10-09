@@ -39,12 +39,15 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
 });
 
 // 썸네일 자르기 좌표와 제목 링크를 유지하고 설명을 보여 준다.
-test('blog_cards_preserve_thumbnail_position_and_separate_links', () => {
+test('blog_cards_preserve_thumbnail_position_with_one_link_for_the_whole_card', () => {
   const post = { ...posts(1)[0], thumbnail: { src: '/media/cover.webp', alt: '상단의 "검색" 입력창', position: { x: 37.5, y: 0 } } };
   for (const html of [blogCard(post, TAGS), blogArchive([post], TAGS, 1)]) {
     assert.match(html, /object-position:37\.5% 0%/);
     assert.match(html, /alt="상단의 &quot;검색&quot; 입력창"/);
-    assert.match(html, /<a class="app-blog-cover"[^>]+><img[^>]+><\/a>/);
+    assert.match(html, /<a class="app-blog-card-link"[^>]+><div class="app-blog-cover"><img[^>]+><\/div>/);
+    const card = html.match(/<article class="app-blog-card">[\s\S]*?<\/article>/)[0];
+    assert.equal((card.match(/<a /g) ?? []).length, 1);
+    assert.match(card, /<p class="app-card-summary">설명<\/p><time class="app-blog-card-date" datetime="2026-10-01">2026-10-01<\/time><\/div><\/a>/);
     assert.match(html, /app-card-summary/);
     assert.doesNotMatch(html, /app-tags/);
   }

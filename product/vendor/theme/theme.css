@@ -882,6 +882,7 @@
   --primitive-simple-figure-grid-min-small: 152px;
   --primitive-simple-figure-grid-min-large: 328px;
   --primitive-simple-card-summary-lines: 2;
+  --primitive-simple-ratio-banner: 5 / 2;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1928,6 +1929,7 @@
   --site-syntax-operator: var(--color-syntax-operator);
   --site-syntax-punctuation: var(--color-syntax-punctuation);
   --site-card-summary-lines: var(--primitive-simple-card-summary-lines);
+  --site-blog-cover-ratio: var(--primitive-simple-ratio-banner);
   --icon-paper: var(--color-gray-0);
   --icon-outline: var(--primitive-simple-icon-outline);
   --icon-detail: var(--primitive-simple-icon-detail);

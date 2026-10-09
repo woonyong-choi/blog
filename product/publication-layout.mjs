@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { escape } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 import { contentIcon } from './content-icons.mjs';
-import { FIELDS } from './content-model.mjs';
+import { TOPIC_GROUPS } from './content-model.mjs';
 import { clientEntrypoints } from './publication-assets.mjs';
 import { heroSection, projectsSection, technologySection, interviewsSection, contactSection } from './home-sections.mjs';
 import { articleToc } from './article-toc.mjs';
@@ -14,7 +14,7 @@ import { publicationMetadata } from './publication-metadata.mjs';
 import { usesMath, MATH_STYLESHEET } from './math-assets.mjs';
 
 const BRANDS = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons;
-const FIELD_NAMES = Object.freeze({ languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
+const FIELD_NAMES = Object.freeze({ tech: 'Tech', languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
 
 export function iconUrl(spec, size = 'small') {
   const name = typeof spec === 'string' ? spec : spec.name;
@@ -54,15 +54,18 @@ export function documentCard(page, title = page.title, level = 3, variant) {
 
 export function knowledgeFields(documents, topics, field) {
   const bySlug = new Map(documents.map(page => [page.slug, page]));
-  return FIELDS.filter(value => !field || value === field).map(value => {
-    const entries = Object.entries(topics).filter(([, topic]) => topic.field === value).map(([id, topic]) => {
+  const groups = field ? [field] : TOPIC_GROUPS;
+  return groups.map(value => {
+    const entries = Object.entries(topics).filter(([, topic]) => topic.group && (TOPIC_GROUPS.includes(value) ? topic.group === value : topic.field === value)).map(([id, topic]) => {
       const article = bySlug.get(topic.article) ?? documents.filter(page => page.topic === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
-      return article ? { ...topic, page: { ...article, description: topic.description ?? article.description, contentIcon: { name: topic.icon } } } : null;
+      return article ? { ...topic, page: { ...article, description: topic.group === 'tech' ? '' : topic.description ?? article.description, contentIcon: { name: topic.icon } } } : null;
     }).filter(Boolean);
     if (!entries.length) return '';
-    const shown = field ? entries : entries.slice(0, 6);
+    const limit = value === 'tech' ? 8 : 6;
+    const columns = value === 'tech' ? (field ? 5 : 4) : 3;
+    const shown = field ? entries : entries.slice(0, limit);
     const level = field ? 1 : 2;
-    return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns: 3, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > 6 ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
+    return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
   }).join('');
 }
 
@@ -82,8 +85,9 @@ export function personalHome(context) {
 
 export function wikiLanding(documents, context, field, recent = '') {
   const fields = knowledgeFields(documents, context.topics, field);
-  if (field) return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/wiki/">← Notes</a>${fields}</main>`;
-  return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Notes</h1>${recent}${fields}</main>`;
+  const projects = !field && context.config?.notes?.projects === true ? projectSection(context.config.projects) : '';
+  if (field) return `<main id="main" class="app-shell${field === 'tech' ? '' : ' app-body'}">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/wiki/">← Notes</a>${fields}</main>`;
+  return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Notes</h1>${recent}${projects}${fields}</main>`;
 }
 
 export function projectSection(projects, hasMore = false) {
