@@ -89,7 +89,7 @@ sections:
       src: /assets/fancysection-icon-whatpeoplearesaying-io70.png
       alt: ""
     title: 사람들이 하는 말
-    description: 함께 일한 동료들의 이야기입니다.
+    description: 함께 일한 동료들이 전하는, 저의 일하는 방식과 협업에 대한 이야기입니다.
     links:
       - { label: GitHub, href: "https://github.com/woonyong-choi", icon: github }
       - { label: LinkedIn, href: "https://www.linkedin.com/in/woonyong-choi", icon: linkedin }
