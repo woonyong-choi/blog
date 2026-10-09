@@ -108,14 +108,9 @@ body > main, .app-support-shell { overflow-x: clip; }
 .app-play { display: inline-flex; gap: var(--site-gap-xs); align-items: center; margin-block: var(--site-gap-sm); border: none; background: transparent; color: var(--site-link); font-size: var(--site-intro-text); font-weight: var(--site-weight-medium); }
 .app-play img { width: calc(var(--site-intro-text) * 1.5); }
 .app-tabs { margin-block: var(--site-gap); }
-.app-tablist { display: flex; max-width: var(--site-tab-width); margin: var(--site-gap) auto; padding: var(--site-gap-xs); border-radius: var(--site-button-radius); background: var(--site-soft); }
-.app-tablist button { flex: 1; border: none; background: transparent; }
-.app-tablist [aria-selected=true] { color: var(--site-card); background: var(--site-link); }
 .app-tabpanel { text-align: left; }
 .app-tooltip { border-bottom: var(--site-border) dotted currentColor; cursor: help; }
 .app-task input { accent-color: var(--site-link); }
-.app-tablist { padding: var(--site-tab-inset); }
-.app-tablist button { font-size: var(--site-small-text); line-height: var(--site-line-compact); padding: var(--site-tab-button-inset) var(--site-gap-sm); }
 .app-play, .app-remote { padding: var(--site-control-inset-block) var(--site-control-inset-inline); line-height: 1; color: var(--site-control-link); border: 0; border-radius: var(--site-control-radius); background: transparent; cursor: pointer; }
 .app-play:hover, .app-remote:hover { color: var(--site-control-link); background: var(--site-control-hover); }
 .app-play:active, .app-remote:active { background: var(--site-control-active); }
@@ -123,26 +118,29 @@ body > main, .app-support-shell { overflow-x: clip; }
 .app-play.is-playing:hover, .app-remote.is-playing:hover { background: var(--site-control-active); }
 .app-remote { display: inline-flex; align-items: center; gap: var(--site-gap-xs); font-weight: var(--site-weight-medium); }
 .app-remote img { width: var(--site-subtitle); height: var(--site-subtitle); }
-.app-tabs:is(.is-platform, .is-frame-panel) { margin: 0 0 var(--site-prose-paragraph-gap); padding-inline: var(--site-platform-inset); border: var(--site-border) solid var(--site-syntax-example-border); border-radius: var(--site-prose-pre-radius); background: var(--site-syntax-example-background); }
-.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; margin: var(--site-platform-nav-margin); padding: 0; background: transparent; }
-.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button { flex: none; margin: var(--site-platform-button-gap); padding: var(--site-platform-button-y) var(--site-platform-button-x); font-size: var(--site-platform-text); font-weight: var(--site-weight-medium); line-height: var(--site-platform-line); color: var(--site-platform-color); border-radius: var(--site-prose-pre-radius); background: var(--site-feature-tab-background); transition: box-shadow var(--site-platform-motion) var(--site-icon-easing); }
-.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button:hover { background: var(--site-platform-hover); box-shadow: var(--site-platform-hover-shadow); }
-.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button:active { background: var(--site-platform-active); box-shadow: var(--site-platform-active-shadow); }
-.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button[aria-selected=true] { color: var(--site-card); background: var(--site-feature-tab-selected); cursor: default; }
-@media (prefers-reduced-motion: reduce) { .app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button { transition: none; } }
-/* 탭 변형: frame(panel, none), position(top, bottom), selector(buttons, segmented, numbers). 옛 is-platform은 panel, top, buttons와 같다. */
-.app-tabs.is-frame-none { margin: 0 0 var(--site-prose-paragraph-gap); }
-.app-tabs.is-frame-none .app-tabpanel > :last-child { margin-bottom: 0; }
-.app-tabs.is-position-bottom .app-tablist { margin-top: var(--site-gap-sm); }
-.app-tabs.is-position-bottom.is-frame-none .app-tablist { margin-bottom: 0; }
-.app-tabs.is-selector-segmented .app-tablist { width: var(--site-feature-tab-width); max-width: 100%; gap: 0; padding: var(--site-feature-tab-inset); border-radius: var(--site-feature-tab-radius); background: var(--site-feature-tab-background); }
-.app-tabs.is-selector-segmented .app-tablist button { flex: 1; border: 0; padding: 0; font-size: var(--site-feature-tab-font); font-weight: var(--site-weight-medium); line-height: var(--site-feature-tab-height); border-radius: var(--site-feature-tab-button-radius); }
+.app-tabs:is(.is-platform, .is-frame-panel) { margin-block: 0 var(--site-prose-paragraph-gap); padding-inline: var(--site-platform-inset); border: var(--site-border) solid var(--site-syntax-example-border); border-radius: var(--site-prose-pre-radius); background: var(--site-syntax-example-background); }
+/* 탭 기본(옵션을 생략하면): 상자 없음, 선택 줄은 패널 아래, 둥근 단추. 기본을 벗어난 값만 클래스가 붙는다: is-frame-panel, is-position-top, is-selector-segmented|numbers. 옛 is-platform은 panel, top, buttons다. */
+.app-tabs .app-tablist { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; margin: var(--site-platform-nav-margin); padding: 0; background: transparent; }
+.app-tabs .app-tablist button { flex: none; max-width: 100%; margin: var(--site-platform-button-gap); border: 0; word-break: keep-all; overflow-wrap: break-word; padding: var(--site-platform-button-y) var(--site-platform-button-x); font-size: var(--site-platform-text); font-weight: var(--site-weight-medium); line-height: var(--site-platform-line); color: var(--site-platform-color); border-radius: var(--site-prose-pre-radius); background: var(--site-feature-tab-background); transition: box-shadow var(--site-platform-motion) var(--site-icon-easing); }
+.app-tabs .app-tablist button:hover { background: var(--site-platform-hover); box-shadow: var(--site-platform-hover-shadow); }
+.app-tabs .app-tablist button:active { background: var(--site-platform-active); box-shadow: var(--site-platform-active-shadow); }
+.app-tabs .app-tablist button[aria-selected=true] { color: var(--site-card); background: var(--site-feature-tab-selected); cursor: default; }
+@media (prefers-reduced-motion: reduce) { .app-tabs .app-tablist button { transition: none; } }
+.app-tabs:not(.is-position-top):not(.is-platform) .app-tablist { margin-block: var(--site-gap-sm) 0; }
+.app-tabs.is-frame-panel:not(.is-position-top) .app-tablist { margin-bottom: var(--site-gap-sm); }
+.app-tabs:not(.is-position-top):not(.is-platform):not(.is-frame-panel) { margin-block: 0 var(--site-prose-paragraph-gap); }
+.app-tabs:not(.is-position-top):not(.is-platform) .app-tabpanel > :first-child { margin-top: 0; }
+.app-tabs:not(.is-position-top):not(.is-platform):not(.is-frame-panel) .app-tabpanel > :last-child { margin-bottom: 0; }
+.app-tabs.is-selector-segmented .app-tablist { flex-wrap: nowrap; width: fit-content; max-width: 100%; margin-inline: auto; gap: var(--site-gap-xs); padding: var(--site-feature-tab-inset); border-radius: var(--site-feature-tab-radius); background: var(--site-feature-tab-background); }
+.app-tabs.is-selector-segmented.is-position-top .app-tablist { margin-block: var(--site-gap); }
+.app-tabs.is-selector-segmented .app-tablist button { display: flex; flex: 1 1 auto; align-items: center; justify-content: center; min-width: calc(var(--site-gap-sm) * 2 + var(--site-tab-label-min)); max-width: 100%; min-height: var(--site-feature-tab-height); margin: 0; border: 0; padding: var(--site-tab-button-inset) var(--site-gap-sm); font-size: var(--site-feature-tab-font); font-weight: var(--site-weight-medium); line-height: var(--site-line-compact); text-align: center; word-break: keep-all; overflow-wrap: anywhere; border-radius: var(--site-feature-tab-button-radius); background: transparent; transition: none; }
+.app-tabs.is-selector-segmented .app-tablist button:not([aria-selected=true]):hover { background: var(--site-platform-hover); box-shadow: none; }
 .app-tabs.is-selector-segmented .app-tablist button[aria-selected=true] { background: var(--site-feature-tab-selected); box-shadow: var(--site-feature-tab-shadow); }
-.app-tabs.is-selector-numbers .app-tablist { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--site-gallery-row-gap) var(--site-gallery-gap); max-width: none; padding: 0; background: transparent; }
-.app-tabs.is-selector-numbers .app-tablist button { flex: none; min-width: var(--site-control); height: var(--site-control); padding: 0 var(--site-quote-credit-gap); border-radius: var(--site-pill); line-height: var(--site-control); font-weight: var(--site-gallery-weight); color: var(--site-ink); background: var(--site-gallery-background); }
-.app-tabs.is-selector-numbers .app-tablist button:hover { background: var(--site-gallery-hover); }
+.app-tabs.is-selector-numbers .app-tablist button { flex: none; min-width: var(--site-control); height: var(--site-control); margin: 0; padding: 0 var(--site-quote-credit-gap); font-size: var(--site-small-text); border-radius: var(--site-pill); line-height: var(--site-control); font-weight: var(--site-gallery-weight); color: var(--site-ink); background: var(--site-gallery-background); box-shadow: none; transition: none; }
+.app-tabs.is-selector-numbers .app-tablist { gap: var(--site-gallery-row-gap) var(--site-gallery-gap); }
+.app-tabs.is-selector-numbers .app-tablist button:hover { background: var(--site-gallery-hover); box-shadow: none; }
 .app-tabs.is-selector-numbers .app-tablist button:active { background: var(--site-gallery-active); }
-.app-tabs.is-selector-numbers .app-tablist button[aria-selected=true] { color: var(--site-card); background: var(--site-gallery-selected); cursor: default; }
+.app-tabs.is-selector-numbers .app-tablist button[aria-selected=true] { color: var(--site-card); background: var(--site-gallery-selected); box-shadow: none; }
 .app-primary-action { display: inline-block; padding: var(--site-newsletter-button-padding); background: var(--site-newsletter-button-color); color: var(--site-card); border: 0; border-radius: var(--site-newsletter-button-radius); font-weight: var(--site-weight-title); }
 .app-primary-action:hover { text-decoration: none; opacity: var(--site-player-opacity); }
 .app-primary-action:disabled { opacity: var(--site-landing-logo-opacity); cursor: default; }
@@ -521,17 +519,12 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-diagram-status:empty { display: none; }
 .app-prose .app-diagram-source { margin: var(--site-gap-xs) 0 0; }
 .app-diagram-source .app-code { margin-bottom: 0; }
-/* 미디어: 그림, 갤러리, 영상 플레이어, 기기 틀. 본문 블록 폭(app-width-*)은 그림·영상·갤러리·코드가 함께 쓰며 가로 여백(margin-inline)은 폭 규칙만 정한다. 블록 구성 요소는 세로 여백(margin-block)만 쓴다. */
+/* 미디어: 그림, 영상 플레이어, 기기 틀. 갤러리는 탭 구성 요소다. 본문 블록 폭(app-width-*)은 그림·영상·탭(갤러리)·코드가 함께 쓰며 가로 여백(margin-inline)은 폭 규칙만 정한다. 블록 구성 요소는 세로 여백(margin-block)만 쓴다. */
 .app-figure { margin-block: var(--site-gap-lg); text-align: center; }
 .app-figure img { width: 100%; border-radius: var(--site-media-radius); }
 .app-figure figcaption { margin-top: var(--site-gap-sm); font-size: var(--site-small-text); color: var(--site-muted); }
 .app-width-narrow { max-width: var(--site-width-narrow); margin-inline: auto; }
 .app-width-wide { width: var(--site-width-wide); max-width: none; margin-inline: calc((100% - var(--site-width-wide)) / 2); }
-.app-gallery { margin-block: 0 var(--site-gallery-bottom); }
-.app-gallery img { display: block; width: 100%; border-radius: var(--site-media-radius); height: auto; }
-.app-gallery-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--site-gallery-row-gap) var(--site-gallery-gap); margin: 0 auto var(--site-gallery-frame-gap); }
-.app-gallery-controls button { min-width: var(--site-control); height: var(--site-control); border: 0; border-radius: var(--site-pill); padding: 0 var(--site-quote-credit-gap); line-height: var(--site-control); font-weight: var(--site-gallery-weight); color: var(--site-ink); background: var(--site-gallery-background); }
-.app-gallery-controls button[aria-pressed=true] { color: var(--site-card); background: var(--site-ink); }
 .app-video { width: 100%; aspect-ratio: var(--site-ratio-video); background: var(--site-code); border-radius: var(--site-button-radius); }
 .app-device { position: relative; width: min(100%, var(--site-device-width)); margin: var(--site-gap) auto; background: url('../assets/bezel-iphone6-shadow-io80.png') center / 100% 100% no-repeat; }
 .app-device-screen { padding: var(--site-device-pad-top) var(--site-device-pad-inline) var(--site-device-pad-bottom); }
@@ -545,21 +538,6 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-player-button:hover { opacity: var(--site-player-hover-opacity); }
 .app-player.is-playing .app-player-button, .app-player.has-controls.has-played .app-player-button { display: none; }
 .app-media-controls { margin-block: var(--site-gap-sm); text-align: center; }
-.app-gallery-frame { display: grid; grid-template-columns: 100%; margin-bottom: var(--site-gallery-frame-gap); }
-.app-gallery-slide { grid-area: 1 / 1; visibility: hidden; }
-.app-gallery-slide.is-selected { visibility: visible; }
-.app-gallery-controls button:hover { background: var(--site-gallery-hover); }
-.app-gallery-controls button:active { background: var(--site-gallery-active); }
-.app-gallery-controls button[aria-pressed=true] { background: var(--site-gallery-selected); cursor: default; }
-.app-gallery-slide { margin: 0; }
-.app-gallery-slide figcaption { margin-top: var(--site-post-caption-margin); color: var(--site-muted); font-size: var(--site-post-date-size); text-align: center; }
-.app-gallery.is-labeled { margin-bottom: var(--site-gallery-bottom); }
-.app-gallery.is-labeled .app-gallery-frame { margin-bottom: var(--site-post-paragraph-margin); }
-.app-gallery.is-labeled .app-gallery-controls { width: var(--site-feature-tab-width); max-width: 100%; margin: 0 auto var(--site-feature-tab-font); gap: 0; padding: var(--site-feature-tab-inset); border-radius: var(--site-feature-tab-radius); background: var(--site-feature-tab-background); }
-.app-gallery.is-labeled .app-gallery-controls button { flex: 1; min-width: 0; height: auto; padding: 0; font-size: var(--site-feature-tab-font); font-weight: var(--site-weight-medium); line-height: var(--site-feature-tab-height); border-radius: var(--site-feature-tab-button-radius); background: transparent; }
-.app-gallery.is-labeled .app-gallery-controls button[aria-pressed=true] { background: var(--site-feature-tab-selected); box-shadow: var(--site-feature-tab-shadow); }
-.app-gallery.is-labeled img { border-radius: 0; }
-.app-gallery-slide figcaption { line-height: var(--site-caption-line); }
 /* 3. 화면 묶음: 위 조각을 조합하고 화면별로 덮어쓴다 */
 /* 문서 상세: 제목 줄, 목차, 문서 목록 접기, 함께 읽기, 날짜와 예시 안내. */
 .app-article { margin-top: var(--site-gap-lg); }
@@ -936,7 +914,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-feature .app-figure img { border-radius: 0; }
 .app-feature.is-split .app-feature-workspace { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--site-card-inset); margin-top: var(--site-gap-lg); }
 .app-feature.is-split .app-feature-media, .app-feature.is-split .app-tabs { display: contents; }
-.app-feature.is-split .app-tablist { grid-column: 1 / -1; grid-row: 1; width: var(--site-tab-width); max-width: 100%; }
+.app-feature.is-split .app-tablist { grid-column: 1 / -1; grid-row: 1; }
 .app-feature.is-split .app-tabpanel { grid-column: 2; grid-row: 2; }
 .app-feature.is-split .app-feature-description { display: flex; flex-direction: column; justify-content: center; grid-column: 1; grid-row: 2; gap: var(--site-card-inset); margin: 0; }
 .app-feature.is-split .app-figure { margin: 0; }
@@ -981,9 +959,6 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-feature-description > div { line-height: var(--site-feature-body-line); }
 .app-feature.is-split .app-feature-description > div { padding: var(--site-feature-box-padding); background: var(--site-feature-box-background); }
 .app-feature.is-split .app-feature-workspace { gap: var(--site-landing-panel-gap); }
-.app-feature .app-tablist { width: var(--site-feature-tab-width); max-width: 100%; gap: 0; padding: var(--site-feature-tab-inset); border-radius: var(--site-feature-tab-radius); background: var(--site-feature-tab-background); }
-.app-feature .app-tablist button { flex: 1; border: 0; padding: 0; font-size: var(--site-feature-tab-font); font-weight: var(--site-weight-medium); line-height: var(--site-feature-tab-height); border-radius: var(--site-feature-tab-button-radius); }
-.app-feature .app-tablist button[aria-selected=true] { background: var(--site-feature-tab-selected); box-shadow: var(--site-feature-tab-shadow); }
 .app-feature-list > ul { list-style: none; padding: 0; margin: 0; }
 .app-feature-list li, .app-feature-demo-description { padding: var(--site-feature-box-padding); background: var(--site-feature-box-background); border-radius: var(--site-feature-box-radius); font-size: var(--site-feature-box-text); line-height: var(--site-feature-body-line); margin: 0 0 var(--site-feature-box-text); }
 .app-feature-demo-description h3 { display: flex; align-items: center; flex-wrap: wrap; margin: 0; font-size: inherit; }

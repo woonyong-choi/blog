@@ -331,7 +331,7 @@ function component(kind, data, md, env) {
     case 'platform':
     case 'tabs': {
       if (!Array.isArray(data.items) || !data.items.length) throw new Error('Tabs require items');
-      return String(ui.Tabs({ id, label: data.title ?? '기기별 안내', platform: kind === 'platform', tabs: data.items.map(item => ({ label: item.label, body: trusted(render(item.body)) })) }));
+      return String(ui.Tabs({ id, label: data.title ?? '기기별 안내', platform: kind === 'platform', ...(kind === 'platform' ? {} : { position: 'top', selector: 'segmented' }), tabs: data.items.map(item => ({ label: item.label, body: trusted(render(item.body)) })) }));
     }
     case 'icon-lab': return iconLab();
     case 'cards': {

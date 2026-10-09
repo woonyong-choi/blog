@@ -149,7 +149,7 @@ items:
 | `qa` | 없음 | 없음 | 문서 바로 아래, `tab` 안 | 정의 목록(`질문` 다음 줄 `: 답`)만 |
 | `cards` | 없음 | `variant`(`related`, `centered`, `grouped`, `inline`), `columns`(`1`, `2`) | 문서 바로 아래, `tab` 안 | `card`만 1개 이상 |
 | `card`(리프) | 없음 | `title`·`href` 필수, `description`, `icon` | `cards` 안 | 없음 |
-| `gallery` | 없음 | `title`(접근성 이름), `width` | 문서 바로 아래, `tab` 안 | `slide`만 1개 이상. 번호 단추로 한 장씩 전환(자동 재생 없음). `ui:gallery`와 같은 마크업·스크립트 |
+| `gallery`(옛 형식) | 없음 | `title`(접근성 이름), `width` | 문서 바로 아래, `tab` 안 | `slide`만 1개 이상. 새 글에는 `:::tabs selector-numbers`를 권한다. 탭 구성 요소를 그대로 쓰므로 `ui:gallery`와 같은 마크업·스크립트 |
 | `slide`(리프) | 없음 | `src`·`alt` 필수, `caption` | `gallery` 안 | 없음 |
 | `figure`(리프) | 없음 | `src`·`alt` 필수, `caption`, `href`, `rounded`, `width` | 문서 바로 아래, `tab` 안 | 없음 |
 | `video`(리프) | 없음 | `src`·`poster`·`alt` 필수, `caption`, `controls`, `frame`(`none`, `iphone`), `width` | 문서 바로 아래, `tab` 안 | 없음 |
@@ -163,10 +163,10 @@ items:
 
 ### 탭: `@tab` 형식
 
-기기별 안내가 아닌 일반 탭은 `:::tabs` 뒤에 옵션을 공백으로 적고, `@tab 이름` 줄마다 탭을 나눈다. 탭 본문은 일반 Markdown이고 `:::end`로 닫는다. 그림은 보통의 `![대체](경로)`와 캡션 문단으로 쓴다.
+`:::tabs`와 `@tab 이름` 줄로 탭을 쓴다. 탭 본문은 일반 Markdown이고 `:::end`로 닫는다. 그림은 보통의 `![대체](경로)`와 캡션 문단으로 쓴다. 옵션 없이 쓰면 상자 없이 둥근 단추 줄이 패널 아래에 오고, 기본을 벗어나는 모양만 공백으로 구분한 옵션으로 적는다.
 
 ````markdown
-:::tabs frame-none position-bottom selector-segmented
+:::tabs selector-segmented
 @tab 변경 전
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -182,18 +182,22 @@ items:
 :::end
 ````
 
-| 묶음 | 옵션 | 기본 |
+| 묶음 | 기본 | 기본을 벗어나는 옵션 |
 |---|---|---|
-| 상자 | `frame-panel`, `frame-none` | `frame-panel` |
-| 선택 줄 위치 | `position-top`, `position-bottom` | `position-top` |
-| 선택 줄 모양 | `selector-buttons`, `selector-segmented`, `selector-numbers` | `selector-buttons` |
+| 상자 | 없음 | `frame-panel` |
+| 선택 줄 위치 | 패널 아래 | `position-top` |
+| 선택 줄 모양 | 둥근 단추(`Mac` `iPhone & iPad` `Watch` 같은 모양) | `selector-segmented`(분할 선택 줄), `selector-numbers`(번호) |
+| 폭 | 본문 폭 | `width-wide`(탭 묶음 전체) |
 
-- 옵션은 서로 독립이라 순서가 없고 하나도 안 써도 된다. 같은 묶음 옵션을 둘 쓰거나(`frame-none frame-panel`) 같은 옵션을 겹쳐 쓰거나 모르는 옵션을 쓰면 오류다. `frame=none` 형식도 받는다.
+- 옵션은 서로 독립이라 순서가 없다. 기본값(`frame-none`, `position-bottom`, `selector-buttons`, `width-content`)을 적어도 받지만 쓰지 않은 것과 같고, 기본값에는 클래스가 붙지 않는다. `frame=panel` 같은 `이름=값` 형식도 받는다.
+- 같은 묶음 옵션을 둘 쓰거나 같은 옵션을 겹쳐 쓰거나 모르는 옵션을 쓰면 오류다. 폭은 탭 묶음 전체에만 걸리고 바깥 문단은 본문 폭이다.
 - `@tab` 줄에는 이름이 필요하다. `selector-numbers`만 이름을 생략할 수 있고, 이때 버튼에는 번호가 나오며 이름을 쓰면 접근성 이름이 된다. 이름은 묶음 안에서 겹치지 않는다.
 - 첫 `@tab` 줄 앞에는 본문을 둘 수 없고, `@tab`이 하나도 없거나 탭 본문이 비었거나 `:::end`가 없으면 오류다. 오류에는 줄 번호가 붙는다.
 - 코드 펜스와 4칸 이상 들여쓴 코드 안의 `@tab`, `:::end`, `:::tabs` 줄은 해석하지 않는다. 탭 본문 안의 다른 블록(`:::note` 등) 안의 `@tab`도 탭을 나누지 않는다.
-- 옵션 없는 `:::tabs`는 다음 내용 줄이 `@tab`일 때 이 형식이다. 옵션이 있으면 항상 이 형식이다. `::::tabs`와 `:::tab[이름]`을 쓰는 옛 형식, `:::platform`, `ui:tabs`는 그대로 동작한다.
-- 탭은 테마의 `Tabs` 구성 요소 하나가 그리고 선택 줄의 방향키·Home·End는 기존 스크립트가 처리한다. 모양은 테마의 탭 토큰이 정한다. `position-bottom`이면 선택 줄은 패널 뒤에 놓여 읽기 순서도 같다.
+- 옵션 없는 `:::tabs`는 다음 내용 줄이 `@tab`일 때 이 형식이다. 옵션이 있으면 항상 이 형식이다.
+- 보이는 패널만 높이를 차지한다. 그림 높이가 달라도 선택 줄은 지금 보이는 내용 바로 옆에 있다. 분할 선택 줄은 내용에 맞는 폭이고 이름마다 자기 길이만큼 자리를 차지하며 긴 이름은 줄바꿈된다.
+- 선택 줄의 방향키·Home·End와 영상 정지는 기존 탭 스크립트 하나가 처리한다. 갤러리도 이 탭이다(`selector-numbers`, `::figure`로 캡션).
+- 옛 형식은 그대로 동작한다. `:::platform`은 상자, 위, 둥근 단추(기기 이름 동기화)이고, `::::tabs`+`:::tab[이름]`과 `ui:tabs`는 선택 줄이 위에 오는 분할 모양이다.
 
 ### 블록 폭
 
@@ -205,7 +209,7 @@ items:
 | `narrow` | 좁은 미디어 폭(테마의 `width-narrow`) 이하로 가운데 | 작은 화면 캡처 |
 | `wide` | 넓은 미디어 폭(`width-wide`: 최대 900px, 좁은 화면에서는 양쪽 여백을 남김)으로 본문 밖까지 | 넓은 그림, 갤러리, 긴 코드 |
 
-- 쓰는 법: `::figure{width=narrow}`, `::video{width=wide}`, `:::gallery{width=wide}`, 코드 펜스는 정보 문자열에 ` ```js width=wide `. `ui:figure`·`ui:gallery`의 `width`도 같다.
+- 쓰는 법: `::figure{width=narrow}`, `::video{width=wide}`, `:::gallery{width=wide}`(탭은 `:::tabs width-wide`), 코드 펜스는 정보 문자열에 ` ```js width=wide `. `ui:figure`·`ui:gallery`의 `width`도 같다.
 - 옛 표기 `wide`(참/거짓), `size=compact`는 `width=wide`, `width=narrow`와 같다. 같이 쓰면서 값이 다르면 오류다. `ui:video`의 `width`·`height`·`wide`는 플레이어 속성이라 그대로다.
 - 폭은 구성 요소가 클래스(`app-width-narrow`, `app-width-wide`)로 정하고 값은 테마 토큰이다. 글마다 폭을 따로 정하는 스타일은 없다.
 - `tab` 안에서도 같은 규칙이지만 기기 탭 상자는 본문 폭이라 `wide`가 상자 밖으로 나온다. 탭 안에서는 `content`를 권한다.

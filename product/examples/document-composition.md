@@ -61,9 +61,28 @@ Watch에서는 목록을 만들지 않고 iPhone에서 만든 목록을 읽기�
 
 ## 변경 전후를 탭으로 비교하기
 
-`:::tabs` 뒤에 옵션을 공백으로 적고, `@tab 이름` 줄마다 탭을 나눕니다. 탭 본문은 일반 Markdown이고 `:::end`로 닫습니다. 같은 크기의 그림 두 장과 캡션 문단으로 만든 예시입니다.
+`:::tabs` 뒤에 `@tab 이름` 줄마다 탭을 나누고 `:::end`로 닫습니다. 옵션을 쓰지 않으면 상자 없이 둥근 단추 줄이 패널 아래에 옵니다. 기본을 벗어나는 모양만 공백으로 구분한 옵션으로 적습니다. 탭 본문은 일반 Markdown입니다.
 
-:::tabs frame-none position-bottom selector-segmented
+옵션 없는 기본 모양입니다. 이름은 단추 크기에 맞게 늘어납니다.
+
+:::tabs
+@tab Mac
+
+메뉴 막대에서 새 목록을 만듭니다.
+
+@tab iPhone & iPad
+
+목록 화면에서 더하기 버튼을 누릅니다.
+
+@tab Watch
+
+iPhone에서 만든 목록을 읽기만 합니다.
+
+:::end
+
+`selector-segmented`는 분할 선택 줄입니다. 같은 크기의 그림 두 장과 캡션 문단으로 만든 예시입니다.
+
+:::tabs selector-segmented
 @tab 변경 전
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -78,10 +97,10 @@ Watch에서는 목록을 만들지 않고 iPhone에서 만든 목록을 읽기�
 
 :::end
 
-위 탭의 원문입니다.
+이 탭의 원문입니다.
 
 ````markdown
-:::tabs frame-none position-bottom selector-segmented
+:::tabs selector-segmented
 @tab 변경 전
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -97,25 +116,79 @@ Watch에서는 목록을 만들지 않고 iPhone에서 만든 목록을 읽기�
 :::end
 ````
 
-- `frame-panel`(기본) 또는 `frame-none`: 탭 묶음 둘레의 상자
-- `position-top`(기본) 또는 `position-bottom`: 탭 선택 줄의 위치
-- `selector-buttons`(기본), `selector-segmented`, `selector-numbers`: 선택 줄의 모양. 번호 모양은 `@tab`의 이름을 생략할 수 있습니다.
+이름 길이가 달라도 각 이름은 자기 길이만큼 자리를 차지하고, 긴 이름은 줄바꿈됩니다.
+
+:::tabs selector-segmented
+@tab 변경 전
+
+![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
+
+기존 화면입니다.
+
+@tab 변경 변경 변경 후
+
+![변경 후 화면](/things/assets/repeating-comparison-2-io80.png)
+
+개선한 화면입니다.
+
+:::end
+
+탭이 셋일 때도 이름마다 길이가 다릅니다. 내용 높이도 달라서 선택 줄은 지금 보이는 내용 바로 아래에 있습니다.
+
+:::tabs selector-segmented
+@tab 요약
+
+![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
+
+그림이 있는 탭입니다.
+
+@tab 자세한 변경 내용과 이유
+
+![변경 후 화면](/things/assets/repeating-comparison-2-io80.png)
+
+같은 크기의 그림이지만 이름이 깁니다.
+
+@tab 문제가 생겼을 때 되돌리는 방법
+
+그림이 없는 탭은 높이가 낮습니다. 선택 줄이 내용 바로 아래로 올라오는지 확인해 보세요.
+
+:::end
+
+- `frame-panel`: 탭 묶음 둘레에 상자를 둡니다(기본은 상자 없음)
+- `position-top`: 선택 줄을 패널 위에 둡니다(기본은 아래)
+- `selector-segmented`, `selector-numbers`: 선택 줄 모양(기본은 둥근 단추). 번호 모양은 `@tab` 이름을 생략할 수 있습니다.
+- `width-wide`: 탭 묶음 전체를 넓은 미디어 폭으로 펼칩니다. 바깥 문단은 본문 폭입니다.
 
 ## 화면을 차례로 보여 주기
 
-화면 여러 장을 번호 단추로 넘겨 보게 하려면 `:::gallery`에 `::slide`를 나열합니다. 자동으로 넘어가지 않고, 단추를 누르거나 키보드 화살표·Home·End로 고릅니다.
+번호 선택 줄(`selector-numbers`)은 갤러리처럼 쓸 수 있습니다. 자동으로 넘어가지 않고, 단추를 누르거나 키보드 화살표·Home·End로 고릅니다. 그림 높이가 달라도 보이는 그림만 자리를 차지합니다.
 
-:::gallery{title="앱 화면 둘러보기"}
-::slide{src=2-today-mac.png alt="오늘 목록 화면" caption="오늘 할 일을 한곳에 모읍니다."}
-::slide{src=3-upcoming-mac-2.png alt="예정 목록 화면" caption="날짜가 정해진 항목을 날짜순으로 봅니다."}
-::slide{src=4-headings-mac.png alt="소제목으로 나눈 목록" caption="긴 목록은 소제목으로 나눕니다."}
-::slide{src=5-checklists-mac-2.png alt="체크리스트 화면" caption="항목 안에 세부 단계를 둡니다."}
-::slide{src=7-quickfind-mac.png alt="빠른 찾기 화면" caption="이름을 입력해 바로 이동합니다."}
-:::
+:::tabs selector-numbers
+@tab 오늘 목록
+
+::figure{src=2-today-mac.png alt="오늘 목록 화면" caption="오늘 할 일을 한곳에 모읍니다."}
+
+@tab 예정 목록
+
+::figure{src=3-upcoming-mac-2.png alt="예정 목록 화면" caption="날짜가 정해진 항목을 날짜순으로 봅니다."}
+
+@tab 소제목
+
+::figure{src=4-headings-mac.png alt="소제목으로 나눈 목록" caption="긴 목록은 소제목으로 나눕니다."}
+
+@tab 체크리스트
+
+::figure{src=5-checklists-mac-2.png alt="체크리스트 화면" caption="항목 안에 세부 단계를 둡니다."}
+
+@tab 빠른 찾기
+
+::figure{src=7-quickfind-mac.png alt="빠른 찾기 화면" caption="이름을 입력해 바로 이동합니다."}
+
+:::end
 
 ## 폭을 맞춰 보여 주기
 
-그림, 영상, 갤러리, 코드는 `width`로 폭을 고릅니다. 문단은 항상 본문 폭입니다.
+그림, 영상, 탭, 코드는 폭을 고를 수 있습니다. 문단은 항상 본문 폭입니다.
 
 기본(`content`)은 본문 폭입니다.
 
@@ -125,12 +198,18 @@ Watch에서는 목록을 만들지 않고 iPhone에서 만든 목록을 읽기�
 
 ::figure{src=4-headings-mac.png alt="좁은 그림" caption="width=narrow" width=narrow}
 
-`wide`는 본문 밖으로 넓게 펼칩니다. 갤러리와 코드도 같습니다.
+`wide`는 본문 밖으로 넓게 펼칩니다. 탭은 `width-wide` 옵션, 코드는 `width=wide`입니다.
 
-:::gallery{title="넓은 갤러리" width=wide}
-::slide{src=3-upcoming-mac-2.png alt="예정 목록" caption="width=wide 갤러리"}
-::slide{src=5-checklists-mac-2.png alt="체크리스트" caption="같은 폭 규칙"}
-:::
+:::tabs selector-numbers width-wide
+@tab 예정 목록
+
+::figure{src=3-upcoming-mac-2.png alt="예정 목록" caption="width-wide 탭"}
+
+@tab 체크리스트
+
+::figure{src=5-checklists-mac-2.png alt="체크리스트" caption="같은 폭 규칙"}
+
+:::end
 
 ```bash width=wide
 curl --silent --show-error --location --header "Accept: application/json" "https://example.com/api/lists/today/items?include=reminders&sort=due&limit=200&cursor=ZXhhbXBsZS1jdXJzb3ItdmFsdWUtdGhhdC1pcy1jb21wbGV0ZWx5LXVubGlrZWx5LXRvLWZpdC1vbi1vbmUtbGluZS1vbi1hLXBob25l"

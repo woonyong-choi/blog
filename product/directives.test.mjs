@@ -261,7 +261,14 @@ test('document_composition_example_renders_every_block_with_unique_ids', () => {
   assert.ok(related.every(card => card.querySelector(':scope > .app-content-icon.is-medium') && card.querySelector(':scope > strong') && card.querySelector(':scope > span')));
   assert.equal(document.querySelectorAll('.is-centered, .app-inline-links').length, 0);
   assert.equal(headings.length, 7);
-  assert.equal(document.querySelectorAll('.app-gallery .app-gallery-controls button').length, 7);
+  const groups = [...document.querySelectorAll('.app-tabs.is-selector-numbers')];
+  assert.deepEqual(groups.map(group => group.querySelectorAll('[role=tab]').length), [5, 2]);
+  assert.ok(groups[1].classList.contains('app-width-wide'));
+  assert.equal(document.querySelectorAll('.app-gallery, [data-gallery]').length, 0);
+  assert.ok(document.querySelector('.app-tabs:not([class*=is-]) > [role=tablist]'), '옵션 없는 기본 탭');
+  const labels = [...document.querySelectorAll('.app-tabs.is-selector-segmented')].map(group => [...group.querySelectorAll('[role=tab]')].map(button => button.textContent));
+  assert.deepEqual(labels.map(group => group.length), [2, 2, 3]);
+  assert.ok(labels.some(group => group.includes('변경 변경 변경 후')) && labels.some(group => group.includes('문제가 생겼을 때 되돌리는 방법')));
   const all = ids(html);
   assert.equal(new Set(all).size, all.length);
 });
@@ -283,22 +290,32 @@ test('article_related_section_has_no_tags_and_uses_the_shared_card', () => {
   assert.equal(section.querySelectorAll('.app-tags, .app-tag, .app-related-metadata, .app-related-entry').length, 0);
 });
 
-test('gallery_block_renders_the_ui_gallery_markup_with_numbered_buttons', () => {
+test('gallery_block_and_ui_gallery_delegate_to_the_one_tabs_markup_with_numbered_buttons', () => {
   const slides = ['2-today-mac.png', '3-upcoming-mac-2.png', '4-headings-mac.png'];
   const source = `:::gallery{title="둘러보기"}\n${slides.map((src, index) => `::slide{src=${src} alt="화면 ${index + 1}"${index ? '' : ' caption=첫째'}}`).join('\n')}\n:::\n`;
   const document = dom(render(source));
-  const gallery = document.querySelector('section.app-gallery[data-gallery]');
-  assert.equal(gallery.getAttribute('aria-label'), '둘러보기');
-  assert.ok(!gallery.classList.contains('is-labeled'));
-  const buttons = [...gallery.querySelectorAll('.app-gallery-controls button[data-slide-index]')];
+  const gallery = document.querySelector('section.app-tabs[data-tabs]');
+  assert.deepEqual([...gallery.classList], ['app-tabs', 'is-selector-numbers']);
+  const list = gallery.querySelector(':scope > [role=tablist]');
+  assert.equal(list.getAttribute('aria-label'), '둘러보기');
+  const buttons = [...list.children];
   assert.deepEqual(buttons.map(button => button.textContent), ['1', '2', '3']);
-  assert.deepEqual(buttons.map(button => button.getAttribute('aria-pressed')), ['true', 'false', 'false']);
-  const frames = [...gallery.querySelectorAll('figure.app-gallery-slide[data-slide]')];
-  assert.deepEqual(frames.map(frame => frame.getAttribute('aria-hidden')), ['false', 'true', 'true']);
-  buttons.forEach((button, index) => assert.equal(button.getAttribute('aria-controls'), frames[index].id));
-  assert.equal(frames[0].querySelector('figcaption').textContent, '첫째');
-  const legacy = dom(render('```ui:gallery\nslides:\n' + slides.map(src => `  - { src: ${src}, alt: a }`).join('\n') + '\n```\n'));
-  assert.equal(legacy.querySelector('.app-gallery').innerHTML.replace(/id="[^"]+"/g, '').replace(/aria-controls="[^"]+"/g, '').replace(/alt="[^"]*"/g, '').replace(/ ?aria-label="[^"]*"/g, ''), gallery.innerHTML.replace(/id="[^"]+"/g, '').replace(/aria-controls="[^"]+"/g, '').replace(/alt="[^"]*"/g, '').replace(/ ?aria-label="[^"]*"/g, '').replace('<figcaption>첫째</figcaption>', ''));
+  assert.deepEqual(buttons.map(button => button.getAttribute('aria-label')), ['슬라이드 1', '슬라이드 2', '슬라이드 3']);
+  assert.deepEqual(buttons.map(button => button.getAttribute('aria-selected')), ['true', 'false', 'false']);
+  const panels = [...gallery.querySelectorAll(':scope > [role=tabpanel]')];
+  assert.deepEqual(panels.map(panel => panel.hidden), [false, true, true]);
+  buttons.forEach((button, index) => assert.equal(button.getAttribute('aria-controls'), panels[index].id));
+  assert.equal(panels[0].querySelector('figcaption').textContent, '첫째');
+  assert.ok(panels.every(panel => list.compareDocumentPosition(panel) & 2), '선택 줄은 패널 뒤에 온다');
+  assert.equal(document.querySelectorAll('[data-gallery], .app-gallery').length, 0);
+  // ui:gallery도 같은 마크업이다.
+  const legacy = dom(render('```ui:gallery\ntitle: 둘러보기\nslides:\n' + slides.map((src, index) => `  - { src: ${src}, alt: 화면 ${index + 1}${index ? '' : ', caption: 첫째'} }`).join('\n') + '\n```\n'));
+  const normalize = html => html.replace(/component-p-\d+/g, 'c');
+  assert.equal(normalize(legacy.querySelector('.app-tabs').outerHTML), normalize(gallery.outerHTML));
+  // 이름이 모두 있으면 분할 선택 줄이다.
+  const labeled = dom(render('```ui:gallery\nslides:\n  - { src: 2-today-mac.png, alt: a, label: 전 }\n  - { src: 3-upcoming-mac-2.png, alt: b, label: 후 }\n```\n'));
+  assert.deepEqual([...labeled.querySelector('.app-tabs').classList], ['app-tabs', 'is-selector-segmented']);
+  assert.deepEqual([...labeled.querySelectorAll('[role=tab]')].map(button => button.textContent), ['전', '후']);
 });
 
 test('gallery_errors_cover_missing_slides_places_and_assets', () => {
@@ -328,7 +345,7 @@ test('width_prop_maps_from_every_grammar_to_the_same_shared_classes_and_aliases_
   const classes = selector => [...document.querySelectorAll(selector)].map(node => node.className);
   assert.deepEqual(classes('figure.app-figure').slice(0, 4), ['app-figure app-width-narrow', 'app-figure app-width-wide', 'app-figure app-width-narrow', 'app-figure']);
   assert.ok(document.querySelector('figure.app-figure.app-width-wide [data-player]'));
-  assert.ok(document.querySelector('section.app-gallery.app-width-wide'));
+  assert.ok(document.querySelector('section.app-tabs.app-width-wide'));
   assert.deepEqual(classes('.app-code'), ['app-code app-width-narrow', 'app-code']);
   assert.equal(document.querySelectorAll('figure.app-figure.app-width-wide').length, 3);
   assert.doesNotMatch(html, /app-breakout|is-compact/);
@@ -350,7 +367,7 @@ test('long_unbroken_code_keeps_the_exact_raw_text_for_copying', () => {
 });
 
 const REQUESTED = [
-  ':::tabs frame-none position-bottom selector-segmented',
+  ':::tabs selector-segmented',
   '@tab 변경 전', '', '![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)', '', '기존 화면입니다.', '',
   '@tab 변경 후', '', '![변경 후 화면](/things/assets/repeating-comparison-2-io80.png)', '', '개선한 화면입니다.', '',
   ':::end', '',
@@ -359,7 +376,8 @@ const REQUESTED = [
 test('tabs_with_utility_header_and_at_tab_lines_render_the_one_shared_tabs_markup', () => {
   const document = dom(render(REQUESTED));
   const tabs = document.querySelector('section.app-tabs');
-  assert.deepEqual([...tabs.classList], ['app-tabs', 'is-frame-none', 'is-position-bottom', 'is-selector-segmented']);
+  // 기본(상자 없음, 아래, 단추, 본문 폭)은 클래스가 없고 벗어난 값만 클래스가 된다.
+  assert.deepEqual([...tabs.classList], ['app-tabs', 'is-selector-segmented']);
   const panels = [...tabs.querySelectorAll(':scope > [role=tabpanel]')];
   const list = tabs.querySelector(':scope > [role=tablist]');
   assert.equal(panels.length, 2);
@@ -375,17 +393,30 @@ test('tabs_with_utility_header_and_at_tab_lines_render_the_one_shared_tabs_marku
   assert.equal(document.querySelectorAll('figure').length, 0);
 });
 
-test('tabs_defaults_and_compat_key_value_header_match_the_utility_form', () => {
+test('tabs_defaults_normalize_explicit_default_tokens_and_options_stay_independent', () => {
   const body = '@tab A\n\n가\n\n@tab B\n\n나\n\n:::end\n';
-  const plain = dom(render(`:::tabs\n${body}`)).querySelector('.app-tabs');
-  assert.deepEqual([...plain.classList], ['app-tabs', 'is-frame-panel', 'is-position-top', 'is-selector-buttons']);
-  assert.equal(plain.firstElementChild.getAttribute('role'), 'tablist');
-  const utility = render(`:::tabs frame-none position-bottom selector-numbers\n${body}`);
-  const keyValue = render(`:::tabs frame=none position=bottom selector=numbers\n${body}`);
-  assert.equal(keyValue, utility);
-  assert.deepEqual([...dom(render(`:::tabs selector-segmented\n${body}`)).querySelector('.app-tabs').classList].slice(1), ['is-frame-panel', 'is-position-top', 'is-selector-segmented']);
-  // 옵션은 독립이고 순서와 상관없다.
-  assert.equal(render(`:::tabs position-bottom selector-numbers frame-none\n${body}`), utility);
+  const plain = render(`:::tabs\n${body}`);
+  const root = dom(plain).querySelector('.app-tabs');
+  assert.deepEqual([...root.classList], ['app-tabs']);
+  assert.equal(root.lastElementChild.getAttribute('role'), 'tablist');
+  // 기본값을 적어도 쓰지 않은 것과 같고 쓸모없는 클래스가 없다.
+  assert.equal(render(`:::tabs frame-none position-bottom selector-buttons width-content\n${body}`), plain);
+  assert.equal(render(`:::tabs frame=none position=bottom selector=buttons width=content\n${body}`), plain);
+  assert.doesNotMatch(plain, /is-frame-none|is-position-bottom|is-selector-buttons|width-content/);
+  // 벗어난 값만 클래스, 호환 형식은 같은 결과, 순서는 상관없다.
+  const classes = options => [...dom(render(`:::tabs ${options}\n${body}`)).querySelector('.app-tabs').classList];
+  assert.deepEqual(classes('frame-panel'), ['app-tabs', 'is-frame-panel']);
+  assert.deepEqual(classes('position-top'), ['app-tabs', 'is-position-top']);
+  assert.deepEqual(classes('selector-numbers'), ['app-tabs', 'is-selector-numbers']);
+  assert.deepEqual(classes('width-wide'), ['app-tabs', 'app-width-wide']);
+  assert.deepEqual(classes('width-wide selector-numbers position-top frame-panel'), ['app-tabs', 'is-frame-panel', 'is-position-top', 'is-selector-numbers', 'app-width-wide']);
+  assert.equal(render(`:::tabs width=wide selector=numbers\n${body}`), render(`:::tabs selector-numbers width-wide\n${body}`));
+  // 위쪽이면 선택 줄이 먼저다.
+  assert.equal(dom(render(`:::tabs position-top\n${body}`)).querySelector('.app-tabs').firstElementChild.getAttribute('role'), 'tablist');
+  // 폭은 묶음 전체에만 걸리고 바깥 문단에는 걸리지 않는다.
+  const page = dom(render(`바깥 문단\n\n:::tabs width-wide\n${body}\n뒤 문단\n`));
+  assert.deepEqual([...page.querySelectorAll('.app-width-wide')].map(node => node.className), ['app-tabs app-width-wide']);
+  assert.equal(page.querySelector('body > p').className, '');
 });
 
 test('numbers_selector_allows_unlabeled_tabs_with_numbered_buttons_and_accessible_names', () => {
@@ -402,6 +433,8 @@ test('tabs_grammar_rejects_unknown_conflicting_and_malformed_forms_with_lines', 
     [`:::tabs position-left\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: position-left/],
     [`:::tabs selector-tiles\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: selector-tiles/],
     [`:::tabs border-none\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: border-none/],
+    [`:::tabs width-huge\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: width-huge/],
+    [`:::tabs width-wide width=content\n${body}:::end\n`, /탭 옵션이 충돌합니다/],
     [`:::tabs frame-none frame-none\n${body}:::end\n`, /탭 옵션이 겹칩니다: frame-none/],
     [`:::tabs frame-none frame-panel\n${body}:::end\n`, /탭 옵션이 충돌합니다: frame-none, frame-panel/],
     [`:::tabs frame-none frame=panel\n${body}:::end\n`, /탭 옵션이 충돌합니다/],
@@ -444,13 +477,14 @@ test('at_tab_and_end_markers_inside_code_fences_and_nested_blocks_do_not_split_o
   assert.equal(dom(render('```markdown\n' + REQUESTED + '```\n')).querySelectorAll('.app-tabs').length, 0);
 });
 
-test('legacy_tab_forms_and_ui_tabs_keep_their_markup_and_can_share_a_page', () => {
+test('legacy_tab_forms_use_explicit_top_segmented_options_and_platform_stays_bordered_top', () => {
   const legacy = render('::::tabs\n:::tab[A]\n가\n:::\n:::tab[B]\n나\n:::\n::::\n');
-  assert.match(legacy, /^<section class="app-tabs" data-tabs><div class="app-tablist"/);
+  assert.match(legacy, /^<section class="app-tabs is-position-top is-selector-segmented" data-tabs><div class="app-tablist"/);
   const threeColons = render(':::tabs\n:::tab[A]\n가\n:::\n:::tab[B]\n나\n:::\n:::\n');
   assert.equal(threeColons.replace(/component-p-\d+/g, 'c'), legacy.replace(/component-p-\d+/g, 'c'));
-  assert.match(render('::::platform\n:::tab[Mac]\n가\n:::\n::::\n'), /^<section class="app-tabs is-platform" data-tabs data-platform>/);
-  assert.match(render('```ui:tabs\nitems:\n  - { label: A, body: 가 }\n  - { label: B, body: 나 }\n```\n'), /^<section class="app-tabs" data-tabs>/);
+  assert.match(render('::::platform\n:::tab[Mac]\n가\n:::\n::::\n'), /^<section class="app-tabs is-platform" data-tabs data-platform><div class="app-tablist"/);
+  assert.match(render('```ui:tabs\nitems:\n  - { label: A, body: 가 }\n  - { label: B, body: 나 }\n```\n'), /^<section class="app-tabs is-position-top is-selector-segmented" data-tabs><div class="app-tablist"/);
+  assert.match(render('```ui:platform\nitems:\n  - { label: A, body: 가 }\n```\n'), /^<section class="app-tabs is-platform" data-tabs data-platform>/);
   const mixed = dom(render(`${REQUESTED}\n::::tabs\n:::tab[A]\n가\n:::\n::::\n`));
   assert.equal(mixed.querySelectorAll('.app-tabs').length, 2);
   const ids = [...mixed.querySelectorAll('[id]')].map(node => node.id);
@@ -477,4 +511,26 @@ test('bottom_selector_tabs_use_the_same_runtime_for_click_arrows_home_and_end', 
   press(buttons[2], 'Home');
   assert.equal(visible(), 0);
   assert.equal(window.document.activeElement, buttons[0]);
+});
+
+test('gallery_tabs_show_only_the_selected_panel_pause_hidden_videos_and_use_the_one_runtime', () => {
+  const source = ':::tabs selector-numbers\n@tab 영상\n\n::video{src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt=영상 controls}\n\n@tab 그림\n\n::figure{src=2-today-mac.png alt=그림 caption=캡션}\n\n@tab 셋째\n\n짧은 글\n\n:::end\n';
+  const window = new JSDOM(`<body>${render(source)}</body>`, { runScripts: 'outside-only', url: 'https://example.com/' }).window;
+  const paused = [];
+  window.HTMLMediaElement.prototype.pause = function pause() { paused.push(this); };
+  window.eval(readFileSync(new URL('./document.js', import.meta.url), 'utf8'));
+  const panels = [...window.document.querySelectorAll('[role=tabpanel]')];
+  const buttons = [...window.document.querySelectorAll('[role=tab]')];
+  // 한 번에 한 패널만 보이고 나머지는 hidden이라 높이를 차지하지 않는다(예약 높이 없음).
+  const visible = () => panels.map(panel => !panel.hidden);
+  assert.deepEqual(visible(), [true, false, false]);
+  assert.deepEqual(buttons.map(button => button.textContent), ['1', '2', '3']);
+  buttons[1].click();
+  assert.deepEqual(visible(), [false, true, false]);
+  assert.equal(paused.length, 1, '숨겨진 패널의 영상은 멈춘다');
+  assert.equal(paused[0].closest('[role=tabpanel]'), panels[0]);
+  buttons[1].dispatchEvent(new window.KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  assert.deepEqual(visible(), [false, false, true]);
+  assert.equal(buttons[2].getAttribute('aria-selected'), 'true');
+  assert.equal(buttons[1].tabIndex, -1);
 });

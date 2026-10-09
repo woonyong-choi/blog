@@ -35,7 +35,7 @@ test('specimen renders every declared document component', () => {
   const source=readFileSync(new URL('./content/syntax-specimen.md',import.meta.url),'utf8').split('\n---\n').slice(1).join('\n---\n');
   const html=createMarkdown().render(source,{});
   for (const kind of ['group','feature','syntax-examples','feature-list','device','demos','feature-pair','callout','details','figure','fineprint','figure-grid','video','gallery','platform','tabs','cards','definitions','speech','keys','tooltip','keyboard','status-board','contact-form','form']) assert.ok(source.includes('ui:' + kind), 'missing specimen: ' + kind);
-  for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','app-help-card is-centered','app-help-card is-grouped','app-inline-links','data-tabs','data-gallery','<video','<details','<dl','<kbd','popover','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
+  for(const marker of ['<table>','<blockquote>','task-list-item','language-javascript','app-callout','app-help-card is-centered','app-help-card is-grouped','app-inline-links','data-tabs','<video','<details','<dl','<kbd','popover','data-demo-form','footnote-ref']) assert.ok(html.includes(marker),marker);
 });
 
 test('fineprint and figure grid map to the reference DOM without raw html', () => {
@@ -77,8 +77,10 @@ test('gallery preserves selected slide, captions and validates its initial index
   const md = createMarkdown();
   const slides = [{src:'repeating-comparison-1-io80.png',label:'Before',caption:'<before>'},{src:'repeating-comparison-2-io80.png',label:'Now',caption:'after'}];
   const html = md.render(fence('gallery',{selected:1,slides}));
-  assert.match(html, /is-labeled/);
-  assert.match(html, /class="app-gallery-slide is-selected" data-slide aria-hidden="false"><img[^>]*repeating-comparison-2/);
+  assert.match(html, /app-tabs is-selector-segmented/);
+  assert.match(html, /id="[^"]*-tab-1" role="tab" aria-selected="true"/);
+  assert.match(html, /role="tabpanel"[^>]*tabindex="0"><figure class="app-figure"><img[^>]*repeating-comparison-2/);
+  assert.doesNotMatch(html, /data-gallery|app-gallery/);
   assert.ok(html.includes('<figcaption>&lt;before&gt;</figcaption>'));
   assert.throws(() => md.render(fence('gallery',{selected:2,slides})));
   assert.throws(() => md.render(fence('gallery',{selected:-1,slides})));

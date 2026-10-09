@@ -133,18 +133,20 @@ export function parseTabLine(text) {
 }
 
 export const TAB_OPTIONS = Object.freeze({
-  frame: ['panel', 'none'],
-  position: ['top', 'bottom'],
+  frame: ['none', 'panel'],
+  position: ['bottom', 'top'],
   selector: ['buttons', 'segmented', 'numbers'],
+  width: ['content', 'wide'],
 });
 
-// 탭 옵션: `frame-none position-bottom selector-segmented`(권장)와 `frame=none` 형식을 받는다. 같은 묶음은 한 번만, 모르는 옵션은 오류다.
+// 탭 옵션: `selector-segmented position-top width-wide`(권장)와 `frame=panel` 형식을 받는다. 같은 묶음은 한 번만, 모르는 옵션은 오류다.
+// 기본값(frame-none, position-bottom, selector-buttons, width-content)을 적어도 받지만 쓰지 않은 것과 같다. 쓰지 않은 묶음은 결과에 없다.
 export function parseTabOptions(source = '', fail) {
   const options = {};
   const given = {};
   const allowed = Object.entries(TAB_OPTIONS).flatMap(([group, values]) => values.map(value => `${group}-${value}`));
   for (const token of source.split(/\s+/).filter(Boolean)) {
-    const match = /^(frame|position|selector)(?:-|=)([a-z]+)$/.exec(token);
+    const match = /^(frame|position|selector|width)(?:-|=)([a-z]+)$/.exec(token);
     if (!match || !TAB_OPTIONS[match[1]].includes(match[2])) fail(`알 수 없는 탭 옵션입니다: ${token} (사용할 수 있는 옵션: ${allowed.join(', ')})`);
     const [, group, value] = match;
     if (given[group] === token) fail(`탭 옵션이 겹칩니다: ${token}`);

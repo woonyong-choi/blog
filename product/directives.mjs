@@ -74,8 +74,8 @@ export function installDirectives(md, kit) {
     const parent = stack.at(-1)?.name ?? 'root';
     if (stack.length >= MAX_DEPTH) fail(`블록 중첩은 ${MAX_DEPTH}단계까지 쓸 수 있습니다`);
     if (!BLOCKS.tabs.within.includes(parent)) fail(`${parent === 'root' ? '문서 바로 아래' : `:::${parent} 안`}에서는 쓸 수 없습니다. 쓸 수 있는 곳: 문서 바로 아래`);
-    // 이 형식은 옵션을 하나도 쓰지 않아도 기본값(panel, top, buttons)을 분명히 정한다.
-    const options = { frame: 'panel', position: 'top', selector: 'buttons', ...parseTabOptions(found.options ?? '', fail) };
+    // 쓰지 않은 옵션은 테마 Tabs의 기본값(frame none, position bottom, selector buttons, width content)이다.
+    const options = parseTabOptions(found.options ?? '', fail);
     const { close, marks } = findClose(state, startLine, endLine, { ...found, name: 'tabs', closer: 'end' }, fail);
     if (!marks.length) fail('@tab 줄이 하나도 없습니다. 예: @tab 변경 전');
     for (let at = startLine + 1; at < marks[0].line; at += 1) if (lineAt(state, at).trim()) fail('첫 @tab 줄 앞에는 본문을 둘 수 없습니다', at + 1);

@@ -1,22 +1,4 @@
-// 정적 문서의 독립적인 상호작용을 연결한다.
-for (const gallery of document.querySelectorAll('[data-gallery]')) {
-  const buttons = [...gallery.querySelectorAll('[data-slide-index]')];
-  const slides = [...gallery.querySelectorAll('[data-slide]')];
-  const select = (index, focus = false) => {
-    slides.forEach((slide, at) => { slide.classList.toggle('is-selected', at === index); slide.setAttribute('aria-hidden', String(at !== index)); });
-    buttons.forEach((button, at) => button.setAttribute('aria-pressed', String(at === index)));
-    if (focus) buttons[index].focus();
-  };
-  buttons.forEach((button, index) => {
-    button.addEventListener('click', () => select(index));
-    button.addEventListener('keydown', (event) => {
-      if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
-      event.preventDefault();
-      const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
-      select(next, true);
-    });
-  });
-}
+// 정적 문서의 독립적인 상호작용을 연결한다. 갤러리는 번호형 탭이라 탭 처리 하나를 쓴다.
 for (const tabs of document.querySelectorAll('[data-tabs]')) {
   const buttons = [...tabs.querySelectorAll(':scope > [role=tablist] > button')];
   const panels = [...tabs.querySelectorAll(':scope > [role=tabpanel]')];

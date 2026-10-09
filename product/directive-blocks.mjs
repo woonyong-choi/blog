@@ -4,6 +4,11 @@ const PLACES = ['root', 'tab'];
 const WIDTH = { type: 'enum', values: ['content', 'narrow', 'wide'] };
 const checkWidth = (attrs, { ui }) => ui.contentWidth(attrs);
 
+// 옛 `::::tabs`+`:::tab[이름]` 형식은 선택 줄이 위에 오는 분할 모양이다. 새 `@tab` 형식은 meta.options(없으면 테마 기본값)를 쓴다.
+const LEGACY_TABS = Object.freeze({ position: 'top', selector: 'segmented' });
+
+const tabOptions = (meta, platform) => meta.options ?? (platform ? {} : LEGACY_TABS);
+
 function tabSet(platform) {
   return {
     label: 'optional',
@@ -21,8 +26,8 @@ function tabSet(platform) {
       });
       meta.tabs = children.map(child => child.meta.label);
     },
-    open: (meta, { ui }) => ui.Tabs.open({ id: meta.id, label: meta.label, platform, labels: meta.tabs, ...meta.options }),
-    close: (meta, { ui }) => ui.Tabs.close({ id: meta.id, label: meta.label, platform, labels: meta.tabs, ...meta.options }),
+    open: (meta, { ui }) => ui.Tabs.open({ id: meta.id, label: meta.label, platform, labels: meta.tabs, ...tabOptions(meta, platform) }),
+    close: (meta, { ui }) => ui.Tabs.close({ id: meta.id, label: meta.label, platform, labels: meta.tabs, ...tabOptions(meta, platform) }),
   };
 }
 

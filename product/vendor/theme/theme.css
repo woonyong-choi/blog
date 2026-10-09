@@ -761,6 +761,7 @@
   --primitive-simple-prose-script-line: 0.5;
   --primitive-simple-interview-meta-gap: 0.5em;
   --primitive-simple-interview-meta-offset: 0.25em;
+  --primitive-simple-tab-label-min: 3em;
   --primitive-simple-related-summary-lines: 3;
   --primitive-simple-prose-table-padding: .3em .5em;
   --primitive-simple-key-font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Apple Symbols", Roboto, sans-serif;
@@ -1803,6 +1804,7 @@
   --site-prose-script-line: var(--primitive-simple-prose-script-line);
   --site-interview-meta-gap: var(--primitive-simple-interview-meta-gap);
   --site-interview-meta-offset: var(--primitive-simple-interview-meta-offset);
+  --site-tab-label-min: var(--primitive-simple-tab-label-min);
   --site-related-summary-lines: var(--primitive-simple-related-summary-lines);
   --site-prose-table-padding: var(--primitive-simple-prose-table-padding);
   --site-key-font: var(--primitive-simple-key-font);

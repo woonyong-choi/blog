@@ -3775,6 +3775,11 @@
         "$value": "0.25em",
         "$description": "프로필 이미지 옆 제목 줄의 위쪽 보정. 카드 글자 크기에 비례한다"
       },
+      "tab-label-min": {
+        "$type": "dimension",
+        "$value": "3em",
+        "$description": "분할 선택 줄 버튼 글자 영역의 최소 폭. 줄어들어도 짧은 한글 낱말(세 글자 안팎)이 한 줄로 남는다. 글자 크기에 비례한다"
+      },
       "related-summary-lines": {
         "$type": "string",
         "$value": "3",
@@ -8892,6 +8897,10 @@
     "interview-meta-offset": {
       "$type": "dimension",
       "$value": "{primitive.simple.interview-meta-offset}"
+    },
+    "tab-label-min": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.tab-label-min}"
     },
     "related-summary-lines": {
       "$type": "string",

@@ -43,7 +43,7 @@ test('static_pages_load_only_the_footer_year_module_and_document_controls_keep_t
   assert.match(article, /<script type="module" async src="\/publication\.js\?v=client"><\/script><\/body>/);
   assert.ok(article.indexOf('data-comments') < article.indexOf('async src="/publication.js'));
   assert.match(article, /<script type="module" src="\/document\.js\?v=client">/);
-  for (const marker of ['data-gallery', 'data-tabs', 'data-copy', 'data-keyboard', 'data-tooltip-trigger']) assert.deepEqual(clientEntrypoints(`<div ${marker}></div>`), ['document.js']);
+  for (const marker of ['data-tabs', 'data-copy', 'data-keyboard', 'data-tooltip-trigger']) assert.deepEqual(clientEntrypoints(`<div ${marker}></div>`), ['document.js']);
   assert.deepEqual(clientEntrypoints('<code>&lt;div data-copy&gt;</code>'), []);
 });
 
