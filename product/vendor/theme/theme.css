@@ -10,6 +10,8 @@
   --color-syntax-string: var(--color-blue-light-ink);
   --color-syntax-function: var(--color-purple-light-ink);
   --color-syntax-number: var(--color-orange-light-ink);
+  --color-syntax-keyword: var(--color-red-light-ink);
+  --color-syntax-type: var(--color-green-light-ink);
   --color-dialog-backdrop: var(--primitive-color-dialog-backdrop);
   --color-gray-0: #ffffff;
   --color-gray-27: #f8f8f8;
@@ -418,9 +420,6 @@
   --primitive-simple-article-sprite: 900%;
   --primitive-simple-article-lead: 21.6px;
   --primitive-simple-chevron-angle: 45deg;
-  --primitive-simple-syntax-keyword: #d6b3ff;
-  --primitive-simple-syntax-string: #a9e5c2;
-  --primitive-simple-syntax-number: #f4cb96;
   --primitive-simple-mobile-gutter: 15px;
   --primitive-simple-mobile-intro: 20.25px;
   --primitive-simple-sprite-appstore: 0% 12.5%;
@@ -759,6 +758,10 @@
   --primitive-simple-prose-rule-width: 62%;
   --primitive-simple-prose-rule-margin: 2.8em auto;
   --primitive-simple-prose-tab-size: 4;
+  --primitive-simple-prose-script-line: 0.5;
+  --primitive-simple-interview-meta-gap: 0.5em;
+  --primitive-simple-interview-meta-offset: 0.25em;
+  --primitive-simple-related-summary-lines: 3;
   --primitive-simple-prose-table-padding: .3em .5em;
   --primitive-simple-key-font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Apple Symbols", Roboto, sans-serif;
   --primitive-simple-key-padding: .3em .4em;
@@ -856,8 +859,9 @@
   --primitive-simple-control-chevron-ink: #05101c;
   --primitive-simple-control-play-ink: #5b9aff;
   --primitive-simple-control-overlay-ink: rgba(0,0,0,.75);
-  --primitive-simple-control-task-fill: rgba(0,0,0,.05);
-  --primitive-simple-control-task-ink: rgba(0,0,0,.2);
+  --primitive-simple-control-task-fill: rgba(0,0,0,0);
+  --primitive-simple-control-task-ink: rgba(0,0,0,.3);
+  --primitive-simple-control-task-stroke: 1.5;
   --primitive-simple-prose-rule-color: rgba(0,20,49,.18);
   --primitive-simple-prose-caption-color: rgba(4,15,26,.5);
   --primitive-simple-prose-link-active: #114691;
@@ -1385,9 +1389,11 @@
   --site-article-sprite: var(--primitive-simple-article-sprite);
   --site-article-lead: var(--primitive-simple-article-lead);
   --site-chevron-angle: var(--primitive-simple-chevron-angle);
-  --site-syntax-keyword: var(--primitive-simple-prose-code-color);
-  --site-syntax-string: var(--primitive-simple-prose-code-color);
-  --site-syntax-number: var(--primitive-simple-prose-code-color);
+  --site-syntax-keyword: var(--color-syntax-keyword);
+  --site-syntax-string: var(--color-syntax-string);
+  --site-syntax-number: var(--color-syntax-number);
+  --site-syntax-function: var(--color-syntax-function);
+  --site-syntax-type: var(--color-syntax-type);
   --site-mobile-gutter: var(--primitive-simple-mobile-gutter);
   --site-mobile-intro: var(--primitive-simple-mobile-intro);
   --site-sprite-appstore: var(--primitive-simple-sprite-appstore);
@@ -1629,6 +1635,8 @@
   --site-article-title-padding: var(--primitive-simple-landing-quote-award-text);
   --site-article-title-gap: var(--primitive-simple-subtitle);
   --site-article-media-compact: var(--primitive-simple-article-media-compact);
+  --site-width-narrow: var(--primitive-simple-article-media-compact);
+  --site-width-wide: max(100%, min(var(--primitive-simple-reference-width), calc(100vw - 2 * var(--primitive-simple-gutter))));
   --site-syntax-example-padding: var(--primitive-simple-syntax-example-padding);
   --site-syntax-example-background: var(--primitive-simple-syntax-example-background);
   --site-syntax-example-border: var(--primitive-simple-syntax-example-border);
@@ -1792,6 +1800,10 @@
   --site-prose-rule-width: var(--primitive-simple-prose-rule-width);
   --site-prose-rule-margin: var(--primitive-simple-prose-rule-margin);
   --site-prose-tab-size: var(--primitive-simple-prose-tab-size);
+  --site-prose-script-line: var(--primitive-simple-prose-script-line);
+  --site-interview-meta-gap: var(--primitive-simple-interview-meta-gap);
+  --site-interview-meta-offset: var(--primitive-simple-interview-meta-offset);
+  --site-related-summary-lines: var(--primitive-simple-related-summary-lines);
   --site-prose-table-padding: var(--primitive-simple-prose-table-padding);
   --site-key-font: var(--primitive-simple-key-font);
   --site-key-padding: var(--primitive-simple-key-padding);
@@ -1880,6 +1892,7 @@
   --site-control-overlay-ink: var(--primitive-simple-control-overlay-ink);
   --site-control-task-fill: var(--primitive-simple-control-task-fill);
   --site-control-task-ink: var(--primitive-simple-control-task-ink);
+  --site-control-task-stroke: var(--primitive-simple-control-task-stroke);
   --site-control-paper: var(--color-gray-0);
   --site-control-stroke: var(--primitive-simple-status-flip-line);
   --site-control-cutout: var(--color-gray-1000);

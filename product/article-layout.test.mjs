@@ -59,10 +59,12 @@ test('wiki_detail_keeps_search_title_icon_toc_and_a_collapsed_document_menu_in_t
 const css = readFileSync(new URL('./vendor/theme/styles.css', import.meta.url), 'utf8');
 const rule = selector => { const match = css.match(new RegExp(`(?:^|\\n)${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\{([^}]*)\\}`)); assert.ok(match, selector); return match[1]; };
 
-test('document_column_has_no_sidebar_and_code_blocks_scroll_under_a_fixed_header', () => {
+test('document_column_has_no_sidebar_and_code_blocks_soft_wrap_under_a_fixed_header', () => {
   assert.doesNotMatch(css, /app-document-layout|\.app-document-nav\[open\]|app-document-shell \{ max-width/);
   assert.match(rule('.app-document'), /max-width: var\(--site-body-width\);[^}]*margin: var\(--site-article-search-bottom\) auto 0/);
-  assert.match(rule('.app-code pre'), /overflow-x: auto;[^}]*white-space: pre;/);
+  // 코드는 가로 스크롤 없이 폭에 맞춰 줄바꿈한다.
+  assert.match(rule('.app-code pre'), /white-space: pre-wrap;[^}]*overflow-wrap: anywhere;/);
+  assert.doesNotMatch(rule('.app-code pre'), /overflow-x|overflow: (?:auto|scroll)/);
   assert.match(rule('.app-code'), /grid-template-columns: minmax\(0, 1fr\);[^}]*overflow: hidden/);
   assert.match(rule('.app-code-header'), /justify-content: space-between/);
   assert.match(rule('.app-code-header button[hidden]'), /display: none/);

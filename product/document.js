@@ -66,16 +66,18 @@ for (const button of document.querySelectorAll('[data-copy]')) {
     try {
       await navigator.clipboard.writeText(block.querySelector('code').textContent);
       button.textContent = '복사됨';
+      button.dataset.state = 'copied';
       button.setAttribute('aria-label', `${label}됨`);
       status.textContent = `${label}를 완료했습니다.`;
     } catch {
       button.textContent = '복사 실패';
+      button.dataset.state = 'failed';
       button.setAttribute('aria-label', `${label} 실패. 다시 시도`);
       status.textContent = `${label}에 실패했습니다. 다시 시도하거나 코드를 선택해 복사하세요.`;
     } finally {
       copying = false;
       button.removeAttribute('aria-disabled');
-      reset = setTimeout(() => { button.textContent = idle; button.setAttribute('aria-label', label); }, 2400);
+      reset = setTimeout(() => { delete button.dataset.state; button.textContent = idle; button.setAttribute('aria-label', label); }, 2400);
     }
   });
 }

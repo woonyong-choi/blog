@@ -2,7 +2,8 @@
 import { personalFooter } from './publication-footer.mjs';
 import { controlImage } from './controls.mjs';
 import { readFileSync } from 'node:fs';
-import { escape } from './markdown.mjs';
+import { escape, relatedLink } from './markdown.mjs';
+import * as ui from './vendor/theme/assets/components.mjs';
 import { contentIcon } from './content-icons.mjs';
 import { FIELDS } from './content-model.mjs';
 import { clientEntrypoints } from './publication-assets.mjs';
@@ -23,7 +24,7 @@ export function iconUrl(spec, size = 'small') {
 export function subjectIcon(spec, size = 'card') {
   const name = typeof spec === 'string' ? spec : spec.name;
   const brand = BRANDS.find(item => item.file === `${name}.svg`);
-  if (brand) return `<span class="app-content-icon is-${size}"><img src="/theme/assets/icons/brands/${escape(brand.file)}" alt="" decoding="async"></span>`;
+  if (brand) return String(ui.ContentIconImage({ src: `/theme/assets/icons/brands/${brand.file}`, size }));
   return contentIcon(spec, size, 'detail');
 }
 
@@ -44,14 +45,11 @@ export function searchBox({ large = false, query = '' } = {}) {
 }
 
 export function tagLinks(page, tags, limit = Infinity) {
-  const link = id => `<a class="app-tag" href="/tags/${id}/">${escape(tags[id].label)}</a>`;
-  const visible = page.tags.slice(0, limit).map(link).join('');
-  const remaining = page.tags.slice(limit);
-  return `<div class="app-tags" role="group" aria-label="태그">${visible}${remaining.length ? `<details class="app-tags-more"><summary>+${remaining.length}</summary><div class="app-tags">${remaining.map(link).join('')}</div></details>` : ''}</div>`;
+  return String(ui.TagList({ tags: page.tags.map(id => ({ href: `/tags/${id}/`, label: tags[id].label })), limit }));
 }
 
 export function wikiCard(page, title = page.title, level = 3) {
-  return `<a class="app-help-card" href="${page.route}">${subjectIcon(page.contentIcon)}<strong role="heading" aria-level="${level}">${escape(title)}</strong><p>${escape(page.description)}</p></a>`;
+  return String(ui.Card({ href: page.route, title, description: page.description, icon: ui.trusted(subjectIcon(page.contentIcon)), headingLevel: level }));
 }
 
 export function knowledgeFields(documents, topics, field) {
@@ -64,7 +62,7 @@ export function knowledgeFields(documents, topics, field) {
     if (!entries.length) return '';
     const shown = field ? entries : entries.slice(0, 6);
     const level = field ? 2 : 3;
-    return `<section class="app-support-group"><h${level}>${FIELD_NAMES[value]}</h${level}><div class="app-support-grid${shown.length === 2 || shown.length === 4 ? ' is-pair' : ''}">${shown.map(topic => wikiCard(topic.page, topic.label, level + 1)).join('')}</div>${!field && entries.length > 6 ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
+    return `<section class="app-support-group"><h${level}>${FIELD_NAMES[value]}</h${level}>${ui.CardGroup({ columns: shown.length === 2 || shown.length === 4 ? 2 : 1, cards: shown.map(topic => ui.trusted(wikiCard(topic.page, topic.label, level + 1))) })}${!field && entries.length > 6 ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
   }).join('');
 }
 
@@ -94,7 +92,7 @@ export function projectSection(projects, hasMore = false) {
 
 export function articlePage(page, documents, context, comments = '') {
   const related = documents.filter(other => other.id !== page.id && other.tags.some(tag => page.tags.includes(tag))).slice(0, 3);
-  const tail = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="${context.repositoryUrl}/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2><div class="app-related-grid">${related.map(other => relatedCard(other, context.topics)).join('')}</div></section>` : ''}`;
+  const tail = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="${context.repositoryUrl}/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2>${ui.CardGroup({ variant: 'related', cards: related.map(page => ui.trusted(relatedCard(page))) })}</section>` : ''}`;
   const example = page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : '';
   if (page.type === 'blog') {
     const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? dateLine({ updatedAt: page.updatedAt }) : '';
@@ -103,12 +101,12 @@ export function articlePage(page, documents, context, comments = '') {
   return `<main id="main" class="app-shell app-document-shell">${searchBox()}<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${example}</div>${topicNavigation(page, context)}${articleToc(page.headings)}<div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${tail}</article></main>`;
 }
 
-export function relatedCard(page, tags) {
-  return `<article class="app-related-entry"><a class="app-help-card app-related-link" href="${page.route}">${subjectIcon(page.contentIcon, 'medium')}<strong>${escape(page.title)}</strong><span>${escape(page.description)}</span></a><div class="app-related-metadata">${tagLinks(page, tags, 3)}</div></article>`;
+export function relatedCard(page) {
+  return relatedLink({ href: page.route, title: page.title, description: page.description, iconHtml: subjectIcon(page.contentIcon, 'medium') });
 }
 
 export function resultRow(page, tags) {
-  return `<article class="app-search-entry"><a class="app-search-result-link" href="${page.route}">${subjectIcon(page.contentIcon, 'small')}<strong>${escape(page.title)}</strong>${page.example ? '<span class="app-search-result-note"> 예시</span>' : ''}<p>${escape(page.description)}</p></a><div class="app-search-result-tags">${page.tags.map(id => `<a href="/tags/${id}/">${escape(tags[id].label)}</a>`).join('')}</div></article>`;
+  return String(ui.SearchResult({ href: page.route, icon: ui.trusted(subjectIcon(page.contentIcon, 'small')), title: page.title, example: page.example, description: page.description, tags: page.tags.map(id => ({ href: `/tags/${id}/`, label: tags[id].label })) }));
 }
 
 export function tagPage(tag, entries, tags) {

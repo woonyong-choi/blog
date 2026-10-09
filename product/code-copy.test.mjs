@@ -8,7 +8,7 @@ const script = readFileSync(new URL('./document.js', import.meta.url), 'utf8');
 
 function element(attributes = {}, text = '') {
   const listeners = new Map();
-  return { attributes: { ...attributes }, textContent: text, hidden: true, listeners,
+  return { attributes: { ...attributes }, dataset: {}, textContent: text, hidden: true, listeners,
     getAttribute(name) { return this.attributes[name] ?? null; },
     setAttribute(name, value) { this.attributes[name] = String(value); },
     removeAttribute(name) { delete this.attributes[name]; },
@@ -39,6 +39,7 @@ test('copy_button_appears_only_after_the_script_runs_and_writes_the_exact_source
   assert.equal(view.button.textContent, '복사됨');
   assert.equal(view.button.getAttribute('aria-label'), '코드 복사됨');
   assert.equal(view.status.textContent, '코드 복사를 완료했습니다.');
+  assert.equal(view.button.dataset.state, 'copied');
   assert.equal(view.button.getAttribute('aria-disabled'), null);
 });
 
@@ -49,12 +50,14 @@ test('copy_failure_is_announced_and_can_be_retried_then_labels_reset', async () 
   assert.equal(view.button.textContent, '복사 실패');
   assert.match(view.button.getAttribute('aria-label'), /실패\. 다시 시도/);
   assert.match(view.status.textContent, /실패했습니다/);
+  assert.equal(view.button.dataset.state, 'failed');
   assert.equal(view.button.getAttribute('aria-disabled'), null);
   fail = false;
   await view.click();
   assert.equal(view.button.textContent, '복사됨');
   view.timers.at(-1).callback();
   assert.equal(view.button.textContent, '복사');
+  assert.equal(view.button.dataset.state, undefined);
   assert.equal(view.button.getAttribute('aria-label'), '코드 복사');
 });
 

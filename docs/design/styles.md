@@ -10,7 +10,7 @@
 | 공통 조각(카드·본문·검색·입력)의 모양 | `themes/base/simple/styles/{cards,prose,search,forms,...}.css` | design-tokens |
 | 한 화면의 배치와 변형 | `styles/{landing,blog,article,support,features,pages,status}.css` | design-tokens |
 | 홈 섹션 구성·순서·문구 | `product/home.config.yaml` | blog |
-| 글의 구성 요소 | Markdown의 ` ```ui:이름 ` 블록 | blog |
+| 글의 구성 요소 | Markdown의 ` ```ui:이름 ` 블록과 `:::이름` 블록 | blog |
 | 새 마크업이 필요한 클래스 | `product/*-layout.mjs`, `home-sections.mjs`, `markdown.mjs`에서 기존 클래스를 조합 | blog |
 
 - `product/vendor/theme/`는 가져온 완성본이다. 직접 고치지 않는다. 스타일을 바꾸면 design-tokens에서 `npm run build` 후 이 저장소에서 `npm run theme:product -- <design-tokens 경로>`로 다시 가져온다.

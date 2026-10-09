@@ -50,6 +50,14 @@
       "$type": "color",
       "$value": "{color.orange.light-ink}"
     },
+    "syntax-keyword": {
+      "$type": "color",
+      "$value": "{color.red.light-ink}"
+    },
+    "syntax-type": {
+      "$type": "color",
+      "$value": "{color.green.light-ink}"
+    },
     "dialog-backdrop": {
       "$type": "color",
       "$value": "{primitive.color.dialog-backdrop}",
@@ -2181,21 +2189,6 @@
         "$value": "45deg",
         "$description": "원본 DOM에서 측정한 chevron-angle 값. simple 지원 문서·제품 소개에 사용"
       },
-      "syntax-keyword": {
-        "$type": "color",
-        "$value": "#d6b3ff",
-        "$description": "원본 DOM에서 측정한 syntax-keyword 값. simple 지원 문서·제품 소개에 사용"
-      },
-      "syntax-string": {
-        "$type": "color",
-        "$value": "#a9e5c2",
-        "$description": "원본 DOM에서 측정한 syntax-string 값. simple 지원 문서·제품 소개에 사용"
-      },
-      "syntax-number": {
-        "$type": "color",
-        "$value": "#f4cb96",
-        "$description": "원본 DOM에서 측정한 syntax-number 값. simple 지원 문서·제품 소개에 사용"
-      },
       "mobile-gutter": {
         "$type": "dimension",
         "$value": "15px",
@@ -3767,6 +3760,26 @@
         "$value": "4",
         "$description": "코드 블록 탭 너비. Things 원본은 브라우저 기본값 8을 쓰지만 탭 들여쓰기 언어를 읽기 위해 줄인다"
       },
+      "prose-script-line": {
+        "$type": "number",
+        "$value": 0.5,
+        "$description": "위 첨자 줄 높이. 위 첨자가 줄 간격을 벌리지 않도록 원본 문서 공통 CSS의 값을 쓴다"
+      },
+      "interview-meta-gap": {
+        "$type": "dimension",
+        "$value": "0.5em",
+        "$description": "인터뷰 카드 아래 프로필 이미지와 글 사이 간격. 카드 글자 크기에 비례한다"
+      },
+      "interview-meta-offset": {
+        "$type": "dimension",
+        "$value": "0.25em",
+        "$description": "프로필 이미지 옆 제목 줄의 위쪽 보정. 카드 글자 크기에 비례한다"
+      },
+      "related-summary-lines": {
+        "$type": "string",
+        "$value": "3",
+        "$description": "함께 읽기 카드 요약의 최대 줄 수. 길이가 다른 설명도 같은 높이로 맞춘다"
+      },
       "prose-table-padding": {
         "$type": "string",
         "$value": ".3em .5em",
@@ -4251,13 +4264,18 @@
       },
       "control-task-fill": {
         "$type": "color",
-        "$value": "rgba(0,0,0,.05)",
+        "$value": "rgba(0,0,0,0)",
         "$description": "Things 조작 아이콘의 기존 합성 색 유지. 도형은 자체 기본 기하로 작성하며 기존 유사색은 조작 상태 농도가 다름."
       },
       "control-task-ink": {
         "$type": "color",
-        "$value": "rgba(0,0,0,.2)",
+        "$value": "rgba(0,0,0,.3)",
         "$description": "Things 조작 아이콘의 기존 합성 색 유지. 도형은 자체 기본 기하로 작성하며 기존 유사색은 조작 상태 농도가 다름."
+      },
+      "control-task-stroke": {
+        "$type": "number",
+        "$value": 1.5,
+        "$description": "작업 체크 표시(빈 칸·완료·취소)의 가는 선. 32 단위 도형에서 기존 2 단위 조작 선은 두꺼워 보여 줄인다"
       },
       "prose-rule-color": {
         "$type": "color",
@@ -7013,18 +7031,28 @@
     },
     "syntax-keyword": {
       "$type": "color",
-      "$value": "{primitive.simple.prose-code-color}",
-      "$description": "원본 문서의 단색 코드 표현을 따르는 구문 역할"
+      "$value": "{color.syntax-keyword}",
+      "$description": "구문 색 역할. base의 의미 색을 따르며 다크 모드 값도 base에서 정한다"
     },
     "syntax-string": {
       "$type": "color",
-      "$value": "{primitive.simple.prose-code-color}",
-      "$description": "원본 문서의 단색 코드 표현을 따르는 구문 역할"
+      "$value": "{color.syntax-string}",
+      "$description": "구문 색 역할. base의 의미 색을 따르며 다크 모드 값도 base에서 정한다"
     },
     "syntax-number": {
       "$type": "color",
-      "$value": "{primitive.simple.prose-code-color}",
-      "$description": "원본 문서의 단색 코드 표현을 따르는 구문 역할"
+      "$value": "{color.syntax-number}",
+      "$description": "구문 색 역할. base의 의미 색을 따르며 다크 모드 값도 base에서 정한다"
+    },
+    "syntax-function": {
+      "$type": "color",
+      "$value": "{color.syntax-function}",
+      "$description": "구문 색 역할. base의 의미 색을 따르며 다크 모드 값도 base에서 정한다"
+    },
+    "syntax-type": {
+      "$type": "color",
+      "$value": "{color.syntax-type}",
+      "$description": "구문 색 역할. base의 의미 색을 따르며 다크 모드 값도 base에서 정한다"
     },
     "mobile-gutter": {
       "$type": "dimension",
@@ -8116,6 +8144,16 @@
       "$value": "{primitive.simple.article-media-compact}",
       "$description": "지원 문서와 작성 예시 역할"
     },
+    "width-narrow": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.article-media-compact}",
+      "$description": "좁은 본문 블록 폭(narrow). 이미지·영상·갤러리·코드가 같은 값을 쓴다"
+    },
+    "width-wide": {
+      "$type": "string",
+      "$value": "max(100%, min({primitive.simple.reference-width}, calc(100vw - 2 * {primitive.simple.gutter})))",
+      "$description": "넓은 본문 블록 폭(wide). 원본 확장 그림 최대 폭까지 펼치되 좁은 화면에서는 양쪽 여백을 남기고, 부모 폭보다 줄어들지 않아 좁은 화면에서는 본문과 같은 폭이 된다"
+    },
     "syntax-example-padding": {
       "$type": "string",
       "$value": "{primitive.simple.syntax-example-padding}",
@@ -8843,6 +8881,22 @@
       "$type": "string",
       "$value": "{primitive.simple.prose-tab-size}"
     },
+    "prose-script-line": {
+      "$type": "number",
+      "$value": "{primitive.simple.prose-script-line}"
+    },
+    "interview-meta-gap": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.interview-meta-gap}"
+    },
+    "interview-meta-offset": {
+      "$type": "dimension",
+      "$value": "{primitive.simple.interview-meta-offset}"
+    },
+    "related-summary-lines": {
+      "$type": "string",
+      "$value": "{primitive.simple.related-summary-lines}"
+    },
     "prose-table-padding": {
       "$type": "string",
       "$value": "{primitive.simple.prose-table-padding}"
@@ -9206,6 +9260,10 @@
     "control-task-ink": {
       "$type": "color",
       "$value": "{primitive.simple.control-task-ink}"
+    },
+    "control-task-stroke": {
+      "$type": "number",
+      "$value": "{primitive.simple.control-task-stroke}"
     },
     "control-paper": {
       "$type": "color",

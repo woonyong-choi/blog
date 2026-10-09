@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { parse } from 'yaml';
 import { createMarkdown, escape, image } from './markdown.mjs';
+import * as ui from './vendor/theme/assets/components.mjs';
 import { socialProof, socialLinks, newsletter, productCards } from './home.mjs';
 import { layout, article, blogPost, home, search, products } from './layout.mjs';
 
@@ -53,7 +54,7 @@ for (const page of pages) {
     case 'home': body = home(page, page.html); break;
     case 'support': body = `<div class="app-shell">${search(true)}<main id="main" class="app-body"><h1 class="app-sr">Support</h1>${page.html}<div class="app-contact-prompt"><p>Didn’t find what you were looking for?</p><a href="/things/contact/">Contact Us →</a></div></main></div>`; break;
     case 'redirect': body = `<main id="main" class="app-shell"><a href="${escape(page.target)}">${escape(page.title)}</a></main>`; break;
-    case 'pricing': body = `<main id="main" class="app-pricing"><div class="app-shell"><div class="app-landing-heading"><h1>${image(page.image, '')} ${escape(page.title)}</h1>${page.html}</div>${productCards(pages.find(entry => entry.layout === 'home').home.products, true)}</div></main>`; break;
+    case 'pricing': body = `<main id="main" class="app-pricing"><div class="app-shell">${ui.SectionIntro({ level: 1, icon: ui.trusted(image(page.image, '')), title: page.title, description: ui.trusted(page.html) })}${productCards(pages.find(entry => entry.layout === 'home').home.products, true)}</div></main>`; break;
     case 'status': body = `<main id="main" class="app-status"><div class="app-shell">${page.html}</div></main>`; break;
     case 'about': body = `<main id="main" class="app-office"><div class="app-shell">${page.panels.map((panel,index) => `<section class="app-office-panel${panel.lead === false ? '' : ' has-lead'}" id="${escape(panel.id)}"><h${index ? '2' : '1'}>${escape(panel.title)}</h${index ? '2' : '1'}><div class="app-prose">${md.render(panel.body)}</div></section>`).join('')}</div></main>`; break;
     case 'newsletter': body = `<main id="main">${newsletter(page, true)}</main>`; break;
@@ -64,7 +65,7 @@ for (const page of pages) {
       const entries = page.archive ? blog.slice(2) : blog.slice(0,2);
       body = `<main id="main" class="app-blog-feed"><div class="app-shell"><h1 class="app-sr">Blog</h1>${entries.map((post) => blogPost(post,post.html,true)).join('')}<nav class="app-body app-pagination" aria-label="Blog pages">${page.archive ? '<a href="/things/blog/">← Recent posts</a>' : '<a href="/things/blog/archive/">Older posts →</a>'}<a href="/things/blog/feed.xml">RSS</a></nav></div></main>`; break;
     }
-    case 'features': body = `<main id="main"><header class="app-feature-hero"><div class="app-shell"><div class="app-landing-heading"><h1>What’s new in<br>the <em>all-new</em> Things?</h1><p>매일 사용하는 화면의 작은 차이를 만나보세요. 생각을 기록하고, 계획을 정리하고, 다음 행동으로 이어가는 과정을 새로운 화면과 부드러운 상호작용으로 살펴봅니다.</p></div>${image('whatsnew-collage-io60.png','기능 화면 모음','app-collage')}</div></header>${page.html}${products(pages.find(entry => entry.layout === 'home').home.products, pages.find(entry => entry.layout === 'home').home.productsHeading)}${socialProof(pages.find(entry => entry.layout === 'home').home)}</main>`; break;
+    case 'features': body = `<main id="main"><header class="app-feature-hero"><div class="app-shell">${ui.SectionIntro({ level: 1, title: ui.trusted('What’s new in<br>the <em>all-new</em> Things?'), description: ui.trusted('<p>매일 사용하는 화면의 작은 차이를 만나보세요. 생각을 기록하고, 계획을 정리하고, 다음 행동으로 이어가는 과정을 새로운 화면과 부드러운 상호작용으로 살펴봅니다.</p>') })}${image('whatsnew-collage-io60.png','기능 화면 모음','app-collage')}</div></header>${page.html}${products(pages.find(entry => entry.layout === 'home').home.products, pages.find(entry => entry.layout === 'home').home.productsHeading)}${socialProof(pages.find(entry => entry.layout === 'home').home)}</main>`; break;
     default: body = article(page, page.html, page.headings);
   }
   htmlOutputs.set(page.route, layout(page, body));

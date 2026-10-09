@@ -47,7 +47,7 @@ test('fineprint and figure grid map to the reference DOM without raw html', () =
   assert.match(md.render(fence('figure-grid', { size: 'large', items: [{ src: '2-today-mac.png', alt: 'a' }] })), /app-figure-grid is-large"/);
   assert.throws(() => md.render(fence('figure-grid', { columns: 7, items: [{ src: '2-today-mac.png', alt: 'a' }] })));
   assert.match(md.render(fence('figure-grid', { columns: '3', items: [{ src: '2-today-mac.png', alt: 'a' }] })), /has-three-columns/);
-  for (const columns of ['constructor', '__proto__', 'toString', 'hasOwnProperty', ['2'], { 2: 1 }, null, 0]) assert.throws(() => md.render(fence('figure-grid', { columns, items: [{ src: '2-today-mac.png', alt: 'a' }] })), /Invalid ui:figure-grid columns/, String(columns));
+  for (const columns of ['constructor', '__proto__', 'toString', 'hasOwnProperty', ['2'], { 2: 1 }, null, 0]) assert.throws(() => md.render(fence('figure-grid', { columns, items: [{ src: '2-today-mac.png', alt: 'a' }] })), /Invalid columns/, String(columns));
   assert.throws(() => md.render(fence('figure-grid', { items: [] })));
   assert.match(md.render(fence('fineprint', { body: '<script>x</script>' })), /&lt;script&gt;x&lt;\/script&gt;/);
 });

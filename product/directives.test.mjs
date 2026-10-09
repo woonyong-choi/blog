@@ -1,0 +1,350 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { test } from 'node:test';
+import { JSDOM } from 'jsdom';
+import { createMarkdown } from './markdown.mjs';
+import { renderArticle } from './article-renderer.mjs';
+import { articlePage } from './publication-layout.mjs';
+import { DirectiveError, parseAttributes } from './directive-syntax.mjs';
+
+const md = createMarkdown();
+const render = (source, env = {}) => md.render(source, { pageId: 'p', ...env });
+const dom = html => new JSDOM(`<body>${html}</body>`).window.document;
+const ids = html => [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
+const failure = source => { try { render(source); } catch (error) { return error; } assert.fail(`오류가 나야 합니다:\n${source}`); };
+
+const PROPOSAL = [
+  '::::tabs', ':::tab[macOS]', '1. :menu[설정]을 엽니다.', '2. :kbd[⌘ K]를 누릅니다.', '',
+  ':::note', '일반 Markdown **안내문**', ':::', ':::', ':::tab[Windows]', '설명', ':::', '::::', '',
+].join('\n');
+
+test('tabs_with_nested_tab_note_and_list_render_the_existing_tab_structure', () => {
+  const document = dom(render(PROPOSAL));
+  const tabs = document.querySelector('section.app-tabs[data-tabs]');
+  const buttons = [...tabs.querySelectorAll(':scope > .app-tablist[role=tablist] > button[role=tab]')];
+  const panels = [...tabs.querySelectorAll(':scope > .app-tabpanel[role=tabpanel]')];
+  assert.deepEqual(buttons.map(button => button.textContent), ['macOS', 'Windows']);
+  assert.deepEqual(buttons.map(button => [button.getAttribute('aria-selected'), button.tabIndex]), [['true', 0], ['false', -1]]);
+  assert.equal(panels.length, 2);
+  assert.equal(panels[0].hidden, false);
+  assert.equal(panels[1].hidden, true);
+  buttons.forEach((button, index) => {
+    assert.equal(button.getAttribute('aria-controls'), panels[index].id);
+    assert.equal(panels[index].getAttribute('aria-labelledby'), button.id);
+  });
+  assert.equal(panels[0].querySelectorAll('ol > li').length, 2);
+  assert.equal(panels[0].querySelector('li b.app-menu-label').textContent, '설정');
+  assert.equal(panels[0].querySelector('li kbd').textContent, '⌘ K');
+  const note = panels[0].querySelector('aside.app-callout');
+  assert.equal(note.querySelector('strong').textContent, '참고');
+  assert.equal(note.querySelector('p strong').textContent, '안내문');
+  assert.equal(panels[1].textContent.trim(), '설명');
+});
+
+test('platform_uses_the_platform_variant_and_warning_note_the_warning_tone', () => {
+  const document = dom(render('::::platform[기기]\n:::tab[Mac]\n:::warning[조심]\n내용\n:::\n:::\n::::\n'));
+  const tabs = document.querySelector('.app-tabs');
+  assert.ok(tabs.classList.contains('is-platform') && tabs.hasAttribute('data-platform'));
+  assert.equal(tabs.querySelector('[role=tablist]').getAttribute('aria-label'), '기기');
+  assert.ok(tabs.querySelector('.app-callout.is-warning'));
+  assert.equal(tabs.querySelector('.app-callout strong').textContent, '조심');
+});
+
+test('tab_bodies_keep_code_images_footnotes_and_ui_components_working', () => {
+  const html = render([
+    '::::tabs', ':::tab[코드]', '```bash', 'echo ":::tab[가짜]"', ':::', '```', '',
+    '~~~md', '::::', '~~~', '',
+    '    :::note', '', '![스크린샷](/things/assets/2-today-mac.png "제목")', '',
+    '각주[^a]', '', '```ui:callout', 'title: 호환', 'body: ui 블록도 그대로', '```', ':::', ':::tab[둘째]', '둘째 각주[^b]', ':::', '::::', '',
+    '[^a]: 첫째', '[^b]: 둘째', '',
+  ].join('\n'));
+  const document = dom(html);
+  assert.equal(document.querySelectorAll('[role=tab]').length, 2);
+  const panel = document.querySelector('[role=tabpanel]');
+  assert.equal(panel.querySelectorAll('.app-code').length, 3);
+  assert.ok(panel.querySelector('.app-code [data-copy]'));
+  assert.match(panel.querySelector('.app-code code').textContent, /echo ":::tab\[가짜\]"\n:::/);
+  assert.equal(panel.querySelector('img').getAttribute('alt'), '스크린샷');
+  assert.ok(panel.querySelector('.app-callout'));
+  assert.equal(document.querySelectorAll('.footnote-item').length, 2);
+  for (const reference of document.querySelectorAll('.footnote-ref a')) assert.ok(document.getElementById(reference.getAttribute('href').slice(1)), '각주 정의가 있어야 합니다');
+  const all = ids(html);
+  assert.equal(new Set(all).size, all.length, `겹치는 ID: ${all}`);
+});
+
+test('headings_and_ids_stay_unique_across_blocks_and_documents', () => {
+  const source = '## 설정\n\n::::tabs\n:::tab[A]\n## 설정\n\n### 설정\n:::\n:::tab[B]\n## 설정\n:::\n::::\n';
+  const html = render(source);
+  const all = ids(html);
+  assert.equal(new Set(all).size, all.length);
+  assert.equal(all.filter(id => id.startsWith('p-설정')).length, 4);
+  const first = renderArticle(md, { id: 'a', description: '', body: source });
+  const second = renderArticle(md, { id: 'b', description: '', body: source });
+  const merged = ids(first.html + second.html);
+  assert.equal(new Set(merged).size, merged.length);
+});
+
+test('steps_fineprint_and_qa_reuse_list_paragraph_and_definition_markup', () => {
+  const document = dom(render([
+    ':::steps', '1. 하나', '2. 둘', ':::', '', ':::fineprint', '첫 문단', '', '둘째 *문단*', ':::', '',
+    ':::qa', '질문 하나', ': 답 하나', '', '질문 둘', ': 답 둘', ':::', '',
+  ].join('\n')));
+  assert.equal(document.querySelectorAll('.app-steps > ol > li').length, 2);
+  assert.deepEqual([...document.querySelectorAll('p.app-fineprint')].map(node => node.textContent), ['첫 문단', '둘째 문단']);
+  const list = document.querySelector('dl.app-definitions');
+  assert.deepEqual([...list.children].map(node => node.tagName), ['DT', 'DD', 'DT', 'DD']);
+});
+
+test('figure_video_and_cards_use_explicit_attributes', () => {
+  const document = dom(render([
+    '::figure{src=2-today-mac.png alt="오늘 화면" caption="캡션 \\"인용\\"" href=/articles/markdown-guide/ rounded}',
+    '::video{src=3-upcoming-iphone.mp4 poster=3-upcoming-iphone.png alt="아이폰" caption=설명 frame=iphone controls}',
+    '::video{src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt="맥"}',
+    ':::cards{variant=centered columns=2}',
+    '::card{title="제목" description="설명" href=/articles/bounded-queue/ icon=document}',
+    '::card{title="둘째" href=https://example.com/}',
+    ':::',
+    ':::cards{variant=inline}', '::card{title="링크" href=#top}', ':::', '',
+  ].join('\n')));
+  const figure = document.querySelector('figure.app-figure');
+  assert.equal(figure.querySelector('a').getAttribute('href'), '/articles/markdown-guide/');
+  assert.ok(figure.querySelector('img.is-rounded'));
+  assert.equal(figure.querySelector('figcaption').textContent, '캡션 "인용"');
+  const videos = [...document.querySelectorAll('[data-player]')];
+  assert.equal(videos.length, 2);
+  assert.ok(videos[0].closest('.app-device'));
+  assert.ok(videos[0].classList.contains('has-controls') && !videos[1].classList.contains('has-controls'));
+  assert.equal(videos[0].querySelector('video').getAttribute('poster'), '/things/assets/3-upcoming-iphone.png');
+  const remotes = [...document.querySelectorAll('[data-remote]')].map(node => node.dataset.remote);
+  assert.deepEqual(remotes, videos.map(node => node.id));
+  const cards = [...document.querySelectorAll('.app-support-grid.is-pair > a.app-help-card.is-centered')];
+  assert.equal(cards.length, 2);
+  assert.ok(cards[0].querySelector('.app-content-icon') && cards[1].classList.contains('has-no-icon'));
+  assert.equal(document.querySelectorAll('.app-inline-links > a.app-help-card.is-inline').length, 1);
+});
+
+test('inline_icon_tip_kbd_and_menu_render_inside_sentences', () => {
+  const html = render('열기 :icon[search] 누르기 :kbd[⌘ K] 메뉴 :menu[파일] 설명 :tip[단어 <b>]{text="뜻 \\"하나\\" <script>x</script> & 둘"}를 읽습니다. ::표시:: :nope[x]');
+  const document = dom(html);
+  const paragraph = document.querySelector('p');
+  assert.ok(paragraph.querySelector('.app-inline-icon > .app-content-icon.is-small svg'));
+  assert.equal(paragraph.querySelector('kbd').textContent, '⌘ K');
+  const trigger = paragraph.querySelector('button.app-tooltip[data-tooltip-trigger][popovertarget]');
+  const bubble = paragraph.querySelector('.app-tooltip-bubble[popover]');
+  assert.equal(trigger.getAttribute('popovertarget'), bubble.id);
+  assert.equal(trigger.textContent, '단어 <b>');
+  assert.equal(bubble.textContent, '뜻 "하나" <script>x</script> & 둘');
+  assert.equal(paragraph.querySelectorAll('script, b:not(.app-menu-label)').length, 0);
+  assert.equal(paragraph.querySelector('mark').textContent, '표시');
+  assert.match(paragraph.textContent, /:nope\[x\]$/);
+});
+
+test('tooltip_ids_stay_unique_inside_ui_components_and_repeated_sentences', () => {
+  const html = render('가 :tip[하나]{text=a} 나 :tip[둘]{text=b}\n\n```ui:callout\ntitle: x\nbody: ":tip[셋]{text=c} :tip[넷]{text=d}"\n```\n');
+  const all = ids(html);
+  assert.equal(all.filter(id => id.endsWith('-tip')).length, 4);
+  assert.equal(new Set(all).size, all.length);
+});
+
+test('markers_inside_code_spans_and_blocks_stay_literal', () => {
+  const html = render('`:tip[x]{text=y}` 와 `:::tabs`\n\n```md\n:::tabs\n:tip[a]{}\n```\n');
+  assert.doesNotMatch(html, /app-tabs|data-tooltip-trigger/);
+  assert.match(html, /:tip\[x\]\{text=y\}/);
+});
+
+test('directive_errors_name_the_page_line_and_block', () => {
+  const cases = [
+    ['닫히지', '문단\n\n:::note\n본문\n', /p 본문 3줄 :note: 닫는 ::: 줄이 없습니다/],
+    ['닫히지-중첩', '::::tabs\n:::tab[A]\n본문\n::::\n', /본문 4줄.*콜론 수\(4\).*2줄/],
+    ['여는줄 없음', '문단\n\n:::\n', /본문 3줄: 여는 줄 없이/],
+    ['형식', ':::  note\n본문\n:::\n', /본문 1줄: 블록 줄 형식/],
+    ['알 수 없는 이름', ':::danger\n본문\n:::\n', /본문 1줄 :danger: 알 수 없는 블록/],
+    ['프로토타입 이름', ':::constructor\n본문\n:::\n', /알 수 없는 블록/],
+    ['__proto__ 속성', '::figure{__proto__=x src=2-today-mac.png alt=a}\n', /속성 이름이 잘못/],
+    ['허용 안 하는 속성', '::figure{src=2-today-mac.png alt=a onclick=x}\n', /허용하지 않는 속성입니다: onclick/],
+    ['겹치는 속성', '::figure{src=2-today-mac.png src=2-today-mac.png alt=a}\n', /속성이 겹칩니다: src/],
+    ['따옴표', '::figure{src=2-today-mac.png alt="열림}\n', /따옴표가 닫히지/],
+    ['필수 속성', '::figure{src=2-today-mac.png}\n', /필수 속성이 없습니다: alt/],
+    ['위험한 주소', '::figure{src=2-today-mac.png alt=a href="javascript:alert(1)"}\n', /href: https/],
+    ['프로토콜 상대 주소', '::figure{src=2-today-mac.png alt=a href=//evil.example/}\n', /href: https/],
+    ['경로 이탈 자산', '::figure{src=../secret.png alt=a}\n', /src: 파일 이름만/],
+    ['없는 자산', '::figure{src=missing.png alt=a}\n', /src: 없는 자산입니다: missing.png/],
+    ['없는 아이콘', ':::cards\n::card{title=a href=/x/ icon=nope}\n:::\n', /icon: 없는 아이콘/],
+    ['열거형', ':::cards{variant=huge}\n::card{title=a href=/x/}\n:::\n', /variant는 centered, grouped, inline, related 중/],
+    ['불리언', '::video{src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt=a controls=maybe}\n', /controls는 true 또는 false/],
+    ['라벨 필요', '::::tabs\n:::tab\n본문\n:::\n::::\n', /라벨이 필요합니다/],
+    ['라벨 불가', ':::steps[제목]\n1. a\n:::\n', /라벨을 받지 않는 블록/],
+    ['리프를 컨테이너로', ':::figure{src=2-today-mac.png alt=a}\n본문\n:::\n', /본문이 없는 블록입니다/],
+    ['컨테이너를 리프로', '::note{x=1}\n', /본문이 있는 블록입니다/],
+    ['탭이 밖에', ':::tab[A]\n본문\n:::\n', /문서 바로 아래에서는 쓸 수 없습니다/],
+    ['탭 안의 문단', '::::tabs\n문단\n\n:::tab[A]\n본문\n:::\n::::\n', /:::tab만 둘 수 있습니다. 문단는 쓸 수 없습니다/],
+    ['탭 이름 중복', '::::tabs\n:::tab[A]\n가\n:::\n:::tab[a]\n나\n:::\n::::\n', /탭 이름이 겹칩니다: a/],
+    ['빈 탭', '::::tabs\n:::tab[A]\n:::\n::::\n', /본문이 비었습니다/],
+    ['탭 중첩', '::::tabs\n:::tab[A]\n::::platform\n:::tab[B]\n본문\n:::\n::::\n:::\n::::\n', /:::tab 안에서는 쓸 수 없습니다/],
+    ['메모 안의 블록', ':::note\n:::fineprint\n글\n:::\n:::\n', /본문 2줄 :fineprint: :::note 안에서는 쓸 수 없습니다/],
+    ['steps 본문', ':::steps\n문단\n:::\n', /목록, 순서 목록만 둘 수 있습니다/],
+    ['qa 본문', ':::qa\n- 목록\n:::\n', /정의 목록만/],
+    ['카드 밖의 카드', '::card{title=a href=/x/}\n', /문서 바로 아래에서는 쓸 수 없습니다/],
+    ['목록 안', '- 항목\n\n  :::note\n  본문\n  :::\n', /목록이나 인용 안에서는 블록을 쓸 수 없습니다/],
+    ['인용 안', '> :::note\n> 본문\n> :::\n', /목록이나 인용 안에서는 블록을 쓸 수 없습니다/],
+    ['인라인 속성 누락', '문단\n\n줄 :tip[단어]를 읽습니다.', /p 본문 3줄 :tip: 필수 속성이 없습니다: text/],
+    ['인라인 알 수 없는 속성', ':tip[단어]{text=a style=x}', /허용하지 않는 속성입니다: style/],
+    ['인라인 아이콘', ':icon[nope]', /없는 아이콘입니다: nope/],
+    ['인라인 열림', ':tip[단어]{text="열림', /\{ 속성이 닫히지 않았습니다/],
+  ];
+  for (const [name, source, pattern] of cases) {
+    const error = failure(source);
+    assert.ok(error instanceof DirectiveError, `${name}: ${error.message}`);
+    assert.match(error.message, pattern, name);
+  }
+});
+
+test('indented_fence_with_block_markers_inside_a_list_item_stays_code', () => {
+  const source = ':::note\n1. 항목\n\n    ```text\n    :::note\n    ```\n:::\n';
+  const document = dom(render(source));
+  assert.equal(document.querySelectorAll('.app-callout').length, 1);
+  assert.equal(document.querySelector('.app-callout li'), document.querySelector('li'));
+  assert.match(document.querySelector('.app-callout').textContent, /:::note/);
+  assert.equal(document.querySelectorAll('.app-callout .app-callout').length, 0);
+});
+
+test('deeply_nested_input_fails_at_the_first_invalid_level_without_blowing_the_stack', () => {
+  const nested = ':::note\n'.repeat(500) + '본문\n' + ':::\n'.repeat(500);
+  assert.match(failure(nested).message, /본문 2줄 :note: :::note 안에서는 쓸 수 없습니다/);
+  const tabs = '::::tabs\n:::tab[A]\n'.repeat(500) + '본문\n';
+  assert.match(failure(tabs).message, /닫는 ::: 줄이 없습니다/);
+  const wide = Array.from({ length: 2000 }, (_, index) => `:::note\n${index}\n:::\n`).join('\n');
+  assert.equal((render(wide).match(/app-callout/g) ?? []).length, 2000);
+});
+
+test('attribute_parser_returns_null_prototype_objects_and_rejects_control_characters', () => {
+  const fail = message => { throw new Error(message); };
+  const attrs = parseAttributes('a=1 b="두 낱말" flag', fail);
+  assert.equal(Object.getPrototypeOf(attrs), null);
+  assert.deepEqual({ ...attrs }, { a: '1', b: '두 낱말', flag: true });
+  assert.throws(() => parseAttributes('a="x\u0007y"', fail), /제어 문자/);
+  assert.throws(() => parseAttributes('a="x"b=1', fail), /공백이 필요/);
+  assert.throws(() => parseAttributes('a=', fail), /값이 비었습니다/);
+  assert.throws(() => parseAttributes('a="\\n"', fail), /이스케이프/);
+});
+
+test('article_lead_and_toc_are_unchanged_when_directives_follow_the_lead', () => {
+  const page = { id: 'x', description: '도입문입니다.', body: '도입문입니다.\n\n## 첫 절\n\n:::note\n본문\n:::\n' };
+  const result = renderArticle(md, page);
+  assert.equal(result.leadHtml, '도입문입니다.');
+  assert.deepEqual(result.headings.map(heading => heading.title), ['첫 절']);
+  assert.match(result.html, /app-callout/);
+  assert.throws(() => renderArticle(md, { id: 'bad-page', description: 'd', body: ':::note\n본문\n' }), /bad-page 본문 1줄 :note/);
+});
+
+test('document_composition_example_renders_every_block_with_unique_ids', () => {
+  const text = readFileSync(new URL('./examples/document-composition.md', import.meta.url), 'utf8');
+  const meta = JSON.parse(/^---\n([\s\S]*?)\n---\n/.exec(text)[1]);
+  const body = text.replace(/^---\n[\s\S]*?\n---\n/, '');
+  assert.equal(meta.slug, 'document-composition');
+  assert.equal(meta.example, true);
+  const { html, leadHtml, headings } = renderArticle(md, { ...meta, body });
+  assert.equal(leadHtml, meta.description);
+  const document = dom(html);
+  assert.equal(document.querySelectorAll('.app-tabs.is-platform [role=tab]').length, 3);
+  assert.ok(document.querySelector('.app-steps li .app-inline-icon'));
+  assert.ok(document.querySelector('.app-steps li kbd') && document.querySelector('.app-steps li .app-menu-label'));
+  assert.equal(document.querySelectorAll('[data-player]').length, 2);
+  assert.ok(document.querySelector('.app-device [data-player]'));
+  assert.ok(document.querySelector('p.app-fineprint'));
+  assert.ok(document.querySelector('.app-callout.is-warning') && document.querySelector('.app-tabpanel .app-callout'));
+  assert.ok(document.querySelector('p button.app-tooltip + .app-tooltip-bubble'));
+  assert.ok(document.querySelector('.app-code [data-copy]'));
+  assert.ok(document.querySelector('dl.app-definitions'));
+  const related = [...document.querySelectorAll('.app-related-grid > a.app-help-card.app-related-link')];
+  assert.equal(related.length, 3);
+  assert.ok(related.every(card => card.querySelector(':scope > .app-content-icon.is-medium') && card.querySelector(':scope > strong') && card.querySelector(':scope > span')));
+  assert.equal(document.querySelectorAll('.is-centered, .app-inline-links').length, 0);
+  assert.equal(headings.length, 6);
+  assert.equal(document.querySelectorAll('.app-gallery .app-gallery-controls button').length, 7);
+  const all = ids(html);
+  assert.equal(new Set(all).size, all.length);
+});
+
+test('related_cards_share_one_structure_without_tags_and_legacy_variants_stay', () => {
+  const document = dom(render(':::cards{variant=related}\n::card{title=가 href=/a/ icon=document description=요약}\n::card{title=나 href=/b/}\n:::\n\n:::cards{variant=centered}\n::card{title=다 href=/c/ icon=document}\n:::\n'));
+  const [withIcon, withoutIcon] = document.querySelectorAll('.app-related-grid > a.app-related-link');
+  assert.deepEqual([...withIcon.children].map(node => node.tagName), ['SPAN', 'STRONG', 'SPAN']);
+  assert.ok(withoutIcon.classList.contains('has-no-icon') && !withoutIcon.querySelector('span'));
+  assert.ok(document.querySelector('.app-support-grid > a.app-help-card.is-centered .app-content-icon'));
+});
+
+test('article_related_section_has_no_tags_and_uses_the_shared_card', () => {
+  const page = { id: 'a', route: '/articles/a/', title: 'A', description: '긴 설명 '.repeat(50), tags: ['python'], contentIcon: { name: 'document' }, html: '', headings: [], body: '' };
+  const other = { ...page, id: 'b', route: '/articles/b/', title: 'B' };
+  const html = articlePage(page, [page, other], { topics: { python: { label: 'Python' } } });
+  const section = dom(html).querySelector('.app-related');
+  assert.equal(section.querySelectorAll('.app-related-grid > a.app-related-link').length, 1);
+  assert.equal(section.querySelectorAll('.app-tags, .app-tag, .app-related-metadata, .app-related-entry').length, 0);
+});
+
+test('gallery_block_renders_the_ui_gallery_markup_with_numbered_buttons', () => {
+  const slides = ['2-today-mac.png', '3-upcoming-mac-2.png', '4-headings-mac.png'];
+  const source = `:::gallery{title="둘러보기"}\n${slides.map((src, index) => `::slide{src=${src} alt="화면 ${index + 1}"${index ? '' : ' caption=첫째'}}`).join('\n')}\n:::\n`;
+  const document = dom(render(source));
+  const gallery = document.querySelector('section.app-gallery[data-gallery]');
+  assert.equal(gallery.getAttribute('aria-label'), '둘러보기');
+  assert.ok(!gallery.classList.contains('is-labeled'));
+  const buttons = [...gallery.querySelectorAll('.app-gallery-controls button[data-slide-index]')];
+  assert.deepEqual(buttons.map(button => button.textContent), ['1', '2', '3']);
+  assert.deepEqual(buttons.map(button => button.getAttribute('aria-pressed')), ['true', 'false', 'false']);
+  const frames = [...gallery.querySelectorAll('figure.app-gallery-slide[data-slide]')];
+  assert.deepEqual(frames.map(frame => frame.getAttribute('aria-hidden')), ['false', 'true', 'true']);
+  buttons.forEach((button, index) => assert.equal(button.getAttribute('aria-controls'), frames[index].id));
+  assert.equal(frames[0].querySelector('figcaption').textContent, '첫째');
+  const legacy = dom(render('```ui:gallery\nslides:\n' + slides.map(src => `  - { src: ${src}, alt: a }`).join('\n') + '\n```\n'));
+  assert.equal(legacy.querySelector('.app-gallery').innerHTML.replace(/id="[^"]+"/g, '').replace(/aria-controls="[^"]+"/g, '').replace(/alt="[^"]*"/g, '').replace(/ ?aria-label="[^"]*"/g, ''), gallery.innerHTML.replace(/id="[^"]+"/g, '').replace(/aria-controls="[^"]+"/g, '').replace(/alt="[^"]*"/g, '').replace(/ ?aria-label="[^"]*"/g, '').replace('<figcaption>첫째</figcaption>', ''));
+});
+
+test('gallery_errors_cover_missing_slides_places_and_assets', () => {
+  assert.match(failure(':::gallery\n:::\n').message, /본문이 비었습니다/);
+  assert.match(failure('::slide{src=2-today-mac.png alt=a}\n').message, /문서 바로 아래에서는 쓸 수 없습니다/);
+  assert.match(failure(':::gallery\n문단\n:::\n').message, /:::slide만 둘 수 있습니다/);
+  assert.match(failure(':::gallery\n::slide{src=nope.png alt=a}\n:::\n').message, /없는 자산입니다/);
+  assert.match(failure(':::gallery\n::slide{src=2-today-mac.png}\n:::\n').message, /필수 속성이 없습니다: alt/);
+});
+
+test('cancelled_tasks_use_the_same_marker_box_as_open_and_done_tasks', () => {
+  const html = render('- [ ] 열림\n- [x] 완료\n- [~] 취소\n');
+  assert.match(html, /<span class="app-cancelled-task" role="img" aria-label="취소된 작업"><\/span>/);
+  assert.equal((html.match(/task-list-item-checkbox/g) ?? []).length, 2);
+  assert.equal((html.match(/disabled/g) ?? []).length, 2);
+});
+
+test('width_prop_maps_from_every_grammar_to_the_same_shared_classes_and_aliases_stay', () => {
+  const html = render([
+    '::figure{src=2-today-mac.png alt=a width=narrow}', '::figure{src=2-today-mac.png alt=b wide}', '::figure{src=2-today-mac.png alt=c size=compact}', '::figure{src=2-today-mac.png alt=d}',
+    '::video{src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt=v width=wide}',
+    ':::gallery{width=wide}', '::slide{src=2-today-mac.png alt=s}', ':::', '',
+    '```js width=narrow', 'const a = 1;', '```', '', '```js', 'const b = 2;', '```', '',
+    '```ui:figure', 'src: 2-today-mac.png', 'alt: ui', 'wide: true', '```', '',
+  ].join('\n'));
+  const document = dom(html);
+  const classes = selector => [...document.querySelectorAll(selector)].map(node => node.className);
+  assert.deepEqual(classes('figure.app-figure').slice(0, 4), ['app-figure app-width-narrow', 'app-figure app-width-wide', 'app-figure app-width-narrow', 'app-figure']);
+  assert.ok(document.querySelector('figure.app-figure.app-width-wide [data-player]'));
+  assert.ok(document.querySelector('section.app-gallery.app-width-wide'));
+  assert.deepEqual(classes('.app-code'), ['app-code app-width-narrow', 'app-code']);
+  assert.equal(document.querySelectorAll('figure.app-figure.app-width-wide').length, 3);
+  assert.doesNotMatch(html, /app-breakout|is-compact/);
+});
+
+test('width_errors_name_the_block_and_line', () => {
+  assert.match(failure('::figure{src=2-today-mac.png alt=a width=huge}\n').message, /width는 content, narrow, wide 중 하나/);
+  assert.match(failure('문단\n\n::figure{src=2-today-mac.png alt=a width=narrow wide}\n').message, /본문 3줄 :figure: Conflicting width/);
+  assert.match(failure('::video{src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt=a height=10}\n').message, /허용하지 않는 속성입니다: height/);
+  assert.match(failure('문단\n\n```js width=huge\nx\n```\n').message, /본문 3줄: 코드 블록 Unknown width: huge/);
+});
+
+test('long_unbroken_code_keeps_the_exact_raw_text_for_copying', () => {
+  const long = 'Token_' + '0123456789'.repeat(40) + '\n\t끝  \n';
+  const document = dom(render('```text width=wide\n' + long + '```\n'));
+  assert.equal(document.querySelector('.app-code code').textContent, long);
+  assert.ok(document.querySelector('.app-code-header [data-copy]'));
+  assert.equal(document.querySelector('.app-code pre').getAttribute('style'), null);
+});

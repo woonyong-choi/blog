@@ -1,6 +1,6 @@
 // Markdown과 명시적인 문서 구성 요소를 정적 HTML로 변환한다.
 import { controlImage } from './controls.mjs';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import MarkdownIt from '../assets/vendor/markdown-it.mjs';
 import footnote from 'markdown-it-footnote';
 import deflist from 'markdown-it-deflist';
@@ -10,29 +10,28 @@ import taskLists from 'markdown-it-task-lists';
 import hljs from 'highlight.js';
 import { parse } from 'yaml';
 import { contentIcon, iconLab } from './content-icons.mjs';
+import { installDirectives } from './directives.mjs';
+import { DirectiveError } from './directive-syntax.mjs';
+import * as ui from './vendor/theme/assets/components.mjs';
 
 const IMAGE_SIZES = JSON.parse(readFileSync(new URL('./image-sizes.json', import.meta.url)));
-export const escape = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-export function safeUrl(value) {
-  if (typeof value !== 'string' || /[\u0000-\u0020\\]/u.test(value) || !/^(?:https?:\/\/|mailto:|\/(?!\/)|#)/.test(value)) throw new Error(`Unsupported URL: ${value}`);
-  return escape(value);
-}
+// HTML 모양과 변형은 가져온 테마의 구성 요소가 정의한다. 아래 함수는 입력을 정리해 그 구성 요소에 넘기는 어댑터다.
+const { escape, safeUrl, trusted } = ui;
+export { escape, safeUrl };
 export function asset(name) {
   if (typeof name !== 'string' || !/^[\w.-]+$/.test(name)) throw new Error(`Invalid asset: ${name}`);
   return `/things/assets/${name}`;
 }
 const LANGUAGE_NAME = /^[\w+#.-]+$/;
 const FILENAME = /\bfilename=(?:"([^"]+)"|(\S+))/;
+const WIDTH = /\bwidth=(\S+)/;
 // 정보 문자열의 첫 낱말이 등록된 언어나 별칭이면 그 언어로, 아니면 원문 그대로 plaintext로 다룬다.
 export function codeLanguage(info = '') {
   const word = info.trim().split(/\s+/)[0].toLowerCase();
   const found = LANGUAGE_NAME.test(word) ? hljs.getLanguage(word) : undefined;
   return found ? { id: word, label: found.name ?? word } : { id: 'plaintext', label: hljs.getLanguage('plaintext').name };
 }
-function codeBlock(code, { label = '코드 복사', language = '', filename = '' } = {}) {
-  const heading = [language, filename].filter(Boolean).map(escape).join(' · ');
-  return `<div class="app-code"><div class="app-code-header"><span class="app-code-language">${heading}</span><button type="button" data-copy aria-label="${escape(label)}" hidden>복사</button></div><pre>${code}</pre><span class="app-sr" data-copy-status role="status" aria-live="polite" aria-atomic="true"></span></div>`;
-}
+const codeBlock = (code, options) => String(ui.CodeBlock({ code: trusted(code), ...options }));
 
 const referenceIcon = (name = 'question') => `<span class="app-article-icon app-icon-${escape(name)}" aria-hidden="true"></span>`;
 export function icon(name = 'question') {
@@ -45,12 +44,11 @@ export function image(name, alt = '', className = '') {
   return `<img${size ? ` width="${size[0]}" height="${size[1]}"` : ''} class="${className}" src="${asset(name)}" alt="${escape(alt)}" loading="lazy" decoding="async">`;
 }
 
-export function player(data, id, controls = false) {
-  return `<div class="app-player${data.wide ? ' is-wide' : ''}${controls ? ' has-controls' : ''}" data-player id="${id}"><video${data.width ? ` width="${Number(data.width)}"` : ''}${data.height ? ` height="${Number(data.height)}"` : ''} playsinline${controls ? '' : ' muted'} preload="none" poster="${asset(data.poster)}" aria-label="${escape(data.title ?? '기능 소개 영상')}"${controls ? ' data-native-controls' : ''}><source src="${asset(data.src)}" type="video/mp4"></video>${data.overlay || controls ? '<button class="app-player-button" type="button" data-player-play aria-label="Play video"></button>' : ''}<span class="app-sr" role="status"></span></div>`;
-}
-function remote(id, src = '') {
-  return `<button class="app-remote" type="button" data-remote="${id}"${src ? ` data-video-src="${asset(src)}"` : ''} aria-label="Play video">${controlImage('play')}<span>Play</span></button>`;
-}
+export const player = (data, id, controls = false) => String(ui.Player({ id, src: asset(data.src), poster: asset(data.poster), title: data.title, width: data.width, height: data.height, controls, overlay: data.overlay, wide: data.wide }));
+export const remote = (id, src = '') => String(ui.RemoteButton({ id, src: src ? asset(src) : undefined, icon: trusted(controlImage('play')) }));
+
+// 영상 입력을 구성 요소 속성으로 옮긴다. ui:video(`width`·`height`·`wide`는 플레이어 값)와 ::video(`width`는 블록 폭)가 같이 쓴다.
+export const videoOf = (data, id) => String(ui.Video({ id, src: asset(data.src), poster: asset(data.poster), title: data.title, caption: data.caption ?? '', controls: data.controls === true, frame: data.frame === 'iphone' ? 'iphone' : undefined, playerWidth: data.playerWidth, playerHeight: data.playerHeight, playerWide: data.playerWide, width: data.width, wide: data.wide, size: data.size, remoteIcon: trusted(controlImage('play')), deviceOverlay: trusted(image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')) }));
 
 // 같은 낱말 표식 `::강조::`, `==강조==`로 mark를 만든다. 공백으로 시작하거나 끝나는 표식은 글자 그대로 둔다.
 function markRule(marker) {
@@ -163,20 +161,36 @@ function diagram(source, env) {
   return `<figure class="app-diagram" data-mermaid data-mermaid-id="${escape(id)}"><div class="app-diagram-view" data-mermaid-view role="img" aria-label="${escape(label)}" hidden></div><p class="app-diagram-status" data-mermaid-status role="status" aria-live="polite"></p><details class="app-details app-diagram-source" open><summary>도표 원문</summary>${codeBlock(`<code class="language-mermaid">${escape(source)}</code>`, { label: '도표 원문 복사', language: 'Mermaid' })}</details></figure>`;
 }
 
+const CARD_VARIANTS = ['centered', 'grouped', 'inline', 'related'];
+// 그림 입력(`src`, `alt`, `href`, `rounded`, `caption`, 폭)을 구성 요소 속성으로 옮긴다. ui:figure와 :::figure가 같이 쓴다.
+export function figureOf(item) {
+  return ui.Figure({ media: trusted(image(item.src, item.alt, item.rounded ? 'is-rounded' : '')), href: item.href, caption: item.caption ?? '', width: item.width, wide: item.wide, size: item.size });
+}
+// 카드 입력(`icon`: 스프라이트 이름, `content:이름`, false)을 구성 요소의 속성으로 옮긴다. 함께 읽기 카드는 콘텐츠 아이콘만 쓴다.
+function cardSlot(item, parentVariant) {
+  const variant = item.variant ?? parentVariant;
+  if (variant && !CARD_VARIANTS.includes(variant)) throw new Error(`Unknown card variant: ${variant}`);
+  const contentName = typeof item.icon === 'string' && item.icon.startsWith('content:') ? item.icon.slice(8) : undefined;
+  const mark = variant === 'related' ? (contentName ? contentIcon(contentName, 'medium') : '') : item.icon === false ? '' : icon(item.icon);
+  return ui.Card({ href: item.href, title: item.title, description: item.description, icon: mark ? trusted(mark) : undefined, variant, compact: item.compact, horizontal: item.horizontal, headingLevel: item.headingLevel });
+}
+export const renderCard = (item, parentVariant) => String(cardSlot(item, parentVariant));
+export const relatedLink = ({ href, title, description, iconHtml }) => String(ui.Card({ href, title, description, icon: iconHtml ? trusted(iconHtml) : undefined, variant: 'related' }));
+export function renderGallery(data, id) {
+  const slides = Array.isArray(data.slides) ? data.slides.map(slide => ({ image: trusted(image(slide.src, slide.alt ?? slide.label)), caption: slide.caption, label: slide.label })) : data.slides;
+  return String(ui.Gallery({ id, title: data.title, wide: data.wide, width: data.width, selected: data.selected, slides }));
+}
+const DIRECTIVE_KIT = Object.freeze({ escape, safeUrl, image, contentIcon, trusted, controlImage, card: cardSlot, figureOf, videoOf, asset, gallery: renderGallery, ui, assetExists: name => existsSync(new URL(`./assets/${name}`, import.meta.url)) });
+
+function fenceWidth(width, token, env) {
+  if (width === undefined) return undefined;
+  try { ui.contentWidth({ width }); } catch (error) { throw new DirectiveError(`코드 블록 ${error.message} (content, narrow, wide 중 하나)`, { page: env.pageId, line: (token.map?.[0] ?? 0) + 1 }); }
+  return width;
+}
+
 export function createMarkdown() {
   const md = new MarkdownIt({ html: false, linkify: true, typographer: true }).use(footnote).use(deflist).use(mathPlugin.default ?? mathPlugin, MATH_OPTIONS).use(taskLists, { label: true });
-  md.inline.ruler.before('emphasis', 'interface-label', (state, silent) => {
-    const match = /^:(kbd|menu)\[([^\]\n]+)\]/.exec(state.src.slice(state.pos));
-    if (!match) return false;
-    if (!silent) {
-      const token = state.push('html_inline', '', 0);
-      token.content = match[1] === 'kbd'
-        ? `<kbd>${escape(match[2])}</kbd>`
-        : `<b class="app-menu-label">${escape(match[2])}</b>`;
-    }
-    state.pos += match[0].length;
-    return true;
-  });
+  installDirectives(md, DIRECTIVE_KIT);
   md.inline.ruler.before('emphasis', 'highlight', markRule('::'));
   md.inline.ruler.before('emphasis', 'equals-highlight', markRule('=='));
   md.inline.ruler.before('emphasis', 'subscript', scriptRule('~', 'sub'));
@@ -190,7 +204,7 @@ export function createMarkdown() {
       token.content = token.content.slice(4);
       token.children[0].content = token.children[0].content.slice(4);
       const marker = new state.Token('html_inline', '', 0);
-      marker.content = '<span class="app-cancelled-task" role="img" aria-label="취소된 작업">×</span> ';
+      marker.content = `${ui.CancelledTask()} `;
       token.children.unshift(marker);
     }
   });
@@ -227,7 +241,7 @@ export function createMarkdown() {
     const { id, label } = codeLanguage(kind);
     const filename = FILENAME.exec(kind);
     const value = id === 'plaintext' ? escape(token.content) : hljs.highlight(token.content, { language: id, ignoreIllegals: true }).value;
-    return codeBlock(`<code class="language-${id}">${value}</code>`, { language: label, filename: filename?.[1] ?? filename?.[2] ?? '' });
+    return codeBlock(`<code class="language-${id}">${value}</code>`, { language: label, filename: filename?.[1] ?? filename?.[2] ?? '', width: fenceWidth(WIDTH.exec(kind)?.[1], token, env) });
   };
   // 문서 최상위에서 이미지 하나(또는 링크로 감싼 이미지 하나)만 있는 문단은 원본 글처럼 figure로 그린다.
   md.core.ruler.after('inline', 'standalone-figure', (state) => {
@@ -239,7 +253,7 @@ export function createMarkdown() {
       const kinds = inline.children.map(child => child.type).join();
       if (kinds !== 'image' && kinds !== 'link_open,image,link_close') continue;
       open.tag = close.tag = 'figure';
-      open.attrJoin('class', 'app-figure');
+      open.attrJoin('class', ui.FIGURE_CLASS);
     }
   });
   md.core.ruler.push('heading-ids', (state) => {
@@ -265,9 +279,6 @@ export function createMarkdown() {
   return md;
 }
 
-// 원본 newgrid의 열 수 변형(has-N-columns)과 같은 이름만 허용한다.
-const FIGURE_GRID_COLUMNS = { 1: 'one-column', 2: 'two-columns', 3: 'three-columns', 4: 'four-columns', 5: 'five-columns', 6: 'six-columns' };
-
 function component(kind, data, md, env) {
   env.componentCount = (env.componentCount ?? 0) + 1;
   const id = `component-${env.pageId ?? 'page'}-${env.componentCount}`;
@@ -284,79 +295,56 @@ function component(kind, data, md, env) {
     delete nested.footnotes;
     return nested;
   };
-  const figureImage = item => {
-    const picture = image(item.src, item.alt, item.rounded ? 'is-rounded' : '');
-    return item.href ? `<a href="${safeUrl(item.href)}">${picture}</a>` : picture;
-  };
   switch (kind) {
     case 'group':
       return `<section class="app-support-group"><h2>${escape(data.title)}</h2>${render(data.body)}</section>`;
     case 'feature':
-      return `<section class="app-feature app-feature-${['canvas','lightest','light','medium'].includes(data.tone) ? data.tone : 'canvas'}${data.split ? ' is-split' : ''}"><div class="app-shell"><div class="app-landing-heading"><h2>${data.icon ? image(data.icon, '') : ''} ${escape(data.title)}</h2><p>${escape(data.description)}</p>${data.href ? `<p><a class="app-landing-action" href="${safeUrl(data.href)}">${escape(data.link)}</a></p>` : ''}</div><div class="app-feature-workspace"><div class="app-feature-media">${render(data.body)}</div>${data.left || data.right ? `<div class="app-feature-description"><div><h3>${escape(data.leftTitle ?? 'A clear beginning')}</h3><p>${escape(data.left)}</p></div><div><h3>${escape(data.rightTitle ?? 'Room for the details')}</h3><p>${escape(data.right)}</p></div></div>` : ''}</div></div></section>`;
+      return `<section class="app-feature app-feature-${['canvas','lightest','light','medium'].includes(data.tone) ? data.tone : 'canvas'}${data.split ? ' is-split' : ''}"><div class="app-shell">${ui.SectionIntro({ icon: data.icon ? trusted(image(data.icon, '')) : undefined, title: data.title, description: trusted(`<p>${escape(data.description)}</p>`), action: data.href ? { href: data.href, label: data.link } : undefined })}</div><div class="app-feature-workspace"><div class="app-feature-media">${render(data.body)}</div>${data.left || data.right ? `<div class="app-feature-description"><div><h3>${escape(data.leftTitle ?? 'A clear beginning')}</h3><p>${escape(data.left)}</p></div><div><h3>${escape(data.rightTitle ?? 'Room for the details')}</h3><p>${escape(data.right)}</p></div></div>` : ''}</div></div></section>`;
     case 'syntax-examples':
       return `<div class="app-syntax-examples">${data.items.map(item => `<section class="app-syntax-row"><pre aria-label="${escape(item.title)}">${escape(item.source)}</pre><div>${render(item.body)}</div></section>`).join('')}</div>`;
     case 'feature-list':
       return `<div class="app-feature-list">${[data.items.slice(0,Math.ceil(data.items.length/2)),data.items.slice(Math.ceil(data.items.length/2))].map(items => `<ul>${items.map(item => `<li><h3>${escape(item.title)}</h3>${render(item.body)}</li>`).join('')}</ul>`).join('')}</div>`;
     case 'device':
-      return `<figure class="app-device" aria-label="${escape(data.title ?? 'iPhone 화면')}"><div class="app-device-screen">${data.video ? player(data, id) : image(data.src, data.title ?? '기기 화면')}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>${data.video ? `<div class="app-media-controls">${remote(id)}</div>` : ''}`;
+      return `${ui.Device({ screen: trusted(data.video ? player(data, id) : image(data.src, data.title ?? '기기 화면')), overlay: trusted(image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')), label: data.title ?? 'iPhone 화면' })}${data.video ? ui.MediaControls({ remote: trusted(remote(id)) }) : ''}`;
     case 'demos':
-      return `<div class="app-feature-demos"><div>${data.items.map(item => `<section class="app-feature-demo-description"><h3>${escape(item.title)}${data.singleControl ? '' : ' ' + remote(id,item.src)}</h3>${render(item.body)}</section>`).join('')}</div><div><figure class="app-device"><div class="app-device-screen">${player({ ...data, src: data.src ?? data.items[0].src }, id)}</div>${image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')}</figure>${data.singleControl ? `<div class="app-media-controls">${remote(id)}</div>` : ''}</div></div>${data.after ? `<div class="app-feature-demo-description">${render(data.after)}</div>` : ''}`;
+      return `<div class="app-feature-demos"><div>${data.items.map(item => `<section class="app-feature-demo-description"><h3>${escape(item.title)}${data.singleControl ? '' : ' ' + remote(id,item.src)}</h3>${render(item.body)}</section>`).join('')}</div><div>${ui.Device({ screen: trusted(player({ ...data, src: data.src ?? data.items[0].src }, id)), overlay: trusted(image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')), figure: true })}${data.singleControl ? ui.MediaControls({ remote: trusted(remote(id)) }) : ''}</div></div>${data.after ? `<div class="app-feature-demo-description">${render(data.after)}</div>` : ''}`;
     case 'feature-pair': {
       const descriptions = `<div>${data.items.map(item => `<section class="app-feature-demo-description">${item.title ? `<h3>${escape(item.title)}</h3>` : ''}${render(item.body)}</section>`).join('')}</div>`;
       const media = `<div>${render(data.media)}</div>`;
       return `<div class="app-feature-demos">${data.mediaFirst ? media + descriptions : descriptions + media}</div>`;
     }
     case 'callout':
-      return `<aside class="app-callout${data.tone === 'warning' ? ' is-warning' : ''}${data.fineprint ? ' is-fineprint' : ''}"><strong>${escape(data.title ?? 'Note')}</strong>${render(data.body)}</aside>`;
+      return String(ui.Callout({ title: data.title ?? 'Note', tone: data.tone, fineprint: data.fineprint, body: trusted(render(data.body)) }));
     case 'details':
       return `<details class="app-details"${data.open ? ' open' : ''}><summary>${escape(data.title)}</summary>${render(data.body)}</details>`;
     case 'figure':
-      return `<figure class="app-figure${data.size === 'compact' ? ' is-compact' : ''}${data.wide ? ' app-breakout' : ''}">${figureImage(data)}<figcaption>${escape(data.caption)}</figcaption></figure>`;
+      return String(figureOf(data));
     case 'fineprint':
-      return `<p class="app-fineprint">${md.renderInline(String(data.body ?? ''), nestedEnv())}</p>`;
+      return String(ui.Fineprint({ text: trusted(md.renderInline(String(data.body ?? ''), nestedEnv())) }));
     case 'figure-grid': {
       if (!Array.isArray(data.items) || !data.items.length) throw new Error('ui:figure-grid needs items');
-      const columns = ['number', 'string'].includes(typeof data.columns) && Object.hasOwn(FIGURE_GRID_COLUMNS, data.columns) ? FIGURE_GRID_COLUMNS[data.columns] : undefined;
-      if (data.columns !== undefined && !columns) throw new Error(`Invalid ui:figure-grid columns: ${data.columns}`);
-      const size = ['small', 'large'].includes(data.size) ? ` is-${data.size}` : '';
-      return `<div class="app-figure-grid${size}${columns ? ` has-${columns}` : ''}">${data.items.map(item => `<div class="app-figure-grid-item"><figure class="app-figure">${figureImage(item)}<figcaption>${escape(item.caption ?? '')}</figcaption></figure></div>`).join('')}</div>`;
+      return String(ui.FigureGrid({ columns: data.columns, size: data.size, figures: data.items.map(item => figureOf(item)) }));
     }
     case 'video':
-      return `<figure class="app-figure">${player(data, id, data.controls === true)}<figcaption>${escape(data.caption ?? '')}<div class="app-media-controls">${remote(id)}</div></figcaption></figure>`;
-    case 'gallery': {
-      if (!Array.isArray(data.slides) || !data.slides.length) throw new Error('Gallery requires slides');
-      const selected = data.selected ?? 0;
-      if (!Number.isInteger(selected) || selected < 0 || selected >= data.slides.length) throw new Error('Gallery selected index is out of range');
-      const labeled = data.slides.every(slide => typeof slide.label === 'string');
-      return `<section class="app-gallery${labeled ? ' is-labeled' : ''}${data.wide ? ' app-breakout' : ''}" data-gallery aria-label="${escape(data.title ?? '이미지 슬라이드')}"><div class="app-gallery-frame">${data.slides.map((slide, index) => `<figure id="${id}-${index}" class="app-gallery-slide${index === selected ? ' is-selected' : ''}" data-slide aria-hidden="${index !== selected}">${image(slide.src, slide.alt ?? slide.label)}${slide.caption ? `<figcaption>${escape(slide.caption)}</figcaption>` : ''}</figure>`).join('')}</div><div class="app-gallery-controls">${data.slides.map((slide, index) => `<button type="button" data-slide-index="${index}" aria-controls="${id}-${index}" aria-pressed="${index === selected}" aria-label="${escape(slide.label ?? `슬라이드 ${index + 1}`)}">${escape(slide.label ?? index + 1)}</button>`).join('')}</div></section>`;
-    }
+      return videoOf({ src: data.src, poster: data.poster, title: data.title, caption: data.caption, controls: data.controls, playerWidth: data.width, playerHeight: data.height, playerWide: data.wide }, id);
+    case 'gallery': return renderGallery(data, id);
     case 'platform':
     case 'tabs': {
       if (!Array.isArray(data.items) || !data.items.length) throw new Error('Tabs require items');
-      return `<section class="app-tabs${kind === 'platform' ? ' is-platform' : ''}" data-tabs${kind === 'platform' ? ' data-platform' : ''}><div class="app-tablist" role="tablist" aria-label="${escape(data.title ?? '기기별 안내')}">${data.items.map((item, index) => `<button type="button" id="${id}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${id}-panel-${index}" tabindex="${index ? '-1' : '0'}">${escape(item.label)}</button>`).join('')}</div>${data.items.map((item, index) => `<div class="app-tabpanel" id="${id}-panel-${index}" role="tabpanel" aria-labelledby="${id}-tab-${index}" tabindex="0"${index ? ' hidden' : ''}>${render(item.body)}</div>`).join('')}</section>`;
+      return String(ui.Tabs({ id, label: data.title ?? '기기별 안내', platform: kind === 'platform', tabs: data.items.map(item => ({ label: item.label, body: trusted(render(item.body)) })) }));
     }
     case 'icon-lab': return iconLab();
     case 'cards': {
-      const variants = ['centered', 'grouped', 'inline'];
-      if (data.variant && !variants.includes(data.variant)) throw new Error(`Unknown card variant: ${data.variant}`);
-      const card = (item) => {
-        const variant = item.variant ?? data.variant;
-        if (variant && !variants.includes(variant)) throw new Error(`Unknown card variant: ${variant}`);
-        const classes = variant ? ` is-${variant}` : item.compact ? ' is-compact' : data.horizontal ? ' is-horizontal' : '';
-        const noIcon = item.icon === false || (item.compact && !variant);
-        return `<a class="app-help-card${classes}${noIcon ? ' has-no-icon' : ''}" href="${safeUrl(item.href)}">${noIcon ? '' : icon(item.icon)}<strong>${escape(item.title)}</strong>${item.description ? `<p>${escape(item.description)}</p>` : ''}</a>`;
-      };
-      if (data.variant === 'inline') return `<div class="app-inline-links">${data.items.map(card).join(' ')}</div>`;
-      if (data.split) return `<div class="app-support-split">${card(data.items[0])}<div class="app-support-links">${data.items.slice(1).map(card).join('')}</div></div>`;
-      return `<div class="app-support-grid${data.columns === 2 ? ' is-pair' : ''}">${data.items.map(card).join('')}</div>`;
+      if (data.variant && !CARD_VARIANTS.includes(data.variant)) throw new Error(`Unknown card variant: ${data.variant}`);
+      return String(ui.CardGroup({ variant: data.variant, columns: data.columns, split: data.split, cards: data.items.map(item => cardSlot({ horizontal: data.horizontal, ...item }, data.variant)) }));
     }
     case 'definitions':
-      return `<dl class="app-definitions">${data.items.map((item) => `<dt>${escape(item.term)}</dt><dd>${render(item.body)}</dd>`).join('')}</dl>`;
+      return String(ui.Definitions({ items: data.items.map(item => ({ term: item.term, body: trusted(render(item.body)) })) }));
     case 'speech': return `<p class="app-speech">${escape(data.body)}</p>`;
-    case 'keys': return `<p>${escape(data.label ?? '')} ${data.keys.map((key) => `<kbd>${escape(key)}</kbd>`).join(' + ')}</p>`;
-    case 'tooltip': return `<p><button class="app-tooltip" type="button" popovertarget="${id}-tip" data-tooltip-trigger>${escape(data.label)}</button></p><div class="app-tooltip-bubble" id="${id}-tip" popover>${render(data.description)}</div>`;
+    case 'keys': return `<p>${escape(data.label ?? '')} ${data.keys.map((key) => ui.Kbd({ text: key })).join(' + ')}</p>`;
+    case 'tooltip': return String(ui.TooltipBlock({ id: `${id}-tip`, label: data.label, body: trusted(render(data.description)) }));
     case 'keyboard':
-      return `<section class="app-keyboard" data-keyboard><div class="app-keyboard-selector">${image('keycommand-keyboard-io40.png','Keyboard')}<label class="app-sr" for="${id}-locale">Keyboard language</label><select id="${id}-locale" data-keyboard-language>${data.languages.map(item => `<option value="${escape(item.value)}">${escape(item.label)}</option>`).join('')}</select><button class="app-tooltip" type="button" popovertarget="${id}-help" data-tooltip-trigger>Help</button><div class="app-tooltip-bubble" id="${id}-help" popover>${render(data.help)}</div></div>${data.groups.map(group => `<h3>${escape(group.title)}</h3><div class="app-table-scroll"><table><tbody>${group.rows.map(row => `<tr><td>${render(row.label)}</td><td><span data-keyboard-keys data-keyboard-map="${escape(JSON.stringify(row.keys))}">${(row.keys['en-us'] ?? []).map(key=>`<kbd>${escape(key)}</kbd>`).join(' ')}</span>${row.note ? render(row.note) : ''}</td></tr>`).join('')}</tbody></table></div>`).join('')}</section>`;
+      return `<section class="app-keyboard" data-keyboard><div class="app-keyboard-selector">${image('keycommand-keyboard-io40.png','Keyboard')}<label class="app-sr" for="${id}-locale">Keyboard language</label><select id="${id}-locale" data-keyboard-language>${data.languages.map(item => `<option value="${escape(item.value)}">${escape(item.label)}</option>`).join('')}</select>${ui.TooltipTrigger({ id: `${id}-help`, label: 'Help' })}${ui.TooltipBubble({ id: `${id}-help`, body: trusted(render(data.help)) })}</div>${data.groups.map(group => `<h3>${escape(group.title)}</h3><div class="app-table-scroll"><table><tbody>${group.rows.map(row => `<tr><td>${render(row.label)}</td><td><span data-keyboard-keys data-keyboard-map="${escape(JSON.stringify(row.keys))}">${(row.keys['en-us'] ?? []).map(key=>`<kbd>${escape(key)}</kbd>`).join(' ')}</span>${row.note ? render(row.note) : ''}</td></tr>`).join('')}</tbody></table></div>`).join('')}</section>`;
     case 'status-board':
       return `<div class="app-status-weather"><div class="app-status-current"><p class="app-status-message">${escape(data.message)}</p><div class="app-status-actions"><button type="button" data-status-toggle aria-expanded="false" aria-controls="${id}-history">Show Past Week</button><a href="/things/contact/form/">Report Issue</a></div></div><div class="app-status-history" id="${id}-history" inert><div><p>${escape(data.history)}</p></div></div></div><section class="app-arrivals"><h1>Arrivals</h1>${data.items.map(item => `<article><div><h2>${escape(item.title)}</h2><div class="app-arrival-caption">${render(item.body)}</div></div><div class="app-arrival-state"><p>${escape(item.status)}</p><small>${escape(item.date)}</small></div></article>`).join('')}</section>`;
     case 'contact-form':

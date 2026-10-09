@@ -1,26 +1,25 @@
 // 홈 설정의 섹션 종류마다 독립된 HTML 구성 요소를 만든다.
 import { controlImage } from './controls.mjs';
 import { escape } from './markdown.mjs';
+import * as ui from './vendor/theme/assets/components.mjs';
 import { href } from './home-config.mjs';
 import { interviewCards, publicInterviews } from './interviews.mjs';
 import { socialIcon } from './publication-footer.mjs';
 
 const paragraphs = value => value.split(/\n\s*\n/).map(part => `<p>${escape(part.replace(/\s*\n\s*/g, ' ').trim())}</p>`).join('');
+const { trusted } = ui;
 const picture = (image, className = '', loading = 'lazy') => `<img${className ? ` class="${className}"` : ''} src="${escape(image.src)}" alt="${escape(image.alt)}" loading="${loading}" decoding="async">`;
 
 function heroAction(hero) {
   const label = hero.action?.label ?? '프로젝트 영상 보기';
   if (hero.action?.href) return `<a class="app-hero-link" href="${escape(hero.action.href)}">${escape(label)} <span aria-hidden="true">${hero.action.href.startsWith('#') ? '↓' : '→'}</span></a>`;
   if (!hero.video) return '';
-  return `<a class="app-remote" href="#${escape(hero.id)}-video" data-remote="${escape(hero.id)}-player" data-scroll="down" data-label="${escape(label)}" aria-label="${escape(label)}">${controlImage('play', '', '')}<span>${escape(label)}</span></a>`;
+  return String(ui.RemoteLink({ id: `${hero.id}-player`, href: `#${hero.id}-video`, label, icon: trusted(controlImage('play', '', '')) }));
 }
 
 function heroShowcase({ id, video, image }) {
-  if (video) {
-    const title = escape(video.title);
-    return `<section id="${escape(id)}-video" class="app-project-showcase" aria-label="${title}"><div class="app-player app-cinema has-controls is-hidden-until-played" id="${escape(id)}-player" data-player><video controls playsinline preload="none" data-native-controls aria-label="${title}"${video.poster ? ` poster="${escape(video.poster)}"` : ''}><source src="${escape(video.src)}">${title} · <a href="${escape(video.src)}">영상 파일 열기</a></video><button class="app-player-button" type="button" data-player-play aria-label="${title} 영상 재생" hidden></button><span class="app-sr" role="status"></span></div></section>`;
-  }
-  return image ? `<section id="${escape(id)}-video" class="app-hero-panorama" aria-label="${escape(image.alt || '히어로 이미지')}"><div class="app-hero-panorama-content">${picture(image)}</div></section>` : '';
+  if (video) return String(ui.ProjectShowcase({ id, title: video.title, src: video.src, poster: video.poster }));
+  return image ? String(ui.Panorama({ id, label: image.alt || '히어로 이미지', image: trusted(picture(image)) })) : '';
 }
 
 export function heroSection(hero) {
@@ -30,15 +29,13 @@ export function heroSection(hero) {
 
 // 프로젝트, 기술, 인터뷰, 구독이 함께 쓰는 섹션 머리: 아이콘, 제목, 설명, 링크 행, 동작 링크.
 function sectionIntro({ icon, title, titleId, description, links = [], action }) {
-  const row = links.length ? `<p class="app-landing-social">${links.map(socialLink).join('')}</p>` : '';
-  const more = action ? `<p><a class="app-landing-action" href="${escape(action.href)}">${escape(action.label)}</a></p>` : '';
-  return `<div class="app-landing-heading"><h2${titleId ? ` id="${escape(titleId)}"` : ''}>${icon ? `${picture(icon)} ` : ''}${escape(title)}</h2>${description ? paragraphs(description) : ''}${row}${more}</div>`;
+  return String(ui.SectionIntro({ id: titleId, icon: icon ? trusted(picture(icon)) : undefined, title, description: description ? trusted(paragraphs(description)) : undefined, links: links.length ? trusted(links.map(socialLink).join('')) : undefined, action }));
 }
 
 // href가 없는 항목은 아이콘만 보이는 자리표시이며 링크로 읽히지 않고 클릭되지 않는다.
 function socialLink(item) {
-  if (item.href) return `<a href="${escape(item.href)}"${item.icon ? ` aria-label="${escape(item.label)}"` : ''}>${linkIcon(item) || escape(item.label)}</a>`;
-  return `<span role="img" aria-label="${escape(item.label)} · 주소 준비 중">${linkIcon(item)}</span>`;
+  const icon = linkIcon(item);
+  return String(ui.SocialLink({ href: item.href, label: item.label, icon: item.icon ? trusted(icon) : undefined }));
 }
 
 function linkIcon({ icon }) {
@@ -52,9 +49,7 @@ export function projectsSection({ id, items }) {
   return `<div id="${escape(id)}">${slices}</div>`;
 }
 
-function flowRail(attributes, label, items) {
-  return `<div ${attributes}><div class="app-flow-viewport" data-flow-viewport tabindex="0" role="region" aria-label="${label}"><ul class="app-flow-group" data-flow-group>${items}</ul></div></div>`;
-}
+const flowRail = (options, items) => String(ui.FlowRail({ ...options, items: trusted(items) }));
 
 export function technologySection(section, brands) {
   if (!section.items.length) return '';
@@ -64,7 +59,7 @@ export function technologySection(section, brands) {
     return `<li class="app-technology"><a href="/tags/${encodeURIComponent(name)}/" aria-label="${escape(brand.label)} 태그 글 보기"><img src="/theme/assets/icons/brands/${escape(brand.file)}" alt="" decoding="async"><span class="app-sr">${escape(brand.label)}</span></a></li>`;
   }).join('');
   const id = escape(section.id);
-  return `<section id="${id}" class="app-landing-section app-landing-technologies" aria-labelledby="${id}-title"><div class="app-shell">${sectionIntro({ ...section, titleId: `${section.id}-title` })}${flowRail('class="app-technologies" data-flow-rail data-flow-direction="right" data-flow-label="기술"', '기술 아이콘', list)}</div></section>`;
+  return `<section id="${id}" class="app-landing-section app-landing-technologies" aria-labelledby="${id}-title"><div class="app-shell">${sectionIntro({ ...section, titleId: `${section.id}-title` })}${flowRail({ kind: 'technologies', direction: 'right', label: '기술', ariaLabel: '기술 아이콘' }, list)}</div></section>`;
 }
 
 export function interviewsSection(section, { examples = [], preview = false } = {}) {
@@ -73,8 +68,8 @@ export function interviewsSection(section, { examples = [], preview = false } = 
   // 순서를 유지한 채 앞 절반을 위 줄, 나머지를 아래 줄에 둔다. 한 장이면 한 줄이다. 위 줄은 왼쪽, 아래 줄은 오른쪽으로 흐른다.
   const split = entries.length > 1 ? Math.ceil(entries.length / 2) : entries.length;
   const rows = [entries.slice(0, split), entries.slice(split)].filter(row => row.length);
-  const rails = rows.map((row, index) => flowRail(`class="app-interviews" data-flow-rail${index ? ' data-flow-direction="right"' : ''} data-flow-label="인터뷰"`, rows.length > 1 ? `인터뷰 카드 ${index + 1}행` : '인터뷰 카드', interviewCards(row, href))).join('');
-  const body = rows.length > 1 ? `<div class="app-interview-rows" data-flow-rows>${rails}</div>` : rails;
+  const rails = rows.map((row, index) => flowRail({ kind: 'interviews', direction: index ? 'right' : undefined, label: '인터뷰', ariaLabel: rows.length > 1 ? `인터뷰 카드 ${index + 1}행` : '인터뷰 카드' }, interviewCards(row, href))).join('');
+  const body = rows.length > 1 ? String(ui.FlowRows({ rails: trusted(rails) })) : rails;
   const id = escape(section.id);
   return `<section id="${id}" class="app-landing-section app-landing-interviews" aria-labelledby="${id}-title"><div class="app-shell">${sectionIntro({ ...section, titleId: `${section.id}-title` })}${body}</div></section>`;
 }

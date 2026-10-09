@@ -1,5 +1,14 @@
 // 검색 결과는 텍스트 노드로 구성해 입력과 본문을 HTML로 해석하지 않는다.
 import { searchUrl } from './search-model.mjs';
+import * as ui from './vendor/theme/assets/components.mjs';
+
+// 구성 요소가 만든 결과만 DOM으로 바꾼다. 글자는 구성 요소가 이스케이프하고 주소는 검사하므로 임의의 HTML이 들어오지 않는다.
+function nodeFrom(component) {
+  if (!ui.isTrusted(component)) throw new TypeError('theme component output required');
+  const template = document.createElement('template');
+  template.innerHTML = component.html;
+  return template.content.firstElementChild;
+}
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -24,7 +33,7 @@ export function showResultsLoading(root, message = '검색 결과를 불러오�
 
 export function renderResults(root, result, state, tags) {
   const summary = root.querySelector('[data-filter-summary]');
-  summary.replaceChildren(...state.tags.map(tag => link(`${tags[tag]?.label ?? tag} ×`, searchUrl({ ...state, tags: state.tags.filter(value => value !== tag), page: 1 }), 'app-tag')));
+  summary.replaceChildren(...state.tags.map(tag => nodeFrom(ui.Tag({ href: searchUrl({ ...state, tags: state.tags.filter(value => value !== tag), page: 1 }), label: `${tags[tag]?.label ?? tag} ×` }))));
   if (state.query || state.tags.length) summary.append(link('조건 초기화', '/search/'));
   const output = root.querySelector('[data-full-results]');
   output.classList.add('app-search-panel');
@@ -32,52 +41,40 @@ export function renderResults(root, result, state, tags) {
   if (!result.entries.length) {
     output.append(element('p', '조건에 맞는 글이 없습니다. 검색어나 태그를 줄여 보세요.', 'app-search-message'));
   }
-  let pages = root.querySelector('[data-result-pages]');
-  if (!pages) { pages = element('nav', undefined, 'app-page-links'); pages.dataset.resultPages = ''; pages.setAttribute('aria-label', '검색 페이지'); output.after(pages); }
-  pages.replaceChildren();
-  if (result.totalPages > 1) {
-    if (result.page > 1) pages.append(link('이전', searchUrl({ ...state, page: result.page - 1 })));
-    for (let page = 1; page <= result.totalPages; page++) {
-      const node = link(String(page), searchUrl({ ...state, page }));
-      if (page === result.page) node.setAttribute('aria-current', 'page');
-      pages.append(node);
-    }
-    if (result.page < result.totalPages) pages.append(link('다음', searchUrl({ ...state, page: result.page + 1 })));
-  }
+  const multiple = result.totalPages > 1;
+  const pages = nodeFrom(ui.PageLinks({
+    label: '검색 페이지',
+    resultPages: true,
+    before: multiple && result.page > 1 ? { href: searchUrl({ ...state, page: result.page - 1 }), text: '이전' } : undefined,
+    after: multiple && result.page < result.totalPages ? { href: searchUrl({ ...state, page: result.page + 1 }), text: '다음' } : undefined,
+    numbers: multiple ? Array.from({ length: result.totalPages }, (_, index) => ({ page: index + 1, href: searchUrl({ ...state, page: index + 1 }), current: index + 1 === result.page })) : [],
+  }));
+  const previous = root.querySelector('[data-result-pages]');
+  if (previous) previous.replaceWith(pages); else output.after(pages);
   root.setAttribute('aria-busy', 'false');
   const fallback = root.querySelector('[data-search-fallback]');
   if (fallback) fallback.hidden = !fallback.open && !fallback.contains(document.activeElement);
 }
 
-function markedText(node, text, query) {
-  const value = String(text).normalize('NFC');
-  const terms = query.normalize('NFC').trim().split(/\s+/).filter(Boolean).map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  if (!terms.length) { node.textContent = value; return; }
-  let end = 0;
-  for (const match of value.matchAll(new RegExp(terms.join('|'), 'giu'))) {
-    node.append(document.createTextNode(value.slice(end, match.index)), element('mark', match[0]));
-    end = match.index + match[0].length;
-  }
-  node.append(document.createTextNode(value.slice(end)));
-}
-
 function resultLink(entry, query) {
-  const item = link(undefined, entry.route, 'app-search-result-link');
-  const icon = element('span', undefined, 'app-content-icon is-small');
-  const image = element('img'); image.src = entry.iconUrl; image.alt = ''; image.width = 24; image.height = 24; icon.append(image);
-  const title = element('strong'); markedText(title, entry.title, query);
-  const description = element('p'); markedText(description, entry.excerpt ?? entry.description, query);
-  item.append(icon, title);
-  if (entry.example) item.append(element('span', ' 예시', 'app-search-result-note'));
-  item.append(description);
-  return item;
+  return nodeFrom(ui.SearchResultLink({
+    href: entry.route,
+    icon: ui.ContentIconImage({ src: entry.iconUrl }),
+    title: ui.Highlight({ text: entry.title, query }),
+    example: entry.example,
+    description: ui.Highlight({ text: entry.excerpt ?? entry.description, query }),
+  }));
 }
 
 function resultRow(entry, tags, query) {
-  const row = element('article', undefined, 'app-search-entry');
-  const labels = element('div', undefined, 'app-search-result-tags');
-  labels.append(...entry.tags.map(tag => link(tags[tag].label, `/tags/${tag}/`)));
-  row.append(resultLink(entry, query), labels); return row;
+  return nodeFrom(ui.SearchResult({
+    href: entry.route,
+    icon: ui.ContentIconImage({ src: entry.iconUrl }),
+    title: ui.Highlight({ text: entry.title, query }),
+    example: entry.example,
+    description: ui.Highlight({ text: entry.excerpt ?? entry.description, query }),
+    tags: entry.tags.map(tag => ({ href: `/tags/${tag}/`, label: tags[tag].label })),
+  }));
 }
 
 export function renderSuggestions(output, result, state) {

@@ -1,14 +1,14 @@
 // 제품 소개의 섹션 순서와 콘텐츠를 Markdown 메타데이터에서 조합한다.
 import { controlImage } from './controls.mjs';
 import { escape, image, safeUrl } from './markdown.mjs';
+import * as ui from './vendor/theme/assets/components.mjs';
 
 function sectionHeader(section, level = 2) {
-  return `<div class="app-landing-heading"><h${level}>${image(section.icon, '')} ${escape(section.title)}</h${level}><p>${escape(section.description)}</p>${section.social ? socialLinks() : ''}${section.href ? `<p><a class="app-landing-action" href="${safeUrl(section.href)}">${escape(section.link)}</a></p>` : ''}</div>`;
+  return String(ui.SectionIntro({ level, icon: ui.trusted(image(section.icon, '')), title: section.title, description: ui.trusted(`<p>${escape(section.description)}</p>`), links: section.social ? ui.trusted(socialItems()) : undefined, action: section.href ? { href: section.href, label: section.link } : undefined }));
 }
 
-export function socialLinks() {
-  return `<p class="app-landing-social">${['bluesky','x','threads','instagram','mastodon'].map(name => `<a href="/things/follow/${name}/" aria-label="${name}"><svg aria-hidden="true"><use href="/things/assets/symbols-social.svg#${name}"></use></svg></a>`).join(' ')}</p>`;
-}
+const socialItems = () => ['bluesky','x','threads','instagram','mastodon'].map(name => `<a href="/things/follow/${name}/" aria-label="${name}"><svg aria-hidden="true"><use href="/things/assets/symbols-social.svg#${name}"></use></svg></a>`).join(' ');
+export const socialLinks = () => String(ui.SocialRow({ links: ui.trusted(socialItems()) }));
 
 export function productCards(items, minimal = false) {
   return `<div class="app-product-grid">${items.map(item => `<article class="app-product-card"><div><a href="${safeUrl(item.href)}">${image(item.image,item.title,'app-product-symbol')}</a><h3>${escape(item.title)}</h3>${minimal ? '' : `<p>${escape(item.requirement)}<br>${escape(item.price)}<br><a href="/things/pricing/">view in your currency</a></p>`}</div><div class="app-product-actions">${!minimal && item.trial ? `<a href="/things/assets/preview-trial.zip" download="preview-trial.zip" aria-label="Download Free Trial — 검토용 예시 파일">${image('appstore-trial.svg','Download Free Trial','app-product-badge')}</a>` : ''}<a href="${safeUrl(item.href)}">${image(item.badge,'Download on the App Store','app-product-badge')}</a></div></article>`).join('')}</div>`;

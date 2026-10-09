@@ -36,10 +36,10 @@ main {
   --color-segmented-control-button-bg: #ffffff;
   --color-segmented-control-button-selected-border: #dfe3e8;
   --color-prettylights-syntax-comment: #55606e;
-  --color-prettylights-syntax-constant: rgba(0,4,10,.69);
-  --color-prettylights-syntax-entity: rgba(0,4,10,.69);
-  --color-prettylights-syntax-keyword: rgba(0,4,10,.69);
-  --color-prettylights-syntax-string: rgba(0,4,10,.69);
+  --color-prettylights-syntax-constant: #a63900;
+  --color-prettylights-syntax-entity: #be0004;
+  --color-prettylights-syntax-keyword: #be0004;
+  --color-prettylights-syntax-string: #0151d9;
   --color-prettylights-syntax-storage-modifier-import: #303336;
   --color-prettylights-syntax-variable: #303336;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
@@ -65,7 +65,7 @@ main {
 .gsc-main .gsc-comment-box-write { border: 0; border-radius: 0; background: transparent; }
 .gsc-main .gsc-comment-box-write:focus-within { box-shadow: none; outline: 0; }
 .gsc-main .gsc-comment-box-preview { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #f6f7fa; border: 0; border-radius: 12px; padding: 18px; }
-.gsc-main .gsc-comment-box-textarea { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #edeef1; border: 1px solid transparent; border-radius: 12px; padding: 18px; box-shadow: none; }
+.gsc-main .gsc-comment-box-textarea { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 18px; line-height: 1.4; color: #303336; background: #edeef1; border: 1px solid transparent; border-radius: 12px; padding: 18px; box-shadow: none; resize: none; }
 .gsc-main .gsc-comment-box-textarea:focus { outline: 0; border-color: transparent; box-shadow: 0 0 0 3px rgb(100,159,255); }
 .gsc-main .gsc-comment-box-textarea::placeholder { color: #55606e; opacity: 1; }
 .gsc-main .gsc-comment-box-textarea-extras { background: transparent; border: 0; padding: 8px 0; }

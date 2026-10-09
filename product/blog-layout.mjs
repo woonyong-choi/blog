@@ -1,16 +1,16 @@
 // 같은 발행 글을 세 편 미리보기, 카드 목록, 네 편 본문 피드로 보여준다.
 import { escape } from './markdown.mjs';
+import * as ui from './vendor/theme/assets/components.mjs';
 import { subjectIcon, tagLinks, dateLine, searchBox } from './publication-layout.mjs';
 import { PAGE_SIZES, paginate } from './content-model.mjs';
 import { postArticle } from './post-article.mjs';
 
 export function blogCard(page, tags, level = 3) {
-  const heading = level === 2 ? 'h2' : 'h3';
   // 검증된 이미지별 좌표는 테마 값이 아닌 콘텐츠의 자르기 데이터다.
   const position = page.thumbnail?.position;
   const crop = position ? ` style="object-position:${position.x}% ${position.y}%"` : '';
   const cover = page.thumbnail ? `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="lazy" decoding="async"${crop}>` : subjectIcon(page.contentIcon);
-  return `<article class="app-blog-card"><a class="app-blog-cover" href="${page.route}" aria-label="${escape(page.title)}">${cover}</a><div class="app-blog-card-body"><${heading} class="app-blog-card-title"><a href="${page.route}">${escape(page.title)}</a></${heading}>${tagLinks(page, tags, 3)}</div></article>`;
+  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), tags: ui.trusted(tagLinks(page, tags, 3)) }));
 }
 
 export function recentBlog(posts, tags) {
@@ -25,16 +25,16 @@ export function blogArchive(posts, tags, page) {
 
 export function blogFeed(posts, tags, page) {
   const result = paginate(posts, page, PAGE_SIZES.feed);
-  return `<main id="main" class="app-shell"><h1 class="app-sr">Blog</h1>${posts.length ? result.items.map(post => feedArticle(post, tags)).join('') : emptyBlog()}${pagination(result, '/blog/', true)}${posts.length ? '<p class="app-page-links"><a href="/blog/all/">전체 글 보기 →</a></p>' : ''}</main>`;
+  return `<main id="main" class="app-shell"><h1 class="app-sr">Blog</h1>${posts.length ? result.items.map(post => feedArticle(post, tags)).join('') : emptyBlog()}${pagination(result, '/blog/', true)}${posts.length ? ui.ListLink({ href: '/blog/all/', text: '전체 글 보기 →' }) : ''}</main>`;
 }
 
 export function pagination(result, route, feed = false) {
   if (result.totalPages <= 1) return '';
   const href = page => page === 1 ? route : `${route}page/${page}/`;
-  const before = result.page > 1 ? `<a rel="prev" href="${href(result.page - 1)}">← ${feed ? '최신 글' : '이전'}</a>` : '';
-  const after = result.page < result.totalPages ? `<a rel="next" href="${href(result.page + 1)}">${feed ? '이전 글' : '다음'} →</a>` : '';
-  const numbers = feed ? `<span>${result.page} / ${result.totalPages}</span>` : Array.from({ length: result.totalPages }, (_, i) => i + 1).map(page => page === result.page ? `<span aria-current="page">${page}</span>` : `<a href="${href(page)}" aria-label="${page}페이지">${page}</a>`).join('');
-  return `<nav class="app-page-links" aria-label="블로그 페이지">${before}${numbers}${after}</nav>`;
+  const before = result.page > 1 ? { href: href(result.page - 1), text: `← ${feed ? '최신 글' : '이전'}` } : undefined;
+  const after = result.page < result.totalPages ? { href: href(result.page + 1), text: `${feed ? '이전 글' : '다음'} →` } : undefined;
+  const numbers = Array.from({ length: result.totalPages }, (_, i) => ({ page: i + 1, href: href(i + 1), current: i + 1 === result.page }));
+  return String(ui.PageLinks({ label: '블로그 페이지', before, after, numbers, summary: feed ? `${result.page} / ${result.totalPages}` : undefined }));
 }
 
 function feedArticle(post, tags) {
