@@ -1,5 +1,4 @@
-// 읽기와 직접 탐색을 우선하고 화면 안에서만 카드 흐름을 진행한다.
-// 여러 줄(data-flow-rows)은 하나의 진행기로 함께 움직이고 함께 멈춘다.
+// 자동 이동은 합성 가능한 transform으로, 직접 탐색은 네이티브 스크롤로 처리한다.
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const scopes = new Map();
 for (const rail of document.querySelectorAll('[data-flow-rail]')) {
@@ -11,65 +10,104 @@ for (const [scope, rails] of scopes) {
   const shared = scope.hasAttribute('data-flow-rows');
   const durationValue = getComputedStyle(rails[0]).getPropertyValue('--site-motion-rail').trim();
   const duration = parseFloat(durationValue) * (durationValue.endsWith('ms') ? 1 : 1000) * 2;
-  let hovering = false; let focused = false; let frame; let last;
+  let hovering = false; let focused = false; let manual = false; let suspended = false;
   const rows = rails.map(rail => ({
-    viewport: rail.querySelector('[data-flow-viewport]'), group: rail.querySelector('[data-flow-group]'),
-    direction: rail.dataset.flowDirection === 'right' ? -1 : 1, clones: [], distance: 0, position: 0, visible: false,
+    viewport: rail.querySelector('[data-flow-viewport]'), track: rail.querySelector('[data-flow-track]'),
+    group: rail.querySelector('[data-flow-group]'), reverse: rail.dataset.flowDirection === 'right',
+    clones: [], distance: 0, width: 0, animation: null, visible: false,
   }));
 
+  const position = row => row.animation
+    ? (row.animation.effect.getComputedTiming().progress ?? 0) * row.distance
+    : row.viewport.scrollLeft;
+
+  function handoff(row) {
+    if (!row.animation) return;
+    const offset = position(row);
+    row.animation.cancel(); row.animation = null;
+    row.viewport.scrollLeft = offset;
+  }
+
   function update() {
-    cancelAnimationFrame(frame); last = undefined;
-    if (rows.some(row => row.distance && row.visible) && !hovering && !focused && !document.hidden && !reduced.matches) frame = requestAnimationFrame(tick);
-  }
-  // 줄마다 길이가 달라도 같은 픽셀 속도가 되도록 가장 긴 줄의 한 바퀴를 기준으로 삼는다.
-  function tick(now) {
-    if (last !== undefined) {
-      const speed = Math.max(...rows.map(row => row.distance)) / duration;
-      for (const row of rows) {
-        if (!row.distance) continue;
-        row.position = ((row.position + row.direction * (now - last) * speed) % row.distance + row.distance) % row.distance;
-        row.viewport.scrollLeft = row.position;
+    const interacting = hovering || focused || manual || reduced.matches;
+    const running = rows.some(row => row.visible) && !document.hidden && !suspended;
+    // 길이가 다른 두 줄도 같은 픽셀 속도로 흐르게 한다.
+    const longest = Math.max(...rows.map(row => row.distance));
+    for (const row of rows) {
+      if (interacting) { handoff(row); continue; }
+      if (!row.distance) continue;
+      if (!row.animation) {
+        const progress = (row.viewport.scrollLeft % row.distance) / row.distance;
+        const rowDuration = duration * row.distance / longest;
+        row.viewport.scrollLeft = 0;
+        row.animation = row.track.animate([
+          { transform: 'translate3d(0, 0, 0)' },
+          { transform: `translate3d(${-row.distance}px, 0, 0)` },
+        ], { duration: rowDuration, iterations: Infinity, easing: 'linear', direction: row.reverse ? 'reverse' : 'normal' });
+        row.animation.pause();
+        row.animation.currentTime = (row.reverse ? 1 - progress : progress) * rowDuration;
       }
+      if (running) row.animation.play();
+      else row.animation.pause();
     }
-    last = now; frame = requestAnimationFrame(tick);
   }
-  function measure(row) {
-    const { viewport, group } = row;
-    const progress = row.distance ? viewport.scrollLeft / row.distance : 0;
-    row.clones.forEach(clone => clone.remove()); row.clones = [];
-    const gap = parseFloat(getComputedStyle(viewport).columnGap) || 0;
-    // 여러 줄일 때는 한 장뿐인 줄도 복제해 함께 흐른다.
-    row.distance = group.children.length > (shared ? 0 : 1) ? group.getBoundingClientRect().width + gap : 0;
-    viewport.classList.toggle('has-flow', !!row.distance);
-    if (row.distance) {
-      const count = Math.ceil(viewport.clientWidth / row.distance);
-      for (let index = 0; index < count; index++) {
-        const clone = group.cloneNode(true); clone.removeAttribute('data-flow-group');
-        clone.setAttribute('aria-hidden', 'true');
-        clone.querySelectorAll('a').forEach(link => { link.tabIndex = -1; });
-        viewport.append(clone); row.clones.push(clone);
+
+  function measure() {
+    const sizes = rows.map(row => ({
+      width: row.viewport.clientWidth,
+      distance: row.group.children.length > (shared ? 0 : 1)
+        ? row.group.getBoundingClientRect().width + (parseFloat(getComputedStyle(row.track).columnGap) || 0) : 0,
+    }));
+    if (sizes.every((size, index) => size.width === rows[index].width && size.distance === rows[index].distance)) return;
+    for (const [index, row] of rows.entries()) {
+      const progress = row.distance ? position(row) / row.distance : 0;
+      row.animation?.cancel(); row.animation = null;
+      row.clones.forEach(clone => clone.remove()); row.clones = [];
+      Object.assign(row, sizes[index]);
+      row.viewport.classList.toggle('has-flow', !!row.distance);
+      if (row.distance) {
+        for (let count = Math.ceil(row.width / row.distance); count > 0; count--) {
+          const clone = row.group.cloneNode(true); clone.removeAttribute('data-flow-group');
+          clone.setAttribute('aria-hidden', 'true');
+          clone.querySelectorAll('a').forEach(link => { link.tabIndex = -1; });
+          row.track.append(clone); row.clones.push(clone);
+        }
       }
-      row.position = reduced.matches ? Math.floor(progress * group.children.length) * row.distance / group.children.length : progress * row.distance;
-      viewport.scrollLeft = row.position;
+      row.viewport.scrollLeft = progress * row.distance;
     }
     update();
   }
 
   const area = shared ? scope : rows[0].viewport;
   area.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; update(); } });
-  area.addEventListener('pointerleave', () => { hovering = false; update(); });
-  area.addEventListener('focusin', () => { focused = !!area.querySelector(':focus-visible') || area.matches(':focus-visible'); update(); });
-  area.addEventListener('focusout', () => {
-    focused = false;
-    for (const row of rows) row.position = row.distance ? row.viewport.scrollLeft % row.distance : 0;
+  area.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') { hovering = false; manual = false; update(); } });
+  area.addEventListener('pointerdown', event => { if (event.pointerType !== 'mouse') { manual = true; update(); } });
+  area.addEventListener('wheel', event => { if (event.deltaX) { manual = true; update(); } }, { passive: true });
+  area.addEventListener('focusin', () => {
+    focused = !!area.querySelector(':focus-visible') || area.matches(':focus-visible');
     update();
+    // 이동 중 화면 밖에 있던 원본 링크도 Tab으로 초점을 받으면 드러낸다.
+    if (focused) for (const row of rows) {
+      const target = row.group.querySelector(':focus-visible');
+      if (!target) continue;
+      const item = target.getBoundingClientRect(); const view = row.viewport.getBoundingClientRect();
+      row.viewport.scrollLeft += Math.min(0, item.left - view.left) || Math.max(0, item.right - view.right);
+    }
   });
+  area.addEventListener('focusout', () => queueMicrotask(() => {
+    focused = !!area.querySelector(':focus-visible') || area.matches(':focus-visible'); update();
+  }));
   reduced.addEventListener('change', update);
   document.addEventListener('visibilitychange', update);
-  window.addEventListener('pagehide', () => { cancelAnimationFrame(frame); last = undefined; });
-  window.addEventListener('pageshow', update);
+  window.addEventListener('pagehide', () => { suspended = true; update(); });
+  window.addEventListener('pageshow', () => { suspended = false; update(); });
+  const resize = new ResizeObserver(measure);
   for (const row of rows) {
-    new ResizeObserver(() => measure(row)).observe(row.viewport);
-    new IntersectionObserver(entries => { row.visible = entries[0].isIntersecting; update(); }).observe(row.viewport);
+    resize.observe(row.viewport); resize.observe(row.group);
+    new IntersectionObserver(entries => {
+      row.visible = entries[0].isIntersecting;
+      if (!rows.some(item => item.visible)) manual = false;
+      update();
+    }).observe(row.viewport);
   }
 }

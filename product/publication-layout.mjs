@@ -14,7 +14,7 @@ import { publicationMetadata } from './publication-metadata.mjs';
 import { usesMath, MATH_STYLESHEET } from './math-assets.mjs';
 
 const BRANDS = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons;
-const FIELD_NAMES = Object.freeze({ tech: 'Tech', languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
+export const FIELD_NAMES = Object.freeze({ tech: 'Tech', languages: 'Languages', cs: 'CS', frameworks: 'Frameworks', infrastructure: 'Infrastructure' });
 
 export function iconUrl(spec, size = 'small') {
   const name = typeof spec === 'string' ? spec : spec.name;
@@ -129,5 +129,5 @@ function topicNavigation(page, context) {
     if (!node.children.length) return `<li>${link}</li>`;
     return `<li><details open><summary>${escape(parent.title)}</summary><ul><li>${link}</li>${node.children.map(children).join('')}</ul></details></li>`;
   }
-  return `<details class="app-document-nav"><summary>문서 목록 · ${escape(context.topics[page.topic].label)}</summary><nav aria-label="${escape(context.topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Wiki</a><ul>${roots.map(children).join('')}</ul></nav></details>`;
+  return `<details class="app-document-nav"><summary>문서 목록 · ${escape(context.topics[page.topic].label)}</summary><nav aria-label="${escape(context.topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Notes</a><ul>${roots.map(children).join('')}</ul></nav></details>`;
 }

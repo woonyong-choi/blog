@@ -9,9 +9,10 @@ import { readDocument, publicDocuments, searchEntry, FIELDS, TOPIC_GROUPS, blogD
 import { createMarkdown, escape } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 import { renderArticle } from './article-renderer.mjs';
-import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, tagPage, iconUrl } from './publication-layout.mjs';
+import { documentShell, personalHome, wikiLanding, articlePage, projectSection, searchBox, tagPage, iconUrl, FIELD_NAMES } from './publication-layout.mjs';
 import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection } from './comments.mjs';
+import { readCommentCounts } from './comment-counts.mjs';
 import { iconAuditPages } from './icon-audit.mjs';
 import { publicationAssets, clientEntrypoints } from './publication-assets.mjs';
 import { loadHomeConfig } from './home-config.mjs';
@@ -38,20 +39,26 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const folders = ['publication', ...(preview && existsSync(join(ROOT, 'examples')) ? ['examples'] : [])];
   const documents = publicDocuments(folders.flatMap(folder => readdirSync(join(ROOT, folder)).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, folder, name), 'utf8'), TOPICS))), { includeExamples: preview });
   const posts = blogDocuments(documents);
+  const comments = readCommentCounts(posts, CONFIG);
+  for (const post of posts) {
+    post.commentCount = comments.counts.get(post.id);
+    post.author ??= CONFIG.name;
+    post.cardAuthor = { name: post.author, ...(post.author === CONFIG.name ? { href: CONFIG.github, avatar: CONFIG.avatar } : {}) };
+  }
   const topicTrees = createTopicTrees(documents);
   renderDocuments(documents);
   const scripts = browserScripts(ROOT);
   // 도표 렌더러는 도표가 있는 글이 있을 때만 만들고, 없으면 산출물에도 넣지 않는다.
   const diagrams = documents.some(page => (page.leadHtml + page.html).includes('data-mermaid')) ? mermaidScripts(ROOT) : { files: new Map(), hashes: {} };
   const identity = siteIdentity(readFileSync(join(THEME, SITE_ICON.slice('/theme/'.length))), readFileSync(join(THEME, 'assets/controls/LICENSE')));
-  const context = { config: CONFIG, topics: TOPICS, topicTrees, origin, preview, identity, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
+  const context = { config: CONFIG, topics: TOPICS, topicTrees, origin, preview, identity, commentsStatus: comments.status, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
   context.home = loadHomeConfig(new Set(BRAND_NAMES));
   context.interviewExamples = JSON.parse(readFileSync(join(ROOT, 'interview-examples.json')));
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
   add('/', CONFIG.name, personalHome(context));
   add('/wiki/', 'Notes', wikiLanding(documents, context, undefined, recentBlog(posts)));
-  for (const field of new Set([...TOPIC_GROUPS, ...FIELDS])) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
+  for (const field of new Set([...TOPIC_GROUPS, ...FIELDS])) add(`/wiki/${field}/`, FIELD_NAMES[field], wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
   if (preview) for (const page of iconAuditPages()) add(page.route, '아이콘 검증', page.body);
   const commentTheme = CONFIG.comments.themeUrl || `${origin || 'http://127.0.0.1:8796'}/theme/assets/giscus.css?v=${MANIFEST.contentHash}`;
@@ -144,7 +151,7 @@ async function writeSite(output, documents, context, scripts, diagramFiles) {
   writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description>${posts.map(page => `<item><title>${escape(page.title)}</title><link>${escape(context.origin + page.route)}</link><guid isPermaLink="false">${page.id}</guid><pubDate>${new Date(page.publishedAt).toUTCString()}</pubDate><description>${escape(page.description)}</description></item>`).join('')}</channel></rss>`);
   writeFileSync(join(OUTPUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...output.keys()].filter(route => route !== '/search/').map(route => `<url><loc>${escape(context.origin + route)}</loc></url>`).join('')}</urlset>`);
   validateOutput(output);
-  writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, themeHash: context.themeHash, styles: { sourceBytes: Buffer.byteLength(sourceStyles), bytes: Buffer.byteLength(styles.css), removedSelectors: styles.removed, hash: styleHash }, assets: { files: assets.size, bytes: [...assets.values()].reduce((sum, content) => sum + content.length, 0) }, routes: [...output.keys()] }, null, 2));
+  writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, commentsStatus: context.commentsStatus, themeHash: context.themeHash, styles: { sourceBytes: Buffer.byteLength(sourceStyles), bytes: Buffer.byteLength(styles.css), removedSelectors: styles.removed, hash: styleHash }, assets: { files: assets.size, bytes: [...assets.values()].reduce((sum, content) => sum + content.length, 0) }, routes: [...output.keys()] }, null, 2));
   writeFileSync(join(OUTPUT, 'robots.txt'), context.preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${context.origin}/sitemap.xml\n`);
 }
 

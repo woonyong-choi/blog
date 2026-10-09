@@ -380,7 +380,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 }
 
 /* 주제와 블로그 목록은 설명의 전체 텍스트를 보존하고 두 줄까지만 표시한다. */
-.app-card-summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--site-card-summary-lines); overflow: hidden; overflow-wrap: anywhere; }
+.app-card-summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--site-card-summary-lines); overflow: hidden; word-break: keep-all; overflow-wrap: anywhere; }
 /* 본문 문법: app-prose 아래 제목·문단·목록·인용·표·코드·콜아웃·각주·수식·도표. 새 Markdown 요소는 여기에 둔다. */
 .app-prose { overflow-wrap: anywhere; line-height: var(--site-feature-body-line); }
 .app-prose h1 { font-size: var(--site-section-title); line-height: var(--site-prose-heading-line); margin: var(--site-prose-h1-margin); }
@@ -652,7 +652,14 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-blog-card-body { padding: var(--site-card-inset); text-align: left; }
 .app-blog-card .app-tags { justify-content: flex-start; margin: 0 var(--site-card-inset) var(--site-card-inset); text-align: left; }
 .app-blog-card-title { margin: 0 0 var(--site-gap-sm); overflow: hidden; font-size: var(--site-body-text); line-height: var(--site-line-card); text-overflow: ellipsis; white-space: nowrap; color: var(--site-help-title-color); }
-.app-blog-card-date { display: block; margin-top: var(--site-gap-xs); font-size: var(--site-small-text); color: var(--site-muted); }
+.app-blog-card-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--site-gap-xs); padding: 0 var(--site-card-inset) var(--site-help-mobile-block); font-size: var(--site-small-text); color: var(--site-muted); }
+.app-blog-card-meta a { color: inherit; }
+.app-blog-card-meta a:hover { color: var(--site-link); }
+.app-blog-card-date, .app-blog-card-comments { white-space: nowrap; }
+.app-blog-card-footer { padding: var(--site-compact-inset) var(--site-card-inset); border-top: var(--site-border) solid var(--site-help-border); font-size: var(--site-small-text); color: var(--site-help-title-color); }
+.app-blog-card-author { display: flex; align-items: center; gap: var(--site-gap-xs); min-width: 0; color: inherit; }
+.app-blog-card-author > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-blog-card-avatar { flex: none; width: var(--site-icon); height: var(--site-icon); object-fit: cover; border-radius: calc(var(--site-icon) / 2); }
 .app-blog-card-body > p { margin: 0; color: var(--site-help-copy-color); line-height: var(--site-line-card); }
 .app-list-toolbar { display: flex; flex-wrap: wrap; gap: var(--site-gap); justify-content: space-between; margin-block: var(--site-gap-lg); font-size: var(--site-small-text); }
 .app-page-links { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: center; justify-content: center; margin-block: var(--site-support-gap); }
@@ -863,6 +870,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-flow-viewport::-webkit-scrollbar { display: none; }
 .app-flow-viewport.has-flow { mask-image: linear-gradient(to right, transparent, var(--site-ink) var(--site-gap), var(--site-ink) calc(100% - var(--site-gap)), transparent); }
 .app-flow-viewport:focus-visible { mask-image: none; }
+.app-flow-track { display: flex; flex: none; gap: inherit; align-items: inherit; }
 .app-flow-group { display: flex; flex: none; gap: var(--site-gap); margin: 0; padding: 0; list-style: none; }
 .app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: calc((100cqw - var(--site-landing-review-font)) / 2); max-width: calc(100vw - var(--site-gap-lg)); padding: var(--site-landing-review-padding); border-radius: var(--site-landing-review-radius); background: var(--site-card); color: var(--site-ink); box-shadow: var(--site-landing-review-shadow); font-size: var(--site-landing-review-font); line-height: var(--site-feature-line); }
 .app-interview-summary { margin: 0; padding-bottom: var(--site-landing-review-copy-bottom); font-size: var(--site-landing-review-copy); word-break: keep-all; overflow-wrap: anywhere; }

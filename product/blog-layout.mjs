@@ -10,7 +10,8 @@ export function blogCard(page, tags, level = 3) {
   const position = page.thumbnail?.position;
   const crop = position ? ` style="object-position:${position.x}% ${position.y}%"` : '';
   const cover = page.thumbnail ? `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="lazy" decoding="async"${crop}>` : '';
-  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description, publishedAt: page.publishedAt }));
+  const dateLabel = page.publishedAt ? new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(page.publishedAt)) : undefined;
+  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description, publishedAt: page.publishedAt, dateLabel, commentsHref: page.comments ? `${page.route}#comments` : undefined, commentCount: page.commentCount, author: page.cardAuthor }));
 }
 
 export function recentBlog(posts) {

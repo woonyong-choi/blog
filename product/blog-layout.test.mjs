@@ -39,15 +39,18 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
 });
 
 // 썸네일 자르기 좌표와 제목 링크를 유지하고 설명을 보여 준다.
-test('blog_cards_preserve_thumbnail_position_with_one_link_for_the_whole_card', () => {
-  const post = { ...posts(1)[0], thumbnail: { src: '/media/cover.webp', alt: '상단의 "검색" 입력창', position: { x: 37.5, y: 0 } } };
+test('blog_cards_keep_the_primary_link_separate_from_comment_and_author_links', () => {
+  const post = { ...posts(1)[0], comments: true, commentCount: 2, cardAuthor: { name: '작성자', href: '/author/' }, thumbnail: { src: '/media/cover.webp', alt: '상단의 "검색" 입력창', position: { x: 37.5, y: 0 } } };
   for (const html of [blogCard(post, TAGS), blogArchive([post], TAGS, 1)]) {
     assert.match(html, /object-position:37\.5% 0%/);
     assert.match(html, /alt="상단의 &quot;검색&quot; 입력창"/);
     assert.match(html, /<a class="app-blog-card-link"[^>]+><div class="app-blog-cover"><img[^>]+><\/div>/);
     const card = html.match(/<article class="app-blog-card">[\s\S]*?<\/article>/)[0];
-    assert.equal((card.match(/<a /g) ?? []).length, 1);
-    assert.match(card, /<p class="app-card-summary">설명<\/p><time class="app-blog-card-date" datetime="2026-10-01">2026-10-01<\/time><\/div><\/a>/);
+    assert.equal((card.match(/<a /g) ?? []).length, 3);
+    assert.equal((card.match(/<a class="app-blog-card-link"/g) ?? []).length, 1);
+    assert.match(card, /<p class="app-card-summary">설명<\/p><\/div><\/a><div class="app-blog-card-meta"><time class="app-blog-card-date" datetime="2026-10-01">2026년 10월 1일<\/time>/);
+    assert.match(card, /href="\/articles\/post-0\/#comments"[^>]*>댓글 2개<\/a>/);
+    assert.match(card, /<footer class="app-blog-card-footer"><a class="app-blog-card-author" href="\/author\/"/);
     assert.match(html, /app-card-summary/);
     assert.doesNotMatch(html, /app-tags/);
   }
@@ -56,4 +59,6 @@ test('blog_cards_preserve_thumbnail_position_with_one_link_for_the_whole_card', 
   const fallback = blogCard({ ...post, thumbnail: undefined }, TAGS);
   assert.doesNotMatch(fallback, /app-content-icon/);
   assert.doesNotMatch(fallback, /cover.webp|object-position/);
+  assert.match(blogCard({ ...post, commentCount: undefined }), />댓글 보기<\/a>/);
+  assert.match(blogCard({ ...post, commentCount: 0 }), />댓글 0개<\/a>/);
 });
