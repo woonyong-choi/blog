@@ -38,19 +38,21 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.equal((feed.match(/<footer class="app-post-footer">/g) ?? []).length, 4);
 });
 
-// 썸네일 자르기 좌표와 제목 링크를 유지하고 설명을 보여 준다.
-test('blog_cards_keep_the_primary_link_separate_from_comment_and_author_links', () => {
+// 정보 행과 안쪽 여백도 같은 글로 연결하며 카드당 초점은 한 번만 받는다.
+test('blog_cards_include_metadata_in_one_post_link', () => {
   const post = { ...posts(1)[0], comments: true, commentCount: 2, cardAuthor: { name: '작성자', href: '/author/' }, thumbnail: { src: '/media/cover.webp', alt: '상단의 "검색" 입력창', position: { x: 37.5, y: 0 } } };
   for (const html of [blogCard(post, TAGS), blogArchive([post], TAGS, 1)]) {
     assert.match(html, /object-position:37\.5% 0%/);
     assert.match(html, /alt="상단의 &quot;검색&quot; 입력창"/);
     assert.match(html, /<a class="app-blog-card-link"[^>]+><div class="app-blog-cover"><img[^>]+><\/div>/);
     const card = html.match(/<article class="app-blog-card">[\s\S]*?<\/article>/)[0];
-    assert.equal((card.match(/<a /g) ?? []).length, 3);
+    assert.equal((card.match(/<a /g) ?? []).length, 1);
     assert.equal((card.match(/<a class="app-blog-card-link"/g) ?? []).length, 1);
-    assert.match(card, /<p class="app-card-summary">설명<\/p><\/div><\/a><div class="app-blog-card-meta">.*<time class="app-blog-card-date" datetime="2026-10-01">2026년 10월 1일<\/time>/);
-    assert.match(card, /href="\/articles\/post-0\/#comments"[^>]*>댓글 2개<\/a>/);
-    assert.match(card, /<div class="app-blog-card-meta"><a class="app-blog-card-author" href="\/author\/"/);
+    assert.match(card, /<a class="app-blog-card-link" href="\/articles\/post-0\/"/);
+    assert.match(card, /<p class="app-card-summary">설명<\/p><\/div><div class="app-blog-card-meta">.*<time class="app-blog-card-date" datetime="2026-10-01">2026년 10월 1일<\/time>/);
+    assert.match(card, /<span class="app-blog-card-comments">댓글 2개<\/span><\/div><\/a><\/article>$/);
+    assert.match(card, /<div class="app-blog-card-meta"><span class="app-blog-card-author"><span>작성자<\/span><\/span>/);
+    assert.doesNotMatch(card, /href="\/author\/"|href="\/articles\/post-0\/#comments"/);
     assert.doesNotMatch(card, /app-blog-card-footer/);
     assert.match(html, /app-card-summary/);
     assert.doesNotMatch(html, /app-tags/);
@@ -60,6 +62,6 @@ test('blog_cards_keep_the_primary_link_separate_from_comment_and_author_links', 
   const fallback = blogCard({ ...post, thumbnail: undefined }, TAGS);
   assert.doesNotMatch(fallback, /app-content-icon/);
   assert.doesNotMatch(fallback, /cover.webp|object-position/);
-  assert.match(blogCard({ ...post, commentCount: undefined }), />댓글 보기<\/a>/);
-  assert.match(blogCard({ ...post, commentCount: 0 }), />댓글 0개<\/a>/);
+  assert.match(blogCard({ ...post, commentCount: undefined }), />댓글 보기<\/span>/);
+  assert.match(blogCard({ ...post, commentCount: 0 }), />댓글 0개<\/span>/);
 });
