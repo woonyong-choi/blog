@@ -7,7 +7,8 @@ import { siteIdentity } from './site-identity.mjs';
 const context = {
   config: { name: '이름', description: '사이트 소개' }, origin: 'https://example.invalid', themeHash: 'hash', preview: false,
   identity: { favicon: '/media/icon-32.png', touch: '/media/icon-180.png', share: '/media/icon-512.png' },
-  topics: { javascript: { label: 'JavaScript' } },
+  topics: { javascript: { label: '언어 분류' } },
+  tags: { javascript: { label: 'JavaScript' } },
 };
 
 test('metadata_uses_one_home_name_and_keeps_preview_without_an_invented_origin', () => {

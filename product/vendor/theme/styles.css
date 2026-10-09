@@ -373,8 +373,8 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-related-link[rel=prev] { padding-inline: var(--site-card-right) var(--site-compact-inset); }
 .app-related-link[rel=prev]::after { right: auto; left: var(--site-gap-xs); transform: scaleX(-1); }
 .app-tags { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs); align-items: baseline; }
-.app-tag, .app-tags-more > summary { display: inline-block; padding: calc(var(--site-gap-xs) / 2) var(--site-gap-xs); border: var(--site-border) solid var(--site-line); border-radius: var(--site-button-radius); color: var(--site-muted); background: var(--site-soft); font-size: var(--site-small-text); line-height: var(--site-line-body); text-decoration: none; }
-.app-tag:hover { color: var(--site-link); background: var(--site-help-hover); text-decoration: none; }
+.app-tag, .app-tags-more > summary { display: inline-block; padding: calc(var(--site-gap-xs) / 2) var(--site-gap-xs); border: 0; border-radius: var(--site-button-radius); color: var(--site-muted); background: var(--site-soft); font-size: var(--site-small-text); line-height: var(--site-line-body); text-decoration: none; }
+.app-tag:hover, .app-tag:focus-visible { color: var(--site-card); background: var(--color-accent); text-decoration: none; }
 .app-tags-more > summary { cursor: pointer; }
 .app-tags-more > .app-tags { margin-top: var(--site-gap-xs); }
 @media (prefers-reduced-motion: reduce) {
@@ -691,15 +691,19 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-post-date { font-size: var(--site-post-date-size); line-height: var(--site-feature-body-line); color: var(--site-post-date-color); }
 .app-post-title { margin: var(--site-post-title-margin) calc((100% - var(--site-post-title-width)) / 2); font-size: var(--site-post-title-size); }
 .app-post-title { line-height: var(--site-post-title-line); }
-.app-blog-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-help-radius); background: var(--site-help-bg); }
+.app-blog-card { position: relative; display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-help-radius); background: var(--site-help-bg); isolation: isolate; }
 .app-blog-card-link { display: flex; flex-direction: column; flex: 1; min-width: 0; color: inherit; }
+.app-blog-card-link::after { content: ""; position: absolute; inset: 0; }
 .app-blog-card-link:hover { text-decoration: none; }
-.app-blog-card:has(:focus-visible) { outline: var(--border-strong) solid var(--color-accent); outline-offset: var(--space-focus-offset); }
+.app-blog-card:has(.app-blog-card-link:focus-visible) { outline: var(--border-strong) solid var(--color-accent); outline-offset: var(--space-focus-offset); }
 .app-blog-cover { display: flex; align-items: center; justify-content: center; aspect-ratio: var(--site-blog-cover-ratio); overflow: hidden; background: var(--site-soft); }
 .app-blog-cover > img { width: 100%; height: 100%; object-fit: cover; }
 .app-blog-card-body { flex: 1; padding: var(--site-card-inset); text-align: left; }
 .app-blog-card .app-tags { justify-content: flex-start; margin: 0 var(--site-card-inset) var(--site-card-inset); text-align: left; }
-.app-blog-card-tags { margin-top: var(--site-gap-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--site-muted); }
+.app-blog-card:has(.app-blog-card-tags) .app-blog-card-body { padding-bottom: var(--site-gap-sm); }
+.app-blog-card-tags { margin: 0 var(--site-card-inset) var(--site-card-inset); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--site-muted); }
+.app-blog-card .app-tag { position: relative; z-index: var(--z-raised); }
+.app-blog-card .app-tag:focus-visible { outline-offset: calc(-1 * var(--site-outline)); }
 .app-blog-post .app-tags { margin-block: var(--site-gap) var(--site-gap-lg); }
 .app-blog-post .app-tags a { text-decoration: none; }
 .app-blog-card-title { margin: 0 0 var(--site-gap-sm); overflow: hidden; font-size: var(--site-body-text); line-height: var(--site-line-card); text-overflow: ellipsis; white-space: nowrap; color: var(--site-help-title-color); }

@@ -8,7 +8,7 @@ import { commentsSection } from './comments.mjs';
 export function blogCard(page, tags = {}, level = 3) {
   const cover = thumbnailImage(page);
   const dateLabel = page.publishedAt ? new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(page.publishedAt)) : undefined;
-  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description, tagLabels: (page.tags ?? []).map(id => tags[id]?.label ?? id), publishedAt: page.publishedAt, dateLabel, commentsHref: page.comments ? `${page.route}#comments` : undefined, commentCount: page.commentCount }));
+  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description, tagItems: (page.tags ?? []).map(id => ({ href: `/tags/${id}/`, label: tags[id]?.label ?? id })), publishedAt: page.publishedAt, dateLabel, commentsHref: page.comments ? `${page.route}#comments` : undefined, commentCount: page.commentCount }));
 }
 
 export function recentBlog(posts, tags) {

@@ -16,7 +16,7 @@ export function siteOrigin(value, preview) {
 }
 
 export function publicationMetadata(page, context) {
-  const { config, origin = '', preview, identity, themeHash, topics = {} } = context;
+  const { config, origin = '', preview, identity, themeHash, tags = {} } = context;
   const title = page.title === config.name ? config.name : `${page.title} · ${config.name}`;
   const description = page.description ?? config.description;
   const meta = (key, value, attribute = 'property') => `<meta ${attribute}="${key}" content="${escape(value)}">`;
@@ -37,7 +37,7 @@ export function publicationMetadata(page, context) {
   if (page.id) {
     if (page.publishedAt) html += meta('article:published_time', page.publishedAt);
     if (page.updatedAt) html += meta('article:modified_time', page.updatedAt);
-    for (const tag of page.tags ?? []) html += meta('article:tag', topics[tag]?.label ?? tag);
+    for (const tag of page.tags ?? []) html += meta('article:tag', tags[tag]?.label ?? tag);
   }
   return html;
 }
