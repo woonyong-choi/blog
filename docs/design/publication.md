@@ -140,3 +140,5 @@ PurgeCSS는 빌드에서만 사용한다. 잠금 파일은 7.0.2와 하위 glob 
 숫자는 빌드 당시 값이며 다음 빌드 때 갱신된다. 브라우저로 인증 정보나 토론 본문을 전달하지 않는다. CI의 빌드 단계에는 저장소 내용과 공개 토론 읽기 권한만 부여한다. 참고: [giscus strict 매핑](https://github.com/giscus/giscus/blob/main/ADVANCED-USAGE.md#data-strict), [목록 댓글 수 안내](https://github.com/orgs/giscus/discussions/113).
 
 발행 문서의 Markdown 구분선은 본문 전체 폭을 사용한다. 작업 목록은 Markdown에 적힌 완료·미완료·취소 상태를 표시하며 독자가 변경하지 않는다.
+
+댓글 추천·반응 버튼은 공통 작은 버튼의 곡률·높이·간격과 회색 바탕을 사용한다. 선택과 호버는 파란색 역할로 구분한다. 반응의 의미·개수·서비스 권한은 바꾸지 않는다.

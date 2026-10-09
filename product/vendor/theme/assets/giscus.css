@@ -99,6 +99,12 @@ main {
 .gsc-main .gsc-tl-line { left: calc((24px - 3px) / 2); top: calc(12px + 24px + 8px) !important; bottom: 0; height: auto !important; background: #ebecef; }
 .gsc-main :is(.gsc-comment-author-avatar,.gsc-reply-author-avatar) img { width: 24px; height: 24px; }
 .gsc-main .gsc-reactions-popover { border-color: #ebecef; border-radius: 12px; }
+.gsc-main :is(.gsc-comment-reactions,.gsc-reply-reactions,.gsc-direct-reaction-buttons) { align-items: center; gap: 8px; }
+.gsc-main .gsc-social-reaction-summary-item { display: inline-flex; align-items: center; justify-content: center; gap: calc(8px / 2); min-width: calc(24px + 8px); height: calc(24px + 8px); margin: 0; padding: 0 8px; border: 1px solid transparent; border-radius: 8px; box-shadow: none; background: #e9edf2; color: #55606e; font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; font-size: 15px; line-height: 1.2; }
+.gsc-main .gsc-social-reaction-summary-item.has-reacted { border-color: transparent; background: #ebf1ff; color: #2576eb; }
+.gsc-main .gsc-social-reaction-summary-item:not(:disabled):hover, .gsc-main .gsc-reactions-menu[open] > summary { background: #ebf1ff; color: #2576eb; border-color: #dde9ff; }
+.gsc-main .gsc-social-reaction-summary-item > :is(svg,span) { margin: 0; }
+.gsc-main .gsc-emoji-button { border-radius: 8px; }
 .gsc-main :is(.gsc-comment-box-tabs button,.gsc-right-header button):hover { background: #ebf1ff; color: #2576eb; }
 .gsc-main :is(button,a,summary):focus-visible { outline: 3px solid #2576eb; outline-offset: 3px; }
 .gsc-main a { text-decoration: none; }
