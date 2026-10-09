@@ -383,6 +383,9 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 
 /* 주제와 블로그 목록은 설명의 전체 텍스트를 보존하고 두 줄까지만 표시한다. */
 .app-card-summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--site-card-summary-lines); overflow: hidden; word-break: keep-all; overflow-wrap: anywhere; }
+.app-help-card.is-summary { padding: calc(var(--site-card-inset) + var(--spacing-32) + var(--site-gap-xs)) var(--site-card-right) var(--site-card-inset) var(--site-card-inset); }
+.app-help-card.is-summary :is(.app-article-icon, .app-content-icon) { top: var(--site-card-inset); left: var(--site-card-inset); width: var(--spacing-32); height: var(--spacing-32); }
+.app-help-card.is-summary.has-no-icon { padding-top: var(--site-card-inset); }
 /* 본문 문법: app-prose 아래 제목·문단·목록·인용·표·코드·콜아웃·각주·수식·도표. 새 Markdown 요소는 여기에 둔다. */
 .app-prose { overflow-wrap: anywhere; line-height: var(--site-feature-body-line); }
 .app-prose h1 { font-size: var(--site-section-title); line-height: var(--site-prose-heading-line); margin: var(--site-prose-h1-margin); }
@@ -655,6 +658,10 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-support-group > p > a { display: inline-block; padding-right: var(--site-feature-box-text); background: url('../assets/a-chevron.svg') right center / var(--site-support-link-chevron) no-repeat; }
 .app-page-heading { margin: var(--site-gap-lg) 0 var(--site-gap-sm); font-size: var(--site-section-title); line-height: var(--site-line-title); }
 .app-page-description { color: var(--site-muted); margin-bottom: var(--site-gap-lg); }
+.app-collection-header { margin-bottom: var(--site-gap); }
+.app-collection-header > .app-back-link { display: inline-block; margin-bottom: var(--spacing-16); }
+.app-publication .app-collection-header > .app-page-heading { margin: 0; }
+.app-collection-info { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs); align-items: baseline; justify-content: space-between; margin-top: var(--spacing-16); font-size: var(--site-small-text); color: var(--site-muted); }
 .app-knowledge-section { margin-block: var(--site-support-gap); }
 .app-section-heading { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: baseline; justify-content: space-between; margin-bottom: var(--site-gap); }
 .app-section-heading h2 { margin: 0; font-size: var(--site-subtitle); line-height: var(--site-line-intro); color: var(--site-ink); }

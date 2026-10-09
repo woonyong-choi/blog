@@ -29,18 +29,20 @@ test('topic_preview_keeps_two_rows_and_the_same_entry_width_for_cs_and_tech', ()
     const documents = Array.from({ length: count }, (_, i) => ({ id: `p${i}`, slug: `p${i}`, route: `/articles/p${i}/`, category: `t${i}`, type: 'wiki', title: `주제 ${i}`, description: '내용', contentIcon: { name: 'processor' } }));
     const topics = Object.fromEntries(documents.map((p, i) => [`t${i}`, { field: 'cs', group, icon: 'processor', label: p.title, article: p.slug }]));
     const preview = wikiLanding(documents, { topics });
-    assert.equal((preview.match(/class="app-help-card"/g) ?? []).length, Math.min(count, limit));
+    assert.equal((preview.match(/class="app-help-card is-summary"/g) ?? []).length, Math.min(count, limit));
     assert.equal(preview.includes(`href="/docs/topics/${group}/"`), count > limit);
     assert.match(preview, /<main id="main" class="app-shell app-body">/);
     assert.doesNotMatch(preview, /wiki-heading|>Wiki<|is-pair/);
     const all = wikiLanding(documents, { topics }, group);
-    assert.equal((all.match(/class="app-help-card"/g) ?? []).length, count);
+    assert.equal((all.match(/class="app-help-card is-summary"/g) ?? []).length, count);
     assert.doesNotMatch(all, /<h2>CS<\/h2>/);
+    assert.ok(all.indexOf('app-back-link') < all.indexOf('app-page-heading'));
+    assert.ok(all.indexOf('app-page-heading') < all.indexOf('app-support-grid') || count === 0);
     if (group === 'tech') {
-      assert.doesNotMatch(all, /class="app-shell app-body"/);
+      assert.match(all, /class="app-shell app-body"/);
       if (count) {
         assert.match(preview, /class="app-support-grid is-four"/);
-        assert.match(all, /class="app-support-grid is-five"/);
+        assert.match(all, /class="app-support-grid is-four"/);
       }
     } else assert.match(all, /class="app-shell app-body"/);
   }

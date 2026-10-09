@@ -146,7 +146,7 @@ export function Card({ href, title, description = '', icon, variant, compact = f
   const heading = headingLevel === undefined ? '<strong>' : `<strong role="heading" aria-level="${Number(headingLevel)}">`;
   const mark = icon === undefined || icon === false ? '' : slot(icon, 'icon');
   if (variant === 'related') return out(`<a class="app-help-card app-related-link${mark ? '' : ' has-no-icon'}" href="${link}"${rel ? ` rel="${escape(rel)}"` : ''}${label ? ` aria-label="${escape(label)}"` : ''}>${mark}${heading}${escape(title)}</strong></a>`);
-  const classes = variant && variant !== 'summary' ? ` is-${variant}` : compact ? ' is-compact' : horizontal ? ' is-horizontal' : '';
+  const classes = variant ? ` is-${variant}` : compact ? ' is-compact' : horizontal ? ' is-horizontal' : '';
   const bare = !mark || (compact && !variant);
   return out(`<a class="app-help-card${classes}${bare ? ' has-no-icon' : ''}" href="${link}">${bare ? '' : mark}${heading}${escape(title)}</strong>${description ? `<p${variant === 'summary' ? ' class="app-card-summary"' : ''}>${escape(description)}</p>` : ''}</a>`);
 }
@@ -287,6 +287,11 @@ export function PageLinks({ label, before, after, numbers = [], summary, resultP
 }
 export const ListLink = ({ href, text }) => out(`<p class="app-page-links"><a href="${safeUrl(href)}">${escape(text)}</a></p>`);
 
+/** 전체 목록의 돌아가기, 제목, 목록 정보와 선택 동작을 같은 순서로 배치한다. */
+export function CollectionHeader({ title, backHref, backLabel, summary, action }) {
+  return out(`<header class="app-collection-header"><a class="app-back-link" href="${safeUrl(backHref)}">${escape(backLabel)}</a><h1 class="app-page-heading">${escape(title)}</h1><div class="app-collection-info"><span>${escape(summary)}</span>${action ? `<a href="${safeUrl(action.href)}">${escape(action.label)}</a>` : ''}</div></header>`);
+}
+
 /** 태그 목록. `limit`을 넘는 태그는 `+N` 접기 안에 둔다. */
 export const Tag = ({ href, label }) => out(`<a class="app-tag" href="${safeUrl(href)}">${escape(label)}</a>`);
 export function TagList({ tags, limit = Infinity }) {
@@ -361,4 +366,4 @@ export function SearchResult({ href, icon, title, example = false, description, 
 }
 
 /** 소비자가 같은 모양을 직접 만들지 못하도록 검사하는 이 파일 소유 최상위 클래스 */
-export const OWNED_CLASSES = ['app-document-layout', 'app-document-sidebar', 'app-document-outline', 'app-document-content', 'app-document-nav', 'app-document-pager', 'app-code', 'app-callout', 'app-tabs', 'app-tablist', 'app-tabpanel', 'app-tooltip', 'app-tooltip-bubble', 'app-help-card', 'app-related-grid', 'app-inline-links', 'app-support-grid', 'app-support-split', 'app-figure', 'app-figure-grid', 'app-player', 'app-remote', 'app-device', 'app-media-controls', 'app-fineprint', 'app-steps', 'app-definitions', 'app-inline-icon', 'app-menu-label', 'app-cancelled-task', 'app-landing-heading', 'app-landing-social', 'app-flow-viewport', 'app-technologies', 'app-interviews', 'app-interview-rows', 'app-remote', 'app-project-showcase', 'app-hero-panorama', 'app-blog-card', 'app-page-links', 'app-tags', 'app-tag', 'app-toc', 'app-blog-post', 'app-search-entry', 'app-search-result-link', 'app-search-result-tags', 'app-search-result-note', 'app-tags-more'];
+export const OWNED_CLASSES = ['app-collection-header', 'app-document-layout', 'app-document-sidebar', 'app-document-outline', 'app-document-content', 'app-document-nav', 'app-document-pager', 'app-code', 'app-callout', 'app-tabs', 'app-tablist', 'app-tabpanel', 'app-tooltip', 'app-tooltip-bubble', 'app-help-card', 'app-related-grid', 'app-inline-links', 'app-support-grid', 'app-support-split', 'app-figure', 'app-figure-grid', 'app-player', 'app-remote', 'app-device', 'app-media-controls', 'app-fineprint', 'app-steps', 'app-definitions', 'app-inline-icon', 'app-menu-label', 'app-cancelled-task', 'app-landing-heading', 'app-landing-social', 'app-flow-viewport', 'app-technologies', 'app-interviews', 'app-interview-rows', 'app-remote', 'app-project-showcase', 'app-hero-panorama', 'app-blog-card', 'app-page-links', 'app-tags', 'app-tag', 'app-toc', 'app-blog-post', 'app-search-entry', 'app-search-result-link', 'app-search-result-tags', 'app-search-result-note', 'app-tags-more'];

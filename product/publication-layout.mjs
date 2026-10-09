@@ -54,17 +54,21 @@ export function documentCard(page, title = page.title, level = 3, variant) {
   return String(ui.Card({ href: page.route, title, description: page.description, icon: ui.trusted(subjectIcon(page.contentIcon)), headingLevel: level, variant }));
 }
 
-export function knowledgeFields(documents, topics, field) {
+function categoryEntries(documents, topics, field) {
   const bySlug = new Map(documents.map(page => [page.slug, page]));
-  const groups = field ? [field] : TOPIC_GROUPS;
-  return groups.map(value => {
-    const entries = Object.entries(topics).filter(([, topic]) => topic.group && (TOPIC_GROUPS.includes(value) ? topic.group === value : topic.field === value)).map(([id, topic]) => {
+  return Object.entries(topics).filter(([, topic]) => topic.group && (TOPIC_GROUPS.includes(field) ? topic.group === field : topic.field === field)).map(([id, topic]) => {
       const article = bySlug.get(topic.article) ?? documents.filter(page => page.category === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
       return article ? { ...topic, page: { ...article, description: topic.group === 'tech' ? '' : topic.description ?? article.description, contentIcon: { name: topic.icon } } } : null;
     }).filter(Boolean);
+}
+
+export function knowledgeFields(documents, topics, field) {
+  const groups = field ? [field] : TOPIC_GROUPS;
+  return groups.map(value => {
+    const entries = categoryEntries(documents, topics, value);
     if (!entries.length) return '';
     const limit = value === 'tech' ? 8 : 6;
-    const columns = value === 'tech' ? (field ? 5 : 4) : 3;
+    const columns = value === 'tech' ? 4 : 3;
     const shown = field ? entries : entries.slice(0, limit);
     const level = field ? 1 : 2;
     return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p><a href="/docs/topics/${value}/">전체 보기</a></p>` : ''}</section>`;
@@ -88,7 +92,7 @@ export function personalHome(context) {
 export function wikiLanding(documents, context, field, recent = '') {
   const fields = knowledgeFields(documents, context.topics, field);
   const projects = !field && context.config?.notes?.projects === true ? projectSection(context.config.projects) : '';
-  if (field) return `<main id="main" class="app-shell${field === 'tech' ? '' : ' app-body'}">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/docs/">← Search</a>${fields}</main>`;
+  if (field) return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}${ui.CollectionHeader({ title: FIELD_NAMES[field], backHref: '/docs/', backLabel: '← Search', summary: `${categoryEntries(documents, context.topics, field).length}개 ${field === 'tech' ? '기술' : '분야'}` })}${fields}</main>`;
   return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Search</h1>${recent}${projects}${fields}</main>`;
 }
 
