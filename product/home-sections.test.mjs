@@ -170,7 +170,7 @@ test('the_shipped_home_config_omits_projects_from_the_visible_sections', () => {
   const home = loadHomeConfig(new Set(brands));
   assert.deepEqual(home.map(section => section.type), ['hero', 'technologies', 'interviews', 'contact']);
   assert.equal(home[1].title, '기술과 생각');
-  assert.equal(home[1].description, '기술별 기록을 모았습니다.');
+  assert.equal(home[1].description, '언어와 도구의 원리, 개발 과정에서 마주한 질문과 지식을 정리하고 기록합니다.');
 });
 
 test('the_shipped_hero_plays_the_web_compatible_video_that_exists_beside_the_preserved_original', () => {
