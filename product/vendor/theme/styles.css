@@ -373,7 +373,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-related-link[rel=prev]::after { right: auto; left: var(--site-gap-xs); transform: scaleX(-1); }
 .app-tags { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs); align-items: baseline; }
 .app-tag, .app-tags-more > summary { display: inline-block; padding: calc(var(--site-gap-xs) / 2) var(--site-gap-xs); border: 0; border-radius: var(--site-button-radius); color: var(--site-muted); background: var(--site-soft); font-size: var(--site-tiny-text); line-height: var(--site-line-body); text-decoration: none; }
-.app-tag:hover, .app-tag:focus-visible { color: var(--site-card); background: var(--color-accent); text-decoration: none; }
+.app-tag:hover, .app-tag:focus-visible { color: var(--color-link); background: var(--site-tag-hover); text-decoration: none; }
 .app-tags-more > summary { cursor: pointer; }
 .app-tags-more > .app-tags { margin-top: var(--site-gap-xs); }
 @media (prefers-reduced-motion: reduce) {

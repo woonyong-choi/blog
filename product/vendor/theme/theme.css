@@ -1315,6 +1315,7 @@
   --site-line: var(--primitive-simple-line);
   --site-link: var(--primitive-simple-link);
   --site-soft: var(--primitive-simple-soft);
+  --site-tag-hover: var(--primitive-simple-icon-accent-soft);
   --site-note: var(--primitive-simple-note);
   --site-feature: var(--primitive-simple-feature);
   --site-code: var(--primitive-simple-code);

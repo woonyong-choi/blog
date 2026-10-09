@@ -38,13 +38,16 @@ test('topic_preview_keeps_two_rows_and_the_same_entry_width_for_cs_and_tech', ()
     assert.doesNotMatch(all, /<h2>CS<\/h2>/);
     assert.ok(all.indexOf('app-page-heading') < all.indexOf('app-navigation-link is-back'));
     assert.ok(all.indexOf('app-page-heading') < all.indexOf('app-support-grid') || count === 0);
-    if (group === 'tech') {
-      assert.match(all, /class="app-shell"/);
-      if (count) {
+    assert.match(all, /class="app-shell"/);
+    if (count) {
+      if (group === 'tech') {
         assert.match(preview, /class="app-support-grid is-four"/);
+        assert.match(all, /class="app-support-grid is-five"/);
+      } else {
+        assert.match(preview, /class="app-support-grid"/);
         assert.match(all, /class="app-support-grid is-four"/);
       }
-    } else assert.match(all, /class="app-shell"/);
+    }
   }
 });
 
