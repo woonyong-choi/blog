@@ -139,18 +139,27 @@ export const TAB_OPTIONS = Object.freeze({
   width: ['content', 'wide'],
 });
 
-// 탭 옵션: `selector-segmented position-top width-wide`(권장)와 `frame=panel` 형식을 받는다. 같은 묶음은 한 번만, 모르는 옵션은 오류다.
-// 기본값(frame-none, position-bottom, selector-buttons, width-content)을 적어도 받지만 쓰지 않은 것과 같다. 쓰지 않은 묶음은 결과에 없다.
+// 탭 옵션 등록부. 짧은 이름(권장), 긴 이름(`frame-panel`), `이름=값` 형식이 모두 같은 (묶음, 값)으로 풀린다.
+// 짧은 이름은 이 Markdown 문법의 유틸리티이고 Tailwind CSS 클래스가 아니다. 기본값에는 짧은 이름이 없다(생략하면 기본).
+const SHORT_TAB_OPTIONS = Object.freeze({ box: ['frame', 'panel'], top: ['position', 'top'], segmented: ['selector', 'segmented'], numbers: ['selector', 'numbers'], 'w-wide': ['width', 'wide'] });
+
+function resolveTabOption(token) {
+  if (Object.hasOwn(SHORT_TAB_OPTIONS, token)) return SHORT_TAB_OPTIONS[token];
+  const match = /^(frame|position|selector|width)(?:-|=)([a-z]+)$/.exec(token);
+  return match && TAB_OPTIONS[match[1]].includes(match[2]) ? [match[1], match[2]] : null;
+}
+
+// 탭 옵션: `segmented top w-wide`(권장), `selector-segmented`(긴 이름), `selector=segmented`를 받는다. 같은 묶음은 한 번만, 모르는 옵션은 오류다.
+// 기본값(frame-none, position-bottom, selector-buttons, width-content)은 긴 이름으로만 받고 쓰지 않은 것과 같다. 쓰지 않은 묶음은 결과에 없다.
 export function parseTabOptions(source = '', fail) {
   const options = {};
   const given = {};
-  const allowed = Object.entries(TAB_OPTIONS).flatMap(([group, values]) => values.map(value => `${group}-${value}`));
+  const allowed = [...Object.keys(SHORT_TAB_OPTIONS), ...Object.entries(TAB_OPTIONS).flatMap(([group, values]) => values.map(value => `${group}-${value}`))];
   for (const token of source.split(/\s+/).filter(Boolean)) {
-    const match = /^(frame|position|selector|width)(?:-|=)([a-z]+)$/.exec(token);
-    if (!match || !TAB_OPTIONS[match[1]].includes(match[2])) fail(`알 수 없는 탭 옵션입니다: ${token} (사용할 수 있는 옵션: ${allowed.join(', ')})`);
-    const [, group, value] = match;
-    if (given[group] === token) fail(`탭 옵션이 겹칩니다: ${token}`);
-    if (given[group]) fail(`탭 옵션이 충돌합니다: ${given[group]}, ${token}`);
+    const resolved = resolveTabOption(token);
+    if (!resolved) fail(`알 수 없는 탭 옵션입니다: ${token} (사용할 수 있는 옵션: ${allowed.join(', ')})`);
+    const [group, value] = resolved;
+    if (given[group]) fail(options[group] === value ? `탭 옵션이 겹칩니다: ${given[group]}, ${token}` : `탭 옵션이 충돌합니다: ${given[group]}, ${token}`);
     given[group] = token;
     options[group] = value;
   }

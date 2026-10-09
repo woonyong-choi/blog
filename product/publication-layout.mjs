@@ -2,7 +2,7 @@
 import { personalFooter } from './publication-footer.mjs';
 import { controlImage } from './controls.mjs';
 import { readFileSync } from 'node:fs';
-import { escape, relatedLink } from './markdown.mjs';
+import { escape } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 import { contentIcon } from './content-icons.mjs';
 import { FIELDS } from './content-model.mjs';
@@ -91,18 +91,13 @@ export function projectSection(projects, hasMore = false) {
 }
 
 export function articlePage(page, documents, context, comments = '') {
-  const related = documents.filter(other => other.id !== page.id && other.tags.some(tag => page.tags.includes(tag))).slice(0, 3);
-  const tail = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}${!page.comments ? `<p class="app-caption"><a href="${context.repositoryUrl}/issues/new?title=${encodeURIComponent(`문서 수정 제안: ${page.title}`)}">이 문서의 수정 제안</a></p>` : ''}${related.length ? `<section class="app-related"><h2>함께 읽기</h2>${ui.CardGroup({ variant: 'related', cards: related.map(page => ui.trusted(relatedCard(page))) })}</section>` : ''}`;
+  const tail = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}`;
   const example = page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : '';
   if (page.type === 'blog') {
     const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? dateLine({ updatedAt: page.updatedAt }) : '';
     return `<main id="main" class="app-shell">${postArticle(page, { detail: true, footer: `${tagLinks(page, context.topics)}${updated}${example}`, after: tail })}</main>`;
   }
   return `<main id="main" class="app-shell app-document-shell">${searchBox()}<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${example}</div>${topicNavigation(page, context)}${articleToc(page.headings)}<div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${tail}</article></main>`;
-}
-
-export function relatedCard(page) {
-  return relatedLink({ href: page.route, title: page.title, description: page.description, iconHtml: subjectIcon(page.contentIcon, 'medium') });
 }
 
 export function resultRow(page, tags) {

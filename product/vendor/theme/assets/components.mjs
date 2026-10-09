@@ -125,13 +125,13 @@ Tabs.close = (props) => {
   return `${tablist({ id: group, label, labels, selector: variant.selector, selected: props.selected })}</section>`;
 };
 
-/** 도움말 카드. `icon`은 슬롯이고 없으면 아이콘 자리가 없다. `related`는 함께 읽기 카드다. `headingLevel`을 주면 제목이 해당 단계의 제목 역할이 된다. */
+/** 도움말 카드. `icon`은 슬롯이고 없으면 아이콘 자리가 없다. `related`는 이어서 읽을 글의 한 줄 카드(작은 아이콘, 제목, 갈매기표)이며 설명은 그리지 않는다. `headingLevel`을 주면 제목이 해당 단계의 제목 역할이 된다. */
 export function Card({ href, title, description = '', icon, variant, compact = false, horizontal = false, headingLevel }) {
   if (variant !== undefined && !CARD_VARIANTS.includes(variant)) throw new Error(`Unknown card variant: ${variant}`);
   const link = safeUrl(href);
   const heading = headingLevel === undefined ? '<strong>' : `<strong role="heading" aria-level="${Number(headingLevel)}">`;
   const mark = icon === undefined || icon === false ? '' : slot(icon, 'icon');
-  if (variant === 'related') return out(`<a class="app-help-card app-related-link${mark ? '' : ' has-no-icon'}" href="${link}">${mark}${heading}${escape(title)}</strong>${description ? `<span>${escape(description)}</span>` : ''}</a>`);
+  if (variant === 'related') return out(`<a class="app-help-card app-related-link${mark ? '' : ' has-no-icon'}" href="${link}">${mark}${heading}${escape(title)}</strong></a>`);
   const classes = variant ? ` is-${variant}` : compact ? ' is-compact' : horizontal ? ' is-horizontal' : '';
   const bare = !mark || (compact && !variant);
   return out(`<a class="app-help-card${classes}${bare ? ' has-no-icon' : ''}" href="${link}">${bare ? '' : mark}${heading}${escape(title)}</strong>${description ? `<p>${escape(description)}</p>` : ''}</a>`);

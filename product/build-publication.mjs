@@ -19,7 +19,6 @@ import { createTopicTrees } from './topic-navigation.mjs';
 import { browserScripts } from './browser-scripts.mjs';
 import { mermaidScripts } from './mermaid-scripts.mjs';
 import { mathAssets } from './math-assets.mjs';
-import { repositoryUrl } from './repository-links.mjs';
 import { publicationStyles } from './publication-styles.mjs';
 import { siteOrigin, SITE_ICON } from './publication-metadata.mjs';
 import { siteIdentity } from './site-identity.mjs';
@@ -45,7 +44,7 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   // 도표 렌더러는 도표가 있는 글이 있을 때만 만들고, 없으면 산출물에도 넣지 않는다.
   const diagrams = documents.some(page => (page.leadHtml + page.html).includes('data-mermaid')) ? mermaidScripts(ROOT) : { files: new Map(), hashes: {} };
   const identity = siteIdentity(readFileSync(join(THEME, SITE_ICON.slice('/theme/'.length))), readFileSync(join(THEME, 'assets/controls/LICENSE')));
-  const context = { config: CONFIG, repositoryUrl: repositoryUrl(CONFIG.repository), topics: TOPICS, topicTrees, origin, preview, identity, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
+  const context = { config: CONFIG, topics: TOPICS, topicTrees, origin, preview, identity, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
   context.home = loadHomeConfig(new Set(BRAND_NAMES));
   context.interviewExamples = JSON.parse(readFileSync(join(ROOT, 'interview-examples.json')));
   const output = new Map();

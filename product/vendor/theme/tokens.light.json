@@ -3780,11 +3780,6 @@
         "$value": "3em",
         "$description": "분할 선택 줄 버튼 글자 영역의 최소 폭. 줄어들어도 짧은 한글 낱말(세 글자 안팎)이 한 줄로 남는다. 글자 크기에 비례한다"
       },
-      "related-summary-lines": {
-        "$type": "string",
-        "$value": "3",
-        "$description": "함께 읽기 카드 요약의 최대 줄 수. 길이가 다른 설명도 같은 높이로 맞춘다"
-      },
       "prose-table-padding": {
         "$type": "string",
         "$value": ".3em .5em",
@@ -8901,10 +8896,6 @@
     "tab-label-min": {
       "$type": "dimension",
       "$value": "{primitive.simple.tab-label-min}"
-    },
-    "related-summary-lines": {
-      "$type": "string",
-      "$value": "{primitive.simple.related-summary-lines}"
     },
     "prose-table-padding": {
       "$type": "string",

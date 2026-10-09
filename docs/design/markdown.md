@@ -158,7 +158,7 @@ items:
 - `tab`, `note`, `warning` 안에서는 제목, 각주, 코드 블록, 이미지 등 일반 Markdown을 쓸 수 있다. `fineprint`, `steps`, `qa`, `cards`는 위 표의 본문 제한을 따른다. 제목과 각주 ID는 글 전체에서 겹치지 않는다. 숨은 탭 안의 `##`도 목차에 들어간다.
 - `src`와 `poster`는 `product/assets/`에 있는 파일 이름만 쓴다. 경로, `..`, 없는 파일은 오류다.
 - `href`는 위 "원본 글 요소"와 같은 규칙이다(`https://`, `mailto:`, `#`, `/`로 시작하는 사이트 경로).
-- `cards`의 글 끝 "이어서 읽을 글"에는 `variant=related`를 권한다. 글 하단 "함께 읽기"와 같은 카드(왼쪽 아이콘, 제목, 최대 3줄 요약, 행마다 같은 높이, 태그 없음)로 그려진다. 나머지 변형은 다른 용도의 기존 표현이다.
+- `cards`의 글 끝 "이어서 읽을 글"에는 `variant=related`를 권한다. 작은 아이콘, 제목 한 줄, 갈매기표로 된 한 줄 카드이고 `description`은 그려지지 않는다. 긴 제목은 말줄임으로 줄이고(전체 글은 읽기 도구가 읽는다) 좁은 화면에서는 한 열이다. 글 하단에 자동으로 붙는 "함께 읽기"와 "이 문서의 수정 제안" 링크는 없다. 나머지 변형은 다른 용도의 기존 표현이다.
 - `icon`은 테마의 콘텐츠 아이콘 이름이다. 글 앞의 `contentIcon.name`과 같은 목록이다.
 
 ### 탭: `@tab` 형식
@@ -166,7 +166,7 @@ items:
 `:::tabs`와 `@tab 이름` 줄로 탭을 쓴다. 탭 본문은 일반 Markdown이고 `:::end`로 닫는다. 그림은 보통의 `![대체](경로)`와 캡션 문단으로 쓴다. 옵션 없이 쓰면 상자 없이 둥근 단추 줄이 패널 아래에 오고, 기본을 벗어나는 모양만 공백으로 구분한 옵션으로 적는다.
 
 ````markdown
-:::tabs selector-segmented
+:::tabs segmented
 @tab 변경 전
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -182,15 +182,17 @@ items:
 :::end
 ````
 
-| 묶음 | 기본 | 기본을 벗어나는 옵션 |
-|---|---|---|
-| 상자 | 없음 | `frame-panel` |
-| 선택 줄 위치 | 패널 아래 | `position-top` |
-| 선택 줄 모양 | 둥근 단추(`Mac` `iPhone & iPad` `Watch` 같은 모양) | `selector-segmented`(분할 선택 줄), `selector-numbers`(번호) |
-| 폭 | 본문 폭 | `width-wide`(탭 묶음 전체) |
+| 묶음 | 기본 | 기본을 벗어나는 옵션(짧은 이름) | 긴 이름 |
+|---|---|---|---|
+| 상자 | 없음 | `box` | `frame-panel` |
+| 선택 줄 위치 | 패널 아래 | `top` | `position-top` |
+| 선택 줄 모양 | 둥근 단추(`Mac` `iPhone & iPad` `Watch` 같은 모양) | `segmented`(분할 선택 줄), `numbers`(번호) | `selector-segmented`, `selector-numbers` |
+| 폭 | 본문 폭 | `w-wide`(탭 묶음 전체) | `width-wide` |
 
-- 옵션은 서로 독립이라 순서가 없다. 기본값(`frame-none`, `position-bottom`, `selector-buttons`, `width-content`)을 적어도 받지만 쓰지 않은 것과 같고, 기본값에는 클래스가 붙지 않는다. `frame=panel` 같은 `이름=값` 형식도 받는다.
-- 같은 묶음 옵션을 둘 쓰거나 같은 옵션을 겹쳐 쓰거나 모르는 옵션을 쓰면 오류다. 폭은 탭 묶음 전체에만 걸리고 바깥 문단은 본문 폭이다.
+짧은 이름이 권장 표기다. 이 이름들은 Tailwind CSS나 daisyUI 같은 도구의 유틸리티 이름을 참고해 짧게 지은 **이 Markdown 문법의 옵션**이고 실제 Tailwind 클래스가 아니다(`w-wide`는 Tailwind의 `w-*` 폭 유틸리티 꼴을 빌린 이름이다). 임의의 동의어(`panel`, `bottom`, `wide` 등)는 받지 않는다.
+
+- 옵션은 서로 독립이라 순서가 없다. 짧은 이름, 긴 이름, `selector=segmented` 같은 `이름=값` 형식은 같은 등록부에서 같은 (묶음, 값)으로 풀려 결과가 같다. 기본값은 긴 이름(`frame-none`, `position-bottom`, `selector-buttons`, `width-content`)으로만 받고 쓰지 않은 것과 같으며 기본값에는 클래스가 붙지 않는다.
+- 같은 묶음 옵션을 짧은·긴 이름으로 섞어 둘 쓰면 오류다. 같은 값이면 "겹칩니다"(`box frame-panel`), 다른 값이면 "충돌합니다"(`top position-bottom`)이고 모르는 옵션도 오류다. 폭은 탭 묶음 전체에만 걸리고 바깥 문단은 본문 폭이다.
 - `@tab` 줄에는 이름이 필요하다. `selector-numbers`만 이름을 생략할 수 있고, 이때 버튼에는 번호가 나오며 이름을 쓰면 접근성 이름이 된다. 이름은 묶음 안에서 겹치지 않는다.
 - 첫 `@tab` 줄 앞에는 본문을 둘 수 없고, `@tab`이 하나도 없거나 탭 본문이 비었거나 `:::end`가 없으면 오류다. 오류에는 줄 번호가 붙는다.
 - 코드 펜스와 4칸 이상 들여쓴 코드 안의 `@tab`, `:::end`, `:::tabs` 줄은 해석하지 않는다. 탭 본문 안의 다른 블록(`:::note` 등) 안의 `@tab`도 탭을 나누지 않는다.
@@ -209,7 +211,7 @@ items:
 | `narrow` | 좁은 미디어 폭(테마의 `width-narrow`) 이하로 가운데 | 작은 화면 캡처 |
 | `wide` | 넓은 미디어 폭(`width-wide`: 최대 900px, 좁은 화면에서는 양쪽 여백을 남김)으로 본문 밖까지 | 넓은 그림, 갤러리, 긴 코드 |
 
-- 쓰는 법: `::figure{width=narrow}`, `::video{width=wide}`, `:::gallery{width=wide}`(탭은 `:::tabs width-wide`), 코드 펜스는 정보 문자열에 ` ```js width=wide `. `ui:figure`·`ui:gallery`의 `width`도 같다.
+- 쓰는 법: `::figure{width=narrow}`, `::video{width=wide}`, `:::gallery{width=wide}`(탭은 `:::tabs w-wide`), 코드 펜스는 정보 문자열에 ` ```js width=wide `. `ui:figure`·`ui:gallery`의 `width`도 같다.
 - 옛 표기 `wide`(참/거짓), `size=compact`는 `width=wide`, `width=narrow`와 같다. 같이 쓰면서 값이 다르면 오류다. `ui:video`의 `width`·`height`·`wide`는 플레이어 속성이라 그대로다.
 - 폭은 구성 요소가 클래스(`app-width-narrow`, `app-width-wide`)로 정하고 값은 테마 토큰이다. 글마다 폭을 따로 정하는 스타일은 없다.
 - `tab` 안에서도 같은 규칙이지만 기기 탭 상자는 본문 폭이라 `wide`가 상자 밖으로 나온다. 탭 안에서는 `content`를 권한다.

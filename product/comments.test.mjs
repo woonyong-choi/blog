@@ -23,10 +23,8 @@ test('repository_and_category_changes_reach_comments_and_correction_links', () =
   assert.equal(discussion.pathname, `/${repository}/discussions`);
   assert.equal(discussion.searchParams.get('discussions_q'), 'category:"Product Feedback" stable-id');
   assert.ok(comments.includes(`data-repo="${repository}"`));
-  const html = articlePage(page, [page], { topics: {}, repositoryUrl: repositoryUrl(repository) });
-  const correction = new URL(html.match(/href="([^"]+\/issues\/new\?title=[^"]+)"/)[1]);
-  assert.equal(correction.pathname, `/${repository}/issues/new`);
-  assert.equal(correction.searchParams.get('title'), '문서 수정 제안: 제목 & 확인');
+  const html = articlePage(page, [page], { topics: {} });
+  assert.doesNotMatch(html, /issues\/new|수정 제안/);
 });
 
 test('repository_links_reject_paths_queries_and_missing_identifiers', () => {

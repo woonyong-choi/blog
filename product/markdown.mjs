@@ -166,16 +166,15 @@ const CARD_VARIANTS = ['centered', 'grouped', 'inline', 'related'];
 export function figureOf(item) {
   return ui.Figure({ media: trusted(image(item.src, item.alt, item.rounded ? 'is-rounded' : '')), href: item.href, caption: item.caption ?? '', width: item.width, wide: item.wide, size: item.size });
 }
-// 카드 입력(`icon`: 스프라이트 이름, `content:이름`, false)을 구성 요소의 속성으로 옮긴다. 함께 읽기 카드는 콘텐츠 아이콘만 쓴다.
+// 카드 입력(`icon`: 스프라이트 이름, `content:이름`, false)을 구성 요소의 속성으로 옮긴다. 이어서 읽을 글(`related`) 카드는 콘텐츠 아이콘만 쓰고 설명은 그리지 않는다.
 function cardSlot(item, parentVariant) {
   const variant = item.variant ?? parentVariant;
   if (variant && !CARD_VARIANTS.includes(variant)) throw new Error(`Unknown card variant: ${variant}`);
   const contentName = typeof item.icon === 'string' && item.icon.startsWith('content:') ? item.icon.slice(8) : undefined;
-  const mark = variant === 'related' ? (contentName ? contentIcon(contentName, 'medium') : '') : item.icon === false ? '' : icon(item.icon);
+  const mark = variant === 'related' ? (contentName ? contentIcon(contentName, 'small') : '') : item.icon === false ? '' : icon(item.icon);
   return ui.Card({ href: item.href, title: item.title, description: item.description, icon: mark ? trusted(mark) : undefined, variant, compact: item.compact, horizontal: item.horizontal, headingLevel: item.headingLevel });
 }
 export const renderCard = (item, parentVariant) => String(cardSlot(item, parentVariant));
-export const relatedLink = ({ href, title, description, iconHtml }) => String(ui.Card({ href, title, description, icon: iconHtml ? trusted(iconHtml) : undefined, variant: 'related' }));
 export function renderGallery(data, id) {
   const slides = Array.isArray(data.slides) ? data.slides.map(slide => ({ image: trusted(image(slide.src, slide.alt ?? slide.label)), caption: slide.caption, label: slide.label })) : data.slides;
   return String(ui.Gallery({ id, title: data.title, wide: data.wide, width: data.width, selected: data.selected, slides }));

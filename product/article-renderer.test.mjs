@@ -43,7 +43,6 @@ test('detail_and_feed_share_the_lead_without_prose_rules_on_the_title_or_empty_r
   const feed = blogFeed([post], topics, 1);
   assert.match(feed, /app-article-lead"><strong>설명<\/strong>/);
   assert.equal((feed.match(/<strong>설명<\/strong>/g) ?? []).length, 1);
-  const related = articlePage(page, [page, { ...page, id: 'b', route: '/articles/b/' }], { topics });
-  assert.match(related, /app-help-card app-related-link/);
-  assert.doesNotMatch(related, /app-search-entry/);
+  const same = articlePage(page, [page, { ...page, id: 'b', route: '/articles/b/' }], { topics });
+  assert.doesNotMatch(same, /app-related|app-search-entry/);
 });

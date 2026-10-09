@@ -258,7 +258,8 @@ test('document_composition_example_renders_every_block_with_unique_ids', () => {
   assert.ok(document.querySelector('dl.app-definitions'));
   const related = [...document.querySelectorAll('.app-related-grid > a.app-help-card.app-related-link')];
   assert.equal(related.length, 3);
-  assert.ok(related.every(card => card.querySelector(':scope > .app-content-icon.is-medium') && card.querySelector(':scope > strong') && card.querySelector(':scope > span')));
+  assert.ok(related.every(card => card.querySelector(':scope > .app-content-icon.is-small') && card.querySelector(':scope > strong') && !card.querySelector('span:not(.app-content-icon), p')));
+  assert.deepEqual(related.map(card => card.textContent.trim()), ['Markdown 문법 전체 보기', '큐에 경계 두기', '증거로 원인 좁히기']);
   assert.equal(document.querySelectorAll('.is-centered, .app-inline-links').length, 0);
   assert.equal(headings.length, 7);
   const groups = [...document.querySelectorAll('.app-tabs.is-selector-numbers')];
@@ -276,18 +277,30 @@ test('document_composition_example_renders_every_block_with_unique_ids', () => {
 test('related_cards_share_one_structure_without_tags_and_legacy_variants_stay', () => {
   const document = dom(render(':::cards{variant=related}\n::card{title=가 href=/a/ icon=document description=요약}\n::card{title=나 href=/b/}\n:::\n\n:::cards{variant=centered}\n::card{title=다 href=/c/ icon=document}\n:::\n'));
   const [withIcon, withoutIcon] = document.querySelectorAll('.app-related-grid > a.app-related-link');
-  assert.deepEqual([...withIcon.children].map(node => node.tagName), ['SPAN', 'STRONG', 'SPAN']);
+  // 한 줄 카드: 작은 아이콘과 제목뿐이고 description은 그려지지 않는다.
+  assert.deepEqual([...withIcon.children].map(node => node.tagName), ['SPAN', 'STRONG']);
+  assert.equal(withIcon.querySelector('.app-content-icon').className, 'app-content-icon is-small');
+  assert.doesNotMatch(withIcon.textContent, /요약/);
   assert.ok(withoutIcon.classList.contains('has-no-icon') && !withoutIcon.querySelector('span'));
   assert.ok(document.querySelector('.app-support-grid > a.app-help-card.is-centered .app-content-icon'));
 });
 
-test('article_related_section_has_no_tags_and_uses_the_shared_card', () => {
-  const page = { id: 'a', route: '/articles/a/', title: 'A', description: '긴 설명 '.repeat(50), tags: ['python'], contentIcon: { name: 'document' }, html: '', headings: [], body: '' };
-  const other = { ...page, id: 'b', route: '/articles/b/', title: 'B' };
-  const html = articlePage(page, [page, other], { topics: { python: { label: 'Python' } } });
-  const section = dom(html).querySelector('.app-related');
-  assert.equal(section.querySelectorAll('.app-related-grid > a.app-related-link').length, 1);
-  assert.equal(section.querySelectorAll('.app-tags, .app-tag, .app-related-metadata, .app-related-entry').length, 0);
+test('article_pages_have_no_automatic_related_section_or_edit_suggestion_but_keep_manual_content_and_footnotes', () => {
+  const body = '## 첫 절\n\n각주가 있는 문장입니다.[^n]\n\n## 이어서 읽을 글\n\n:::cards{variant=related}\n::card{title=직접 href=/articles/b/ icon=document}\n:::\n\n[^n]: 각주 본문\n';
+  const mk = (type, extra = {}) => { const page = { id: 'a', slug: 'a', route: '/articles/a/', type, title: 'A', description: '설명', tags: ['python'], contentIcon: { name: 'document' }, body, comments: false, publishedAt: '2026-01-01', ...extra }; return Object.assign(page, renderArticle(md, page)); };
+  const topics = { python: { label: 'Python' } };
+  for (const type of ['wiki', 'blog']) {
+    const page = mk(type);
+    const other = { ...page, id: 'b', route: '/articles/b/', title: '같은 태그 글' };
+    const html = articlePage(page, [page, other], { topics, repositoryUrl: 'https://github.com/example/repo' });
+    assert.doesNotMatch(html, /함께 읽기|수정 제안|app-related"|issues\/new|같은 태그 글/, type);
+    const document = dom(html);
+    // 직접 쓴 목록과 각주는 그대로다.
+    assert.equal(document.querySelectorAll('.app-related-grid > a.app-related-link').length, 1, type);
+    assert.equal(document.querySelector('.app-related-link').textContent.trim(), '직접');
+    assert.ok(document.querySelector('.footnote-item'), type);
+    assert.ok([...document.querySelectorAll('h2')].some(node => node.textContent === '이어서 읽을 글'), type);
+  }
 });
 
 test('gallery_block_and_ui_gallery_delegate_to_the_one_tabs_markup_with_numbered_buttons', () => {
@@ -533,4 +546,39 @@ test('gallery_tabs_show_only_the_selected_panel_pause_hidden_videos_and_use_the_
   assert.deepEqual(visible(), [false, false, true]);
   assert.equal(buttons[2].getAttribute('aria-selected'), 'true');
   assert.equal(buttons[1].tabIndex, -1);
+});
+
+test('short_utility_aliases_resolve_through_the_same_option_registry_as_long_and_key_value_forms', () => {
+  const body = '@tab A\n\n가\n\n@tab B\n\n나\n\n:::end\n';
+  const out = options => render(`:::tabs ${options}\n${body}`);
+  const classes = options => [...dom(out(options)).querySelector('.app-tabs').classList].slice(1);
+  assert.deepEqual(classes('box'), ['is-frame-panel']);
+  assert.deepEqual(classes('top'), ['is-position-top']);
+  assert.deepEqual(classes('segmented'), ['is-selector-segmented']);
+  assert.deepEqual(classes('numbers'), ['is-selector-numbers']);
+  assert.deepEqual(classes('w-wide'), ['app-width-wide']);
+  // 같은 결과: 짧은 이름 = 긴 이름 = 이름=값, 순서는 상관없다.
+  assert.equal(out('box top segmented w-wide'), out('frame-panel position-top selector-segmented width-wide'));
+  assert.equal(out('box top segmented w-wide'), out('frame=panel position=top selector=segmented width=wide'));
+  assert.equal(out('w-wide numbers top'), out('top width-wide selector=numbers'));
+  assert.deepEqual(classes('box top segmented w-wide'), ['is-frame-panel', 'is-position-top', 'is-selector-segmented', 'app-width-wide']);
+  // 옵션이 없으면 그대로(기본)이고 기본값 긴 이름은 계속 받는다.
+  assert.equal(out('frame-none position-bottom selector-buttons width-content'), render(`:::tabs\n${body}`));
+  // 같은 묶음을 짧은 이름·긴 이름으로 섞어 두 번 쓰면 거부한다: 같은 값은 겹침, 다른 값은 충돌.
+  const failures = [
+    ['box frame-panel', /탭 옵션이 겹칩니다: box, frame-panel/],
+    ['segmented selector=segmented', /탭 옵션이 겹칩니다: segmented, selector=segmented/],
+    ['top top', /탭 옵션이 겹칩니다: top, top/],
+    ['top position-bottom', /탭 옵션이 충돌합니다: top, position-bottom/],
+    ['box frame=none', /탭 옵션이 충돌합니다: box, frame=none/],
+    ['segmented numbers', /탭 옵션이 충돌합니다: segmented, numbers/],
+    ['numbers selector-buttons', /탭 옵션이 충돌합니다: numbers, selector-buttons/],
+    ['w-wide width-content', /탭 옵션이 충돌합니다: w-wide, width-content/],
+  ];
+  for (const [options, pattern] of failures) assert.match(failure(`:::tabs ${options}\n${body}`).message, pattern, options);
+  // 임의의 동의어는 만들지 않는다.
+  for (const token of ['panel', 'frame', 'bottom', 'buttons', 'wide', 'none', 'w-content', 'w-narrow', 'segment', 'number', 'Box', 'width-narrow', 'w-wide=1']) {
+    assert.match(failure(`:::tabs ${token}\n${body}`).message, new RegExp(`알 수 없는 탭 옵션입니다: ${token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} `), token);
+  }
+  assert.match(failure(`:::tabs bogus\n${body}`).message, /사용할 수 있는 옵션: box, top, segmented, numbers, w-wide, frame-none/);
 });

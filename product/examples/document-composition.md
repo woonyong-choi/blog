@@ -80,9 +80,9 @@ iPhone에서 만든 목록을 읽기만 합니다.
 
 :::end
 
-`selector-segmented`는 분할 선택 줄입니다. 같은 크기의 그림 두 장과 캡션 문단으로 만든 예시입니다.
+`segmented`는 분할 선택 줄입니다. 같은 크기의 그림 두 장과 캡션 문단으로 만든 예시입니다.
 
-:::tabs selector-segmented
+:::tabs segmented
 @tab 변경 전
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -100,7 +100,7 @@ iPhone에서 만든 목록을 읽기만 합니다.
 이 탭의 원문입니다.
 
 ````markdown
-:::tabs selector-segmented
+:::tabs segmented
 @tab 변경 전
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -118,7 +118,7 @@ iPhone에서 만든 목록을 읽기만 합니다.
 
 이름 길이가 달라도 각 이름은 자기 길이만큼 자리를 차지하고, 긴 이름은 줄바꿈됩니다.
 
-:::tabs selector-segmented
+:::tabs segmented
 @tab 변경 전
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -135,7 +135,7 @@ iPhone에서 만든 목록을 읽기만 합니다.
 
 탭이 셋일 때도 이름마다 길이가 다릅니다. 내용 높이도 달라서 선택 줄은 지금 보이는 내용 바로 아래에 있습니다.
 
-:::tabs selector-segmented
+:::tabs segmented
 @tab 요약
 
 ![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
@@ -154,16 +154,18 @@ iPhone에서 만든 목록을 읽기만 합니다.
 
 :::end
 
-- `frame-panel`: 탭 묶음 둘레에 상자를 둡니다(기본은 상자 없음)
-- `position-top`: 선택 줄을 패널 위에 둡니다(기본은 아래)
-- `selector-segmented`, `selector-numbers`: 선택 줄 모양(기본은 둥근 단추). 번호 모양은 `@tab` 이름을 생략할 수 있습니다.
-- `width-wide`: 탭 묶음 전체를 넓은 미디어 폭으로 펼칩니다. 바깥 문단은 본문 폭입니다.
+- `box`: 탭 묶음 둘레에 상자를 둡니다(기본은 상자 없음)
+- `top`: 선택 줄을 패널 위에 둡니다(기본은 아래)
+- `segmented`, `numbers`: 선택 줄 모양(기본은 둥근 단추). 번호 모양은 `@tab` 이름을 생략할 수 있습니다.
+- `w-wide`: 탭 묶음 전체를 넓은 미디어 폭으로 펼칩니다. 바깥 문단은 본문 폭입니다.
+
+이 이름들은 이 문서 문법의 옵션이고 실제 Tailwind 클래스가 아닙니다. 긴 이름(`frame-panel`, `position-top`, `selector-segmented`, `width-wide`)도 같은 뜻으로 받습니다.
 
 ## 화면을 차례로 보여 주기
 
-번호 선택 줄(`selector-numbers`)은 갤러리처럼 쓸 수 있습니다. 자동으로 넘어가지 않고, 단추를 누르거나 키보드 화살표·Home·End로 고릅니다. 그림 높이가 달라도 보이는 그림만 자리를 차지합니다.
+번호 선택 줄(`numbers`)은 갤러리처럼 쓸 수 있습니다. 자동으로 넘어가지 않고, 단추를 누르거나 키보드 화살표·Home·End로 고릅니다. 그림 높이가 달라도 보이는 그림만 자리를 차지합니다.
 
-:::tabs selector-numbers
+:::tabs numbers
 @tab 오늘 목록
 
 ::figure{src=2-today-mac.png alt="오늘 목록 화면" caption="오늘 할 일을 한곳에 모읍니다."}
@@ -198,12 +200,12 @@ iPhone에서 만든 목록을 읽기만 합니다.
 
 ::figure{src=4-headings-mac.png alt="좁은 그림" caption="width=narrow" width=narrow}
 
-`wide`는 본문 밖으로 넓게 펼칩니다. 탭은 `width-wide` 옵션, 코드는 `width=wide`입니다.
+`wide`는 본문 밖으로 넓게 펼칩니다. 탭은 `w-wide` 옵션, 코드는 `width=wide`입니다.
 
-:::tabs selector-numbers width-wide
+:::tabs numbers w-wide
 @tab 예정 목록
 
-::figure{src=3-upcoming-mac-2.png alt="예정 목록" caption="width-wide 탭"}
+::figure{src=3-upcoming-mac-2.png alt="예정 목록" caption="w-wide 탭"}
 
 @tab 체크리스트
 
@@ -246,18 +248,16 @@ ThisIsAnUnbrokenIdentifierThatKeepsGoingAndGoingWithoutAnySpacesToProveThatLongT
 : 두 기기에서 같은 계정으로 로그인했는지 먼저 확인합니다. 그래도 같으면 :menu[설정] → :menu[동기화]에서 한 번 껐다 켭니다.
 
 기기를 바꾸면 항목이 사라지나요?
-: 사라지지 않습니다. 새 기기에서 같은 계정으로 로그인하면 목록이 내려받아집니다.[^backup]
+: 사라지지 않습니다. 새 기기에서 같은 계정으로 로그인하면 목록이 내려받아집니다.
 
 영상이 재생되지 않아요.
 : 화면 아래의 재생 버튼을 누르세요. 영상은 불러오기 전까지 첫 장면 그림만 보여 줍니다.
 :::
 
-[^backup]: 로그인 전에 만든 항목은 이 기기에만 있으므로 먼저 계정에 올립니다.
-
 ## 이어서 읽을 글
 
 :::cards{variant=related}
-::card{title="Markdown 문법 전체 보기" description="이 구성 블록 밖의 일반 Markdown 문법을 한 글에서 봅니다." href=/articles/markdown-guide/ icon=document}
-::card{title="큐에 경계 두기" description="처리 한계를 넘는 입력을 대기와 거부의 조건으로 다루는 예시입니다." href=/articles/bounded-queue/ icon=queue}
-::card{title="증거로 원인 좁히기" description="관찰한 사실만으로 가설을 줄여 가는 진단 과정을 정리합니다." href=/articles/diagnosis-evidence/ icon=search}
+::card{title="Markdown 문법 전체 보기" href=/articles/markdown-guide/ icon=document}
+::card{title="큐에 경계 두기" href=/articles/bounded-queue/ icon=queue}
+::card{title="증거로 원인 좁히기" href=/articles/diagnosis-evidence/ icon=search}
 :::

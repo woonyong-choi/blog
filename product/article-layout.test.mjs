@@ -24,11 +24,11 @@ test('blog_detail_follows_the_single_post_structure_without_search_or_title_icon
   assert.doesNotMatch(html.slice(0, html.indexOf('app-article-lead')), /app-content-icon/);
   assert.match(html, /<h1 class="app-post-title" id="post-sample">샘플 글<\/h1>/);
   assert.match(html, /<time class="app-post-date" datetime="2026-01-02">2026-01-02<\/time>/);
-  const positions = order(html, ['app-post-header', 'app-post-date', 'app-post-title', 'app-article-lead', '<h2 id="sample-절-하나"', 'app-post-footer', 'class="app-tags"', 'app-document-dates', 'class="app-comments"', 'class="app-related"']);
+  const positions = order(html, ['app-post-header', 'app-post-date', 'app-post-title', 'app-article-lead', '<h2 id="sample-절-하나"', 'app-post-footer', 'class="app-tags"', 'app-document-dates', 'class="app-comments"']);
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
   assert.match(html, /<h2 id="sample-큰-제목" class="app-heading-1">큰 제목<\/h2>/);
-  assert.ok(html.indexOf('</article>') > html.indexOf('class="app-related"'));
+  assert.doesNotMatch(html, /class="app-related"|함께 읽기|수정 제안/);
 });
 
 test('feed_and_blog_detail_share_header_body_and_footer_markup', () => {
@@ -112,8 +112,7 @@ test('heading_levels_one_to_six_have_one_rule_each_for_their_written_level', () 
 });
 
 test('support_body_headings_have_no_rule_or_padding_and_containers_share_the_body_line_height', () => {
-  assert.doesNotMatch(css, /\.app-document-body h2, \.app-related/);
-  assert.match(css, /\n\.app-related > h2 \{[^}]*padding-bottom/);
+  assert.doesNotMatch(css, /\.app-document-body h2, \.app-related|\.app-related >|\.app-related \{/);
   assert.doesNotMatch(css.match(/\.app-document-body h2 \{[^}]*\}/g)?.join('') ?? '', /border|padding/);
   for (const selector of ['.app-blog-post', '.app-document-shell']) assert.match([...css.matchAll(new RegExp(`\\n${selector.replace('.', '\\.')} \\{[^}]*\\}`, 'g'))].join(''), /line-height: var\(--site-feature-body-line\)/, selector);
   const header = css.match(/\n\.app-post-header \{[^}]*\}/)[0];
