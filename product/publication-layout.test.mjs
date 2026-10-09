@@ -36,7 +36,7 @@ test('topic_preview_keeps_two_rows_and_the_same_entry_width_for_cs_and_tech', ()
     const all = wikiLanding(documents, { topics }, group);
     assert.equal((all.match(/class="app-help-card is-summary"/g) ?? []).length, count);
     assert.doesNotMatch(all, /<h2>CS<\/h2>/);
-    assert.ok(all.indexOf('app-page-heading') < all.indexOf('app-back-link'));
+    assert.ok(all.indexOf('app-page-heading') < all.indexOf('app-navigation-link is-back'));
     assert.ok(all.indexOf('app-page-heading') < all.indexOf('app-support-grid') || count === 0);
     if (group === 'tech') {
       assert.match(all, /class="app-shell"/);

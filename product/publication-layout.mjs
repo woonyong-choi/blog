@@ -71,7 +71,7 @@ export function knowledgeFields(documents, topics, field) {
     const columns = value === 'tech' ? 4 : 3;
     const shown = field ? entries : entries.slice(0, limit);
     const level = field ? 1 : 2;
-    return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p><a href="/docs/topics/${value}/">전체 보기</a></p>` : ''}</section>`;
+    return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p>${ui.NavigationLink({ href: `/docs/topics/${value}/`, text: '전체 보기' })}</p>` : ''}</section>`;
   }).join('');
 }
 
@@ -97,7 +97,7 @@ export function wikiLanding(documents, context, field, recent = '') {
 }
 
 export function projectSection(projects, hasMore = false) {
-  return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>개발 프로젝트</h2>${hasMore ? '<a href="/projects/">전체 보기 →</a>' : ''}</div><div class="app-project-grid">${projects.map(project => `<article class="app-project-entry"><a class="app-knowledge-card" href="${escape(project.href)}">${subjectIcon(project.icon)}<h3>${escape(project.title)}</h3><p>${escape(project.description)}</p></a><div class="app-project-links">${project.links.map(link => `<a href="${escape(link.href)}">${escape(link.title)} →</a>`).join('')}</div></article>`).join('')}</div></section>`;
+  return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>개발 프로젝트</h2>${hasMore ? ui.NavigationLink({ href: '/projects/', text: '전체 보기' }) : ''}</div><div class="app-project-grid">${projects.map(project => `<article class="app-project-entry"><a class="app-knowledge-card" href="${escape(project.href)}">${subjectIcon(project.icon)}<h3>${escape(project.title)}</h3><p>${escape(project.description)}</p></a><div class="app-project-links">${project.links.map(link => `<a href="${escape(link.href)}">${escape(link.title)} →</a>`).join('')}</div></article>`).join('')}</div></section>`;
 }
 
 export function articlePage(page, documents, context, comments = '') {

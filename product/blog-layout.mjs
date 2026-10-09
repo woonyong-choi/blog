@@ -14,18 +14,18 @@ export function blogCard(page, tags = {}, level = 3) {
 export function recentBlog(posts, tags) {
   if (!posts.length) return '';
   const cards = posts.slice(0, PAGE_SIZES.preview).map(page => ui.trusted(blogCard(page, tags)));
-  return `<section class="app-knowledge-section app-support-group"><h2 class="app-page-heading">Blog</h2>${ui.CardGroup({ columns: 2, cards })}${posts.length > PAGE_SIZES.preview ? '<p><a href="/blog/all/">전체 보기</a></p>' : ''}</section>`;
+  return `<section class="app-knowledge-section app-support-group"><h2 class="app-page-heading">Blog</h2>${ui.CardGroup({ columns: 2, cards })}${posts.length > PAGE_SIZES.preview ? `<p>${ui.NavigationLink({ href: '/blog/all/', text: '전체 보기' })}</p>` : ''}</section>`;
 }
 
 export function blogArchive(posts, tags, page) {
   const result = paginate(posts, page, PAGE_SIZES.cards);
-  return `<main id="main" class="app-shell">${searchBox({ large: true })}${ui.CollectionHeader({ title: '모든 글', backHref: '/docs/', backLabel: '돌아가기', action: { href: '/blog/', label: '본문 이어 읽기 →' } })}${posts.length ? `<div data-blog-list>${ui.CardGroup({ columns: 3, cards: result.items.map(post => ui.trusted(blogCard(post, tags, 2))) })}${pagination(result, '/blog/all/')}<p class="app-caption" data-blog-status role="status"></p></div>` : emptyBlog()}</main>`;
+  return `<main id="main" class="app-shell">${searchBox({ large: true })}${ui.CollectionHeader({ title: '모든 글', backHref: '/docs/', backLabel: '돌아가기', action: { href: '/blog/', label: '본문 이어 읽기' } })}${posts.length ? `<div data-blog-list>${ui.CardGroup({ columns: 3, cards: result.items.map(post => ui.trusted(blogCard(post, tags, 2))) })}${pagination(result, '/blog/all/')}<p class="app-caption" data-blog-status role="status"></p></div>` : emptyBlog()}</main>`;
 }
 
 export function blogFeed(posts, tags, page, { commentConfig, commentTheme } = {}) {
   const result = paginate(posts, page, PAGE_SIZES.feed);
   const returnRoute = result.page === 1 ? '/blog/' : `/blog/page/${result.page}/`;
-  return `<main id="main"><h1 class="app-sr">Blog</h1>${posts.length ? `<div data-blog-list="feed"><div class="app-blog-feed-items">${result.items.map(post => feedArticle(post, tags, commentConfig, commentTheme, returnRoute)).join('')}</div><div class="app-shell">${pagination(result, '/blog/', true)}<p class="app-caption" data-blog-status role="status"></p></div></div>` : `<div class="app-shell">${emptyBlog()}</div>`}${posts.length ? `<div class="app-shell">${ui.ListLink({ href: '/blog/all/', text: '전체 글 보기 →' })}</div>` : ''}</main>`;
+  return `<main id="main"><h1 class="app-sr">Blog</h1>${posts.length ? `<div data-blog-list="feed"><div class="app-blog-feed-items">${result.items.map(post => feedArticle(post, tags, commentConfig, commentTheme, returnRoute)).join('')}</div><div class="app-shell">${pagination(result, '/blog/', true)}<p class="app-caption" data-blog-status role="status"></p></div></div>` : `<div class="app-shell">${emptyBlog()}</div>`}${posts.length ? `<div class="app-shell">${ui.ListLink({ href: '/blog/all/', text: '전체 글 보기' })}</div>` : ''}</main>`;
 }
 
 export function pagination(result, route, feed = false) {
