@@ -15,7 +15,8 @@ export function shiftHeadings(html, levels) {
 }
 
 export function postArticle(post, { detail = false, footer = '', after = '' } = {}) {
-  return String(ui.PostArticle({ id: `post-${post.id}`, detail, href: post.route, title: post.title, date: post.publishedAt, cover: post.thumbnail ? ui.trusted(thumbnailImage(post, detail)) : undefined, dateNote: post.example ? ' · 예시 글' : '', lead: ui.trusted(post.leadHtml ?? escape(post.description)), body: ui.trusted(shiftHeadings(post.html, detail ? detailLevels : feedLevels)), author: post.author, footer: ui.trusted(footer), after: ui.trusted(after) }));
+  const dateLabel = post.publishedAt ? new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(post.publishedAt)) : undefined;
+  return String(ui.PostArticle({ id: `post-${post.id}`, detail, href: post.route, title: post.title, date: post.publishedAt, dateLabel, cover: post.thumbnail ? ui.trusted(thumbnailImage(post, detail)) : undefined, dateNote: post.example ? ' · 예시 글' : '', lead: ui.trusted(post.leadHtml ?? escape(post.description)), body: ui.trusted(shiftHeadings(post.html, detail ? detailLevels : feedLevels)), footer: ui.trusted(footer), after: ui.trusted(after) }));
 }
 
 export function thumbnailImage(page, eager = false) {

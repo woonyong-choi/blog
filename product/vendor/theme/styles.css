@@ -673,7 +673,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 }
 /* 블로그: 글 머리, 목록 카드, 쪽 이동, 댓글, 글 꼬리말. */
 .app-blog-post { max-width: var(--site-body-width); margin: var(--site-section) auto; }
-.app-blog-post + .app-blog-post { border-top: var(--site-outline) solid var(--site-help-border); }
+.app-blog-slice + .app-blog-slice { border-top: var(--site-post-divider-width) solid var(--site-post-divider-color); }
 .app-post-date { display: block; text-align: center; font-size: var(--site-small-text); color: var(--site-muted); }
 .app-post-title { margin: var(--site-gap-sm) 0 var(--site-gap-lg); font-size: var(--site-article-title); text-align: center; line-height: var(--site-line-title); color: var(--site-ink); }
 .app-post-title a { color: inherit; }
@@ -708,6 +708,13 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-publication .app-comments > .app-comments-status { margin: 0 0 var(--site-gap); }
 .app-publication .app-comments > .app-caption { margin: var(--site-gap) 0 0; }
 .app-comments-status { font-size: var(--site-small-text); color: var(--site-muted); }
+.app-comments-viewport { position: relative; }
+.app-comments-frame { display: block; width: 100%; min-height: var(--site-comments-preview-height); border: 0; }
+.app-comments[data-expanded=false] .app-comments-viewport { height: var(--site-comments-preview-height); overflow: hidden; }
+.app-comments-expand { position: absolute; inset: 0; width: 100%; border: 0; padding: 0; background: transparent; cursor: pointer; }
+.app-comments-expand::after { content: ""; position: absolute; inset: auto 0 0; height: calc(var(--site-comments-preview-height) * 2 / 3); background: var(--site-comments-fade); backdrop-filter: blur(var(--site-blur)); mask-image: var(--site-comments-fade); }
+.app-comments-expand:focus-visible { outline: var(--site-outline) solid var(--site-link); outline-offset: calc(-1 * var(--site-outline)); border-radius: var(--site-button-radius); }
+.app-comments[data-expanded=true] .app-comments-expand { display: none; }
 .app-empty { padding-block: var(--site-gap-lg); color: var(--site-muted); }
 .app-post-footer { margin: var(--site-post-footer-margin); }
 .app-post-footer .app-caption { text-align: center; }

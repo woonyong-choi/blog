@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { blogCard, recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
+import { JSDOM } from 'jsdom';
 
 const TAGS = { os: { label: '운영체제' } };
 function posts(count) {
@@ -35,7 +36,24 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.match(feed, /<h3[^>]* id="post-0-section">/);
   assert.doesNotMatch(feed, /app-search|app-list-toolbar/);
   assert.match(feed.slice(feed.lastIndexOf('</article>')), /href="\/blog\/all\/"/);
-  assert.equal((feed.match(/<footer class="app-post-footer">/g) ?? []).length, 4);
+  assert.doesNotMatch(feed, /app-post-footer|app-post-author|app-tags/);
+});
+
+test('feed_has_inline_comment_previews_with_unique_ids_and_no_footer_navigation', () => {
+  const entries = posts(5).map(post => ({ ...post, comments: true }));
+  const html = blogFeed(entries, TAGS, 1, { commentConfig: { repo: 'owner/blog', repoId: 'repo-id', category: 'Comments', categoryId: 'category-id' }, commentTheme: 'light' });
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  assert.equal(doc.querySelectorAll('.app-blog-feed-items > .app-blog-slice').length, 4);
+  assert.equal(doc.querySelectorAll('.app-post-footer a[href*="#comments"]').length, 0);
+  assert.doesNotMatch(html, /글 상세|댓글 보기·작성/);
+  const ids = [...doc.querySelectorAll('[id]')].map(node => node.id);
+  assert.equal(ids.length, new Set(ids).size);
+  assert.deepEqual([...doc.querySelectorAll('[data-comments]')].map(node => node.dataset.term), entries.slice(0, 4).map(post => post.id));
+  for (const button of doc.querySelectorAll('[data-comments-expand]')) assert.ok(doc.getElementById(button.getAttribute('aria-controls')));
+  assert.equal(doc.querySelector('time').textContent, '2026년 10월 1일');
+  assert.equal(doc.querySelector('time').dateTime, '2026-10-01');
+  dom.window.close();
 });
 
 // 정보 행과 안쪽 여백도 같은 글로 연결하며 카드당 초점은 한 번만 받는다.

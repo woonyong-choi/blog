@@ -4,7 +4,7 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
   const view = doc.defaultView;
   const feed = root.dataset.blogList === 'feed';
   const containerSelector = feed ? '.app-blog-feed-items' : '.app-support-grid';
-  const itemSelector = feed ? '.app-blog-post' : '.app-blog-card';
+  const itemSelector = feed ? '.app-blog-slice' : '.app-blog-card';
   const primarySelector = feed ? '.app-post-title a' : '.app-blog-card-link';
   const grid = root.querySelector(containerSelector);
   const nav = root.querySelector('.app-page-links');
@@ -86,12 +86,12 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
   });
   const observer = Intersection ? new Intersection(entries => {
     if (entries.some(entry => entry.isIntersecting)) void load();
-  }) : null;
+  }, { rootMargin: '100% 0px' }) : null;
   observer?.observe(nav);
 }
 
 async function prepareContent(page, doc, url) {
-  const scripts = new Set(['/document.js', '/video.js', '/mermaid-loader.js']);
+  const scripts = new Set(['/document.js', '/video.js', '/mermaid-loader.js', '/comments.js']);
   for (const script of page.querySelectorAll('script[type=module][src]')) {
     const source = new URL(script.getAttribute('src'), url);
     if (source.origin === doc.location.origin && scripts.has(source.pathname)) await import(source.href);

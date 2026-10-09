@@ -40,7 +40,7 @@ test('detail_and_feed_share_the_lead_without_prose_rules_on_the_title_or_empty_r
   const post = { ...page, type: 'blog' };
   const blog = articlePage(post, [post], { topics });
   assert.match(blog, /app-article-lead"><strong>설명<\/strong>/);
-  const feed = blogFeed([post], topics, 1);
+  const feed = blogFeed([post], topics, 1, { commentConfig: { repo: 'owner/blog', repoId: 'repo-id', category: 'Comments', categoryId: 'category-id' }, commentTheme: 'light' });
   assert.match(feed, /app-article-lead"><strong>설명<\/strong>/);
   assert.equal((feed.match(/<strong>설명<\/strong>/g) ?? []).length, 1);
   const same = articlePage(page, [page, { ...page, id: 'b', route: '/articles/b/' }], { topics });

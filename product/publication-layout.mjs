@@ -101,7 +101,7 @@ export function articlePage(page, documents, context, comments = '') {
   const example = page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : '';
   if (page.type === 'blog') {
     const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? dateLine({ updatedAt: page.updatedAt }) : '';
-    return `<main id="main" class="app-shell">${postArticle(page, { detail: true, footer: `${tagLinks(page, context.topics)}${updated}${example}`, after: tail })}</main>`;
+    return `<main id="main" class="app-shell">${postArticle(page, { detail: true, footer: `${updated}${example}`, after: tail })}</main>`;
   }
   const pager = documentPager(page, context, candidate => ui.trusted(subjectIcon(candidate.contentIcon, 'small')));
   const content = `<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${example}</div><div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${source}${pager}${comments}</article>`;

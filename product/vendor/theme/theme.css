@@ -615,6 +615,8 @@
   --primitive-simple-help-title-color: #3d4856;
   --primitive-simple-help-copy-color: rgba(0,1,2,.77);
   --primitive-simple-search-suggestion-width: 80%;
+  --primitive-simple-post-divider-color: rgba(0,22,53,.07);
+  --primitive-simple-comments-fade: linear-gradient(to bottom, transparent, var(--color-gray-0));
   --primitive-simple-post-padding: 72px 0 144px;
   --primitive-simple-post-date-size: 16.02px;
   --primitive-simple-post-date-color: #989fa8;
@@ -1624,6 +1626,10 @@
   --site-help-title-color: var(--primitive-simple-help-title-color);
   --site-help-copy-color: var(--primitive-simple-help-copy-color);
   --site-search-suggestion-width: var(--primitive-simple-search-suggestion-width);
+  --site-post-divider-width: var(--primitive-simple-tab-inset);
+  --site-post-divider-color: var(--primitive-simple-post-divider-color);
+  --site-comments-preview-height: var(--primitive-simple-landing-product-tail);
+  --site-comments-fade: var(--primitive-simple-comments-fade);
   --site-post-padding: var(--primitive-simple-post-padding);
   --site-post-header-margin: var(--primitive-simple-section-title);
   --site-post-date-size: var(--primitive-simple-post-date-size);

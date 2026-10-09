@@ -23,8 +23,9 @@ test('blog_detail_follows_the_single_post_structure_without_search_or_title_icon
   assert.doesNotMatch(html, /data-public-search|app-search|app-article-title|app-document-layout|app-toc/);
   assert.doesNotMatch(html.slice(0, html.indexOf('app-article-lead')), /app-content-icon/);
   assert.match(html, /<h1 class="app-post-title" id="post-sample">샘플 글<\/h1>/);
-  assert.match(html, /<time class="app-post-date" datetime="2026-01-02">2026-01-02<\/time>/);
-  const positions = order(html, ['app-post-header', 'app-post-date', 'app-post-title', 'app-article-lead', '<h2 id="sample-절-하나"', 'app-post-footer', 'class="app-tags"', 'app-document-dates', 'class="app-comments"']);
+  assert.match(html, /<time class="app-post-date" datetime="2026-01-02">2026년 1월 2일<\/time>/);
+  const positions = order(html, ['app-post-header', 'app-post-date', 'app-post-title', 'app-article-lead', '<h2 id="sample-절-하나"', 'app-post-footer', 'app-document-dates', 'class="app-comments"']);
+  assert.doesNotMatch(html, /app-post-author|class="app-tags"/);
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
   assert.match(html, /<h2 id="sample-큰-제목" class="app-heading-1">큰 제목<\/h2>/);
@@ -34,7 +35,7 @@ test('blog_detail_follows_the_single_post_structure_without_search_or_title_icon
 test('feed_and_blog_detail_share_header_body_and_footer_markup', () => {
   const page = post('blog');
   const detail = articlePage(page, [page], { topics });
-  const feed = blogFeed([page], topics, 1);
+  const feed = blogFeed([page], topics, 1, { commentConfig: { repo: 'owner/blog', repoId: 'repo-id', category: 'Comments', categoryId: 'category-id' }, commentTheme: 'light' });
   const shared = html => html.match(/<header class="app-post-header">[\s\S]*?<\/header><div class="app-prose app-feed-body">/)[0].replace(/<h[12][^>]*>[\s\S]*?<\/h[12]>/, '');
   assert.equal(shared(detail), shared(feed));
   assert.match(feed, /<h2 class="app-post-title" id="post-sample"><a href="\/articles\/sample\/">/);
@@ -45,7 +46,7 @@ test('feed_and_blog_detail_share_header_body_and_footer_markup', () => {
 test('blog_thumbnail_follows_the_lead_as_a_wide_image_in_detail_and_feed', () => {
   const page = { ...post('blog'), thumbnail: { src: 'https://example.com/cover.jpg', alt: '글 표지', position: { x: 25, y: 50 } } };
   const detail = articlePage(page, [page], { topics });
-  const feed = blogFeed([page], topics, 1);
+  const feed = blogFeed([page], topics, 1, { commentConfig: { repo: 'owner/blog', repoId: 'repo-id', category: 'Comments', categoryId: 'category-id' }, commentTheme: 'light' });
   for (const html of [detail, feed]) {
     const positions = order(html, ['app-post-title', 'app-article-lead', 'app-post-cover', 'sample-절-하나']);
     assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
@@ -145,9 +146,10 @@ test('post_title_fills_the_column_between_percentage_margins_like_the_reference'
   assert.equal(token('--site-post-title-width'), '84%');
 });
 
-test('post_author_renders_only_when_the_page_has_one_and_before_the_footer_content', async () => {
+test('blog_body_does_not_display_the_author_while_tags_are_not_defined', async () => {
   const { postArticle } = await import('./post-article.mjs');
   const base = { id: 'a', title: 'T', route: '/a/', publishedAt: '2026-01-01', description: 'd', html: '<p>x</p>' };
   assert.doesNotMatch(postArticle(base, { detail: true, footer: '<i>f</i>' }), /app-post-author/);
-  assert.match(postArticle({ ...base, author: 'A & B' }, { detail: true, footer: '<i>f</i>' }), /<footer class="app-post-footer"><p class="app-post-author">A &amp; B<\/p><i>f<\/i><\/footer>/);
+  assert.doesNotMatch(postArticle({ ...base, author: 'A & B' }, { detail: true, footer: '<i>f</i>' }), /app-post-author/);
+  assert.doesNotMatch(postArticle(base), /app-post-footer/);
 });

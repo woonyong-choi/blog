@@ -1,47 +1,141 @@
-// 댓글 서비스는 본문을 가로막지 않고 영역에 가까워졌을 때만 연결한다.
-const section = document.querySelector('[data-comments]');
-if (section) {
-  const status = section.querySelector('[data-comments-status]');
-  const retry = section.querySelector('[data-comments-retry]');
-  const container = section.querySelector('.giscus');
-  const fallback = section.querySelector('[data-comments-fallback]');
-  let loaded = false; let failed = false; let timeout; let commentCount;
-  function fail() { failed = true; clearTimeout(timeout); status.textContent = '댓글을 불러오지 못했습니다. 다시 시도하거나 GitHub에서 열어 주세요.'; retry.hidden = false; fallback.hidden = false; }
-  function load() {
-    if (loaded) return;
-    loaded = true; failed = false; retry.hidden = true; fallback.hidden = true; status.textContent = '댓글을 불러오고 있습니다.';
-    const script = document.createElement('script');
-    script.src = 'https://giscus.app/client.js'; script.async = true; script.crossOrigin = 'anonymous';
-    for (const [name, value] of Object.entries(section.dataset)) if (name !== 'comments') script.dataset[name] = value;
-    script.addEventListener('error', fail);
-    // 네트워크 응답이 끝나지 않는 경우 재시도 경로를 남긴다.
-    timeout = setTimeout(fail, 15000);
-    container.append(script);
+// 각 글의 iframe과 상태를 따로 관리해 연속 읽기에서도 토론과 높이가 섞이지 않게 한다.
+const initialized = new WeakSet();
+const sessions = new WeakMap();
+const host = 'https://giscus.app';
+const sessionKey = 'giscus-session';
+const widgetFields = ['repo', 'repoId', 'category', 'categoryId', 'term', 'strict', 'reactionsEnabled', 'emitMetadata', 'inputPosition', 'theme'];
+
+function readSession(view) {
+  const url = new URL(view.location.href);
+  const callback = url.searchParams.get('giscus');
+  if (callback) {
+    try { view.localStorage.setItem(sessionKey, JSON.stringify(callback)); } catch { /* 저장소가 막혀도 현재 화면의 로그인은 유지한다. */ }
+    url.searchParams.delete('giscus');
+    view.history.replaceState(view.history.state, '', url);
+    return callback;
   }
-  retry.addEventListener('click', () => {
-    failed = false;
-    const frame = container.querySelector('iframe');
-    if (frame) { retry.hidden = true; fallback.hidden = true; status.textContent = '댓글을 다시 불러오고 있습니다.'; frame.src = frame.src; timeout = setTimeout(fail, 15000); }
-    else { container.replaceChildren(); loaded = false; load(); }
-  });
-  window.addEventListener('message', event => {
-    const frame = container.querySelector('iframe');
-    if (event.origin !== 'https://giscus.app' || event.source !== frame?.contentWindow || !event.data?.giscus) return;
-    const data = event.data.giscus;
-    if (data.error) {
-      if (data.error.includes('Discussion not found')) { commentCount = 0; clearTimeout(timeout); status.textContent = '첫 댓글을 남겨 주세요. 작성하면 이 글의 토론이 생성됩니다.'; retry.hidden = true; fallback.hidden = true; }
-      else fail();
-      return;
+  try {
+    const saved = JSON.parse(view.localStorage.getItem(sessionKey) ?? 'null');
+    return typeof saved === 'string' ? saved : '';
+  } catch { return ''; }
+}
+
+export function initComments(root) {
+  const doc = root.ownerDocument ?? root;
+  const view = doc.defaultView;
+  if (!sessions.has(doc)) sessions.set(doc, { value: readSession(view), reload: new Set() });
+  const session = sessions.get(doc);
+  for (const section of root.querySelectorAll('[data-comments]')) {
+    if (initialized.has(section)) continue;
+    initialized.add(section);
+    const status = section.querySelector('[data-comments-status]');
+    const retry = section.querySelector('[data-comments-retry]');
+    const fallback = section.querySelector('[data-comments-fallback]');
+    const viewport = section.querySelector('.app-comments-viewport');
+    const content = section.querySelector('[data-comments-content]');
+    const expand = section.querySelector('[data-comments-expand]');
+    let frame;
+    let timeout;
+    let failed = false;
+
+    function showFull(focus = false) {
+      section.dataset.expanded = 'true';
+      content.inert = false;
+      content.removeAttribute('aria-hidden');
+      if (expand) { expand.hidden = true; expand.setAttribute('aria-expanded', 'true'); }
+      load();
+      if (focus) frame.focus();
     }
-    if ('discussion' in data || data.resizeHeight && !failed) {
-      clearTimeout(timeout); retry.hidden = true; fallback.hidden = true;
-      if ('discussion' in data) { failed = false; commentCount = data.discussion?.totalCommentCount ?? 0; }
-      status.textContent = commentCount === 0 ? '첫 댓글을 남겨 주세요. GitHub 계정으로 로그인할 수 있습니다.' : 'GitHub 계정으로 댓글과 답글을 작성할 수 있습니다.';
-      if (data.discussion?.url?.startsWith(`https://github.com/${section.dataset.repo}/discussions/`)) section.querySelector('[data-discussion-link]').href = data.discussion.url;
+
+    function fail() {
+      failed = true;
+      view.clearTimeout(timeout);
+      status.hidden = false;
+      status.textContent = '댓글을 불러오지 못했습니다. 다시 시도하거나 GitHub에서 열어 주세요.';
+      retry.hidden = false;
+      fallback.hidden = false;
+      viewport.hidden = true;
     }
-  });
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); load(); } }, { rootMargin: '100% 0px' });
-    observer.observe(section);
-  } else load();
+
+    function ready() {
+      failed = false;
+      view.clearTimeout(timeout);
+      status.hidden = true;
+      retry.hidden = true;
+      fallback.hidden = true;
+      viewport.hidden = false;
+    }
+
+    function load(reload = false) {
+      if (frame && !reload) return;
+      view.clearTimeout(timeout);
+      failed = false;
+      status.hidden = false;
+      status.textContent = '댓글을 불러오고 있습니다.';
+      retry.hidden = true;
+      fallback.hidden = true;
+      viewport.hidden = false;
+      const origin = new URL(section.dataset.commentsReturn || view.location.href, view.location.href);
+      origin.searchParams.delete('giscus');
+      origin.hash = section.id;
+      const backLink = new URL(section.dataset.commentsRoute || view.location.pathname, view.location.href);
+      const params = new URLSearchParams(widgetFields.map(name => [name, section.dataset[name]]));
+      params.set('origin', origin.href);
+      params.set('backLink', backLink.href);
+      params.set('description', section.dataset.commentsDescription);
+      params.set('session', session.value);
+      frame = doc.createElement('iframe');
+      frame.className = 'app-comments-frame';
+      frame.title = '댓글';
+      frame.setAttribute('scrolling', 'no');
+      frame.setAttribute('allow', 'clipboard-write');
+      frame.src = `${host}/ko/widget?${params}`;
+      frame.addEventListener('error', fail);
+      content.replaceChildren(frame);
+      timeout = view.setTimeout(fail, 15000);
+    }
+
+    retry.addEventListener('click', () => load(true));
+    session.reload.add(() => { if (frame) load(true); });
+    if (expand) {
+      section.dataset.expanded = 'false';
+      content.inert = true;
+      content.setAttribute('aria-hidden', 'true');
+      expand.hidden = false;
+      expand.addEventListener('click', () => showFull(true));
+    }
+    view.addEventListener('message', event => {
+      if (event.origin !== host || event.source !== frame?.contentWindow || !event.data?.giscus) return;
+      const data = event.data.giscus;
+      const expired = typeof data.error === 'string' && /Bad credentials|Invalid state value|State has expired/.test(data.error);
+      if (data.signOut || expired && session.value) {
+        try { view.localStorage.removeItem(sessionKey); } catch { /* 저장소 접근이 막힌 환경에서도 로그아웃한다. */ }
+        session.value = '';
+        session.reload.forEach(reload => reload());
+        return;
+      }
+      if (data.error) {
+        if (typeof data.error === 'string' && data.error.includes('Discussion not found')) ready();
+        else fail();
+        return;
+      }
+      if (typeof data.resizeHeight === 'number' && Number.isFinite(data.resizeHeight) && data.resizeHeight > 0) {
+        frame.style.height = `${data.resizeHeight}px`;
+        if (!failed) ready();
+      }
+      if ('discussion' in data) {
+        ready();
+        const url = data.discussion?.url;
+        const prefix = `https://github.com/${section.dataset.repo}/discussions/`;
+        if (typeof url === 'string' && url.startsWith(prefix) && /^\d+$/.test(url.slice(prefix.length))) section.querySelector('[data-discussion-link]').href = url;
+      }
+    });
+    load();
+    if (expand && view.location.hash === `#${section.id}`) showFull();
+  }
+}
+
+if (typeof document !== 'undefined') {
+  initComments(document);
+  document.addEventListener('content-added', event => initComments(event.detail));
 }
