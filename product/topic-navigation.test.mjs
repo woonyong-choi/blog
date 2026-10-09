@@ -36,7 +36,11 @@ test('createTopicTrees_keeps_parent_relations_and_excludes_blog_documents', () =
   } });
   const navigation = html.match(/<details class="app-document-nav"[\s\S]*?<\/nav><\/details>/)[0];
   assert.match(navigation, /^<details class="app-document-nav" data-document-panel open>/);
-  assert.deepEqual([...navigation.matchAll(/href="\/articles\/([^/]+)\/"/g)].map(match => match[1]), ['a', 'b', 'e', 'd', 'f']);
+  const treeDom = JSDOM.fragment(navigation);
+  assert.deepEqual([...treeDom.querySelectorAll('nav summary > span, nav li > a')]
+    .map(row => row.textContent), ['Python', 'b', 'e', 'd', 'f']);
+  assert.deepEqual([...treeDom.querySelectorAll('nav a')]
+    .map(link => link.getAttribute('href')), ['/articles/e/', '/articles/d/', '/articles/f/']);
   assert.doesNotMatch(navigation, /JavaScript|>Tech<|>CS<|문서 목록|Search/);
   assert.equal((navigation.match(/aria-current="page"/g) ?? []).length, 1);
   assert.equal(pages[2].type, 'blog');
