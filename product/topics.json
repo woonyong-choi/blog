@@ -7,8 +7,8 @@
       "파이썬"
     ],
     "article": "python",
-    "description": "객체·함수·참조와 복사",
-    "group": "tech"
+    "group": "tech",
+    "description": "객체·함수·참조와 복사"
   },
   "javascript": {
     "label": "JavaScript",
@@ -18,8 +18,8 @@
       "JS"
     ],
     "article": "javascript",
-    "description": "문법·비동기 처리·실행 흐름",
-    "group": "tech"
+    "group": "tech",
+    "description": "문법·비동기 처리·실행 흐름"
   },
   "nodejs": {
     "label": "Node.js",
@@ -29,8 +29,8 @@
       "Node.js"
     ],
     "article": "nodejs",
-    "description": "이벤트 루프·비동기 I/O",
-    "group": "tech"
+    "group": "tech",
+    "description": "이벤트 루프·비동기 I/O"
   },
   "programming-languages-runtime": {
     "label": "Programming",
@@ -41,8 +41,8 @@
       "런타임"
     ],
     "article": "programming-languages-runtime",
-    "description": "언어의 공통 원리·런타임",
-    "group": "cs"
+    "group": "cs",
+    "description": "언어의 공통 원리·런타임"
   },
   "os": {
     "label": "OS",
@@ -53,8 +53,8 @@
       "OS"
     ],
     "article": "os",
-    "description": "프로세스·메모리·파일 시스템",
-    "group": "cs"
+    "group": "cs",
+    "description": "프로세스·메모리·파일 시스템"
   },
   "network": {
     "label": "네트워크",
@@ -64,8 +64,8 @@
       "네트워크"
     ],
     "article": "network",
-    "description": "프로토콜·요청과 응답",
-    "group": "cs"
+    "group": "cs",
+    "description": "프로토콜·요청과 응답"
   },
   "software-design": {
     "label": "소프트웨어 설계",
@@ -76,8 +76,8 @@
       "시스템 설계"
     ],
     "article": "software-design",
-    "description": "책임 분리·의존 관계·설계 원칙",
-    "group": "cs"
+    "group": "cs",
+    "description": "책임 분리·의존 관계·설계 원칙"
   },
   "ml": {
     "label": "머신러닝",
@@ -88,8 +88,8 @@
       "ML"
     ],
     "article": "ml",
-    "description": "학습 데이터·모델·평가",
-    "group": "cs"
+    "group": "cs",
+    "description": "학습 데이터·모델·평가"
   },
   "llm": {
     "label": "LLM",
@@ -100,8 +100,8 @@
       "언어 모델"
     ],
     "article": "llm",
-    "description": "언어 모델의 원리·활용",
-    "group": "cs"
+    "group": "cs",
+    "description": "언어 모델의 원리·활용"
   },
   "computer-science": {
     "label": "CS 기초",
@@ -112,8 +112,8 @@
       "컴퓨터 과학"
     ],
     "article": "computer-science",
-    "description": "컴퓨터의 구조·계산의 기초",
-    "group": "cs"
+    "group": "cs",
+    "description": "컴퓨터의 구조·계산의 기초"
   },
   "spring-boot": {
     "label": "Spring Boot",
@@ -123,8 +123,8 @@
       "Spring"
     ],
     "article": "spring-boot",
-    "description": "애플리케이션 구성·요청 처리",
-    "group": "tech"
+    "group": "tech",
+    "description": "애플리케이션 구성·요청 처리"
   },
   "frontend": {
     "label": "Frontend",
@@ -134,8 +134,8 @@
       "프론트엔드"
     ],
     "article": "frontend",
-    "description": "브라우저·화면 구성",
-    "group": "cs"
+    "group": "cs",
+    "description": "브라우저·화면 구성"
   },
   "backend-services": {
     "label": "Backend",
@@ -145,8 +145,8 @@
       "백엔드"
     ],
     "article": "backend-services",
-    "description": "데이터 처리·서비스 구조",
-    "group": "cs"
+    "group": "cs",
+    "description": "데이터 처리·서비스 구조"
   },
   "redis": {
     "label": "Redis",
@@ -156,8 +156,8 @@
       "캐시"
     ],
     "article": "redis",
-    "description": "자료구조·캐시",
-    "group": "tech"
+    "group": "tech",
+    "description": "자료구조·캐시"
   },
   "kubernetes": {
     "label": "Kubernetes",
@@ -167,8 +167,8 @@
       "K8s"
     ],
     "article": "kubernetes",
-    "description": "컨테이너 배치·운영·상태 진단",
-    "group": "tech"
+    "group": "tech",
+    "description": "컨테이너 배치·운영·상태 진단"
   },
   "linux": {
     "label": "Linux",
@@ -178,8 +178,8 @@
       "리눅스"
     ],
     "article": "linux",
-    "description": "명령어·시스템 동작",
-    "group": "tech"
+    "group": "tech",
+    "description": "명령어·시스템 동작"
   },
   "security": {
     "label": "보안",
@@ -189,8 +189,8 @@
       "보안"
     ],
     "article": "security",
-    "description": "인증·권한·시스템 보호",
-    "group": "cs"
+    "group": "cs",
+    "description": "인증·권한·시스템 보호"
   },
   "platform-delivery-operations": {
     "label": "DevOps",
@@ -201,8 +201,8 @@
       "인프라"
     ],
     "article": "platform-delivery-operations",
-    "description": "빌드·배포·운영",
-    "group": "cs"
+    "group": "cs",
+    "description": "빌드·배포·운영"
   },
   "data": {
     "label": "Data",
@@ -212,8 +212,8 @@
       "데이터"
     ],
     "article": "data",
-    "description": "데이터 저장·처리",
-    "group": "cs"
+    "group": "cs",
+    "description": "데이터 저장·처리"
   },
   "projects": {
     "label": "Projects",

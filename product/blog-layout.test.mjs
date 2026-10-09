@@ -36,7 +36,7 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.match(feed, /<h3[^>]* id="post-0-section">/);
   assert.doesNotMatch(feed, /app-search|app-list-toolbar/);
   assert.match(feed.slice(feed.lastIndexOf('</article>')), /href="\/blog\/all\/"/);
-  assert.doesNotMatch(feed, /app-post-footer|app-post-author|app-tags/);
+  assert.doesNotMatch(feed, /app-post-footer|app-post-author/);
 });
 
 test('feed_has_inline_comment_previews_with_unique_ids_and_no_footer_navigation', () => {
@@ -67,13 +67,13 @@ test('blog_cards_include_metadata_in_one_post_link', () => {
     assert.equal((card.match(/<a /g) ?? []).length, 1);
     assert.equal((card.match(/<a class="app-blog-card-link"/g) ?? []).length, 1);
     assert.match(card, /<a class="app-blog-card-link" href="\/articles\/post-0\/"/);
-    assert.match(card, /<p class="app-card-summary">설명<\/p><\/div><div class="app-blog-card-meta">.*<time class="app-blog-card-date" datetime="2026-10-01">2026년 10월 1일<\/time>/);
+    assert.match(card, /<p class="app-card-summary">설명<\/p><div class="app-blog-card-tags"[\s\S]*?<div class="app-blog-card-meta">.*<time class="app-blog-card-date" datetime="2026-10-01">2026년 10월 1일<\/time>/);
     assert.match(card, /<span class="app-blog-card-comments">댓글 2개<\/span><\/div><\/a><\/article>$/);
-    assert.match(card, /<div class="app-blog-card-meta"><span class="app-blog-card-author"><span>작성자<\/span><\/span>/);
+    assert.doesNotMatch(card, /app-blog-card-author|app-blog-card-avatar|작성자/);
     assert.doesNotMatch(card, /href="\/author\/"|href="\/articles\/post-0\/#comments"/);
     assert.doesNotMatch(card, /app-blog-card-footer/);
     assert.match(html, /app-card-summary/);
-    assert.doesNotMatch(html, /app-tags/);
+    assert.match(html, /app-blog-card-tags/);
   }
   const centered = blogCard({ ...post, thumbnail: { src: post.thumbnail.src, alt: '' } }, TAGS);
   assert.doesNotMatch(centered, /object-position/);

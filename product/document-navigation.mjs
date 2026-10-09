@@ -2,9 +2,29 @@
 import * as ui from './vendor/theme/assets/components.mjs';
 
 function topicRoots(page, context) {
-  const roots = context.topicTrees?.get(page.topic) ?? [];
-  const entry = roots.find(node => node.page.slug === context.topics[page.topic]?.article);
-  return entry ? [entry, ...roots.filter(node => node !== entry)] : roots;
+  const roots = context.topicTrees?.get(page.category) ?? [];
+  const entrySlug = context.topics[page.category]?.article;
+  const pending = [...roots];
+  let entry;
+  while (pending.length) {
+    const node = pending.pop();
+    if (node.page.slug === entrySlug) { entry = node; break; }
+    pending.push(...node.children);
+  }
+  if (!entry) return roots;
+  const ancestor = roots.find(root => contains(root, entry.page.slug));
+  if (contains(ancestor, page.slug) && !contains(entry, page.slug)) return roots;
+  return [entry, ...roots.filter(root => root !== ancestor)];
+}
+
+function contains(root, slug) {
+  const pending = root ? [root] : [];
+  while (pending.length) {
+    const node = pending.pop();
+    if (node.page.slug === slug) return true;
+    pending.push(...node.children);
+  }
+  return false;
 }
 
 export function documentNavigation(page, context) {
@@ -16,12 +36,9 @@ export function documentNavigation(page, context) {
   }
   const roots = topicRoots(page, context);
   if (!roots.length) return undefined;
-  const topic = context.topics[page.topic];
-  const entry = roots.find(node => node.page.slug === topic.article);
-  const children = (entry ? [...entry.children, ...roots.filter(node => node !== entry)] : roots).map(item);
-  const current = entry?.page.id === page.id;
+  const topic = context.topics[page.category];
   return ui.DocumentNavigation({ label: topic.label,
-    nodes: [{ title: topic.label, href: entry?.page.route, current, children, open: true }] });
+    nodes: roots.map(item) });
 }
 
 export function documentPager(page, context, renderIcon = () => undefined) {
@@ -36,7 +53,7 @@ export function documentPager(page, context, renderIcon = () => undefined) {
   const index = ordered.findIndex(candidate => candidate.id === page.id);
   if (index < 0) return '';
   const link = candidate => candidate && { title: candidate.title, href: candidate.route, icon: renderIcon(candidate) };
-  return String(ui.DocumentPager({ label: context.topics[page.topic].label,
+  return String(ui.DocumentPager({ label: context.topics[page.category].label,
     before: link(ordered[index - 1]), after: link(ordered[index + 1]) }));
 }
 

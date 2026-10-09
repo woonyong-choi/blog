@@ -1,19 +1,19 @@
 // 같은 발행 글을 네 편 미리보기, 카드 목록, 네 편 본문 피드로 보여준다.
 import * as ui from './vendor/theme/assets/components.mjs';
-import { dateLine, searchBox } from './publication-layout.mjs';
+import { dateLine, searchBox, tagLinks } from './publication-layout.mjs';
 import { PAGE_SIZES, paginate } from './content-model.mjs';
 import { postArticle, thumbnailImage } from './post-article.mjs';
 import { commentsSection } from './comments.mjs';
 
-export function blogCard(page, tags, level = 3) {
+export function blogCard(page, tags = {}, level = 3) {
   const cover = thumbnailImage(page);
   const dateLabel = page.publishedAt ? new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(page.publishedAt)) : undefined;
-  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description, publishedAt: page.publishedAt, dateLabel, commentsHref: page.comments ? `${page.route}#comments` : undefined, commentCount: page.commentCount, author: page.cardAuthor }));
+  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description, tagLabels: (page.tags ?? []).map(id => tags[id]?.label ?? id), publishedAt: page.publishedAt, dateLabel, commentsHref: page.comments ? `${page.route}#comments` : undefined, commentCount: page.commentCount }));
 }
 
-export function recentBlog(posts) {
+export function recentBlog(posts, tags) {
   if (!posts.length) return '';
-  const cards = posts.slice(0, PAGE_SIZES.preview).map(page => ui.trusted(blogCard(page)));
+  const cards = posts.slice(0, PAGE_SIZES.preview).map(page => ui.trusted(blogCard(page, tags)));
   return `<section class="app-knowledge-section app-support-group"><h2 class="app-page-heading">Blog</h2>${ui.CardGroup({ columns: 2, cards })}${posts.length > PAGE_SIZES.preview ? '<p><a href="/blog/all/">전체 보기</a></p>' : ''}</section>`;
 }
 
@@ -40,7 +40,7 @@ export function pagination(result, route, feed = false) {
 function feedArticle(post, tags, commentConfig, commentTheme, returnRoute) {
   const updated = post.updatedAt && post.updatedAt !== post.publishedAt ? dateLine({ updatedAt: post.updatedAt }) : '';
   const comments = commentsSection(post, commentConfig, commentTheme, { preview: true, returnRoute });
-  return `<div class="app-blog-slice"><div class="app-shell">${postArticle(post, { footer: updated, after: comments })}</div></div>`;
+  return `<div class="app-blog-slice"><div class="app-shell">${postArticle(post, { tags: tagLinks(post, tags), footer: updated, after: comments })}</div></div>`;
 }
 
 function emptyBlog() {

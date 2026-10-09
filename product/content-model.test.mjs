@@ -4,7 +4,7 @@ import { readDocument, publicDocuments, blogDocuments, paginate, PAGE_SIZES } fr
 
 const TAGS = { javascript: { label: 'JavaScript', aliases: ['JS'] } };
 function source(changes = {}) {
-  const page = { id: 'a', slug: 'a', title: '글', description: '설명', type: 'blog', tags: ['javascript'], field: 'languages', topic: 'javascript', contentIcon: { name: 'document' }, comments: true, visibility: 'public', publishedAt: '2026-01-01', ...changes };
+  const page = { id: 'a', slug: 'a', title: '글', description: '설명', type: 'blog', tags: ['javascript'], field: 'languages', category: 'javascript', contentIcon: { name: 'document' }, comments: true, visibility: 'public', publishedAt: '2026-01-01', ...changes };
   return `---\n${JSON.stringify(page)}\n---\n## 본문\n내용`;
 }
 
@@ -77,4 +77,16 @@ test('thumbnail_accepts_https_without_credentials_and_rejects_unsafe_urls', () =
   for (const src of ['javascript:alert(1)', 'data:image/png;base64,a', '//example.com/a', 'http://example.com/a', 'https://user:secret@example.com/a', 'https://', 123]) {
     assert.throws(() => readDocument(source({ thumbnail: { src, alt: '' } }), TAGS), /invalid thumbnail path/);
   }
+});
+
+// #141: 내부 분류와 공유 태그의 어휘가 서로 독립적이며 태그가 없는 글도 읽는다.
+test('category_is_independent_from_optional_shared_tags', () => {
+  const now = new Date('2026-10-10');
+  const categories = { os: { label: 'OS' } };
+  const wiki = readDocument(source({ type: 'wiki', category: 'os', tags: [] }), TAGS, now, categories);
+  assert.deepEqual(wiki.tags, []);
+  assert.equal(wiki.category, 'os');
+  const tagged = readDocument(source({ category: 'os' }), TAGS, now, categories);
+  assert.deepEqual(tagged.tags, ['javascript']);
+  assert.throws(() => readDocument(source({ category: 'missing' }), TAGS, now, categories), /invalid category/);
 });

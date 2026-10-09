@@ -6,7 +6,7 @@ import { documentPager } from './document-navigation.mjs';
 import { JSDOM } from 'jsdom';
 
 function page(slug, parent, changes = {}) {
-  return { id: slug, slug, parent, topic: 'python', type: 'wiki', title: slug,
+  return { id: slug, slug, parent, category: 'python', type: 'wiki', title: slug,
     route: `/articles/${slug}/`, tags: ['python'], description: '', html: '',
     headings: [], contentIcon: { name: 'python' }, ...changes };
 }
@@ -17,17 +17,18 @@ test('createTopicTrees_rejects_self_mutual_and_disconnected_cycles', () => {
     [page('a', 'a')],
     [page('a', 'b'), page('b', 'a')],
     [page('root'), page('a', 'b'), page('b', 'c'), page('c', 'a'), page('child', 'a')],
-  ]) assert.throws(() => createTopicTrees(pages), /cyclic topic navigation: python \(a/);
+  ]) assert.throws(() => createTopicTrees(pages), /cyclic topic navigation: documents \(a/);
   assert.throws(() => createTopicTrees([page('a'), page('a')]), /duplicate navigation slug/);
 });
 
 test('createTopicTrees_keeps_parent_relations_and_excludes_blog_documents', () => {
   const pages = [page('a', 'unpublished'), page('b', 'a'),
     page('c', 'b', { type: 'blog' }), page('d', 'c'), page('e', 'b'),
-    page('foreign', undefined, { topic: 'javascript' }), page('f', 'foreign')];
+    page('foreign', undefined, { category: 'javascript' }), page('f', 'foreign')];
   const topicTrees = createTopicTrees(pages);
   const tree = topicTrees.get('python');
-  assert.deepEqual(tree.map(node => node.page.slug), ['a', 'd', 'f']);
+  assert.deepEqual(tree.map(node => node.page.slug), ['a', 'd', 'foreign']);
+  assert.equal(tree[2].children[0].page.slug, 'f');
   assert.deepEqual(tree[0].children[0].children.map(node => node.page.slug), ['e']);
   assert.strictEqual(tree[0].children[0].children[0].page, pages[4]);
   const html = articlePage(pages[1], pages, { topicTrees, topics: {
@@ -38,7 +39,7 @@ test('createTopicTrees_keeps_parent_relations_and_excludes_blog_documents', () =
   assert.match(navigation, /^<details class="app-document-nav" data-document-panel open>/);
   const treeDom = JSDOM.fragment(navigation);
   assert.deepEqual([...treeDom.querySelectorAll('nav summary > span, nav li > a')]
-    .map(row => row.textContent), ['Python', 'b', 'e', 'd', 'f']);
+    .map(row => row.textContent), ['a', 'b', 'e', 'd', 'foreign', 'f']);
   assert.deepEqual([...treeDom.querySelectorAll('nav a')]
     .map(link => link.getAttribute('href')), ['/articles/e/', '/articles/d/', '/articles/f/']);
   assert.doesNotMatch(navigation, /JavaScript|>Tech<|>CS<|문서 목록|Search/);
@@ -60,7 +61,7 @@ test('createTopicTrees_preserves_deep_input_without_using_the_call_stack', () =>
 test('document_pager_uses_sidebar_order_without_crossing_topics_or_including_blog_posts', () => {
   const pages = [page('orphan', 'private'), page('root'), page('child', 'root'),
     page('grandchild', 'child'), page('sibling', 'root'),
-    page('post', 'child', { type: 'blog' }), page('other', null, { topic: 'javascript' })];
+    page('post', 'child', { type: 'blog' }), page('other', null, { category: 'javascript' })];
   const context = { topicTrees: createTopicTrees(pages), topics: {
     python: { label: 'Python', article: 'root' }, javascript: { label: 'JavaScript', article: 'other' },
   } };

@@ -1,11 +1,12 @@
 // 검증된 공개 투영만 가져오고 원문과 공개 출처의 해시를 함께 보존한다.
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, unlinkSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { parse } from 'yaml';
+import { markdownFiles, readContentFile, writeContentFiles } from './content-files.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const TOPICS = [
@@ -30,6 +31,8 @@ export function importPublication(sourceRoot) {
   if (checked.status !== 0) throw new Error(`public projection validation failed: ${checked.stderr}`);
   const input = join(sourceRoot, 'generated/public-content');
   const output = join(ROOT, 'publication');
+  const existing = existsSync(output) ? markdownFiles(output).map(readContentFile) : [];
+  const existingById = new Map(existing.map(entry => [entry.metadata.id, entry.metadata]));
   const documents = readdirSync(input).filter(name => name.endsWith('.md') && name !== 'README.md').map(name => {
     const source = readFileSync(join(input, name), 'utf8');
     const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
@@ -42,34 +45,46 @@ export function importPublication(sourceRoot) {
   const byId = new Map(documents.map(page => [page.projection_id, page]));
   const available = new Map(documents.map(page => [page.slug, page]));
   const display = JSON.parse(readFileSync(join(ROOT, 'topics.json'), 'utf8'));
-  const topics = Object.fromEntries(TOPICS.filter(([slug]) => available.has(slug)).map(([slug, field, icon, aliases]) => [slug, { label: display[slug]?.label ?? available.get(slug).title, field, icon, aliases, article: slug, ...(display[slug]?.group ? { group: display[slug].group } : {}), ...(display[slug]?.description ? { description: display[slug].description } : {}) }]));
+  const topics = { ...display, ...Object.fromEntries(TOPICS.filter(([slug]) => available.has(slug)).map(([slug, field, icon, aliases]) => [slug, { label: display[slug]?.label ?? available.get(slug).title, field, icon, aliases, article: slug, ...(display[slug]?.group ? { group: display[slug].group } : {}), ...(display[slug]?.description ? { description: display[slug].description } : {}) }])) };
   const manifest = { source: 'https://docs.woonyong.com', documents: [] };
   mkdirSync(output, { recursive: true });
+  const entries = [];
   for (const page of documents) {
     if (page.content_status === 'planned') continue;
     const topic = findTopic(page, byId, topics);
     const body = page.body.replace(/^\s*# [^\n]+\n/, '').replace(/^\{: [^\n]+\}\s*$/gm, '').trim();
     const paragraph = body.split(/\n\s*\n/).find(part => !/^(?:#|\||`|>|-|\{)/.test(part.trim())) ?? page.title;
-    const metadata = { id: createHash('sha256').update(page.projection_id).digest('hex').slice(0, 20), slug: page.slug,
-      type: 'wiki', title: page.title, description: excerpt(plainText(paragraph)), tags: [topic],
-      field: topics[topic].field, topic, contentIcon: { name: topics[topic].icon }, visibility: 'public', comments: false,
+    const id = createHash('sha256').update(page.projection_id).digest('hex').slice(0, 20);
+    const parent = byId.get(page.public_parent_id);
+    const parentId = parent && createHash('sha256').update(parent.projection_id).digest('hex').slice(0, 20);
+    const metadata = mergePublicationMetadata({ id, slug: page.slug,
+      type: 'wiki', title: page.title, description: excerpt(plainText(paragraph)), tags: [],
+      field: topics[topic].field, category: topic, contentIcon: { name: topics[topic].icon }, visibility: 'public', comments: false,
       sourceUrl: `https://docs.woonyong.com${page.permalink}`, sourceHash: createHash('sha256').update(page.source).digest('hex'),
-      parent: byId.get(page.public_parent_id)?.slug ?? null };
-    writeFileSync(join(output, page.name), `---\n${JSON.stringify(metadata, null, 2)}\n---\n\n${body}\n`);
-    manifest.documents.push({ id: metadata.id, slug: page.slug, file: page.name, sourceUrl: metadata.sourceUrl, sourceHash: metadata.sourceHash });
+      parent: existingById.get(parentId)?.slug ?? parent?.slug ?? null }, existingById.get(id));
+    entries.push({ metadata, body: `\n${body}\n` });
   }
   const previousPath = join(ROOT, 'publication-manifest.json');
   const previous = existsSync(previousPath) ? JSON.parse(readFileSync(previousPath)).documents : [];
-  const retained = new Map(manifest.documents.map(page => [page.id, page.file]));
   const imported = new Set(previous.map(page => page.id));
-  for (const name of readdirSync(output).filter(name => name.endsWith('.md'))) {
-    const match = readFileSync(join(output, name), 'utf8').match(/^---\r?\n([\s\S]*?)\r?\n---/);
-    const metadata = parse(match?.[1] ?? '{}');
-    if (imported.has(metadata.id) && retained.get(metadata.id) !== name) unlinkSync(join(output, name));
+  const incoming = new Set(entries.map(entry => entry.metadata.id));
+  const manual = existing.filter(entry => !imported.has(entry.metadata.id) && !incoming.has(entry.metadata.id));
+  const paths = writeContentFiles(output, [...entries, ...manual], existing);
+  for (const { metadata } of entries) {
+    manifest.documents.push({ id: metadata.id, slug: metadata.slug, file: paths.get(metadata.id), sourceUrl: metadata.sourceUrl, sourceHash: metadata.sourceHash });
   }
   writeFileSync(join(ROOT, 'topics.json'), JSON.stringify(topics, null, 2) + '\n');
   writeFileSync(join(ROOT, 'publication-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
   return manifest.documents.length;
+}
+
+export function mergePublicationMetadata(imported, existing) {
+  if (!existing) return imported;
+  const retained = {};
+  for (const key of ['slug', 'category', 'parent', 'tags']) {
+    if (Object.hasOwn(existing, key)) retained[key] = existing[key];
+  }
+  return { ...imported, ...retained };
 }
 
 function findTopic(page, byId, topics) {

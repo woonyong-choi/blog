@@ -1,3 +1,4 @@
+import { parse } from 'yaml';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
@@ -220,10 +221,10 @@ test('footnotes_stay_unique_across_pages_and_link_back', () => {
 });
 
 test('the_markdown_guide_example_renders_every_supported_construct_and_round_trips_code', () => {
-  const source = readFileSync(new URL('./examples/markdown-guide.md', import.meta.url), 'utf8');
-  assert.match(source, /"example": true/);
+  const source = readFileSync(new URL('./examples/blog/markdown-guide.md', import.meta.url), 'utf8');
+  assert.match(source, /example: true/);
   const body = source.split('\n---\n').slice(1).join('\n---\n');
-  const meta = JSON.parse(source.slice(4, source.indexOf('\n---\n')));
+  const meta = parse(source.slice(4, source.indexOf('\n---\n')));
   const page = { ...meta, body: body.replace(/^\n/, '') };
   const rendered = renderArticle(createMarkdown(), page);
   const fences = [...page.body.matchAll(/^(`{3,})([^\n]*)\n([\s\S]*?)^\1\s*$/gm)].filter(match => !match[2].startsWith('ui:'));

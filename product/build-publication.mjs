@@ -24,11 +24,13 @@ import { publicationStyles } from './publication-styles.mjs';
 import { siteOrigin, SITE_ICON } from './publication-metadata.mjs';
 import { siteIdentity } from './site-identity.mjs';
 import { legacyRoutes, redirectPage } from './publication-routes.mjs';
+import { markdownFiles } from './content-files.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
 const CONFIG = JSON.parse(readFileSync(join(ROOT, 'publication.config.json')));
 const TOPICS = JSON.parse(readFileSync(join(ROOT, 'topics.json')));
+const TAGS = JSON.parse(readFileSync(join(ROOT, 'tags.json')));
 const THEME = join(ROOT, 'vendor/theme');
 const MANIFEST = JSON.parse(readFileSync(join(THEME, 'theme.json')));
 const BRAND_NAMES = JSON.parse(readFileSync(join(THEME, 'assets/icons/brands/catalog.json'))).icons.map(item => item.name);
@@ -38,13 +40,11 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   origin = siteOrigin(origin, preview);
   verifyTheme();
   const folders = ['publication', ...(preview && existsSync(join(ROOT, 'examples')) ? ['examples'] : [])];
-  const documents = publicDocuments(folders.flatMap(folder => readdirSync(join(ROOT, folder)).filter(name => name.endsWith('.md')).map(name => readDocument(readFileSync(join(ROOT, folder, name), 'utf8'), TOPICS))), { includeExamples: preview });
+  const documents = publicDocuments(folders.flatMap(folder => markdownFiles(join(ROOT, folder)).map(file => readDocument(readFileSync(file, 'utf8'), TAGS, new Date(), TOPICS))), { includeExamples: preview });
   const posts = blogDocuments(documents);
   const comments = readCommentCounts(posts, CONFIG);
   for (const post of posts) {
     post.commentCount = comments.counts.get(post.id);
-    post.author ??= CONFIG.name;
-    post.cardAuthor = { name: post.author, ...(post.author === CONFIG.name ? { href: CONFIG.github, avatar: CONFIG.avatar } : {}) };
   }
   const topicTrees = createTopicTrees(documents);
   renderDocuments(documents);
@@ -52,7 +52,7 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   // 도표 렌더러는 도표가 있는 글이 있을 때만 만들고, 없으면 산출물에도 넣지 않는다.
   const diagrams = documents.some(page => (page.leadHtml + page.html).includes('data-mermaid')) ? mermaidScripts(ROOT) : { files: new Map(), hashes: {} };
   const identity = siteIdentity(readFileSync(join(THEME, SITE_ICON.slice('/theme/'.length))), readFileSync(join(THEME, 'assets/controls/LICENSE')));
-  const context = { config: CONFIG, topics: TOPICS, topicTrees, origin, preview, identity, commentsStatus: comments.status, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
+  const context = { config: CONFIG, topics: TOPICS, tags: TAGS, topicTrees, origin, preview, identity, commentsStatus: comments.status, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
   context.home = loadHomeConfig(new Set(BRAND_NAMES), ROOT, { preview });
   context.interviewExamples = JSON.parse(readFileSync(join(ROOT, 'interview-examples.json')));
   const output = new Map();
@@ -61,7 +61,7 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
     output.set(route, documentShell({ route, title, ...metadata }, body, context));
   };
   add('/', CONFIG.name, personalHome(context));
-  add('/docs/', 'Search', wikiLanding(documents, context, undefined, recentBlog(posts)));
+  add('/docs/', 'Search', wikiLanding(documents, context, undefined, recentBlog(posts, TAGS)));
   const fields = [...new Set([...TOPIC_GROUPS, ...FIELDS])];
   for (const field of fields) add(`/docs/topics/${field}/`, FIELD_NAMES[field], wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
@@ -69,13 +69,13 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const commentTheme = CONFIG.comments.themeUrl || `${origin || 'http://127.0.0.1:8796'}/theme/assets/giscus.css?v=${MANIFEST.contentHash}`;
   const commentConfig = { ...CONFIG.comments, repo: CONFIG.repository };
   for (const page of documents) add(page.route, page.title, articlePage(page, documents, context, commentsSection(page, commentConfig, commentTheme)), page);
-  for (const [tag, topic] of Object.entries(TOPICS)) {
+  for (const [tag, topic] of Object.entries(TAGS)) {
     const entries = documents.filter(page => page.tags.includes(tag));
-    add(`/tags/${tag}/`, topic.label, tagPage(tag, entries, TOPICS));
+    add(`/tags/${tag}/`, topic.label, tagPage(tag, entries, TAGS));
   }
   add('/search/', '검색', `<main class="app-shell app-body" id="main">${searchBox()}<h1 class="app-sr">검색</h1><div data-search-page><div class="app-filter-summary" data-filter-summary></div><div data-full-results><p class="app-empty">검색어를 입력하거나 주제를 선택해 주세요.</p></div>${ui.PageLinks({ label: '검색 페이지', resultPages: true })}</div></main>`);
   for (const [base, size, render] of [['/blog/', PAGE_SIZES.feed, blogFeed], ['/blog/all/', PAGE_SIZES.cards, blogArchive]]) {
-    for (let page = 1; page <= Math.max(1, Math.ceil(posts.length / size)); page++) add(page === 1 ? base : `${base}page/${page}/`, 'Blog', render(posts, TOPICS, page, { commentConfig, commentTheme }), { type: 'blog' });
+    for (let page = 1; page <= Math.max(1, Math.ceil(posts.length / size)); page++) add(page === 1 ? base : `${base}page/${page}/`, 'Blog', render(posts, TAGS, page, { commentConfig, commentTheme }), { type: 'blog' });
   }
   context.redirects = legacyRoutes(documents, fields);
   for (const [old, target] of context.redirects) {
@@ -141,7 +141,7 @@ async function writeSite(output, documents, context, scripts, diagramFiles) {
     }
     writeFileSync(join(OUTPUT, 'mermaid/LICENSE'), readFileSync(join(ROOT, '../node_modules/mermaid/LICENSE')));
   }
-  const index = { entries: documents.map(page => ({ ...searchEntry(page, TOPICS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TOPICS };
+  const index = { entries: documents.map(page => ({ ...searchEntry(page, TAGS), iconUrl: iconUrl(page.contentIcon), example: !!page.example })), tags: TAGS };
   const assets = new Map([...context.identity.assets, ...publicationAssets(output, index.entries, path => context.identity.assets.get(path) ?? context.math.assets.get(path) ?? (path === stylePath ? Buffer.from(styles.css) : readFileSync(path.startsWith('/theme/') ? join(THEME, path.slice('/theme/'.length)) : join(ROOT, path))))]);
   for (const [path, content] of assets) {
     const destination = join(OUTPUT, path);

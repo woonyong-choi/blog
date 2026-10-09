@@ -10,7 +10,7 @@ import { token, px, box } from './theme-measure.mjs';
 const near = (value, expected) => assert.equal(Math.round(value * 10000) / 10000, expected);
 const topics = { python: { label: 'Python', group: 'tech', article: 'sample' } };
 function post(type, body = '리드 문장\n\n# 큰 제목\n\n## 절 하나\n\n내용\n\n### 하위\n\n## 절 둘\n\n끝') {
-  const page = { id: 'sample', slug: 'sample', route: '/articles/sample/', title: '샘플 글', description: '리드 문장', body, type, topic: 'python', tags: ['python'],
+  const page = { id: 'sample', slug: 'sample', route: '/articles/sample/', title: '샘플 글', description: '리드 문장', body, type, category: 'python', tags: ['python'],
     contentIcon: { name: 'python' }, comments: true, publishedAt: '2026-01-02', updatedAt: '2026-02-03' };
   return Object.assign(page, renderArticle(createMarkdown(), page));
 }
@@ -24,8 +24,8 @@ test('blog_detail_follows_the_single_post_structure_without_search_or_title_icon
   assert.doesNotMatch(html.slice(0, html.indexOf('app-article-lead')), /app-content-icon/);
   assert.match(html, /<h1 class="app-post-title" id="post-sample">샘플 글<\/h1>/);
   assert.match(html, /<time class="app-post-date" datetime="2026-01-02">2026년 1월 2일<\/time>/);
-  const positions = order(html, ['app-post-header', 'app-post-date', 'app-post-title', 'app-article-lead', '<h2 id="sample-절-하나"', 'app-post-footer', 'app-document-dates', 'class="app-comments"']);
-  assert.doesNotMatch(html, /app-post-author|class="app-tags"/);
+  const positions = order(html, ['app-post-header', 'app-post-date', 'app-post-title', 'app-article-lead', 'class="app-tags"', '<h2 id="sample-절-하나"', 'app-post-footer', 'app-document-dates', 'class="app-comments"']);
+  assert.doesNotMatch(html, /app-post-author/);
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
   assert.match(html, /<h2 id="sample-큰-제목" class="app-heading-1">큰 제목<\/h2>/);

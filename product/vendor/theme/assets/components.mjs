@@ -266,7 +266,7 @@ export function ProjectShowcase({ id: section, title, src, poster }) {
 export const Panorama = ({ id: section, label, image }) => out(`<section id="${id(section)}-video" class="app-hero-panorama" aria-label="${escape(label)}"><div class="app-hero-panorama-content">${slot(image, 'image')}</div></section>`);
 
 /** 썸네일·제목·설명·정보 행을 하나의 링크로 누르는 블로그 카드. 선택 태그는 바깥의 독립 링크다. */
-export function BlogCard({ href, title, level = 3, cover, tags, description = '', publishedAt, dateLabel, commentsHref, commentCount, author }) {
+export function BlogCard({ href, title, level = 3, cover, tags, tagLabels = [], description = '', publishedAt, dateLabel, commentsHref, commentCount, author }) {
   const heading = level === 2 ? 'h2' : 'h3';
   const link = safeUrl(href);
   const date = publishedAt ? `<time class="app-blog-card-date" datetime="${escape(publishedAt)}">${escape(dateLabel || publishedAt)}</time>` : '';
@@ -276,7 +276,8 @@ export function BlogCard({ href, title, level = 3, cover, tags, description = ''
   const writer = byline ? `<span class="app-blog-card-author">${byline}</span>` : '';
   const fields = [writer, date, comments].filter(Boolean).join('<span aria-hidden="true">·</span>');
   const metadata = fields ? `<div class="app-blog-card-meta">${fields}</div>` : '';
-  return out(`<article class="app-blog-card"><a class="app-blog-card-link" href="${link}" aria-label="${escape(title)}"><div class="app-blog-cover">${slot(cover, 'cover')}</div><div class="app-blog-card-body"><${heading} class="app-blog-card-title">${escape(title)}</${heading}>${description ? `<p class="app-card-summary">${escape(description)}</p>` : ''}</div>${metadata}</a>${tags === undefined ? '' : slot(tags, 'tags')}</article>`);
+  const summary = tagLabels.length ? `<div class="app-blog-card-tags" aria-label="태그">${tagLabels.map(label => `<span class="app-tag">${escape(label)}</span>`).join(' ')}</div>` : '';
+  return out(`<article class="app-blog-card"><a class="app-blog-card-link" href="${link}" aria-label="${escape(title)}"><div class="app-blog-cover">${slot(cover, 'cover')}</div><div class="app-blog-card-body"><${heading} class="app-blog-card-title">${escape(title)}</${heading}>${description ? `<p class="app-card-summary">${escape(description)}</p>` : ''}${summary}</div>${metadata}</a>${tags === undefined ? '' : slot(tags, 'tags')}</article>`);
 }
 /** 쪽 이동. `before`·`after`는 `{ href, text }`, `numbers`는 `{ page, href, current }`, `summary`는 번호 대신 쓰는 글자다. */
 export function PageLinks({ label, before, after, numbers = [], summary, resultPages = false }) {
@@ -324,10 +325,10 @@ export function DocumentPager({ label, before, after }) {
 }
 
 /** 블로그 글 한 편의 틀(피드와 상세 공통). 본문·도입문·꼬리말은 슬롯이다. */
-export function PostArticle({ id: post, detail = false, href, title, date, dateLabel = date, dateNote = '', cover, lead, body, author, footer, after }) {
+export function PostArticle({ id: post, detail = false, href, title, date, dateLabel = date, dateNote = '', cover, lead, tags, body, author, footer, after }) {
   const heading = detail ? `<h1 class="app-post-title" id="${id(post)}">${escape(title)}</h1>` : `<h2 class="app-post-title" id="${id(post)}"><a href="${safeUrl(href)}">${escape(title)}</a></h2>`;
   const footerContent = `${author ? `<p class="app-post-author">${escape(author)}</p>` : ''}${footer === undefined ? '' : slot(footer, 'footer')}`;
-  return out(`<article class="app-blog-post${detail ? ' is-detail' : ''}" aria-labelledby="${post}"><header class="app-post-header"><time class="app-post-date" datetime="${escape(date)}">${escape(dateLabel)}${escape(dateNote)}</time>${heading}</header><div class="app-prose app-feed-body"><p class="app-article-lead">${slot(lead, 'lead')}</p>${cover === undefined ? '' : `<div class="app-post-cover app-width-wide">${slot(cover, 'cover')}</div>`}${slot(body, 'body')}</div>${footerContent ? `<footer class="app-post-footer">${footerContent}</footer>` : ''}${after === undefined ? '' : slot(after, 'after')}</article>`);
+  return out(`<article class="app-blog-post${detail ? ' is-detail' : ''}" aria-labelledby="${post}"><header class="app-post-header"><time class="app-post-date" datetime="${escape(date)}">${escape(dateLabel)}${escape(dateNote)}</time>${heading}</header><div class="app-prose app-feed-body"><p class="app-article-lead">${slot(lead, 'lead')}</p>${tags === undefined ? '' : slot(tags, 'tags')}${cover === undefined ? '' : `<div class="app-post-cover app-width-wide">${slot(cover, 'cover')}</div>`}${slot(body, 'body')}</div>${footerContent ? `<footer class="app-post-footer">${footerContent}</footer>` : ''}${after === undefined ? '' : slot(after, 'after')}</article>`);
 }
 
 const text = (value) => isTrusted(value) ? value.html : escape(value);

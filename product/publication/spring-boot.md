@@ -1,24 +1,19 @@
 ---
-{
-  "id": "db73c8752a7e3caad5eb",
-  "slug": "spring-boot",
-  "type": "wiki",
-  "title": "Spring Boot",
-  "description": "Spring Boot로 Kotlin 웹 애플리케이션을 만들 때는 빌드 설정과 요청 처리, 데이터 접근을 연결해 읽는다. 공식 Kotlin 튜토리얼은 이 흐름을 작은 블로그로 설명한다.",
-  "tags": [
-    "spring-boot"
-  ],
-  "field": "frameworks",
-  "topic": "spring-boot",
-  "contentIcon": {
-    "name": "spring"
-  },
-  "visibility": "public",
-  "comments": false,
-  "sourceUrl": "https://docs.woonyong.com/wiki/spring-boot/",
-  "sourceHash": "63abf12f6d204016b1715aa07ba49a8ada52bd3b79c2d850d1be1826b93b3266",
-  "parent": "backend-services-spring-2990236375de"
-}
+id: db73c8752a7e3caad5eb
+slug: spring-boot
+type: wiki
+title: Spring Boot
+description: Spring Boot로 Kotlin 웹 애플리케이션을 만들 때는 빌드 설정과 요청 처리, 데이터 접근을 연결해 읽는다. 공식 Kotlin 튜토리얼은 이 흐름을 작은 블로그로 설명한다.
+tags: []
+field: frameworks
+category: spring-boot
+contentIcon:
+  name: spring
+visibility: public
+comments: false
+sourceUrl: https://docs.woonyong.com/wiki/spring-boot/
+sourceHash: 63abf12f6d204016b1715aa07ba49a8ada52bd3b79c2d850d1be1826b93b3266
+parent: backend-services-spring-2990236375de
 ---
 
 Spring Boot로 Kotlin 웹 애플리케이션을 만들 때는 빌드 설정과 요청 처리, 데이터 접근을 연결해 읽는다. [공식 Kotlin 튜토리얼](https://spring.io/guides/tutorials/spring-boot-kotlin/)은 이 흐름을 작은 블로그로 설명한다.

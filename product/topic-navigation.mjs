@@ -1,12 +1,15 @@
 // 공개 문서의 부모 관계를 검사하고 전체 깊이를 보존한 주제별 목록을 만든다.
 export function createTopicTrees(documents) {
+  const roots = createTopicTree('documents', documents.filter(page => page.type === 'wiki'));
   const topics = new Map();
-  for (const page of documents) {
-    if (page.type !== 'wiki') continue;
-    if (!topics.has(page.topic)) topics.set(page.topic, []);
-    topics.get(page.topic).push(page);
+  const pending = roots.toReversed().map(root => ({ node: root, root }));
+  while (pending.length) {
+    const { node, root } = pending.pop();
+    if (!topics.has(node.page.category)) topics.set(node.page.category, new Set());
+    topics.get(node.page.category).add(root);
+    for (let i = node.children.length - 1; i >= 0; i--) pending.push({ node: node.children[i], root });
   }
-  return new Map([...topics].map(([topic, pages]) => [topic, createTopicTree(topic, pages)]));
+  return new Map([...topics].map(([category, entries]) => [category, [...entries]]));
 }
 
 function createTopicTree(topic, pages) {

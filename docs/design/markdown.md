@@ -1,10 +1,10 @@
 # Markdown 글 작성
 
-글은 `.md` 파일 하나이며 일반 Markdown만으로 쓴다. `ui:` 구성 요소는 복각 검토 화면용 선택 기능이고 글 작성에 필요하지 않다. 실제 렌더링은 미리보기의 `/articles/markdown-guide/`에서 확인한다. 원문은 `product/examples/markdown-guide.md`이며 `example: true`라 운영 빌드, 검색, RSS, 사이트맵에서 빠진다.
+글은 `.md` 파일 하나이며 일반 Markdown만으로 쓴다. `ui:` 구성 요소는 복각 검토 화면용 선택 기능이고 글 작성에 필요하지 않다. 실제 렌더링은 미리보기의 `/articles/markdown-guide/`에서 확인한다. 원문은 `product/examples/blog/markdown-guide.md`이며 `example: true`라 운영 빌드, 검색, RSS, 사이트맵에서 빠진다.
 
 ## 파일과 메타데이터
 
-`product/publication/`(공개 입력)이나 `product/examples/`(예시)에 `.md` 파일을 둔다. 맨 위에 `---`로 감싼 YAML 또는 JSON을 쓰고 아래에 본문을 쓴다.
+`product/publication/`(공개 입력)이나 `product/examples/`(예시)에 하위 폴더에 `.md` 파일을 둔다. 주소는 `slug`, 문서 계층은 `parent`, 내부 분류는 `category`로 결정하며 폴더 경로와 무관하다. `tags`는 공통 태그 목록을 사용하고 빈 배열을 허용한다. 맨 위에 `---`로 감싼 YAML 또는 JSON을 쓰고 아래에 본문을 쓴다.
 
 | 필드 | 필수 | 내용 |
 |---|---|---|
@@ -100,7 +100,7 @@ items:
 
 ## 구성 블록
 
-기기별 탭, 단계, 영상, 질문과 답, 카드 링크는 `:::` 블록으로 쓴다. 안쪽은 일반 Markdown이라 JSON이나 이스케이프한 문자열이 필요 없다. 기존 ` ```ui:이름 ` 블록은 그대로 동작하고 둘을 섞어 쓸 수 있다. 완성된 글은 `product/examples/document-composition.md`이고 미리보기의 `/articles/document-composition/`에서 본다.
+기기별 탭, 단계, 영상, 질문과 답, 카드 링크는 `:::` 블록으로 쓴다. 안쪽은 일반 Markdown이라 JSON이나 이스케이프한 문자열이 필요 없다. 기존 ` ```ui:이름 ` 블록은 그대로 동작하고 둘을 섞어 쓸 수 있다. 완성된 글은 `product/examples/software-design/document-composition.md`이고 미리보기의 `/articles/document-composition/`에서 본다.
 
 ````markdown
 :::platform

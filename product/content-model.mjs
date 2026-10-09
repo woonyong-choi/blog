@@ -6,7 +6,7 @@ export const PAGE_SIZES = Object.freeze({ preview: 4, cards: 12, feed: 4, search
 export const TOPIC_GROUPS = Object.freeze(['cs', 'tech']);
 export const FIELDS = Object.freeze(['languages', 'cs', 'frameworks', 'infrastructure']);
 
-export function readDocument(source, tags, now = new Date()) {
+export function readDocument(source, tags, now = new Date(), categories = tags) {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) throw new Error('missing document metadata');
   const page = parse(match[1], { maxAliasCount: 0 });
@@ -18,10 +18,11 @@ export function readDocument(source, tags, now = new Date()) {
     if (typeof page[name] !== 'string' || !page[name].trim()) throw new Error(`missing ${name}: ${page.id}`);
   }
   if (!['public', 'draft'].includes(page.visibility)) throw new Error(`invalid visibility: ${page.id}`);
-  if (!Array.isArray(page.tags) || page.tags.length < 1 || page.tags.length > 5) throw new Error(`invalid tags: ${page.id}`);
+  page.tags ??= [];
+  if (!Array.isArray(page.tags) || page.tags.length > 5) throw new Error(`invalid tags: ${page.id}`);
   if (new Set(page.tags).size !== page.tags.length || page.tags.some(tag => !tags[tag])) throw new Error(`unknown or duplicate tag: ${page.id}`);
   if (!FIELDS.includes(page.field)) throw new Error(`invalid field: ${page.id}`);
-  if (!ID.test(page.topic ?? '') || !tags[page.topic]) throw new Error(`invalid topic: ${page.id}`);
+  if (!ID.test(page.category ?? '') || !categories[page.category]) throw new Error(`invalid category: ${page.id}`);
   if (page.parent != null && (typeof page.parent !== 'string' || !ID.test(page.parent))) throw new Error(`invalid parent: ${page.id}`);
   if (typeof page.contentIcon?.name !== 'string') throw new Error(`missing content icon: ${page.id}`);
   if (page.type === 'blog' && page.comments !== true) throw new Error(`blog comments are required: ${page.id}`);
@@ -56,7 +57,7 @@ export function paginate(items, page, size) {
 
 export function searchEntry(page, tags) {
   return { id: page.id, route: page.route, title: page.title, description: page.description,
-    type: page.type, tags: page.tags, topic: page.topic, contentIcon: page.contentIcon,
+    type: page.type, tags: page.tags, contentIcon: page.contentIcon,
     date: page.type === 'blog' ? page.publishedAt : page.updatedAt ?? '',
     keywords: [...(page.keywords ?? []), ...page.tags.flatMap(tag => [tags[tag].label, ...(tags[tag].aliases ?? [])])],
     text: page.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/<[^>]*>/g, ' ').replace(/[#*_`>|]/g, ' ') };

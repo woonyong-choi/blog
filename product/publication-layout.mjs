@@ -46,6 +46,7 @@ export function searchBox({ large = false, query = '' } = {}) {
 }
 
 export function tagLinks(page, tags, limit = Infinity) {
+  if (!page.tags?.length) return '';
   return String(ui.TagList({ tags: page.tags.map(id => ({ href: `/tags/${id}/`, label: tags[id].label })), limit }));
 }
 
@@ -58,7 +59,7 @@ export function knowledgeFields(documents, topics, field) {
   const groups = field ? [field] : TOPIC_GROUPS;
   return groups.map(value => {
     const entries = Object.entries(topics).filter(([, topic]) => topic.group && (TOPIC_GROUPS.includes(value) ? topic.group === value : topic.field === value)).map(([id, topic]) => {
-      const article = bySlug.get(topic.article) ?? documents.filter(page => page.topic === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
+      const article = bySlug.get(topic.article) ?? documents.filter(page => page.category === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
       return article ? { ...topic, page: { ...article, description: topic.group === 'tech' ? '' : topic.description ?? article.description, contentIcon: { name: topic.icon } } } : null;
     }).filter(Boolean);
     if (!entries.length) return '';
@@ -101,10 +102,10 @@ export function articlePage(page, documents, context, comments = '') {
   const example = page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : '';
   if (page.type === 'blog') {
     const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? dateLine({ updatedAt: page.updatedAt }) : '';
-    return `<main id="main" class="app-shell">${postArticle(page, { detail: true, footer: `${updated}${example}`, after: tail })}</main>`;
+    return `<main id="main" class="app-shell">${postArticle(page, { detail: true, tags: tagLinks(page, context.tags ?? context.topics), footer: `${updated}${example}`, after: tail })}</main>`;
   }
   const pager = documentPager(page, context, candidate => ui.trusted(subjectIcon(candidate.contentIcon, 'small')));
-  const content = `<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${example}</div><div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${source}${pager}${comments}</article>`;
+  const content = `<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.tags ?? context.topics)}${example}</div><div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${source}${pager}${comments}</article>`;
   return `<main id="main" class="app-shell app-document-shell">${searchBox()}${ui.DocumentLayout({ navigation: documentNavigation(page, context), outline: documentOutline(page.headings), content: ui.trusted(content) })}</main>`;
 }
 

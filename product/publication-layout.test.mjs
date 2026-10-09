@@ -4,7 +4,7 @@ import { knowledgeFields, wikiLanding, tagPage } from './publication-layout.mjs'
 
 test('a_published_topic_stays_reachable_when_its_overview_is_unpublished', () => {
   const topics = { javascript: { label: 'JavaScript', field: 'languages', group: 'tech', icon: 'javascript', article: 'javascript' } };
-  const documents = [{ id: 'b', slug: 'promises', route: '/articles/promises/', topic: 'javascript', type: 'wiki', title: 'Promise', description: '비동기 작업', contentIcon: { name: 'runtime' } }];
+  const documents = [{ id: 'b', slug: 'promises', route: '/articles/promises/', category: 'javascript', type: 'wiki', title: 'Promise', description: '비동기 작업', contentIcon: { name: 'runtime' } }];
   const html = knowledgeFields(documents, topics);
   assert.match(html, /href="\/articles\/promises\/"/);
   assert.match(html, /role="heading" aria-level="3">JavaScript<\/strong>/);
@@ -26,7 +26,7 @@ test('tag_page_keeps_static_reading_separate_from_filtered_results', () => {
 
 test('topic_preview_keeps_two_rows_and_the_same_entry_width_for_cs_and_tech', () => {
   for (const [group, limit] of [['cs', 6], ['tech', 8]]) for (const count of [0, 1, limit, limit + 1]) {
-    const documents = Array.from({ length: count }, (_, i) => ({ id: `p${i}`, slug: `p${i}`, route: `/articles/p${i}/`, topic: `t${i}`, type: 'wiki', title: `주제 ${i}`, description: '내용', contentIcon: { name: 'processor' } }));
+    const documents = Array.from({ length: count }, (_, i) => ({ id: `p${i}`, slug: `p${i}`, route: `/articles/p${i}/`, category: `t${i}`, type: 'wiki', title: `주제 ${i}`, description: '내용', contentIcon: { name: 'processor' } }));
     const topics = Object.fromEntries(documents.map((p, i) => [`t${i}`, { field: 'cs', group, icon: 'processor', label: p.title, article: p.slug }]));
     const preview = wikiLanding(documents, { topics });
     assert.equal((preview.match(/class="app-help-card"/g) ?? []).length, Math.min(count, limit));
@@ -55,7 +55,7 @@ test('tech_and_cs_group_topics_by_navigation_without_changing_source_fields', ()
     os: { label: 'OS', field: 'cs', group: 'cs', icon: 'operating-system' },
     projects: { label: 'Projects', field: 'cs', icon: 'project' },
   };
-  const documents = Object.keys(topics).map(id => ({ id, slug: id, route: `/articles/${id}/`, topic: id, type: 'wiki', title: id, description: '범위 설명' }));
+  const documents = Object.keys(topics).map(id => ({ id, slug: id, route: `/articles/${id}/`, category: id, type: 'wiki', title: id, description: '범위 설명' }));
   const html = knowledgeFields(documents, topics);
   assert.match(html, /<h2>Tech<\/h2>/);
   assert.match(html, /<h2>CS<\/h2>/);

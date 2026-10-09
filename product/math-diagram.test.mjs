@@ -1,3 +1,4 @@
+import { markdownFiles } from './content-files.mjs';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -119,8 +120,8 @@ test('every_mermaid_diagram_in_the_content_parses_with_the_bundled_mermaid', asy
   const { default: mermaid } = await import('mermaid');
   let count = 0;
   for (const folder of ['publication', 'examples']) {
-    for (const name of readdirSync(`${ROOT}${folder}`).filter(name => name.endsWith('.md'))) {
-      for (const match of readFileSync(`${ROOT}${folder}/${name}`, 'utf8').matchAll(/^(`{3,})mermaid[^\n]*\n([\s\S]*?)^\1/gm)) {
+    for (const name of markdownFiles(`${ROOT}${folder}`)) {
+      for (const match of readFileSync(name, 'utf8').matchAll(/^(`{3,})mermaid[^\n]*\n([\s\S]*?)^\1/gm)) {
         await assert.doesNotReject(() => mermaid.parse(match[2]), `${folder}/${name}`);
         count += 1;
       }
