@@ -287,9 +287,9 @@ export function PageLinks({ label, before, after, numbers = [], summary, resultP
 }
 export const ListLink = ({ href, text }) => out(`<p class="app-page-links"><a href="${safeUrl(href)}">${escape(text)}</a></p>`);
 
-/** 전체 목록의 돌아가기, 제목, 목록 정보와 선택 동작을 같은 순서로 배치한다. */
-export function CollectionHeader({ title, backHref, backLabel, summary, action }) {
-  return out(`<header class="app-collection-header"><a class="app-back-link" href="${safeUrl(backHref)}">${escape(backLabel)}</a><h1 class="app-page-heading">${escape(title)}</h1><div class="app-collection-info"><span>${escape(summary)}</span>${action ? `<a href="${safeUrl(action.href)}">${escape(action.label)}</a>` : ''}</div></header>`);
+/** 전체 목록의 제목 아래에 돌아가기와 선택 동작을 배치한다. */
+export function CollectionHeader({ title, backHref, backLabel, action }) {
+  return out(`<header class="app-collection-header"><h1 class="app-page-heading">${escape(title)}</h1><div class="app-collection-info"><a class="app-back-link" href="${safeUrl(backHref)}">${escape(backLabel)}</a>${action ? `<a href="${safeUrl(action.href)}">${escape(action.label)}</a>` : ''}</div></header>`);
 }
 
 /** 태그 목록. `limit`을 넘는 태그는 `+N` 접기 안에 둔다. */

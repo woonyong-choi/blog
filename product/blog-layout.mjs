@@ -19,7 +19,7 @@ export function recentBlog(posts, tags) {
 
 export function blogArchive(posts, tags, page) {
   const result = paginate(posts, page, PAGE_SIZES.cards);
-  return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}${ui.CollectionHeader({ title: '모든 글', backHref: '/docs/', backLabel: '← Search', summary: `${posts.length}편 · 최신 발행순`, action: { href: '/blog/', label: '본문 이어 읽기 →' } })}${posts.length ? `<div data-blog-list>${ui.CardGroup({ columns: 2, cards: result.items.map(post => ui.trusted(blogCard(post, tags, 2))) })}${pagination(result, '/blog/all/')}<p class="app-caption" data-blog-status role="status"></p></div>` : emptyBlog()}</main>`;
+  return `<main id="main" class="app-shell">${searchBox({ large: true })}${ui.CollectionHeader({ title: '모든 글', backHref: '/docs/', backLabel: '돌아가기', action: { href: '/blog/', label: '본문 이어 읽기 →' } })}${posts.length ? `<div data-blog-list>${ui.CardGroup({ columns: 3, cards: result.items.map(post => ui.trusted(blogCard(post, tags, 2))) })}${pagination(result, '/blog/all/')}<p class="app-caption" data-blog-status role="status"></p></div>` : emptyBlog()}</main>`;
 }
 
 export function blogFeed(posts, tags, page, { commentConfig, commentTheme } = {}) {

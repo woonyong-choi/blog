@@ -92,7 +92,7 @@ export function personalHome(context) {
 export function wikiLanding(documents, context, field, recent = '') {
   const fields = knowledgeFields(documents, context.topics, field);
   const projects = !field && context.config?.notes?.projects === true ? projectSection(context.config.projects) : '';
-  if (field) return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}${ui.CollectionHeader({ title: FIELD_NAMES[field], backHref: '/docs/', backLabel: '← Search', summary: `${categoryEntries(documents, context.topics, field).length}개 ${field === 'tech' ? '기술' : '분야'}` })}${fields}</main>`;
+  if (field) return `<main id="main" class="app-shell">${searchBox({ large: true })}${ui.CollectionHeader({ title: FIELD_NAMES[field], backHref: '/docs/', backLabel: '돌아가기' })}${fields}</main>`;
   return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Search</h1>${recent}${projects}${fields}</main>`;
 }
 

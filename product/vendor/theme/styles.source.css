@@ -659,7 +659,8 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-page-heading { margin: var(--site-gap-lg) 0 var(--site-gap-sm); font-size: var(--site-section-title); line-height: var(--site-line-title); }
 .app-page-description { color: var(--site-muted); margin-bottom: var(--site-gap-lg); }
 .app-collection-header { margin-bottom: var(--site-gap); }
-.app-collection-header > .app-back-link { display: inline-block; margin-bottom: var(--spacing-16); }
+.app-collection-info > .app-back-link { color: var(--site-muted); }
+.app-collection-info > .app-back-link:hover { color: var(--site-link); }
 .app-publication .app-collection-header > .app-page-heading { margin: 0; }
 .app-collection-info { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs); align-items: baseline; justify-content: space-between; margin-top: var(--spacing-16); font-size: var(--site-small-text); color: var(--site-muted); }
 .app-knowledge-section { margin-block: var(--site-support-gap); }

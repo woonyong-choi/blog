@@ -26,9 +26,9 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.equal((first.match(/class="app-blog-card"/g) ?? []).length, 12);
   assert.equal((last.match(/class="app-blog-card"/g) ?? []).length, 1);
   assert.match(first, /href="\/blog\/all\/page\/2\/"/);
-  assert.match(first, /class="app-shell app-body"/);
-  assert.match(first, /class="app-support-grid is-pair"/);
-  assert.ok(first.indexOf('app-back-link') < first.indexOf('app-page-heading'));
+  assert.match(first, /class="app-shell"/);
+  assert.match(first, /class="app-support-grid"/);
+  assert.ok(first.indexOf('app-page-heading') < first.indexOf('app-back-link'));
   assert.ok(first.indexOf('app-page-heading') < first.indexOf('app-blog-card'));
   assert.equal((first.match(/<h2\b/g) ?? []).length, 12);
   assert.doesNotMatch(first, /<h3\b/);
