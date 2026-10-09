@@ -8,7 +8,7 @@ import { contentIcon } from './content-icons.mjs';
 import { TOPIC_GROUPS } from './content-model.mjs';
 import { clientEntrypoints } from './publication-assets.mjs';
 import { heroSection, projectsSection, technologySection, interviewsSection, contactSection } from './home-sections.mjs';
-import { articleToc } from './article-toc.mjs';
+import { documentNavigation, documentOutline, documentPager } from './document-navigation.mjs';
 import { postArticle, shiftHeadings, detailLevels } from './post-article.mjs';
 import { publicationMetadata } from './publication-metadata.mjs';
 import { usesMath, MATH_STYLESHEET } from './math-assets.mjs';
@@ -31,8 +31,9 @@ export function subjectIcon(spec, size = 'card') {
 export function documentShell(page, body, context) {
   const { config, themeHash, scriptHash, scriptHashes = {}, math } = context;
   const hashOf = file => scriptHashes[file] ?? scriptHash;
-  const navigation = [['Notes', '/wiki/'], ['Blog', '/blog/']];
-  const active = page.type === 'blog' ? '/blog/' : page.type === 'wiki' ? '/wiki/' : page.route;
+  const navigation = [['Search', '/docs/'], ['Blog', '/blog/']];
+  const searching = page.type === 'wiki' || page.route.startsWith('/docs/') || page.route === '/search/' || page.route.startsWith('/tags/');
+  const active = page.type === 'blog' ? '/blog/' : searching ? '/docs/' : page.route;
   const footer = personalFooter(config);
   const entries = clientEntrypoints(body + footer);
   const searchScript = entries.includes('publication.js') ? `<script type="module" async src="/publication.js?v=${hashOf('publication.js')}"></script>` : '';
@@ -41,7 +42,7 @@ export function documentShell(page, body, context) {
 }
 
 export function searchBox({ large = false, query = '' } = {}) {
-  return `<section class="app-search app-public-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">글 검색</label><div class="app-search-field">${controlImage('search', 'app-search-icon', '')}<input class="app-search-input" id="site-query" name="q" type="text" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-clear" type="button" data-clear-query aria-label="검색어 지우기" hidden>${controlImage('clear', '', '')}</button></div></form><div class="app-search-panel" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p>${large ? `<p class="app-search-frequent">추천 검색어: ${['Python', 'Kubernetes', '운영체제', 'LLM'].map(query => `<button type="button" data-query="${escape(query)}">${escape(query)}</button>`).join(' ')}</p>` : ''}<noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/wiki/">주제별 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
+  return `<section class="app-search app-public-search${large ? ' is-prominent' : ''}" data-public-search aria-label="통합 검색"><form action="/search/" role="search"><label class="app-sr" for="site-query">글 검색</label><div class="app-search-field">${controlImage('search', 'app-search-icon', '')}<input class="app-search-input" id="site-query" name="q" type="text" value="${escape(query)}" placeholder="어떤 내용을 찾으세요?" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions"><button class="app-search-clear" type="button" data-clear-query aria-label="검색어 지우기" hidden>${controlImage('clear', '', '')}</button></div></form><div class="app-search-panel" id="search-suggestions" role="listbox" hidden></div><p class="app-sr" data-search-status role="status" aria-live="polite"></p>${large ? `<p class="app-search-frequent">추천 검색어: ${['Python', 'Kubernetes', '운영체제', 'LLM'].map(query => `<button type="button" data-query="${escape(query)}">${escape(query)}</button>`).join(' ')}</p>` : ''}<noscript><p class="app-caption">검색은 JavaScript가 필요합니다. <a href="/docs/">주제별 목록</a>과 <a href="/blog/all/">전체 글</a>은 바로 읽을 수 있습니다.</p></noscript></section>`;
 }
 
 export function tagLinks(page, tags, limit = Infinity) {
@@ -65,7 +66,7 @@ export function knowledgeFields(documents, topics, field) {
     const columns = value === 'tech' ? (field ? 5 : 4) : 3;
     const shown = field ? entries : entries.slice(0, limit);
     const level = field ? 1 : 2;
-    return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
+    return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p><a href="/docs/topics/${value}/">전체 보기</a></p>` : ''}</section>`;
   }).join('');
 }
 
@@ -86,8 +87,8 @@ export function personalHome(context) {
 export function wikiLanding(documents, context, field, recent = '') {
   const fields = knowledgeFields(documents, context.topics, field);
   const projects = !field && context.config?.notes?.projects === true ? projectSection(context.config.projects) : '';
-  if (field) return `<main id="main" class="app-shell${field === 'tech' ? '' : ' app-body'}">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/wiki/">← Notes</a>${fields}</main>`;
-  return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Notes</h1>${recent}${projects}${fields}</main>`;
+  if (field) return `<main id="main" class="app-shell${field === 'tech' ? '' : ' app-body'}">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/docs/">← Search</a>${fields}</main>`;
+  return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Search</h1>${recent}${projects}${fields}</main>`;
 }
 
 export function projectSection(projects, hasMore = false) {
@@ -95,13 +96,16 @@ export function projectSection(projects, hasMore = false) {
 }
 
 export function articlePage(page, documents, context, comments = '') {
-  const tail = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}${comments}`;
+  const source = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}`;
+  const tail = `${source}${comments}`;
   const example = page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : '';
   if (page.type === 'blog') {
     const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? dateLine({ updatedAt: page.updatedAt }) : '';
     return `<main id="main" class="app-shell">${postArticle(page, { detail: true, footer: `${tagLinks(page, context.topics)}${updated}${example}`, after: tail })}</main>`;
   }
-  return `<main id="main" class="app-shell app-document-shell">${searchBox()}<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${example}</div>${topicNavigation(page, context)}${articleToc(page.headings)}<div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${tail}</article></main>`;
+  const pager = documentPager(page, context, candidate => ui.trusted(subjectIcon(candidate.contentIcon, 'small')));
+  const content = `<article class="app-document"><header class="app-document-header"><h1 class="app-article-title">${subjectIcon(page.contentIcon, 'medium')}${escape(page.title)}</h1></header><p class="app-article-lead app-document-lead">${page.leadHtml ?? escape(page.description)}</p><div class="app-document-metadata">${dateLine(page)}${tagLinks(page, context.topics)}${example}</div><div class="app-prose app-document-body">${shiftHeadings(page.html, detailLevels)}</div>${source}${pager}${comments}</article>`;
+  return `<main id="main" class="app-shell app-document-shell">${searchBox()}${ui.DocumentLayout({ navigation: documentNavigation(page, context), outline: documentOutline(page.headings), content: ui.trusted(content) })}</main>`;
 }
 
 export function resultRow(page, tags) {
@@ -117,17 +121,4 @@ export function dateLine(page) {
   const published = page.publishedAt ? `<time datetime="${page.publishedAt}">${page.publishedAt}</time>` : '';
   const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? `<span>수정 <time datetime="${page.updatedAt}">${page.updatedAt}</time></span>` : '';
   return published || updated ? `<p class="app-document-dates">${published}${updated}</p>` : '';
-}
-
-function topicNavigation(page, context) {
-  if (page.type !== 'wiki') return '';
-  const roots = context.topicTrees?.get(page.topic);
-  if (!roots) return '';
-  function children(node) {
-    const parent = node.page;
-    const link = `<a href="${parent.route}"${parent.id === page.id ? ' aria-current="page"' : ''}>${escape(parent.title)}</a>`;
-    if (!node.children.length) return `<li>${link}</li>`;
-    return `<li><details open><summary>${escape(parent.title)}</summary><ul><li>${link}</li>${node.children.map(children).join('')}</ul></details></li>`;
-  }
-  return `<details class="app-document-nav"><summary>문서 목록 · ${escape(context.topics[page.topic].label)}</summary><nav aria-label="${escape(context.topics[page.topic].label)} 문서"><a class="app-sidebar-back" href="/wiki/">← Notes</a><ul>${roots.map(children).join('')}</ul></nav></details>`;
 }

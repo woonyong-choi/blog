@@ -14,7 +14,7 @@ export function browserScripts(root) {
     });
     scripts.set(file, result.outputFiles[0].text);
   }
-  for (const file of ['document.js', 'comments.js', 'flows.js', 'video.js', 'footer-year.js', 'blog-list.js']) {
+  for (const file of ['document.js', 'document-navigation.js', 'redirect.js', 'comments.js', 'flows.js', 'video.js', 'footer-year.js', 'blog-list.js']) {
     scripts.set(file, readFileSync(join(root, file), 'utf8'));
   }
   return scripts;

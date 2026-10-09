@@ -18,6 +18,15 @@ test('publication_contract_excludes_drafts_and_future_posts', () => {
   assert.deepEqual(publicDocuments([example], { includeExamples: true }).map(page => page.id), ['a']);
 });
 
+test('document_type_controls_the_public_route_without_changing_the_comment_identity', () => {
+  const blog = readDocument(source(), TAGS);
+  const wiki = readDocument(source({ type: 'wiki' }), TAGS);
+  assert.deepEqual([blog.route, wiki.route], ['/blog/a/', '/docs/a/']);
+  assert.equal(blog.id, wiki.id);
+  for (const slug of ['all', 'page', 'feed']) assert.throws(() => readDocument(source({ slug }), TAGS), /reserved document slug/);
+  assert.throws(() => readDocument(source({ type: 'wiki', slug: 'topics' }), TAGS), /reserved document slug/);
+});
+
 test('publication_contract_rejects_missing_comments_invalid_dates_and_tags', () => {
   for (const invalid of [{ comments: false }, { publishedAt: '2026-02-30' }, { tags: ['unknown'] }, { updatedAt: '2025-01-01' }, { thumbnail: { src: '/media/../secret.svg', alt: '' } }]) {
     assert.throws(() => readDocument(source(invalid), TAGS));

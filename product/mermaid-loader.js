@@ -22,16 +22,21 @@ async function draw(figure) {
   }
 }
 
-const figures = [...document.querySelectorAll('[data-mermaid]')];
-if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(entries => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      observer.unobserve(entry.target);
-      draw(entry.target);
-    }
-  }, { rootMargin: '300px 0px' });
-  for (const figure of figures) observer.observe(figure);
-} else {
-  for (const figure of figures) draw(figure);
+const initialized = new WeakSet();
+const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    if (!entry.isIntersecting) continue;
+    observer.unobserve(entry.target);
+    void draw(entry.target);
+  }
+}, { rootMargin: '300px 0px' }) : null;
+function initContent(root) {
+  for (const figure of root.querySelectorAll('[data-mermaid]')) {
+    if (initialized.has(figure)) continue;
+    initialized.add(figure);
+    if (observer) observer.observe(figure);
+    else void draw(figure);
+  }
 }
+initContent(document);
+document.addEventListener('content-added', event => initContent(event.detail));

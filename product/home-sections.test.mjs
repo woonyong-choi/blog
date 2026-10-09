@@ -170,7 +170,7 @@ test('the_shipped_home_config_builds_two_dummy_projects_in_the_default_order', (
   assert.deepEqual(home.map(section => section.type), ['hero', 'projects', 'technologies', 'interviews', 'contact']);
   assert.equal(home[1].items.length, 2);
   for (const project of home[1].items) assert.deepEqual([project.title, project.description, project.link.label, project.image.alt], ['더미 제목', '프로젝트 내용을 설명하세요.', '자세히 보기', '더미 프로젝트 이미지']);
-  assert.deepEqual(home[1].items.map(project => project.link.href), ['/wiki/', '/blog/']);
+  assert.deepEqual(home[1].items.map(project => project.link.href), ['/docs/', '/blog/']);
   assert.equal(home[2].title, '함께 쓰는 기술');
   assert.equal(home[2].description, '기술별 기록을 모았습니다.');
 });

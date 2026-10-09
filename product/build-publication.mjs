@@ -23,6 +23,7 @@ import { mathAssets } from './math-assets.mjs';
 import { publicationStyles } from './publication-styles.mjs';
 import { siteOrigin, SITE_ICON } from './publication-metadata.mjs';
 import { siteIdentity } from './site-identity.mjs';
+import { legacyRoutes, redirectPage } from './publication-routes.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));
@@ -55,10 +56,14 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   context.home = loadHomeConfig(new Set(BRAND_NAMES));
   context.interviewExamples = JSON.parse(readFileSync(join(ROOT, 'interview-examples.json')));
   const output = new Map();
-  const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
+  const add = (route, title, body, metadata = {}) => {
+    if (output.has(route)) throw new Error(`duplicate publication route: ${route}`);
+    output.set(route, documentShell({ route, title, ...metadata }, body, context));
+  };
   add('/', CONFIG.name, personalHome(context));
-  add('/wiki/', 'Notes', wikiLanding(documents, context, undefined, recentBlog(posts)));
-  for (const field of new Set([...TOPIC_GROUPS, ...FIELDS])) add(`/wiki/${field}/`, FIELD_NAMES[field], wikiLanding(documents, context, field));
+  add('/docs/', 'Search', wikiLanding(documents, context, undefined, recentBlog(posts)));
+  const fields = [...new Set([...TOPIC_GROUPS, ...FIELDS])];
+  for (const field of fields) add(`/docs/topics/${field}/`, FIELD_NAMES[field], wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
   if (preview) for (const page of iconAuditPages()) add(page.route, '아이콘 검증', page.body);
   const commentTheme = CONFIG.comments.themeUrl || `${origin || 'http://127.0.0.1:8796'}/theme/assets/giscus.css?v=${MANIFEST.contentHash}`;
@@ -72,6 +77,11 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   for (const [base, size, render] of [['/blog/', PAGE_SIZES.feed, blogFeed], ['/blog/all/', PAGE_SIZES.cards, blogArchive]]) {
     for (let page = 1; page <= Math.max(1, Math.ceil(posts.length / size)); page++) add(page === 1 ? base : `${base}page/${page}/`, 'Blog', render(posts, TOPICS, page), { type: 'blog' });
   }
+  context.redirects = legacyRoutes(documents, fields);
+  for (const [old, target] of context.redirects) {
+    if (output.has(old) || !output.has(target)) throw new Error(`invalid publication redirect: ${old}`);
+    output.set(old, redirectPage(target, origin));
+  }
   await writeSite(output, documents, context, scripts, diagrams.files);
   return { pages: output.size, documents: documents.length, themeHash: MANIFEST.contentHash };
 }
@@ -83,13 +93,14 @@ function renderDocuments(documents) {
   }
   const bySlug = new Map(documents.map(page => [page.slug, page]));
   for (const page of documents) {
-    const rewrite = html => html.replace(/href="\/wiki\/([^/]+)\/(?:#([^"?]+))?"/g, (original, slug, fragment) => {
+    const rewrite = html => html.replace(/href="\/(wiki|articles)\/([^/]+)\/(?:#([^"?]+))?"/g, (original, kind, slug, fragment) => {
       const target = bySlug.get(slug);
-      if (!target) return `href="https://docs.woonyong.com/wiki/${slug}/${fragment ? '#' + fragment : ''}"`;
+      if (!target) return kind === 'wiki' ? `href="https://docs.woonyong.com/wiki/${slug}/${fragment ? '#' + fragment : ''}"` : original;
       if (!fragment) return `href="${target.route}"`;
+      if ((target.leadHtml + target.html).includes(`id="${decodeURIComponent(fragment)}"`)) return `href="${target.route}#${fragment}"`;
       const id = `${target.id}-${decodeURIComponent(fragment)}`;
       return (target.leadHtml + target.html).includes(`id="${id}"`) ? `href="${target.route}#${id}"` : `href="https://docs.woonyong.com/wiki/${slug}/#${fragment}"`;
-    }).replace(/href="#([^" ]+)"/g, (original, fragment) => {
+    }).replace(/href="\/wiki\/(?=["?#])/g, 'href="/docs/').replace(/href="#([^" ]+)"/g, (original, fragment) => {
       if ((page.leadHtml + page.html).includes(`id="${fragment}"`)) return original;
       const prefixed = `${page.id}-${decodeURIComponent(fragment)}`;
       return (page.leadHtml + page.html).includes(`id="${prefixed}"`) ? `href="#${prefixed}"` : original;
@@ -149,7 +160,7 @@ async function writeSite(output, documents, context, scripts, diagramFiles) {
   mkdirSync(join(OUTPUT, 'blog'), { recursive: true });
   const posts = blogDocuments(documents).filter(page => !page.example);
   writeFileSync(join(OUTPUT, 'blog/feed.xml'), `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>${escape(CONFIG.name)}</title><link>${escape(context.origin + '/blog/')}</link><description>${escape(CONFIG.description)}</description>${posts.map(page => `<item><title>${escape(page.title)}</title><link>${escape(context.origin + page.route)}</link><guid isPermaLink="false">${page.id}</guid><pubDate>${new Date(page.publishedAt).toUTCString()}</pubDate><description>${escape(page.description)}</description></item>`).join('')}</channel></rss>`);
-  writeFileSync(join(OUTPUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...output.keys()].filter(route => route !== '/search/').map(route => `<url><loc>${escape(context.origin + route)}</loc></url>`).join('')}</urlset>`);
+  writeFileSync(join(OUTPUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...output.keys()].filter(route => route !== '/search/' && !context.redirects.has(route)).map(route => `<url><loc>${escape(context.origin + route)}</loc></url>`).join('')}</urlset>`);
   validateOutput(output);
   writeFileSync(join(OUTPUT, 'build-report.json'), JSON.stringify({ pages: output.size, documents: documents.length, examples: documents.filter(page => page.example).length, preview: context.preview, commentsStatus: context.commentsStatus, themeHash: context.themeHash, styles: { sourceBytes: Buffer.byteLength(sourceStyles), bytes: Buffer.byteLength(styles.css), removedSelectors: styles.removed, hash: styleHash }, assets: { files: assets.size, bytes: [...assets.values()].reduce((sum, content) => sum + content.length, 0) }, routes: [...output.keys()] }, null, 2));
   writeFileSync(join(OUTPUT, 'robots.txt'), context.preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${context.origin}/sitemap.xml\n`);

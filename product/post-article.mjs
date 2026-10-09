@@ -15,5 +15,12 @@ export function shiftHeadings(html, levels) {
 }
 
 export function postArticle(post, { detail = false, footer = '', after = '' } = {}) {
-  return String(ui.PostArticle({ id: `post-${post.id}`, detail, href: post.route, title: post.title, date: post.publishedAt, dateNote: post.example ? ' · 예시 글' : '', lead: ui.trusted(post.leadHtml ?? escape(post.description)), body: ui.trusted(shiftHeadings(post.html, detail ? detailLevels : feedLevels)), author: post.author, footer: ui.trusted(footer), after: ui.trusted(after) }));
+  return String(ui.PostArticle({ id: `post-${post.id}`, detail, href: post.route, title: post.title, date: post.publishedAt, cover: post.thumbnail ? ui.trusted(thumbnailImage(post, detail)) : undefined, dateNote: post.example ? ' · 예시 글' : '', lead: ui.trusted(post.leadHtml ?? escape(post.description)), body: ui.trusted(shiftHeadings(post.html, detail ? detailLevels : feedLevels)), author: post.author, footer: ui.trusted(footer), after: ui.trusted(after) }));
+}
+
+export function thumbnailImage(page, eager = false) {
+  if (!page.thumbnail) return '';
+  const position = page.thumbnail.position;
+  const crop = position ? ` style="object-position:${position.x}% ${position.y}%"` : '';
+  return `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="${eager ? 'eager' : 'lazy'}" decoding="async"${crop}>`;
 }

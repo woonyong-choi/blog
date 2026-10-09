@@ -41,34 +41,41 @@ export function updateRemote(button, video, selected = true) {
   const icon = button.querySelector('img');
   icon.src = new URL(`${playing ? 'pause' : !fixed && ended ? 'replay' : 'play'}.svg`, icon.src).href;
 }
-for (const root of document.querySelectorAll('[data-player]')) {
-  const video = root.querySelector('video');
-  const controls = [...document.querySelectorAll('[data-remote]')].filter(button => button.dataset.remote === root.id);
-  const status = root.querySelector('[role=status]');
-  async function toggle(button) {
-    const next = button?.dataset.videoSrc;
-    const changed = next && new URL(next, location.href).href !== video.currentSrc;
-    if (changed) { video.src = next; video.load(); }
-    root.classList.add('has-played');
-    if (button?.dataset.scroll) revealVideo(root, button.dataset.scroll === 'down');
-    if (!changed && !video.paused) { video.pause(); return; }
-    if (video.ended) video.currentTime = 0;
-    try {
-      await video.play(); status.textContent = ''; status.classList.remove('app-video-error'); status.classList.add('app-sr'); if (!button?.dataset.scroll) revealVideo(root);
+const initialized = new WeakSet();
+function initContent(container) {
+  for (const root of container.querySelectorAll('[data-player]')) {
+    if (initialized.has(root)) continue;
+    initialized.add(root);
+    const video = root.querySelector('video');
+    const controls = [...document.querySelectorAll('[data-remote]')].filter(button => button.dataset.remote === root.id);
+    const status = root.querySelector('[role=status]');
+    async function toggle(button) {
+      const next = button?.dataset.videoSrc;
+      const changed = next && new URL(next, location.href).href !== video.currentSrc;
+      if (changed) { video.src = next; video.load(); }
+      root.classList.add('has-played');
+      if (button?.dataset.scroll) revealVideo(root, button.dataset.scroll === 'down');
+      if (!changed && !video.paused) { video.pause(); return; }
+      if (video.ended) video.currentTime = 0;
+      try {
+        await video.play(); status.textContent = ''; status.classList.remove('app-video-error'); status.classList.add('app-sr'); if (!button?.dataset.scroll) revealVideo(root);
+      }
+      catch {
+        status.textContent = '영상을 재생하지 못했습니다. 재생 버튼을 다시 눌러 주세요.';
+        status.classList.remove('app-sr'); status.classList.add('app-video-error');
+      }
     }
-    catch {
-      status.textContent = '영상을 재생하지 못했습니다. 재생 버튼을 다시 눌러 주세요.';
-      status.classList.remove('app-sr'); status.classList.add('app-video-error');
-    }
+    root.classList.add('is-initialized');
+    root.querySelector('[data-player-play]')?.removeAttribute('hidden');
+    if (video.hasAttribute('data-native-controls') && root.querySelector('[data-player-play]')) video.controls = false;
+    root.querySelector('[data-player-play]')?.addEventListener('click', () => toggle());
+    controls.forEach(button => button.addEventListener('click', event => { event.preventDefault(); toggle(button); }));
+    for (const event of ['play', 'pause', 'ended']) video.addEventListener(event, () => {
+      root.classList.toggle('is-playing', !video.paused);
+      if (!video.paused) { root.classList.add('has-played'); if (video.hasAttribute('data-native-controls')) video.controls = true; }
+      controls.forEach(button => updateRemote(button, video, !button.dataset.videoSrc || new URL(button.dataset.videoSrc, location.href).href === video.currentSrc));
+    });
   }
-  root.classList.add('is-initialized');
-  root.querySelector('[data-player-play]')?.removeAttribute('hidden');
-  if (video.hasAttribute('data-native-controls') && root.querySelector('[data-player-play]')) video.controls = false;
-  root.querySelector('[data-player-play]')?.addEventListener('click', () => toggle());
-  controls.forEach(button => button.addEventListener('click', event => { event.preventDefault(); toggle(button); }));
-  for (const event of ['play', 'pause', 'ended']) video.addEventListener(event, () => {
-    root.classList.toggle('is-playing', !video.paused);
-    if (!video.paused) { root.classList.add('has-played'); if (video.hasAttribute('data-native-controls')) video.controls = true; }
-    controls.forEach(button => updateRemote(button, video, !button.dataset.videoSrc || new URL(button.dataset.videoSrc, location.href).href === video.currentSrc));
-  });
 }
+initContent(document);
+document.addEventListener('content-added', event => initContent(event.detail));

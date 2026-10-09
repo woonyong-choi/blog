@@ -1,8 +1,12 @@
-// 정적 다음 페이지의 카드를 재사용한다. 스크립트가 없으면 원래 쪽 이동 링크가 동작한다.
+// 정적 다음 페이지의 카드 또는 본문을 재사용한다. 스크립트가 없으면 원래 쪽 이동 링크가 동작한다.
 export function initBlogList(root, { fetchPage, Observer } = {}) {
   const doc = root.ownerDocument;
   const view = doc.defaultView;
-  const grid = root.querySelector('.app-support-grid');
+  const feed = root.dataset.blogList === 'feed';
+  const containerSelector = feed ? '.app-blog-feed-items' : '.app-support-grid';
+  const itemSelector = feed ? '.app-blog-post' : '.app-blog-card';
+  const primarySelector = feed ? '.app-post-title a' : '.app-blog-card-link';
+  const grid = root.querySelector(containerSelector);
   const nav = root.querySelector('.app-page-links');
   const link = nav?.querySelector('[rel="next"]');
   if (!link || !grid) return;
@@ -10,14 +14,14 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
   const fetchNext = fetchPage ?? view.fetch.bind(view);
   const Intersection = Observer ?? view.IntersectionObserver;
   const visited = new Set([view.location.href]);
-  const articles = new Set([...grid.querySelectorAll('.app-blog-card-link')].map(item => item.href));
+  const articles = new Set([...grid.querySelectorAll(primarySelector)].map(item => item.href));
   let pending = false;
   let failed = false;
   let next = link.href;
 
   function pageUrl(value) {
     const url = new URL(value, view.location.href);
-    if (url.origin !== view.location.origin || !/^\/blog\/all\/(?:page\/[1-9]\d*\/)?$/.test(url.pathname) || url.search || url.hash || visited.has(url.href)) throw new Error('invalid next page');
+    if (url.origin !== view.location.origin || !(feed ? /^\/blog\/(?:page\/[1-9]\d*\/)?$/ : /^\/blog\/all\/(?:page\/[1-9]\d*\/)?$/).test(url.pathname) || url.search || url.hash || visited.has(url.href)) throw new Error('invalid next page');
     return url.href;
   }
 
@@ -32,15 +36,15 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
       const response = await fetchNext(url, { redirect: 'error' });
       if (!response.ok) throw new Error('page request failed');
       const page = new view.DOMParser().parseFromString(await response.text(), 'text/html');
-      const list = page.querySelector('[data-blog-list]');
-      const cards = [...(list?.querySelectorAll('.app-support-grid > .app-blog-card') ?? [])];
+      const list = page.querySelector(feed ? '[data-blog-list=feed]' : '[data-blog-list=""]');
+      const cards = [...(list?.querySelectorAll(`${containerSelector} > ${itemSelector}`) ?? [])];
       if (!cards.length) throw new Error('missing cards');
       const href = list.querySelector('.app-page-links [rel="next"]')?.getAttribute('href');
       const following = href ? pageUrl(href) : null;
       if (following === url) throw new Error('repeated next page');
       const incoming = new Set();
       const added = cards.filter(card => {
-        const cover = card.querySelector('.app-blog-card-link');
+        const cover = card.querySelector(primarySelector);
         if (!cover) throw new Error('missing article link');
         const key = new URL(cover.getAttribute('href'), url).href;
         if (articles.has(key) || incoming.has(key)) return false;
@@ -48,7 +52,9 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
         return true;
       });
       if (!added.length) throw new Error('no new articles');
+      if (feed) await prepareContent(page, doc, url);
       grid.append(...added);
+      if (feed) doc.dispatchEvent(new view.CustomEvent('content-added', { detail: grid }));
       incoming.forEach(key => articles.add(key));
       visited.add(url);
       next = following;
@@ -57,7 +63,7 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
       if (next) link.href = next;
       else { observer?.disconnect(); nav.hidden = true; }
       link.textContent = '더 보기';
-      if (manual) added[0].querySelector('.app-blog-card-link')?.focus();
+      if (manual) added[0].querySelector(primarySelector)?.focus();
       if (next) { observer?.unobserve(nav); observer?.observe(nav); }
     } catch {
       failed = true;
@@ -82,6 +88,16 @@ export function initBlogList(root, { fetchPage, Observer } = {}) {
     if (entries.some(entry => entry.isIntersecting)) void load();
   }) : null;
   observer?.observe(nav);
+}
+
+async function prepareContent(page, doc, url) {
+  const scripts = new Set(['/document.js', '/video.js', '/mermaid-loader.js']);
+  for (const script of page.querySelectorAll('script[type=module][src]')) {
+    const source = new URL(script.getAttribute('src'), url);
+    if (source.origin === doc.location.origin && scripts.has(source.pathname)) await import(source.href);
+  }
+  const math = page.querySelector('link[href^="/katex/katex.css"]');
+  if (math && !doc.querySelector('link[href^="/katex/katex.css"]')) doc.head.append(math.cloneNode(true));
 }
 
 if (typeof document !== 'undefined') document.querySelectorAll('[data-blog-list]').forEach(root => initBlogList(root));

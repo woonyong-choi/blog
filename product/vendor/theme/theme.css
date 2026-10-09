@@ -898,6 +898,8 @@
   --breakpoint-review-wide: 1002px;
   --breakpoint-status-compact: 420px;
   --breakpoint-nav-narrow: 340px;
+  --breakpoint-document-tree: 1040px;
+  --breakpoint-document-outline: 1300px;
   --size-scrollbar: calc(var(--spacing-unit) * 0.75);
   --size-skip-hidden-offset: -160%;
   --size-chevron: 5px;

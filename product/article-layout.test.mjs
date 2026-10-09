@@ -8,7 +8,7 @@ import { blogFeed } from './blog-layout.mjs';
 import { token, px, box } from './theme-measure.mjs';
 
 const near = (value, expected) => assert.equal(Math.round(value * 10000) / 10000, expected);
-const topics = { python: { label: 'Python' } };
+const topics = { python: { label: 'Python', group: 'tech', article: 'sample' } };
 function post(type, body = '리드 문장\n\n# 큰 제목\n\n## 절 하나\n\n내용\n\n### 하위\n\n## 절 둘\n\n끝') {
   const page = { id: 'sample', slug: 'sample', route: '/articles/sample/', title: '샘플 글', description: '리드 문장', body, type, topic: 'python', tags: ['python'],
     contentIcon: { name: 'python' }, comments: true, publishedAt: '2026-01-02', updatedAt: '2026-02-03' };
@@ -42,16 +42,33 @@ test('feed_and_blog_detail_share_header_body_and_footer_markup', () => {
   assert.match(detail, /<h2 id="sample-절-하나" class="app-heading-2">/);
 });
 
-test('wiki_detail_keeps_search_title_icon_toc_and_a_collapsed_document_menu_in_the_reading_column', () => {
+test('blog_thumbnail_follows_the_lead_as_a_wide_image_in_detail_and_feed', () => {
+  const page = { ...post('blog'), thumbnail: { src: 'https://example.com/cover.jpg', alt: '글 표지', position: { x: 25, y: 50 } } };
+  const detail = articlePage(page, [page], { topics });
+  const feed = blogFeed([page], topics, 1);
+  for (const html of [detail, feed]) {
+    const positions = order(html, ['app-post-title', 'app-article-lead', 'app-post-cover', 'sample-절-하나']);
+    assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
+    assert.match(html, /class="app-post-cover app-width-wide"/);
+    assert.match(html, /alt="글 표지"/);
+    assert.match(html, /object-position:25% 50%/);
+  }
+  assert.match(detail, /loading="eager"/);
+  assert.match(feed, /loading="lazy"/);
+  assert.doesNotMatch(articlePage(post('blog'), [page], { topics }), /app-post-cover/);
+});
+
+test('wiki_detail_places_hierarchy_and_heading_outline_beside_the_reading_column', () => {
   const page = post('wiki');
   const tree = { page, children: [{ page: { ...page, id: 'child', title: '하위 문서', route: '/articles/child/' }, children: [] }] };
   const html = articlePage(page, [page], { topics, topicTrees: new Map([['python', [tree]]]) });
   assert.match(html, /^<main id="main" class="app-shell app-document-shell"><section class="app-search/);
-  assert.doesNotMatch(html, /app-document-layout/);
+  assert.match(html, /class="app-document-layout" data-document-layout/);
   assert.match(html, /<h1 class="app-article-title"><span class="app-content-icon is-medium">/);
-  const positions = order(html, ['data-public-search', 'app-article-title', 'app-document-lead', 'app-document-metadata', '<details class="app-document-nav">', 'class="app-toc"', 'app-document-body']);
+  const positions = order(html, ['data-public-search', 'app-document-sidebar', 'app-document-outline', 'app-document-content', 'app-article-title', 'app-document-lead', 'app-document-metadata', 'app-document-body']);
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
-  assert.doesNotMatch(html.match(/<details class="app-document-nav"[^>]*>/)[0], /\sopen/);
+  assert.match(html.match(/<details class="app-document-nav"[^>]*>/)[0], /\sopen/);
+  assert.doesNotMatch(html, />문서 목록<|>이 글의 목차</);
   assert.match(html, /<h2 id="sample-큰-제목" class="app-heading-1">/);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
 });
@@ -59,8 +76,10 @@ test('wiki_detail_keeps_search_title_icon_toc_and_a_collapsed_document_menu_in_t
 const css = readFileSync(new URL('./vendor/theme/styles.css', import.meta.url), 'utf8');
 const rule = selector => { const match = css.match(new RegExp(`(?:^|\\n)${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\{([^}]*)\\}`)); assert.ok(match, selector); return match[1]; };
 
-test('document_column_has_no_sidebar_and_code_blocks_soft_wrap_under_a_fixed_header', () => {
-  assert.doesNotMatch(css, /app-document-layout|\.app-document-nav\[open\]|app-document-shell \{ max-width/);
+test('document_column_keeps_reading_width_and_soft_wrapping_between_navigation_columns', () => {
+  assert.match(css, /\.app-document-layout \{/);
+  assert.match(css, /container-type: inline-size/);
+  assert.match(css, /--site-width-wide: min\(var\(--site-page\), 100cqw\)/);
   assert.match(rule('.app-document'), /max-width: var\(--site-body-width\);[^}]*margin: var\(--site-article-search-bottom\) auto 0/);
   // 코드는 가로 스크롤 없이 폭에 맞춰 줄바꿈한다.
   assert.match(rule('.app-code pre'), /white-space: pre-wrap;[^}]*overflow-wrap: anywhere;/);

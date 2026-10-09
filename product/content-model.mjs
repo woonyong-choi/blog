@@ -31,7 +31,8 @@ export function readDocument(source, tags, now = new Date()) {
   if (page.type === 'blog' && !page.publishedAt) throw new Error(`missing publication date: ${page.id}`);
   if (page.updatedAt && page.publishedAt && page.updatedAt < page.publishedAt) throw new Error(`update predates publication: ${page.id}`);
   validateThumbnail(page.thumbnail);
-  return { ...page, body: match[2], route: `/articles/${page.slug}/`,
+  if ((page.type === 'blog' ? ['all', 'page', 'feed'] : ['topics']).includes(page.slug)) throw new Error(`reserved document slug: ${page.slug}`);
+  return { ...page, body: match[2], route: `/${page.type === 'blog' ? 'blog' : 'docs'}/${page.slug}/`,
     published: page.visibility === 'public' && (!page.publishedAt || page.publishedAt <= now.toISOString().slice(0, 10)) };
 }
 

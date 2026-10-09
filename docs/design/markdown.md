@@ -282,7 +282,7 @@ const message = "넓은 코드블록";
 
 ## 코드 블록
 
-펜스 첫 낱말이 언어이며 대소문자를 구분하지 않는다. 기존 highlight.js의 193개 언어와 별칭을 유지한다. TextMate 문법이 있는 언어는 빌드 때 Shiki로 분석하고, 나머지는 highlight.js로 분석한다. 대표 언어는 JavaScript(`js`), TypeScript(`ts`), Python(`py`), C, C++(`cpp`, `c++`), C#(`cs`, `c#`), Java, Kotlin(`kt`), Rust(`rs`), Go(`golang`), Swift, Bash(`sh`, `zsh`), SQL, JSON, YAML(`yml`), HTML(`xml`), CSS, Dockerfile(`docker`), Markdown(`md`)이다. 등록되지 않은 언어, 언어 없는 블록, `text`는 `plaintext`로 원문을 이스케이프해 보여 준다.
+펜스 첫 낱말이 언어이며 대소문자를 구분하지 않는다. 기존 highlight.js의 193개 언어와 별칭을 유지한다. TextMate 문법이 있는 언어는 빌드 때 Shiki로 분석하고, 나머지는 highlight.js로 분석한다. 정적 빌드에서는 한 줄 분석 시간 제한을 해제해 scope와 토큰이 서로 다른 위치에서 잘리는 것을 방지한다. 대표 언어는 JavaScript(`js`), TypeScript(`ts`), Python(`py`), C, C++(`cpp`, `c++`), C#(`cs`, `c#`), Java, Kotlin(`kt`), Rust(`rs`), Go(`golang`), Swift, Bash(`sh`, `zsh`), SQL, JSON, YAML(`yml`), HTML(`xml`), CSS, Dockerfile(`docker`), Markdown(`md`)이다. 등록되지 않은 언어, 언어 없는 블록, `text`는 `plaintext`로 원문을 이스케이프해 보여 준다.
 
 ### 구문 역할과 색
 

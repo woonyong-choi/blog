@@ -30,7 +30,7 @@ test('topic_preview_keeps_two_rows_and_the_same_entry_width_for_cs_and_tech', ()
     const topics = Object.fromEntries(documents.map((p, i) => [`t${i}`, { field: 'cs', group, icon: 'processor', label: p.title, article: p.slug }]));
     const preview = wikiLanding(documents, { topics });
     assert.equal((preview.match(/class="app-help-card"/g) ?? []).length, Math.min(count, limit));
-    assert.equal(preview.includes(`href="/wiki/${group}/"`), count > limit);
+    assert.equal(preview.includes(`href="/docs/topics/${group}/"`), count > limit);
     assert.match(preview, /<main id="main" class="app-shell app-body">/);
     assert.doesNotMatch(preview, /wiki-heading|>Wiki<|is-pair/);
     const all = wikiLanding(documents, { topics }, group);

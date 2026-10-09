@@ -14,6 +14,7 @@ export function clientEntrypoints(body) {
   const scripts = [];
   if (/<[^>]+\sdata-public-search(?:[\s=>])/.test(body)) scripts.push('publication.js');
   if (/<[^>]+\sclass="[^"]*\bapp-document-nav\b/.test(body) || /<[^>]+\sdata-(?:tabs|copy|keyboard|tooltip-trigger)(?:[\s=>])/.test(body)) scripts.push('document.js');
+  if (/<[^>]+\sdata-document-layout(?:[\s=>])/.test(body)) scripts.push('document-navigation.js');
   if (/<[^>]+\sdata-comments(?:[\s=>])/.test(body)) scripts.push('comments.js');
   if (/<[^>]+\sdata-mermaid(?:[\s=>])/.test(body)) scripts.push('mermaid-loader.js');
   if (/<[^>]+\sdata-flow-rail(?:[\s=>])/.test(body)) scripts.push('flows.js');

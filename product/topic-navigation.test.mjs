@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createTopicTrees } from './topic-navigation.mjs';
 import { articlePage } from './publication-layout.mjs';
+import { documentPager } from './document-navigation.mjs';
+import { JSDOM } from 'jsdom';
 
 function page(slug, parent, changes = {}) {
   return { id: slug, slug, parent, topic: 'python', type: 'wiki', title: slug,
@@ -19,30 +21,64 @@ test('createTopicTrees_rejects_self_mutual_and_disconnected_cycles', () => {
   assert.throws(() => createTopicTrees([page('a'), page('a')]), /duplicate navigation slug/);
 });
 
-test('createTopicTrees_keeps_external_roots_order_and_blog_identity_once', () => {
+test('createTopicTrees_keeps_parent_relations_and_excludes_blog_documents', () => {
   const pages = [page('a', 'unpublished'), page('b', 'a'),
     page('c', 'b', { type: 'blog' }), page('d', 'c'), page('e', 'b'),
     page('foreign', undefined, { topic: 'javascript' }), page('f', 'foreign')];
   const topicTrees = createTopicTrees(pages);
   const tree = topicTrees.get('python');
-  assert.deepEqual(tree.map(node => node.page.slug), ['a', 'f']);
-  assert.deepEqual(tree[0].children[0].children.map(node => node.page.slug), ['c', 'd', 'e']);
-  assert.strictEqual(tree[0].children[0].children[0].page, pages[2]);
-  const html = articlePage(pages[1], pages, { topicTrees, topics: { python: { label: 'Python' } } });
+  assert.deepEqual(tree.map(node => node.page.slug), ['a', 'd', 'f']);
+  assert.deepEqual(tree[0].children[0].children.map(node => node.page.slug), ['e']);
+  assert.strictEqual(tree[0].children[0].children[0].page, pages[4]);
+  const html = articlePage(pages[1], pages, { topicTrees, topics: {
+    python: { label: 'Python', group: 'tech', article: 'a' },
+    javascript: { label: 'JavaScript', group: 'tech', article: 'foreign' },
+  } });
   const navigation = html.match(/<details class="app-document-nav"[\s\S]*?<\/nav><\/details>/)[0];
-  assert.match(navigation, /^<details class="app-document-nav">/);
-  assert.deepEqual([...navigation.matchAll(/href="\/articles\/([^/]+)\/"/g)].map(match => match[1]), ['a', 'b', 'c', 'd', 'e', 'f']);
+  assert.match(navigation, /^<details class="app-document-nav" data-document-panel open>/);
+  assert.deepEqual([...navigation.matchAll(/href="\/articles\/([^/]+)\/"/g)].map(match => match[1]), ['a', 'b', 'e', 'd', 'f']);
+  assert.doesNotMatch(navigation, /JavaScript|>Tech<|>CS<|문서 목록|Search/);
   assert.equal((navigation.match(/aria-current="page"/g) ?? []).length, 1);
   assert.equal(pages[2].type, 'blog');
 });
 
-test('createTopicTrees_flattens_deep_input_without_losing_nodes_or_using_call_stack', () => {
+test('createTopicTrees_preserves_deep_input_without_using_the_call_stack', () => {
   const pages = Array.from({ length: 10000 }, (_, i) => page(`p-${i}`, i ? `p-${i - 1}` : null));
-  const roots = createTopicTrees(pages).get('python');
-  assert.equal(roots.length, 1);
-  assert.equal(roots[0].children.length, 1);
-  const deepest = roots[0].children[0].children;
-  assert.equal(deepest.length, pages.length - 2);
-  assert.deepEqual(deepest.map(node => node.page.slug), pages.slice(2).map(page => page.slug));
-  assert.ok(deepest.every(node => node.children.length === 0));
+  let nodes = createTopicTrees(pages).get('python');
+  for (const expected of pages) {
+    assert.equal(nodes.length, 1);
+    assert.strictEqual(nodes[0].page, expected);
+    nodes = nodes[0].children;
+  }
+  assert.equal(nodes.length, 0);
+});
+
+test('document_pager_uses_sidebar_order_without_crossing_topics_or_including_blog_posts', () => {
+  const pages = [page('orphan', 'private'), page('root'), page('child', 'root'),
+    page('grandchild', 'child'), page('sibling', 'root'),
+    page('post', 'child', { type: 'blog' }), page('other', null, { topic: 'javascript' })];
+  const context = { topicTrees: createTopicTrees(pages), topics: {
+    python: { label: 'Python', article: 'root' }, javascript: { label: 'JavaScript', article: 'other' },
+  } };
+  const links = document => [...JSDOM.fragment(documentPager(document, context)).querySelectorAll('a')]
+    .map(link => [link.rel, link.getAttribute('href')]);
+  assert.deepEqual(links(pages[1]), [['next', '/articles/child/']]);
+  assert.deepEqual(links(pages[2]), [['prev', '/articles/root/'], ['next', '/articles/grandchild/']]);
+  assert.deepEqual(links(pages[3]), [['prev', '/articles/child/'], ['next', '/articles/sibling/']]);
+  assert.deepEqual(links(pages[4]), [['prev', '/articles/grandchild/'], ['next', '/articles/orphan/']]);
+  assert.deepEqual(links(pages[0]), [['prev', '/articles/sibling/']]);
+  assert.equal(documentPager(pages[5], context), '');
+  assert.equal(documentPager(pages[6], context), '');
+  assert.equal(documentPager(page('missing'), context), '');
+});
+
+test('wiki_pager_follows_source_attribution_and_precedes_comments', () => {
+  const root = page('root', null, { sourceUrl: 'https://example.com/source' });
+  const pages = [root, page('child', 'root')];
+  const html = articlePage(root, pages, { topicTrees: createTopicTrees(pages),
+    topics: { python: { label: 'Python', article: 'root' } } }, '<section id="comments">댓글</section>');
+  const positions = ['app-document-body', 'app-source-link', 'app-document-pager', 'id="comments"']
+    .map(marker => html.indexOf(marker));
+  assert.ok(positions.every(position => position >= 0));
+  assert.deepEqual(positions, positions.toSorted((a, b) => a - b));
 });

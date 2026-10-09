@@ -140,12 +140,12 @@ Tabs.close = (props) => {
 };
 
 /** 도움말 카드. `icon`은 슬롯이고 없으면 아이콘 자리가 없다. `related`는 이어서 읽을 글의 한 줄 카드(작은 아이콘, 제목, 갈매기표)이며 설명은 그리지 않는다. `headingLevel`을 주면 제목이 해당 단계의 제목 역할이 된다. */
-export function Card({ href, title, description = '', icon, variant, compact = false, horizontal = false, headingLevel }) {
+export function Card({ href, title, description = '', icon, variant, compact = false, horizontal = false, headingLevel, rel, label }) {
   if (variant !== undefined && !CARD_VARIANTS.includes(variant)) throw new Error(`Unknown card variant: ${variant}`);
   const link = safeUrl(href);
   const heading = headingLevel === undefined ? '<strong>' : `<strong role="heading" aria-level="${Number(headingLevel)}">`;
   const mark = icon === undefined || icon === false ? '' : slot(icon, 'icon');
-  if (variant === 'related') return out(`<a class="app-help-card app-related-link${mark ? '' : ' has-no-icon'}" href="${link}">${mark}${heading}${escape(title)}</strong></a>`);
+  if (variant === 'related') return out(`<a class="app-help-card app-related-link${mark ? '' : ' has-no-icon'}" href="${link}"${rel ? ` rel="${escape(rel)}"` : ''}${label ? ` aria-label="${escape(label)}"` : ''}>${mark}${heading}${escape(title)}</strong></a>`);
   const classes = variant && variant !== 'summary' ? ` is-${variant}` : compact ? ' is-compact' : horizontal ? ' is-horizontal' : '';
   const bare = !mark || (compact && !variant);
   return out(`<a class="app-help-card${classes}${bare ? ' has-no-icon' : ''}" href="${link}">${bare ? '' : mark}${heading}${escape(title)}</strong>${description ? `<p${variant === 'summary' ? ' class="app-card-summary"' : ''}>${escape(description)}</p>` : ''}</a>`);
@@ -297,10 +297,35 @@ export function TagList({ tags, limit = Infinity }) {
 /** 이 글의 목차. `sections`는 `{ id, title }`이다. */
 export const Toc = ({ title, label, sections }) => out(`<nav class="app-toc" aria-label="${escape(label)}"><h2 class="app-toc-heading">${escape(title)}</h2><ol class="app-toc-list">${sections.map((section) => `<li><a href="#${escape(section.id)}">${escape(section.title)}</a></li>`).join('')}</ol></nav>`);
 
+/** 문서 계층과 현재 글 목차를 본문 밖의 탐색 열에 둔다. */
+export function DocumentLayout({ navigation, outline, content }) {
+  return out(`<div class="app-document-layout" data-document-layout>${navigation ? `<aside class="app-document-sidebar">${slot(navigation, 'navigation')}</aside>` : ''}${outline ? `<aside class="app-document-outline">${slot(outline, 'outline')}</aside>` : ''}<div class="app-document-content">${slot(content, 'content')}</div></div>`);
+}
+
+export function DocumentNavigation({ label, nodes }) {
+  function item(node) {
+    const title = node.href ? `<a href="${safeUrl(node.href)}"${node.current ? ' aria-current="page"' : ''}>${escape(node.title)}</a>` : `<span>${escape(node.title)}</span>`;
+    return node.children?.length ? `<li><details${node.open ? ' open' : ''}><summary>${title}</summary><ul>${node.children.map(item).join('')}</ul></details></li>` : `<li>${title}</li>`;
+  }
+  return out(`<details class="app-document-nav" data-document-panel open><summary aria-label="${escape(label)} 하위 문서">${escape(label)}</summary><nav aria-label="${escape(label)} 하위 문서"><ul>${nodes.map(item).join('')}</ul></nav></details>`);
+}
+
+export function DocumentOutline({ sections }) {
+  if (!sections.length) return out('');
+  return out(`<details class="app-document-nav" data-document-panel open><summary aria-label="본문 목차"><svg class="app-document-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg></summary><nav aria-label="본문 목차"><ol>${sections.map(section => `<li${section.level === 3 ? ' class="is-subsection"' : ''}><a href="#${escape(section.id)}" data-heading-level="${section.level}">${escape(section.title)}</a></li>`).join('')}</ol></nav></details>`);
+}
+
+/** 같은 주제에서 이어 읽을 문서. 없는 방향은 빈 링크를 만들지 않는다. */
+export function DocumentPager({ label, before, after }) {
+  if (!before && !after) return out('');
+  const link = (page, rel, direction) => page ? String(Card({ ...page, variant: 'related', rel, label: `${direction} 문서: ${page.title}` })) : '';
+  return out(`<nav class="app-document-pager app-related-grid" aria-label="${escape(label)} 문서 이동">${link(before, 'prev', '이전')}${link(after, 'next', '다음')}</nav>`);
+}
+
 /** 블로그 글 한 편의 틀(피드와 상세 공통). 본문·도입문·꼬리말은 슬롯이다. */
-export function PostArticle({ id: post, detail = false, href, title, date, dateNote = '', lead, body, author, footer, after }) {
+export function PostArticle({ id: post, detail = false, href, title, date, dateNote = '', cover, lead, body, author, footer, after }) {
   const heading = detail ? `<h1 class="app-post-title" id="${id(post)}">${escape(title)}</h1>` : `<h2 class="app-post-title" id="${id(post)}"><a href="${safeUrl(href)}">${escape(title)}</a></h2>`;
-  return out(`<article class="app-blog-post${detail ? ' is-detail' : ''}" aria-labelledby="${post}"><header class="app-post-header"><time class="app-post-date" datetime="${escape(date)}">${escape(date)}${escape(dateNote)}</time>${heading}</header><div class="app-prose app-feed-body"><p class="app-article-lead">${slot(lead, 'lead')}</p>${slot(body, 'body')}</div><footer class="app-post-footer">${author ? `<p class="app-post-author">${escape(author)}</p>` : ''}${footer === undefined ? '' : slot(footer, 'footer')}</footer>${after === undefined ? '' : slot(after, 'after')}</article>`);
+  return out(`<article class="app-blog-post${detail ? ' is-detail' : ''}" aria-labelledby="${post}"><header class="app-post-header"><time class="app-post-date" datetime="${escape(date)}">${escape(date)}${escape(dateNote)}</time>${heading}</header><div class="app-prose app-feed-body"><p class="app-article-lead">${slot(lead, 'lead')}</p>${cover === undefined ? '' : `<div class="app-post-cover app-width-wide">${slot(cover, 'cover')}</div>`}${slot(body, 'body')}</div><footer class="app-post-footer">${author ? `<p class="app-post-author">${escape(author)}</p>` : ''}${footer === undefined ? '' : slot(footer, 'footer')}</footer>${after === undefined ? '' : slot(after, 'after')}</article>`);
 }
 
 const text = (value) => isTrusted(value) ? value.html : escape(value);
@@ -333,4 +358,4 @@ export function SearchResult({ href, icon, title, example = false, description, 
 }
 
 /** 소비자가 같은 모양을 직접 만들지 못하도록 검사하는 이 파일 소유 최상위 클래스 */
-export const OWNED_CLASSES = ['app-code', 'app-callout', 'app-tabs', 'app-tablist', 'app-tabpanel', 'app-tooltip', 'app-tooltip-bubble', 'app-help-card', 'app-related-grid', 'app-inline-links', 'app-support-grid', 'app-support-split', 'app-figure', 'app-figure-grid', 'app-player', 'app-remote', 'app-device', 'app-media-controls', 'app-fineprint', 'app-steps', 'app-definitions', 'app-inline-icon', 'app-menu-label', 'app-cancelled-task', 'app-landing-heading', 'app-landing-social', 'app-flow-viewport', 'app-technologies', 'app-interviews', 'app-interview-rows', 'app-remote', 'app-project-showcase', 'app-hero-panorama', 'app-blog-card', 'app-page-links', 'app-tags', 'app-tag', 'app-toc', 'app-blog-post', 'app-search-entry', 'app-search-result-link', 'app-search-result-tags', 'app-search-result-note', 'app-tags-more'];
+export const OWNED_CLASSES = ['app-document-layout', 'app-document-sidebar', 'app-document-outline', 'app-document-content', 'app-document-nav', 'app-document-pager', 'app-code', 'app-callout', 'app-tabs', 'app-tablist', 'app-tabpanel', 'app-tooltip', 'app-tooltip-bubble', 'app-help-card', 'app-related-grid', 'app-inline-links', 'app-support-grid', 'app-support-split', 'app-figure', 'app-figure-grid', 'app-player', 'app-remote', 'app-device', 'app-media-controls', 'app-fineprint', 'app-steps', 'app-definitions', 'app-inline-icon', 'app-menu-label', 'app-cancelled-task', 'app-landing-heading', 'app-landing-social', 'app-flow-viewport', 'app-technologies', 'app-interviews', 'app-interview-rows', 'app-remote', 'app-project-showcase', 'app-hero-panorama', 'app-blog-card', 'app-page-links', 'app-tags', 'app-tag', 'app-toc', 'app-blog-post', 'app-search-entry', 'app-search-result-link', 'app-search-result-tags', 'app-search-result-note', 'app-tags-more'];

@@ -67,7 +67,8 @@ export function highlightCode(source, language) {
 }
 
 function textMateCode(source, lang) {
-  const lines = HIGHLIGHTER.codeToTokensBase(source, { lang, theme: 'syntax-roles', includeExplanation: 'scopeName' });
+  // 빌드 중 두 분석 단계가 시간 제한으로 서로 다르게 잘리지 않게 한다.
+  const lines = HIGHLIGHTER.codeToTokensBase(source, { lang, theme: 'syntax-roles', includeExplanation: 'scopeName', tokenizeTimeLimit: 0 });
   let end = 0;
   const parts = [];
   const append = (text, role) => {

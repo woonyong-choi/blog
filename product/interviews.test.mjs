@@ -34,14 +34,14 @@ test('cards_without_image_or_profile_leave_no_empty_slot', () => {
 
 test('summary_links_are_the_only_markup_and_unsafe_or_plain_mentions_never_become_links', () => {
   const render = summary => interviewCards([{ id: 'a', summary }], href);
-  assert.match(render('[@만난 곳](/wiki/)에서 [@커뮤니티](https://example.com/c?a=1&b=2) 함께'), /<a href="\/wiki\/">@만난 곳<\/a>에서 <a href="https:\/\/example\.com\/c\?a=1&amp;b=2">@커뮤니티<\/a> 함께/);
+  assert.match(render('[@만난 곳](/docs/)에서 [@커뮤니티](https://example.com/c?a=1&b=2) 함께'), /<a href="\/docs\/">@만난 곳<\/a>에서 <a href="https:\/\/example\.com\/c\?a=1&amp;b=2">@커뮤니티<\/a> 함께/);
   assert.doesNotMatch(render('@만난 곳에서 함께'), /<a /);
-  assert.match(render('\\[대괄호\\](/wiki/) [a\\]b](/x/)'), /^<li[^>]*><p class="app-interview-summary">\[대괄호\]\(\/wiki\/\) <a href="\/x\/">a\]b<\/a><\/p>/);
+  assert.match(render('\\[대괄호\\](/docs/) [a\\]b](/x/)'), /^<li[^>]*><p class="app-interview-summary">\[대괄호\]\(\/docs\/\) <a href="\/x\/">a\]b<\/a><\/p>/);
   for (const url of ['javascript:alert(1)', 'data:text/html,x', '//evil.example.com', 'http://example.com']) assert.doesNotMatch(render(`[@x](${url})`), /<a |href=/);
   assert.match(render('[<b>](https://example.com) <i>x</i> ![img](/a.png)'), /<a href="https:\/\/example\.com">&lt;b&gt;<\/a> &lt;i&gt;x&lt;\/i&gt; !<a href="\/a\.png">img<\/a>/);
   assert.deepEqual(summaryParts('앞 [a](/b/) 뒤'), [{ text: '앞 ' }, { label: 'a', url: '/b/' }, { text: ' 뒤' }]);
 });
 
 test('the_first_example_links_a_meeting_place_to_a_site_path', () => {
-  assert.match(interviewCards([examples[0]], href), /<a href="\/wiki\/">@만난 곳<\/a>에서 함께한 동료평가 내용을 작성하세요\./);
+  assert.match(interviewCards([examples[0]], href), /<a href="\/docs\/">@만난 곳<\/a>에서 함께한 동료평가 내용을 작성하세요\./);
 });

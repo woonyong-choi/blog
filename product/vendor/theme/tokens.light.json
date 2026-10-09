@@ -4447,6 +4447,16 @@
     "nav-narrow": {
       "$type": "dimension",
       "$value": "340px"
+    },
+    "document-tree": {
+      "$type": "dimension",
+      "$value": "1040px",
+      "$description": "200px 문서 계층과 680px 본문 및 바깥 여백을 확보하는 최소 폭. 1002px 기존 분기점에서는 읽기 열이 줄어 별도 정의"
+    },
+    "document-outline": {
+      "$type": "dimension",
+      "$value": "1300px",
+      "$description": "양쪽 200px 탐색 열과 680px 본문을 함께 표시할 수 있는 최소 폭. 넓은 미디어는 중앙 공간 안에서 확장"
     }
   },
   "size": {

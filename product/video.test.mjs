@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 globalThis.window = { addEventListener() {}, innerHeight: 800 };
-globalThis.document = { querySelectorAll: () => [] };
+globalThis.document = { querySelectorAll: () => [], addEventListener() {} };
 const { updateRemote } = await import('./video.js');
 
 function remote(label) {

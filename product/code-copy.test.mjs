@@ -24,7 +24,7 @@ function mount(clipboard, source = 'const a = 1; // 주석\n\t탭과 공백  \n'
   const block = { querySelector: selector => ({ code, '[data-copy-status]': status })[selector === 'code' ? 'code' : selector] };
   button.closest = selector => (selector === '.app-code' ? block : null);
   const timers = [];
-  const document = { querySelectorAll: selector => (selector === '[data-copy]' ? [button] : []) };
+  const document = { addEventListener() {}, querySelectorAll: selector => (selector === '[data-copy]' ? [button] : []) };
   runInNewContext(script, { document, navigator: { clipboard }, setTimeout: (callback, delay) => timers.push({ callback, delay }), clearTimeout: () => timers.splice(0) });
   return { button, status, code, timers, click: () => button.listeners.get('click')() };
 }

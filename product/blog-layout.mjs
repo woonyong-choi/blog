@@ -1,15 +1,11 @@
 // 같은 발행 글을 네 편 미리보기, 카드 목록, 네 편 본문 피드로 보여준다.
-import { escape } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 import { tagLinks, dateLine, searchBox } from './publication-layout.mjs';
 import { PAGE_SIZES, paginate } from './content-model.mjs';
-import { postArticle } from './post-article.mjs';
+import { postArticle, thumbnailImage } from './post-article.mjs';
 
 export function blogCard(page, tags, level = 3) {
-  // 검증된 이미지별 좌표는 테마 값이 아닌 콘텐츠의 자르기 데이터다.
-  const position = page.thumbnail?.position;
-  const crop = position ? ` style="object-position:${position.x}% ${position.y}%"` : '';
-  const cover = page.thumbnail ? `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="lazy" decoding="async"${crop}>` : '';
+  const cover = thumbnailImage(page);
   const dateLabel = page.publishedAt ? new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(page.publishedAt)) : undefined;
   return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description, publishedAt: page.publishedAt, dateLabel, commentsHref: page.comments ? `${page.route}#comments` : undefined, commentCount: page.commentCount, author: page.cardAuthor }));
 }
@@ -27,7 +23,7 @@ export function blogArchive(posts, tags, page) {
 
 export function blogFeed(posts, tags, page) {
   const result = paginate(posts, page, PAGE_SIZES.feed);
-  return `<main id="main" class="app-shell"><h1 class="app-sr">Blog</h1>${posts.length ? result.items.map(post => feedArticle(post, tags)).join('') : emptyBlog()}${pagination(result, '/blog/', true)}${posts.length ? ui.ListLink({ href: '/blog/all/', text: '전체 글 보기 →' }) : ''}</main>`;
+  return `<main id="main" class="app-shell"><h1 class="app-sr">Blog</h1>${posts.length ? `<div data-blog-list="feed"><div class="app-blog-feed-items">${result.items.map(post => feedArticle(post, tags)).join('')}</div>${pagination(result, '/blog/', true)}<p class="app-caption" data-blog-status role="status"></p></div>` : emptyBlog()}${posts.length ? ui.ListLink({ href: '/blog/all/', text: '전체 글 보기 →' }) : ''}</main>`;
 }
 
 export function pagination(result, route, feed = false) {
@@ -45,5 +41,5 @@ function feedArticle(post, tags) {
 }
 
 function emptyBlog() {
-  return '<p class="app-empty">아직 발행한 글이 없습니다. <a href="/wiki/">위키에서 기록 읽기</a></p>';
+  return '<p class="app-empty">아직 발행한 글이 없습니다. <a href="/docs/">문서에서 기록 읽기</a></p>';
 }

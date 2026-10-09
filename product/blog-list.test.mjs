@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { JSDOM } from 'jsdom';
 import { initBlogList } from './blog-list.js';
-import { blogArchive } from './blog-layout.mjs';
+import { blogArchive, blogFeed } from './blog-layout.mjs';
 
 const posts = Array.from({ length: 25 }, (_, id) => ({ route: `/articles/p${id}/`, title: `글 ${id}`, description: '요약', thumbnail: { src: 'https://picsum.photos/960/540', alt: '' } }));
 const page = number => blogArchive(posts, {}, number);
@@ -69,4 +69,24 @@ test('duplicate_cards_are_skipped_and_invalid_next_pages_do_not_mutate_the_list'
   assert.equal(state.titles().length, 23);
   assert.equal(state.titles().filter(title => title === '글 0').length, 1);
   state.dom.window.close();
+});
+
+test('feed_appends_full_posts_once_and_announces_new_content_to_document_controls', async () => {
+  const entries = posts.slice(0, 6).map((post, index) => ({ ...post, id: `p${index}`, tags: [], publishedAt: '2026-10-01', html: `<p>본문 ${index}</p>` }));
+  const dom = new JSDOM(blogFeed(entries, {}, 1), { url: 'https://example.com/blog/' });
+  const root = dom.window.document.querySelector('[data-blog-list]');
+  let additions = 0;
+  dom.window.document.addEventListener('content-added', event => {
+    additions += 1;
+    assert.equal(event.detail.querySelectorAll('.app-blog-post').length, 6);
+  });
+  initBlogList(root, { Observer: null, fetchPage: async () => response(blogFeed(entries, {}, 2)) });
+  root.querySelector('[rel=next]').click();
+  await tick();
+  assert.deepEqual([...root.querySelectorAll('.app-post-title')].map(title => title.textContent), entries.map(post => post.title));
+  assert.equal(root.querySelector('.app-page-links').hidden, true);
+  assert.equal(additions, 1);
+  assert.match(root.textContent, /본문 5/);
+  assert.equal(dom.window.document.activeElement.textContent, '글 4');
+  dom.window.close();
 });
