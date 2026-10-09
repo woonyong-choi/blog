@@ -33,6 +33,7 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
     close();
     if (page) {
       const next = { ...state(), query: input.value, page: 1 };
+      if (searchUrl(next) === '/docs/') { location.assign('/docs/'); return; }
       const url = new URL(location.href); url.search = new URL(searchUrl(next), location.origin).search;
       history.replaceState({ ...history.state, searchPosition: null }, '', url);
       results(); return;
@@ -50,7 +51,9 @@ for (const box of document.querySelectorAll('[data-public-search]')) {
   async function results() {
     if (!page) return;
     const request = ++resultRevision;
-    const selected = state(); input.value = selected.query; clear.hidden = !input.value;
+    const selected = state();
+    if (searchUrl(selected) === '/docs/') { location.replace('/docs/'); return; }
+    input.value = selected.query; clear.hidden = !input.value;
     resultStatus = '검색 결과를 불러오는 중입니다.';
     status.textContent = resultStatus;
     showResultsLoading(page, resultStatus);

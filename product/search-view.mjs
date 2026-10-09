@@ -34,7 +34,7 @@ export function showResultsLoading(root, message = '검색 결과를 불러오�
 export function renderResults(root, result, state, tags) {
   const summary = root.querySelector('[data-filter-summary]');
   summary.replaceChildren(...state.tags.map(tag => nodeFrom(ui.Tag({ href: searchUrl({ ...state, tags: state.tags.filter(value => value !== tag), page: 1 }), label: `${tags[tag]?.label ?? tag} ×` }))));
-  if (state.query || state.tags.length) summary.append(link('조건 초기화', '/search/'));
+  if (state.query || state.tags.length) summary.append(link('조건 초기화', '/docs/'));
   const output = root.querySelector('[data-full-results]');
   output.classList.add('app-search-panel');
   output.replaceChildren(...result.entries.map(entry => resultRow(entry, tags, state.query)));

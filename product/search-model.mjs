@@ -12,6 +12,7 @@ export function readSearchState(query, defaultTag = '') {
 }
 
 export function searchUrl(state) {
+  if (!normalizeQuery(state.query) && !state.tags.length) return '/docs/';
   const params = new URLSearchParams();
   if (state.query) params.set('q', state.query);
   for (const tag of state.tags) params.append('tag', tag);
