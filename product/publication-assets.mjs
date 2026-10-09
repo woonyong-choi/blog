@@ -8,6 +8,8 @@ const ASSET_NOTICES = new Map([
   ['/theme/assets/fonts/jetbrains-mono-regular.woff2', '/theme/assets/fonts/jetbrains-mono-license.txt'],
   ['/media/manta-code-blocks-intro-web.mp4', '/media/manta-code-blocks-LICENSE.txt'],
   ['/media/manta-code-blocks-poster.png', '/media/manta-code-blocks-LICENSE.txt'],
+  ['/media/woonyong-interview.mp4', '/media/woonyong-interview-NOTICE.txt'],
+  ['/media/woonyong-interview-poster.jpg', '/media/woonyong-interview-NOTICE.txt'],
 ]);
 
 export function clientEntrypoints(body) {

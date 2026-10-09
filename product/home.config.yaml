@@ -19,9 +19,9 @@ sections:
     #   src: /assets/meettheallnewthings2-io75.jpg
     #   alt: 설명
     video:
-      src: /media/manta-code-blocks-intro-web.mp4
-      poster: /media/manta-code-blocks-poster.png
-      title: Manta Code Blocks
+      src: /media/woonyong-interview.mp4
+      poster: /media/woonyong-interview-poster.jpg
+      title: 최우녕 인터뷰
     # action: 영상이 있으면 재생 버튼의 문구. href를 쓰면 그 주소로 가는 링크가 된다.
     action:
       label: 프로젝트 영상 보기

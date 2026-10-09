@@ -173,9 +173,10 @@ test('the_shipped_home_config_omits_projects_from_the_visible_sections', () => {
   assert.equal(home[1].description, '언어와 도구의 원리, 개발 과정에서 마주한 질문과 지식을 정리하고 기록합니다.');
 });
 
-test('the_shipped_hero_plays_the_web_compatible_video_that_exists_beside_the_preserved_original', () => {
+test('the_shipped_hero_plays_the_selected_local_video_from_the_beginning', () => {
   const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
   const hero = loadHomeConfig(new Set(brands)).find(section => section.type === 'hero');
-  assert.equal(hero.video.src, '/media/manta-code-blocks-intro-web.mp4');
-  for (const name of ['manta-code-blocks-intro-web.mp4', 'manta-code-blocks-intro.mp4']) assert.ok(existsSync(new URL(`./media/${name}`, import.meta.url)));
+  assert.equal(hero.video.src, '/media/woonyong-interview.mp4');
+  assert.equal(hero.action.href, undefined);
+  for (const name of ['woonyong-interview.mp4', 'woonyong-interview-poster.jpg', 'manta-code-blocks-intro.mp4']) assert.ok(existsSync(new URL(`./media/${name}`, import.meta.url)));
 });
