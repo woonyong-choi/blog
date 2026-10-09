@@ -1180,6 +1180,46 @@
     "on-action": {
       "$type": "color",
       "$value": "{color.gray.0}"
+    },
+    "syntax-property": {
+      "$type": "color",
+      "$value": "{color.purple.light-ink}",
+      "$description": "코드의 property 역할. 기존 팔레트의 글자 대비 색을 재사용한다"
+    },
+    "syntax-parameter": {
+      "$type": "color",
+      "$value": "{color.orange.light-ink}",
+      "$description": "코드의 parameter 역할. 기존 팔레트의 글자 대비 색을 재사용한다"
+    },
+    "syntax-constant": {
+      "$type": "color",
+      "$value": "{color.orange.light-ink}",
+      "$description": "코드의 constant 역할. 기존 팔레트의 글자 대비 색을 재사용한다"
+    },
+    "syntax-annotation": {
+      "$type": "color",
+      "$value": "{color.green.light-ink}",
+      "$description": "코드의 annotation 역할. 기존 팔레트의 글자 대비 색을 재사용한다"
+    },
+    "syntax-variable": {
+      "$type": "color",
+      "$value": "{color.gray.878}",
+      "$description": "코드의 variable 역할. 기존 중립 글자 색을 재사용한다"
+    },
+    "syntax-comment": {
+      "$type": "color",
+      "$value": "{color.gray.635}",
+      "$description": "코드의 comment 역할. 기존 중립 글자 색을 재사용한다"
+    },
+    "syntax-operator": {
+      "$type": "color",
+      "$value": "{color.gray.878}",
+      "$description": "코드의 operator 역할. 기존 중립 글자 색을 재사용한다"
+    },
+    "syntax-punctuation": {
+      "$type": "color",
+      "$value": "{color.gray.878}",
+      "$description": "코드의 punctuation 역할. 기존 중립 글자 색을 재사용한다"
     }
   },
   "font": {
@@ -9333,6 +9373,46 @@
     "figure-grid-min-large": {
       "$type": "dimension",
       "$value": "{primitive.simple.figure-grid-min-large}"
+    },
+    "syntax-property": {
+      "$type": "color",
+      "$value": "{color.syntax-property}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "syntax-parameter": {
+      "$type": "color",
+      "$value": "{color.syntax-parameter}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "syntax-constant": {
+      "$type": "color",
+      "$value": "{color.syntax-constant}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "syntax-annotation": {
+      "$type": "color",
+      "$value": "{color.syntax-annotation}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "syntax-variable": {
+      "$type": "color",
+      "$value": "{color.syntax-variable}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "syntax-comment": {
+      "$type": "color",
+      "$value": "{color.syntax-comment}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "syntax-operator": {
+      "$type": "color",
+      "$value": "{color.syntax-operator}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "syntax-punctuation": {
+      "$type": "color",
+      "$value": "{color.syntax-punctuation}",
+      "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
     }
   },
   "icon": {

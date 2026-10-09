@@ -7,11 +7,11 @@ import deflist from 'markdown-it-deflist';
 import mathPlugin from '@vscode/markdown-it-katex';
 import katex from 'katex';
 import taskLists from 'markdown-it-task-lists';
-import hljs from 'highlight.js';
 import { parse } from 'yaml';
 import { contentIcon, iconLab } from './content-icons.mjs';
 import { installDirectives } from './directives.mjs';
 import { DirectiveError, parseOptions, WIDTH_OPTION } from './directive-syntax.mjs';
+import { codeLanguage, highlightCode } from './code-highlight.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 
 const IMAGE_SIZES = JSON.parse(readFileSync(new URL('./image-sizes.json', import.meta.url)));
@@ -22,14 +22,8 @@ export function asset(name) {
   if (typeof name !== 'string' || !/^[\w.-]+$/.test(name)) throw new Error(`Invalid asset: ${name}`);
   return `/things/assets/${name}`;
 }
-const LANGUAGE_NAME = /^[\w+#.-]+$/;
 const CODE_ATTRIBUTES = Object.freeze({ width: WIDTH_OPTION, filename: { type: 'text' } });
-// 정보 문자열의 첫 낱말이 등록된 언어나 별칭이면 그 언어로, 아니면 원문 그대로 plaintext로 다룬다.
-export function codeLanguage(info = '') {
-  const word = info.trim().split(/\s+/)[0].toLowerCase();
-  const found = LANGUAGE_NAME.test(word) ? hljs.getLanguage(word) : undefined;
-  return found ? { id: word, label: found.name ?? word } : { id: 'plaintext', label: hljs.getLanguage('plaintext').name };
-}
+export { codeLanguage };
 const codeBlock = (code, options) => String(ui.CodeBlock({ code: trusted(code), ...options }));
 
 const referenceIcon = (name = 'question') => `<span class="app-article-icon app-icon-${escape(name)}" aria-hidden="true"></span>`;
@@ -238,7 +232,7 @@ export function createMarkdown() {
     if (kind.split(/\s+/)[0].toLowerCase() === 'mermaid') return diagram(token.content, env);
     const { id, label } = codeLanguage(kind);
     const codeOptions = fenceOptions(kind, token, env);
-    const value = id === 'plaintext' ? escape(token.content) : hljs.highlight(token.content, { language: id, ignoreIllegals: true }).value;
+    const value = highlightCode(token.content, id);
     return codeBlock(`<code class="language-${id}">${value}</code>`, { language: label, ...codeOptions });
   };
   // 문서 최상위에서 이미지 하나(또는 링크로 감싼 이미지 하나)만 있는 문단은 원본 글처럼 figure로 그린다.

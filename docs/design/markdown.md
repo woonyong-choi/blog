@@ -282,7 +282,29 @@ const message = "넓은 코드블록";
 
 ## 코드 블록
 
-펜스 첫 낱말이 언어이며 대소문자를 구분하지 않는다. highlight.js에 등록된 193개 언어와 모든 별칭을 쓴다. 대표 언어는 JavaScript(`js`), TypeScript(`ts`), Python(`py`), C, C++(`cpp`, `c++`), C#(`cs`, `c#`), Java, Kotlin(`kt`), Rust(`rs`), Go(`golang`), Swift, Bash(`sh`, `zsh`), SQL, JSON, YAML(`yml`), HTML(`xml`), CSS, Dockerfile(`docker`), Markdown(`md`)이다. 등록되지 않은 언어, 언어 없는 블록, `text`는 `plaintext`로 원문을 이스케이프해 보여 준다.
+펜스 첫 낱말이 언어이며 대소문자를 구분하지 않는다. 기존 highlight.js의 193개 언어와 별칭을 유지한다. TextMate 문법이 있는 언어는 빌드 때 Shiki로 분석하고, 나머지는 highlight.js로 분석한다. 대표 언어는 JavaScript(`js`), TypeScript(`ts`), Python(`py`), C, C++(`cpp`, `c++`), C#(`cs`, `c#`), Java, Kotlin(`kt`), Rust(`rs`), Go(`golang`), Swift, Bash(`sh`, `zsh`), SQL, JSON, YAML(`yml`), HTML(`xml`), CSS, Dockerfile(`docker`), Markdown(`md`)이다. 등록되지 않은 언어, 언어 없는 블록, `text`는 `plaintext`로 원문을 이스케이프해 보여 준다.
+
+### 구문 역할과 색
+
+[IntelliJ Language Defaults](https://plugins.jetbrains.com/docs/intellij/color-scheme-management.html)의 공통 역할을 참고한다. IntelliJ 테마의 색·글꼴을 가져오지 않는다. `code-highlight.mjs`는 문법 분석 결과의 scope를 역할에 연결하고, 테마의 `SyntaxToken`이 `app-syntax-*` 클래스를 출력한다. 색·굵기는 공통 테마의 `site.syntax-*`와 기존 글꼴 토큰이 정한다. 분석기의 인라인 색과 외부 테마 CSS는 출력하지 않는다. 브라우저는 분석기를 내려받지 않는다.
+
+| 역할 | 연결 대상 | 테마 토큰 |
+|---|---|---|
+| `function` | 함수·메서드 선언과 호출, 셸 명령 | `site.syntax-function` |
+| `type` | 클래스·인터페이스·타입 이름 | `site.syntax-type` |
+| `property` | 프로퍼티·필드, JSON 키, 마크업 속성 | `site.syntax-property` |
+| `parameter` | 문법이 식별한 매개변수 | `site.syntax-parameter` |
+| `variable` | 문법이 식별한 변수 | `site.syntax-variable` |
+| `constant` | 문법이 식별한 상수 | `site.syntax-constant` |
+| `keyword` | 예약어, 불리언·null 리터럴 | `site.syntax-keyword` |
+| `string`, `number`, `comment` | 문자열·숫자·주석 | 같은 이름의 `site.syntax-*` |
+| `operator`, `punctuation`, `annotation` | 연산자·구분자·애노테이션 | 같은 이름의 `site.syntax-*` |
+
+Java의 필드 선언과 지역 변수는 문법의 클래스·메서드 범위로 구분한다. Python의 호출·속성 접근과 JSON 키는 해당 문법의 scope를 연결한다. 코드 문자열에 별도 정규식을 덧씌워 함수나 변수를 추정하지 않는다.
+
+IntelliJ의 PSI·심볼 해석을 실행하는 것은 아니다. 외부 타입, 오버로드, 상속, 같은 이름의 서로 다른 변수까지 해석하지 않는다. Kotlin 문법이 매개변수와 지역 변수를 분류하지 않는 자리, 그 밖에 scope가 없는 이름은 기본 글자색으로 남는다. 불완전한 코드도 가능한 범위에서 표시하고 원문을 보존한다.
+
+### 코드 표시와 복사
 
 블록 위 머리글에 언어 이름이 왼쪽, 복사 아이콘 단추가 오른쪽에 있다(이름은 `aria-label`, 결과는 상태 영역과 `data-state`로 알린다). 구문 색은 테마의 의미 색(`syntax-*`)을 따른다. 코드는 블록 폭에 맞춰 줄바꿈하고(`pre-wrap`, 공백 없는 긴 낱말은 `overflow-wrap: anywhere`) 가로 스크롤은 없다. 줄바꿈은 화면 표시일 뿐이라 복사 원문에는 영향이 없다. 머리글은 `pre` 밖에 있어 항상 고정이고 탭 너비는 4다. 복사는 렌더된 코드의 텍스트를 그대로 쓰므로 주석, 탭, 줄 끝 공백, 빈 줄이 보존된다. 스크립트가 없으면 버튼은 숨겨진 채 남는다. 복사에 실패하면 버튼과 상태 영역이 실패와 재시도를 알린다.
 

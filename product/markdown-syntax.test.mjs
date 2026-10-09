@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
 import hljs from 'highlight.js';
 import { createMarkdown, codeLanguage } from './markdown.mjs';
+import { highlightCode } from './code-highlight.mjs';
 import { renderArticle } from './article-renderer.mjs';
 import { shiftHeadings, feedLevels, detailLevels } from './post-article.mjs';
 
@@ -117,7 +118,48 @@ test('representative_languages_and_aliases_use_the_registered_highlighter', () =
       assert.equal(codeOf(html), source + '\n', info);
     }
   }
-  assert.match(render(fence('js', 'const a = 1; // 주석\n')), /hljs-keyword/);
+  assert.match(render(fence('js', 'const a = 1; // 주석\n')), /app-syntax-keyword/);
+});
+
+// #107: 언어별 함수 선언과 호출을 같은 역할로 표시하고 문자열·주석은 코드로 판별하지 않는다.
+test('code_roles_distinguish_calls_types_properties_and_parameters', () => {
+  const samples = [
+    ['java', 'class Greeter {\n String name;\n String greet(String input) {\n String local = input.trim();\n this.name = local;\n return input;\n }\n}', { function: ['greet', 'trim'], type: ['Greeter', 'String'], parameter: ['input'], property: ['name'], variable: ['local'] }],
+    ['java', 'import java.util.List;\nclass Cart { int total(List<Integer> prices) { return prices.size(); } }', { function: ['total', 'size'], type: ['int', 'List', 'Integer'], parameter: ['prices'] }],
+    ['kotlin', 'fun greet(input: String): String {\n return input.trim()\n}', { function: ['greet', 'trim'], type: ['String'] }],
+    ['python', 'def greet(name):\n    self.name = name.strip()\n    return name\n', { function: ['greet', 'strip'], parameter: ['name'], property: ['name'] }],
+    ['typescript', 'class Greeter { name: string; greet(input: string) { return input.trim().length; } }', { function: ['greet', 'trim'], type: ['Greeter', 'string'], property: ['name', 'length'], parameter: ['input'] }],
+    ['json', '{"list":"greet()","count":3,"enabled":true}', { property: ['list', 'count'], string: ['greet()'], number: ['3'], keyword: ['true'] }],
+    ['yaml', 'title: my-first-post\nenabled: true', { property: ['title', 'enabled'], string: ['my-first-post'], keyword: ['true'] }],
+    ['bash', 'curl --header "Accept: application/json" "$URL"', { function: ['curl'], string: ['Accept: application/json'], variable: ['URL'] }],
+  ];
+  for (const [language, source, roles] of samples) {
+    const html = render(fence(language, source + '\n'));
+    for (const [role, words] of Object.entries(roles)) for (const word of words) {
+      const spans = [...html.matchAll(new RegExp(`<span class="app-syntax-${role}">([\\s\\S]*?)<\\/span>`, 'g'))];
+      assert.ok(spans.some(span => text(span[1]).includes(word)), `${language}: ${word} is ${role}`);
+    }
+    assert.equal(codeOf(html), source + '\n');
+    assert.doesNotMatch(html, /style=|hljs-/);
+  }
+  const literal = render(fence('java', 'String s = "fake.call()"; // comment.call()\n'));
+  assert.doesNotMatch(literal, /app-syntax-function[^>]*>(?:fake|call|comment)/);
+});
+
+test('highlightCode_preserves_line_endings_incomplete_code_and_escaped_content', () => {
+  const samples = [
+    ['java', '/* fake.call()\r\n continued */\r\n\tString s = "<script>&";  \r\n'],
+    ['kotlin', 'fun greet(input: List<String>\n    // incomplete.call()\n'],
+    ['python', 'message = """fake.call()\n<script>alert(1)</script>"""\n'],
+    ['abnf', 'rule = "<tag>&"\n'],
+    ['json', '{"키": "\\"<&>😀", "incomplete":\n'],
+  ];
+  for (const [language, source] of samples) {
+    const html = highlightCode(source, language);
+    assert.equal(text(html), source, language);
+    assert.doesNotMatch(html, /<script|<tag>|style=/, language);
+    assert.doesNotMatch(html, /app-syntax-function[^>]*>(?:fake|call|incomplete)/, language);
+  }
 });
 
 test('every_registered_highlight_language_and_alias_renders_and_keeps_its_text', () => {

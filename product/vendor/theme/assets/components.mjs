@@ -51,6 +51,20 @@ export function CopyButton({ label = '코드 복사' } = {}) {
   return out(`<button type="button" data-copy aria-label="${escape(label)}" hidden>복사</button>`);
 }
 
+export const SYNTAX_ROLES = Object.freeze(['keyword', 'string', 'number', 'function', 'type', 'property', 'parameter', 'variable', 'constant', 'comment', 'operator', 'punctuation', 'annotation']);
+
+export function syntaxClass(role) {
+  if (role === undefined) return '';
+  if (!SYNTAX_ROLES.includes(role)) throw new Error(`Unknown syntax role: ${role}`);
+  return `app-syntax-${role}`;
+}
+
+/** 분석기는 역할과 원문만 전달한다. 색과 글꼴은 공통 테마가 소유한다. */
+export function SyntaxToken({ text, role }) {
+  const name = syntaxClass(role);
+  return out(name ? `<span class="${name}">${escape(text)}</span>` : escape(text));
+}
+
 /** `code`는 이스케이프 또는 구문 강조를 마친 `<code>` 슬롯이다. */
 export function CodeBlock({ code, label = '코드 복사', language = '', filename = '', width }) {
   const heading = [language, filename].filter(Boolean).map(escape).join(' · ');
