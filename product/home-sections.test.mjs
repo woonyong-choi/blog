@@ -160,7 +160,7 @@ test('the_shipped_interviews_section_shows_its_title_description_and_two_social_
   const interviews = loadHomeConfig(new Set(brands)).find(section => section.type === 'interviews');
   assert.equal(interviews.description, '동료평가 소개 섹션입니다.');
   assert.equal(interviews.title, '사람들이 하는 말');
-  assert.deepEqual(interviews.links.map(item => [item.icon, Boolean(item.href)]), [['github', true], ['linkedin', false]]);
+  assert.deepEqual(interviews.links.map(item => [item.icon, Boolean(item.href)]), [['github', true], ['linkedin', true]]);
   assert.match(personalHome({ config: { name: '이름' }, home: [interviews], interviewExamples: [], preview: true }) || '', /^<main/);
 });
 

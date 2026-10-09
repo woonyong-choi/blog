@@ -18,5 +18,6 @@ const OWNER = 'woonyong';
 
 // 연도는 빌드 시점 값을 기본으로 두고, 접속 시점에 현재 연도로 다시 쓴다.
 export function personalFooter(config, year = new Date().getFullYear()) {
-  return `<footer class="app-footer"><div class="app-shell"><div class="app-footer-bar"><p class="app-footer-copy">© <span data-current-year>${Number(year)}</span> ${OWNER}</p><div class="app-footer-links"><a href="${escape(config.github)}" aria-label="GitHub">${socialIcon('github')}</a><a href="/blog/feed.xml" aria-label="RSS">${socialIcon('rss')}</a></div></div></div></footer>`;
+  const linkedin = config.linkedin ? `<a href="${escape(config.linkedin)}" aria-label="LinkedIn">${socialIcon('linkedin')}</a>` : '';
+  return `<footer class="app-footer"><div class="app-shell"><div class="app-footer-bar"><p class="app-footer-copy">© <span data-current-year>${Number(year)}</span> ${OWNER}</p><div class="app-footer-links"><a href="${escape(config.github)}" aria-label="GitHub">${socialIcon('github')}</a>${linkedin}<a href="/blog/feed.xml" aria-label="RSS">${socialIcon('rss')}</a></div></div></div></footer>`;
 }

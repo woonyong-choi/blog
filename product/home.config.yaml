@@ -92,7 +92,7 @@ sections:
     description: 동료평가 소개 섹션입니다.
     links:
       - { label: GitHub, href: "https://github.com/woonyong-choi", icon: github }
-      - { label: LinkedIn, icon: linkedin }
+      - { label: LinkedIn, href: "https://www.linkedin.com/in/woonyong-choi", icon: linkedin }
     items: []
 
   # 연락: mode가 email이면 메일 버튼, newsletter이면 구독 입력을 보인다.
