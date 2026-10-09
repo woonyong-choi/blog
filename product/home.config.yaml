@@ -65,7 +65,7 @@ sections:
       src: /assets/technology-keycap-icon.svg
       alt: ""
     title: 기술과 생각
-    description: 언어의 문법과 개념부터 도구의 사용법까지 정리했습니다.
+    description: 기술별 기록을 모았습니다.
     items: [c, csharp, python, typescript, javascript, kotlin, postgresql, kubernetes, docker, git]
 
   # 인터뷰: 머리(icon, title, description, links) 아래에 카드가 흐른다.
