@@ -1804,6 +1804,7 @@
   --site-prose-code-color: var(--primitive-simple-prose-code-color);
   --site-prose-code-border: var(--primitive-simple-prose-code-border);
   --site-prose-code-background: var(--primitive-simple-prose-code-background);
+  --site-prose-pre-background: var(--primitive-simple-search-bg);
   --site-prose-pre-padding: var(--primitive-simple-prose-pre-padding);
   --site-prose-pre-radius: var(--primitive-simple-prose-pre-radius);
   --site-prose-quote-margin: var(--primitive-simple-prose-quote-margin);
