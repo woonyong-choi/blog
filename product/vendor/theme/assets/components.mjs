@@ -304,10 +304,11 @@ export function DocumentLayout({ navigation, outline, content }) {
 
 export function DocumentNavigation({ label, nodes }) {
   function item(node) {
-    const title = node.href ? `<a href="${safeUrl(node.href)}"${node.current ? ' aria-current="page"' : ''}>${escape(node.title)}</a>` : `<span>${escape(node.title)}</span>`;
-    return node.children?.length ? `<li><details${node.open ? ' open' : ''}><summary>${title}</summary><ul>${node.children.map(item).join('')}</ul></details></li>` : `<li>${title}</li>`;
+    const current = node.current ? ' class="is-selected" aria-current="page"' : '';
+    const title = node.href && !node.children?.length ? `<a href="${safeUrl(node.href)}"${current}>${escape(node.title)}</a>` : `<span${current}>${escape(node.title)}</span>`;
+    return node.children?.length ? `<li><details${node.open ? ' open' : ''}><summary title="하위 문서 접기·펼치기">${title}</summary><ul>${node.children.map(item).join('')}</ul></details></li>` : `<li>${title}</li>`;
   }
-  return out(`<details class="app-document-nav" data-document-panel open><summary aria-label="${escape(label)} 하위 문서">${escape(label)}</summary><nav aria-label="${escape(label)} 하위 문서"><ul>${nodes.map(item).join('')}</ul></nav></details>`);
+  return out(`<details class="app-document-nav" data-document-panel open><summary aria-label="${escape(label)} 하위 문서"><span>${escape(label)}</span></summary><nav aria-label="${escape(label)} 하위 문서"><ul>${nodes.map(item).join('')}</ul></nav></details>`);
 }
 
 export function DocumentOutline({ sections }) {

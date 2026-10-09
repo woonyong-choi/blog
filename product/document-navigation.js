@@ -56,6 +56,19 @@ export function initDocumentNavigation(layout) {
   doc.fonts?.ready.then(schedule);
   resize();
   const sidebar = layout.querySelector('.app-document-sidebar');
+  const navigation = sidebar?.querySelector('nav');
+  const groups = [...(navigation?.querySelectorAll('details') ?? [])];
+  navigation?.addEventListener('click', event => {
+    const summary = event.target.closest('summary');
+    const row = summary?.querySelector(':scope > span') ?? event.target.closest('a');
+    if (!row) return;
+    navigation.querySelectorAll('.is-selected').forEach(selected => selected.classList.remove('is-selected'));
+    row.classList.add('is-selected');
+    if (summary) {
+      const group = summary.parentElement;
+      for (const other of groups) if (!other.contains(group)) other.open = false;
+    }
+  });
   const current = sidebar?.querySelector('[aria-current="page"]');
   if (current && view.getComputedStyle(sidebar).position === 'sticky') {
     const row = current.getBoundingClientRect();

@@ -585,6 +585,8 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-document-layout .app-document { width: 100%; margin-top: 0; --site-width-wide: min(var(--site-page), 100cqw); }
 .app-document-nav { max-width: var(--site-body-width); margin-inline: auto; font-size: var(--site-small-text); color: var(--site-muted); }
 .app-document-nav > summary { padding: var(--site-gap-sm); border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-button-radius); background: var(--site-help-bg); cursor: pointer; }
+.app-document-nav summary { display: flex; align-items: center; list-style: none; }
+.app-document-nav summary::-webkit-details-marker { display: none; }
 .app-document-nav > nav, .app-document-outline > .app-document-nav { padding-block: var(--site-gap-sm); }
 .app-document-nav :is(ul, ol) { margin: 0; padding: 0; list-style: none; }
 .app-document-nav ul ul { padding-left: var(--site-gap-sm); border-left: var(--site-border) solid var(--site-line); margin-left: var(--site-gap-xs); }
@@ -592,10 +594,10 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-document-nav li > details > summary { cursor: pointer; border-radius: var(--site-button-radius); }
 .app-document-nav :is(a, li > span, summary > span) { padding: calc(var(--site-gap-xs) / 2) var(--site-gap-xs); color: inherit; border-radius: var(--site-button-radius); overflow-wrap: anywhere; }
 .app-document-nav a { display: block; }
-.app-document-nav summary > a { display: inline-block; max-width: calc(100% - var(--site-gap-lg)); vertical-align: middle; }
+.app-document-nav summary > a, .app-document-nav summary > span { flex: 1; min-width: 0; }
 .app-document-nav > nav > ul > li > details > summary { font-weight: var(--site-weight-title); color: var(--site-ink); }
-.app-document-nav a:hover { background: var(--site-help-bg); color: var(--site-link); text-decoration: none; }
-.app-document-nav a[aria-current] { background: var(--site-help-hover); color: var(--site-link); font-weight: var(--site-weight-medium); }
+.app-document-nav :is(a, li > details > summary):hover { background: var(--site-help-bg); color: var(--site-link); text-decoration: none; }
+.app-document-nav a[aria-current="location"], .app-document-nav .is-selected { background: var(--site-help-hover); color: var(--site-link); font-weight: var(--site-weight-medium); }
 .app-document-nav a.is-parent { color: var(--site-link); }
 .app-document-nav .is-subsection { padding-left: var(--site-gap-sm); }
 .app-document-nav summary:focus-visible { outline: var(--site-outline) solid var(--site-link); outline-offset: var(--site-outline); }
@@ -614,8 +616,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
   .app-document-shell:has(.app-document-outline) { max-width: none; }
   .app-document-layout { grid-template-columns: var(--site-sidebar-width) minmax(0, 1fr) var(--site-sidebar-width); grid-template-areas: "tree content outline"; }
   .app-document-layout:has(.app-document-outline) { grid-template-columns: minmax(var(--site-sidebar-width), 1fr) minmax(0, var(--site-page)) minmax(var(--site-sidebar-width), 1fr); grid-template-areas: "tree content outline"; }
-  .app-document-sidebar { justify-self: end; width: 100%; max-width: var(--site-sidebar-width); }
-  .app-document-outline > .app-document-nav { max-width: none; }
+  .app-document-sidebar > .app-document-nav, .app-document-outline > .app-document-nav { max-width: none; }
   .app-document-outline { position: sticky; top: var(--site-gap-lg); max-height: calc(100vh - 2 * var(--site-gap-lg)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 }
 /* 지원·위키 화면: 지원 그룹과 격자, 지식 목록, 키보드 단축키 표. */
