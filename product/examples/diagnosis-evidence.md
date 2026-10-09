@@ -16,7 +16,11 @@
   "visibility": "public",
   "comments": true,
   "example": true,
-  "publishedAt": "2026-10-06"
+  "publishedAt": "2026-10-06",
+  "thumbnail": {
+    "src": "https://picsum.photos/seed/diagnosis-evidence/960/540",
+    "alt": ""
+  }
 }
 ---
 

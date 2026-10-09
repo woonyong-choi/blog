@@ -4371,6 +4371,11 @@
         "$type": "dimension",
         "$value": "328px",
         "$description": "Things 공통 CSS(shared.css 2024-02-20)의 .newgrid.is-large 열 최소 너비"
+      },
+      "card-summary-lines": {
+        "$type": "number",
+        "$value": 2,
+        "$description": "주제와 블로그 목록 설명의 최대 줄 수. 간격이나 글꼴 값과 독립적인 콘텐츠 밀도이므로 별도 정의"
       }
     }
   },
@@ -9413,6 +9418,10 @@
       "$type": "color",
       "$value": "{color.syntax-punctuation}",
       "$description": "언어별 분석 결과를 공통 구문 역할로 표시한다. 값은 base 구문 색을 따른다"
+    },
+    "card-summary-lines": {
+      "$type": "number",
+      "$value": "{primitive.simple.card-summary-lines}"
     }
   },
   "icon": {

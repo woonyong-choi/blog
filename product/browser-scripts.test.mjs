@@ -29,5 +29,6 @@ test('bundled_worker_searches_body_and_retries_without_module_requests', async (
   assert.equal(messages[1].result.entries[0].text, undefined);
   await listener({ data: { id: 3, action: 'suggest', state: { ...state, query: 'JS' } } });
   assert.equal(messages[2].result.tags[0][0], 'js');
-  assert.equal(scripts.size, 7);
+  assert.equal(scripts.size, 8);
+  assert.ok(scripts.has('blog-list.js'));
 });

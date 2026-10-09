@@ -76,3 +76,8 @@ test('used_licensed_assets_include_notices_and_unused_assets_do_not', () => {
   const unused = publicationAssets(new Map([['/', '<main>자산 없음</main>']]), [], () => Buffer.from(''));
   for (const [, notice] of dependencies) assert.ok(!unused.has(notice));
 });
+
+test('blog_archive_loads_its_client_only_when_the_list_exists', () => {
+  assert.deepEqual(clientEntrypoints('<div data-blog-list></div>'), ['blog-list.js']);
+  assert.deepEqual(clientEntrypoints('<article class="app-blog-card"></article>'), []);
+});

@@ -16,7 +16,11 @@
   "visibility": "public",
   "comments": true,
   "example": true,
-  "publishedAt": "2026-10-05"
+  "publishedAt": "2026-10-05",
+  "thumbnail": {
+    "src": "https://picsum.photos/seed/python-copy/1200/500",
+    "alt": ""
+  }
 }
 ---
 

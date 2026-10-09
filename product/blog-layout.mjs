@@ -1,7 +1,7 @@
-// 같은 발행 글을 두 편 미리보기, 카드 목록, 네 편 본문 피드로 보여준다.
+// 같은 발행 글을 네 편 미리보기, 카드 목록, 네 편 본문 피드로 보여준다.
 import { escape } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
-import { subjectIcon, tagLinks, dateLine, searchBox, documentCard } from './publication-layout.mjs';
+import { tagLinks, dateLine, searchBox } from './publication-layout.mjs';
 import { PAGE_SIZES, paginate } from './content-model.mjs';
 import { postArticle } from './post-article.mjs';
 
@@ -9,19 +9,19 @@ export function blogCard(page, tags, level = 3) {
   // 검증된 이미지별 좌표는 테마 값이 아닌 콘텐츠의 자르기 데이터다.
   const position = page.thumbnail?.position;
   const crop = position ? ` style="object-position:${position.x}% ${position.y}%"` : '';
-  const cover = page.thumbnail ? `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="lazy" decoding="async"${crop}>` : subjectIcon(page.contentIcon);
-  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), tags: ui.trusted(tagLinks(page, tags, 3)) }));
+  const cover = page.thumbnail ? `<img src="${escape(page.thumbnail.src)}" alt="${escape(page.thumbnail.alt)}" width="960" height="540" loading="lazy" decoding="async"${crop}>` : '';
+  return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), description: page.description }));
 }
 
 export function recentBlog(posts) {
   if (!posts.length) return '';
-  const cards = posts.slice(0, PAGE_SIZES.preview).map(page => ui.trusted(documentCard(page)));
+  const cards = posts.slice(0, PAGE_SIZES.preview).map(page => ui.trusted(blogCard(page)));
   return `<section class="app-knowledge-section app-support-group"><h2 class="app-page-heading">Blog</h2>${ui.CardGroup({ columns: 2, cards })}${posts.length > PAGE_SIZES.preview ? '<p><a href="/blog/all/">전체 보기</a></p>' : ''}</section>`;
 }
 
 export function blogArchive(posts, tags, page) {
   const result = paginate(posts, page, PAGE_SIZES.cards);
-  return `<main id="main" class="app-shell">${searchBox()}<h1 class="app-page-heading">모든 글</h1><div class="app-list-toolbar"><span>${posts.length}편 · 최신 발행순</span><a href="/blog/">본문 이어 읽기 →</a></div>${posts.length ? `<div class="app-blog-grid">${result.items.map(post => blogCard(post, tags, 2)).join('')}</div>` : emptyBlog()}${pagination(result, '/blog/all/')}</main>`;
+  return `<main id="main" class="app-shell">${searchBox()}<h1 class="app-page-heading">모든 글</h1><div class="app-list-toolbar"><span>${posts.length}편 · 최신 발행순</span><a href="/blog/">본문 이어 읽기 →</a></div>${posts.length ? `<div data-blog-list>${ui.CardGroup({ cards: result.items.map(post => ui.trusted(blogCard(post, tags, 2))) })}${pagination(result, '/blog/all/')}<p class="app-caption" data-blog-status role="status"></p></div>` : emptyBlog()}</main>`;
 }
 
 export function blogFeed(posts, tags, page) {

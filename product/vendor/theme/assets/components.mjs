@@ -9,7 +9,7 @@
 // 순서가 있는 본문(탭 패널, 카드 묶음)은 `X.open(...)`/`X.close()`로 토큰 스트림에도 쓸 수 있다.
 
 const ID = /^[\w-]+$/;
-const CARD_VARIANTS = ['centered', 'grouped', 'inline', 'related'];
+const CARD_VARIANTS = ['centered', 'grouped', 'inline', 'related', 'summary'];
 
 export const escape = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 
@@ -146,9 +146,9 @@ export function Card({ href, title, description = '', icon, variant, compact = f
   const heading = headingLevel === undefined ? '<strong>' : `<strong role="heading" aria-level="${Number(headingLevel)}">`;
   const mark = icon === undefined || icon === false ? '' : slot(icon, 'icon');
   if (variant === 'related') return out(`<a class="app-help-card app-related-link${mark ? '' : ' has-no-icon'}" href="${link}">${mark}${heading}${escape(title)}</strong></a>`);
-  const classes = variant ? ` is-${variant}` : compact ? ' is-compact' : horizontal ? ' is-horizontal' : '';
+  const classes = variant && variant !== 'summary' ? ` is-${variant}` : compact ? ' is-compact' : horizontal ? ' is-horizontal' : '';
   const bare = !mark || (compact && !variant);
-  return out(`<a class="app-help-card${classes}${bare ? ' has-no-icon' : ''}" href="${link}">${bare ? '' : mark}${heading}${escape(title)}</strong>${description ? `<p>${escape(description)}</p>` : ''}</a>`);
+  return out(`<a class="app-help-card${classes}${bare ? ' has-no-icon' : ''}" href="${link}">${bare ? '' : mark}${heading}${escape(title)}</strong>${description ? `<p${variant === 'summary' ? ' class="app-card-summary"' : ''}>${escape(description)}</p>` : ''}</a>`);
 }
 
 /** 카드 묶음. `cards`는 Card 결과(슬롯)의 배열이다. `split`은 첫 카드를 크게 두는 배치다. */
@@ -265,11 +265,11 @@ export function ProjectShowcase({ id: section, title, src, poster }) {
 }
 export const Panorama = ({ id: section, label, image }) => out(`<section id="${id(section)}-video" class="app-hero-panorama" aria-label="${escape(label)}"><div class="app-hero-panorama-content">${slot(image, 'image')}</div></section>`);
 
-/** 블로그 카드: 덮개(이미지·아이콘 슬롯), 제목 링크, 태그 슬롯. 피드 본문과는 다른 목록용 카드다. */
-export function BlogCard({ href, title, level = 3, cover, tags }) {
+/** 블로그 카드: 썸네일 슬롯, 한 줄 제목 링크, 두 줄 설명, 선택 태그 슬롯. 피드 본문과는 다른 목록용 카드다. */
+export function BlogCard({ href, title, level = 3, cover, tags, description = '' }) {
   const heading = level === 2 ? 'h2' : 'h3';
   const link = safeUrl(href);
-  return out(`<article class="app-blog-card"><a class="app-blog-cover" href="${link}" aria-label="${escape(title)}">${slot(cover, 'cover')}</a><div class="app-blog-card-body"><${heading} class="app-blog-card-title"><a href="${link}">${escape(title)}</a></${heading}>${slot(tags, 'tags')}</div></article>`);
+  return out(`<article class="app-blog-card"><a class="app-blog-cover" href="${link}" aria-label="${escape(title)}">${slot(cover, 'cover')}</a><div class="app-blog-card-body"><${heading} class="app-blog-card-title"><a href="${link}">${escape(title)}</a></${heading}>${description ? `<p class="app-card-summary">${escape(description)}</p>` : ''}${tags === undefined ? '' : slot(tags, 'tags')}</div></article>`);
 }
 /** 쪽 이동. `before`·`after`는 `{ href, text }`, `numbers`는 `{ page, href, current }`, `summary`는 번호 대신 쓰는 글자다. */
 export function PageLinks({ label, before, after, numbers = [], summary, resultPages = false }) {

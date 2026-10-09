@@ -16,7 +16,11 @@
   "visibility": "public",
   "comments": true,
   "example": true,
-  "publishedAt": "2026-10-08"
+  "publishedAt": "2026-10-08",
+  "thumbnail": {
+    "src": "https://picsum.photos/seed/search-without-stale-results/960/540",
+    "alt": ""
+  }
 }
 ---
 

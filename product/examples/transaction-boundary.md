@@ -16,7 +16,11 @@
   "visibility": "public",
   "comments": true,
   "example": true,
-  "publishedAt": "2026-10-07"
+  "publishedAt": "2026-10-07",
+  "thumbnail": {
+    "src": "https://picsum.photos/seed/transaction-boundary/800/1000",
+    "alt": ""
+  }
 }
 ---
 

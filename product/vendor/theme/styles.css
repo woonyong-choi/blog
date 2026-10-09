@@ -375,6 +375,9 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 @media (prefers-reduced-motion: reduce) {
   .app-knowledge-card { transition: none; }
 }
+
+/* 주제와 블로그 목록은 설명의 전체 텍스트를 보존하고 두 줄까지만 표시한다. */
+.app-card-summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--site-card-summary-lines); overflow: hidden; overflow-wrap: anywhere; }
 /* 본문 문법: app-prose 아래 제목·문단·목록·인용·표·코드·콜아웃·각주·수식·도표. 새 Markdown 요소는 여기에 둔다. */
 .app-prose { overflow-wrap: anywhere; line-height: var(--site-feature-body-line); }
 .app-prose h1 { font-size: var(--site-section-title); line-height: var(--site-prose-heading-line); margin: var(--site-prose-h1-margin); }
@@ -575,8 +578,8 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-source-link, .app-back-link { font-size: var(--site-small-text); }
 /* 지원·위키 화면: 지원 그룹과 격자, 지식 목록, 키보드 단축키 표. */
 .app-support-group { margin-bottom: var(--site-support-gap); }
-.app-support-group h2 { font-size: var(--site-subtitle); color: var(--site-ink); margin: 0 0 var(--site-support-title-gap); line-height: var(--site-line-intro); }
-.app-support-group h3 { font-size: var(--site-subtitle); color: var(--site-ink); margin: 0 0 var(--site-support-title-gap); line-height: var(--site-line-intro); }
+.app-support-group > h2 { font-size: var(--site-subtitle); color: var(--site-ink); margin: 0 0 var(--site-support-title-gap); line-height: var(--site-line-intro); }
+.app-support-group > h3 { font-size: var(--site-subtitle); color: var(--site-ink); margin: 0 0 var(--site-support-title-gap); line-height: var(--site-line-intro); }
 .app-support-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--site-gap-xs); }
 .app-support-grid.is-pair { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .app-contact-prompt { text-align: center; padding-block: var(--site-gap-lg); }
@@ -632,10 +635,10 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-blog-card { min-width: 0; overflow: hidden; border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-help-radius); background: var(--site-help-bg); }
 .app-blog-cover { display: flex; align-items: center; justify-content: center; aspect-ratio: var(--site-ratio-video); overflow: hidden; background: var(--site-soft); }
 .app-blog-cover > img { width: 100%; height: 100%; object-fit: cover; }
-.app-blog-cover .app-content-icon { width: var(--site-hero-icon); height: var(--site-hero-icon); }
-.app-blog-card-body { padding: var(--site-card-inset); text-align: center; }
+.app-blog-card-body { padding: var(--site-card-inset); text-align: left; }
 .app-blog-card .app-tags { justify-content: flex-start; text-align: left; }
 .app-blog-card-title { margin: 0 0 var(--site-gap-sm); overflow: hidden; font-size: var(--site-body-text); line-height: var(--site-line-card); text-overflow: ellipsis; white-space: nowrap; }
+.app-blog-card-body > p { margin: 0; color: var(--site-help-copy-color); line-height: var(--site-line-card); }
 .app-blog-card-title a { color: var(--site-help-title-color); }
 .app-list-toolbar { display: flex; flex-wrap: wrap; gap: var(--site-gap); justify-content: space-between; margin-block: var(--site-gap-lg); font-size: var(--site-small-text); }
 .app-page-links { display: flex; flex-wrap: wrap; gap: var(--site-gap-sm); align-items: center; justify-content: center; margin-block: var(--site-support-gap); }

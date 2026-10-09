@@ -2,7 +2,7 @@
 import { parse } from 'yaml';
 
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-export const PAGE_SIZES = Object.freeze({ preview: 2, cards: 12, feed: 4, search: 12 });
+export const PAGE_SIZES = Object.freeze({ preview: 4, cards: 12, feed: 4, search: 12 });
 export const FIELDS = Object.freeze(['languages', 'cs', 'frameworks', 'infrastructure']);
 
 export function readDocument(source, tags, now = new Date()) {
@@ -68,7 +68,16 @@ function validDate(value) {
 
 function validateThumbnail(thumbnail) {
   if (thumbnail === undefined) return;
-  if (!thumbnail || !/^\/media\/[a-z0-9][a-z0-9./-]*\.(?:png|jpg|webp|svg)$/.test(thumbnail.src) || thumbnail.src.includes('..')) throw new Error('invalid thumbnail path');
+  const src = thumbnail?.src;
+  const local = typeof src === 'string' && /^\/media\/[a-z0-9][a-z0-9./-]*\.(?:png|jpg|webp|svg)$/.test(src) && !src.includes('..');
+  let external = false;
+  if (typeof src === 'string' && src.startsWith('https://')) {
+    try {
+      const url = new URL(src);
+      external = Boolean(url.hostname) && !url.username && !url.password;
+    } catch { /* 경로 오류는 아래의 공통 검증 결과로 보고한다. */ }
+  }
+  if (!local && !external) throw new Error('invalid thumbnail path');
   if (typeof thumbnail.alt !== 'string') throw new Error('missing thumbnail alternative');
   if (thumbnail.position !== undefined) {
     for (const axis of ['x', 'y']) {

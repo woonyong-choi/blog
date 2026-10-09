@@ -17,7 +17,11 @@
   "comments": true,
   "example": true,
   "publishedAt": "2026-09-30",
-  "author": "Posted by 예시 작성자"
+  "author": "Posted by 예시 작성자",
+  "thumbnail": {
+    "src": "https://picsum.photos/seed/markdown-guide/960/540",
+    "alt": ""
+  }
 }
 ---
 

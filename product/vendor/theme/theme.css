@@ -881,6 +881,7 @@
   --primitive-simple-figure-grid-min: 210px;
   --primitive-simple-figure-grid-min-small: 152px;
   --primitive-simple-figure-grid-min-large: 328px;
+  --primitive-simple-card-summary-lines: 2;
   --breakpoint-desktop: 1100px;
   --breakpoint-tablet: 800px;
   --breakpoint-mobile: 560px;
@@ -1926,6 +1927,7 @@
   --site-syntax-comment: var(--color-syntax-comment);
   --site-syntax-operator: var(--color-syntax-operator);
   --site-syntax-punctuation: var(--color-syntax-punctuation);
+  --site-card-summary-lines: var(--primitive-simple-card-summary-lines);
   --icon-paper: var(--color-gray-0);
   --icon-outline: var(--primitive-simple-icon-outline);
   --icon-detail: var(--primitive-simple-icon-detail);

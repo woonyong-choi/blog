@@ -45,7 +45,7 @@ test('publication_contract_accepts_only_finite_thumbnail_coordinates', () => {
 });
 
 test('blog_pagination_keeps_all_posts_at_approved_boundaries', () => {
-  assert.deepEqual(PAGE_SIZES, { preview: 2, cards: 12, feed: 4, search: 12 });
+  assert.deepEqual(PAGE_SIZES, { preview: 4, cards: 12, feed: 4, search: 12 });
   for (const count of [0, 1, 3, 4, 5, 8, 9, 12, 13]) {
     const items = Array.from({ length: count }, (_, id) => id);
     for (const size of [4, 12]) {
@@ -58,4 +58,14 @@ test('blog_pagination_keeps_all_posts_at_approved_boundaries', () => {
 test('blog_order_uses_publication_date_instead_of_update_date', () => {
   const documents = [{ id: 'b', publishedAt: '2026-01-01', updatedAt: '2026-10-01' }, { id: 'a', publishedAt: '2026-01-01' }, { id: 'c', publishedAt: '2026-02-01' }].map(page => ({ type: 'blog', ...page }));
   assert.deepEqual(blogDocuments(documents).map(page => page.id), ['c', 'a', 'b']);
+});
+
+// 더미 이미지처럼 확장자가 없는 HTTPS 이미지도 쓸 수 있다.
+test('thumbnail_accepts_https_without_credentials_and_rejects_unsafe_urls', () => {
+  for (const src of ['https://picsum.photos/seed/demo/960/540', 'https://images.example.com/cover?w=960&h=540']) {
+    assert.equal(readDocument(source({ thumbnail: { src, alt: '' } }), TAGS).thumbnail.src, src);
+  }
+  for (const src of ['javascript:alert(1)', 'data:image/png;base64,a', '//example.com/a', 'http://example.com/a', 'https://user:secret@example.com/a', 'https://', 123]) {
+    assert.throws(() => readDocument(source({ thumbnail: { src, alt: '' } }), TAGS), /invalid thumbnail path/);
+  }
 });

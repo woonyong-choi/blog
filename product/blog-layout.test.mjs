@@ -7,14 +7,14 @@ function posts(count) {
   return Array.from({ length: count }, (_, id) => ({ id: `post-${id}`, route: `/articles/post-${id}/`, title: `글 ${id}`, description: '설명', publishedAt: '2026-10-01', type: 'blog', tags: ['os'], contentIcon: { name: 'operating-system' }, html: `<h2 id="post-${id}-section">절</h2><p>본문</p>` }));
 }
 
-// #108: 최신 두 글만 공통 도움말 카드로 보여 주고 나머지는 전체 목록에서 읽는다.
-test('blog_preview_shows_two_document_cards_and_an_all_link_when_needed', () => {
-  for (const count of [0, 1, 2, 3, 4, 12, 13]) {
+// #110: 썸네일 목록은 최대 네 글을 보여 주고 나머지는 전체 목록에서 읽는다.
+test('blog_preview_shows_four_thumbnail_cards_and_an_all_link_when_needed', () => {
+  for (const count of [0, 1, 2, 3, 4, 5, 12, 13]) {
     const html = recentBlog(posts(count));
-    assert.equal((html.match(/class="app-help-card"/g) ?? []).length, Math.min(count, 2));
-    assert.equal(html.includes('전체 보기'), count > 2);
-    assert.doesNotMatch(html, /app-blog-card|app-blog-cover|app-tags/);
-    if (count) assert.match(html, /<p>설명<\/p>/);
+    assert.equal((html.match(/class="app-blog-card"/g) ?? []).length, Math.min(count, 4));
+    assert.equal(html.includes('전체 보기'), count > 4);
+    assert.doesNotMatch(html, /app-help-card|app-tags/);
+    if (count) assert.match(html, /<p class="app-card-summary">설명<\/p>/);
   }
 });
 
@@ -27,7 +27,7 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.match(first, /href="\/blog\/all\/page\/2\/"/);
   assert.equal((first.match(/<h2\b/g) ?? []).length, 12);
   assert.doesNotMatch(first, /<h3\b/);
-  assert.equal((recentBlog(entries).match(/role="heading" aria-level="3"/g) ?? []).length, 2);
+  assert.equal((recentBlog(entries).match(/<h3 class="app-blog-card-title"/g) ?? []).length, 4);
   assert.doesNotMatch(last, /rel="next"/);
   const feed = blogFeed(entries, TAGS, 1);
   assert.equal((feed.match(/class="app-blog-post"/g) ?? []).length, 4);
@@ -38,18 +38,19 @@ test('blog_archive_and_feed_have_static_navigation_and_no_duplicate_posts', () =
   assert.equal((feed.match(/<footer class="app-post-footer">/g) ?? []).length, 4);
 });
 
-// #65: 전체 목록은 이미지 위치와 제목·태그의 독립 링크를 유지한다.
+// 썸네일 자르기 좌표와 제목 링크를 유지하고 설명을 보여 준다.
 test('blog_cards_preserve_thumbnail_position_and_separate_links', () => {
   const post = { ...posts(1)[0], thumbnail: { src: '/media/cover.webp', alt: '상단의 "검색" 입력창', position: { x: 37.5, y: 0 } } };
   for (const html of [blogCard(post, TAGS), blogArchive([post], TAGS, 1)]) {
     assert.match(html, /object-position:37\.5% 0%/);
     assert.match(html, /alt="상단의 &quot;검색&quot; 입력창"/);
     assert.match(html, /<a class="app-blog-cover"[^>]+><img[^>]+><\/a>/);
-    assert.match(html, /href="\/tags\/os\/"/);
+    assert.match(html, /app-card-summary/);
+    assert.doesNotMatch(html, /app-tags/);
   }
   const centered = blogCard({ ...post, thumbnail: { src: post.thumbnail.src, alt: '' } }, TAGS);
   assert.doesNotMatch(centered, /object-position/);
   const fallback = blogCard({ ...post, thumbnail: undefined }, TAGS);
-  assert.match(fallback, /app-content-icon/);
+  assert.doesNotMatch(fallback, /app-content-icon/);
   assert.doesNotMatch(fallback, /cover.webp|object-position/);
 });

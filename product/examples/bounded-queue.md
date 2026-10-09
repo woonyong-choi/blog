@@ -16,7 +16,11 @@
   "visibility": "public",
   "comments": true,
   "example": true,
-  "publishedAt": "2026-10-04"
+  "publishedAt": "2026-10-04",
+  "thumbnail": {
+    "src": "https://picsum.photos/seed/bounded-queue/960/540",
+    "alt": ""
+  }
 }
 ---
 
