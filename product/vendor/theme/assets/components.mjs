@@ -77,15 +77,47 @@ export const Tooltip = ({ id: target, label, text }) => out(`${TooltipTrigger({ 
 /** 블록 설명: 단락 하나의 단추 + 슬롯 본문 말풍선. */
 export const TooltipBlock = ({ id: target, label, body }) => out(`<p>${TooltipTrigger({ id: target, label })}</p>${TooltipBubble({ id: target, body })}`);
 
-/** 탭 묶음. `tabs`는 `{ label, body }`이고 body는 슬롯이다. */
-export function Tabs({ id: group, label, platform = false, tabs }) {
-  if (!Array.isArray(tabs) || !tabs.length) throw new Error('Tabs require tabs');
-  return out(`${Tabs.open({ id: group, label, platform, labels: tabs.map((tab) => tab.label) })}${tabs.map((tab, index) => `${Tabs.panelOpen({ id: group, index })}${slot(tab.body, 'tab body')}${Tabs.panelClose()}`).join('')}${Tabs.close()}`);
+export const TAB_FRAMES = ['panel', 'none'];
+export const TAB_POSITIONS = ['top', 'bottom'];
+export const TAB_SELECTORS = ['buttons', 'segmented', 'numbers'];
+// 옵션을 하나도 주지 않으면 예전 마크업 그대로다. 하나라도 주면 세 가지가 모두 클래스로 나온다(기본 panel, top, buttons).
+function tabVariant({ platform = false, frame, position, selector }) {
+  if (frame !== undefined && !TAB_FRAMES.includes(frame)) throw new Error(`Unknown tabs frame: ${frame}`);
+  if (position !== undefined && !TAB_POSITIONS.includes(position)) throw new Error(`Unknown tabs position: ${position}`);
+  if (selector !== undefined && !TAB_SELECTORS.includes(selector)) throw new Error(`Unknown tabs selector: ${selector}`);
+  if (platform && ((frame ?? 'panel') !== 'panel' || (selector ?? 'buttons') !== 'buttons')) throw new Error('Platform tabs always use frame panel and selector buttons');
+  if (frame === undefined && position === undefined && selector === undefined) return undefined;
+  return { frame: frame ?? 'panel', position: position ?? 'top', selector: selector ?? 'buttons' };
 }
-Tabs.open = ({ id: group, label = '기기별 안내', platform = false, labels }) => `<section class="app-tabs${platform ? ' is-platform' : ''}" data-tabs${platform ? ' data-platform' : ''}><div class="app-tablist" role="tablist" aria-label="${escape(label)}">${labels.map((text, index) => `<button type="button" id="${id(group)}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${group}-panel-${index}" tabindex="${index ? '-1' : '0'}">${escape(text)}</button>`).join('')}</div>`;
+function tablist({ id: group, label, labels, selector }) {
+  const numbers = selector === 'numbers';
+  return `<div class="app-tablist" role="tablist" aria-label="${escape(label)}">${labels.map((text, index) => `<button type="button" id="${id(group)}-tab-${index}" role="tab" aria-selected="${index === 0}" aria-controls="${group}-panel-${index}" tabindex="${index ? '-1' : '0'}"${numbers ? ` aria-label="${escape(text ?? `탭 ${index + 1}`)}"` : ''}>${numbers ? index + 1 : escape(text)}</button>`).join('')}</div>`;
+}
+/**
+ * 탭 묶음. `tabs`는 `{ label, body }`이고 body는 슬롯이다.
+ * 선택 옵션: `frame`(panel, none), `position`(top, bottom), `selector`(buttons, segmented, numbers).
+ * `numbers`만 라벨 없이 쓸 수 있고 버튼에는 번호가 나오며 라벨은 접근성 이름이 된다. `position: bottom`이면 탭 목록이 패널 뒤에 온다.
+ */
+export function Tabs({ id: group, label, platform = false, tabs, frame, position, selector }) {
+  if (!Array.isArray(tabs) || !tabs.length) throw new Error('Tabs require tabs');
+  const props = { id: group, label, platform, labels: tabs.map((tab) => tab.label), frame, position, selector };
+  return out(`${Tabs.open(props)}${tabs.map((tab, index) => `${Tabs.panelOpen({ id: group, index })}${slot(tab.body, 'tab body')}${Tabs.panelClose()}`).join('')}${Tabs.close(props)}`);
+}
+Tabs.open = (props) => {
+  const { id: group, label = props.platform ? '기기별 안내' : '탭', platform = false, labels } = props;
+  const variant = tabVariant(props);
+  const classes = variant ? ` is-frame-${variant.frame} is-position-${variant.position} is-selector-${variant.selector}` : '';
+  return `<section class="app-tabs${platform ? ' is-platform' : ''}${classes}" data-tabs${platform ? ' data-platform' : ''}>${variant?.position === 'bottom' ? '' : tablist({ id: group, label, labels, selector: variant?.selector })}`;
+};
 Tabs.panelOpen = ({ id: group, index }) => `<div class="app-tabpanel" id="${id(group)}-panel-${index}" role="tabpanel" aria-labelledby="${group}-tab-${index}" tabindex="0"${index ? ' hidden' : ''}>`;
 Tabs.panelClose = () => '</div>';
-Tabs.close = () => '</section>';
+// 위치가 bottom이면 탭 목록은 닫을 때 낸다. 옵션이 없으면 예전처럼 닫는 태그만 낸다.
+Tabs.close = (props) => {
+  const variant = props ? tabVariant(props) : undefined;
+  if (variant?.position !== 'bottom') return '</section>';
+  const { id: group, label = props.platform ? '기기별 안내' : '탭', labels } = props;
+  return `${tablist({ id: group, label, labels, selector: variant.selector })}</section>`;
+};
 
 /** 도움말 카드. `icon`은 슬롯이고 없으면 아이콘 자리가 없다. `related`는 함께 읽기 카드다. `headingLevel`을 주면 제목이 해당 단계의 제목 역할이 된다. */
 export function Card({ href, title, description = '', icon, variant, compact = false, horizontal = false, headingLevel }) {

@@ -140,7 +140,7 @@ items:
 
 | 블록 | 라벨 | 속성 | 놓는 곳 | 본문 |
 |---|---|---|---|---|
-| `tabs` | 선택(접근성 이름) | 없음 | 문서 바로 아래 | `tab`만 1개 이상 |
+| `tabs` | 선택(접근성 이름) | 없음 | 문서 바로 아래 | `:::tab`만 1개 이상(옛 형식). `@tab` 형식은 아래 "탭: `@tab` 형식" |
 | `platform` | 선택(기본 "기기별 안내") | 없음 | 문서 바로 아래 | `tab`만. 같은 문서의 아래 `platform`이 같은 이름의 탭을 따라 고른다 |
 | `tab` | 필수, 같은 묶음에서 겹치지 않음 | 없음 | `tabs`·`platform` 안 | Markdown, `note`·`steps`·`video` 등 |
 | `note`, `warning` | 선택(기본 "참고", "주의") | 없음 | 문서 바로 아래, `tab` 안 | Markdown. 다른 블록은 둘 수 없음 |
@@ -160,6 +160,40 @@ items:
 - `href`는 위 "원본 글 요소"와 같은 규칙이다(`https://`, `mailto:`, `#`, `/`로 시작하는 사이트 경로).
 - `cards`의 글 끝 "이어서 읽을 글"에는 `variant=related`를 권한다. 글 하단 "함께 읽기"와 같은 카드(왼쪽 아이콘, 제목, 최대 3줄 요약, 행마다 같은 높이, 태그 없음)로 그려진다. 나머지 변형은 다른 용도의 기존 표현이다.
 - `icon`은 테마의 콘텐츠 아이콘 이름이다. 글 앞의 `contentIcon.name`과 같은 목록이다.
+
+### 탭: `@tab` 형식
+
+기기별 안내가 아닌 일반 탭은 `:::tabs` 뒤에 옵션을 공백으로 적고, `@tab 이름` 줄마다 탭을 나눈다. 탭 본문은 일반 Markdown이고 `:::end`로 닫는다. 그림은 보통의 `![대체](경로)`와 캡션 문단으로 쓴다.
+
+````markdown
+:::tabs frame-none position-bottom selector-segmented
+@tab 변경 전
+
+![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
+
+기존 화면입니다.
+
+@tab 변경 후
+
+![변경 후 화면](/things/assets/repeating-comparison-2-io80.png)
+
+개선한 화면입니다.
+
+:::end
+````
+
+| 묶음 | 옵션 | 기본 |
+|---|---|---|
+| 상자 | `frame-panel`, `frame-none` | `frame-panel` |
+| 선택 줄 위치 | `position-top`, `position-bottom` | `position-top` |
+| 선택 줄 모양 | `selector-buttons`, `selector-segmented`, `selector-numbers` | `selector-buttons` |
+
+- 옵션은 서로 독립이라 순서가 없고 하나도 안 써도 된다. 같은 묶음 옵션을 둘 쓰거나(`frame-none frame-panel`) 같은 옵션을 겹쳐 쓰거나 모르는 옵션을 쓰면 오류다. `frame=none` 형식도 받는다.
+- `@tab` 줄에는 이름이 필요하다. `selector-numbers`만 이름을 생략할 수 있고, 이때 버튼에는 번호가 나오며 이름을 쓰면 접근성 이름이 된다. 이름은 묶음 안에서 겹치지 않는다.
+- 첫 `@tab` 줄 앞에는 본문을 둘 수 없고, `@tab`이 하나도 없거나 탭 본문이 비었거나 `:::end`가 없으면 오류다. 오류에는 줄 번호가 붙는다.
+- 코드 펜스와 4칸 이상 들여쓴 코드 안의 `@tab`, `:::end`, `:::tabs` 줄은 해석하지 않는다. 탭 본문 안의 다른 블록(`:::note` 등) 안의 `@tab`도 탭을 나누지 않는다.
+- 옵션 없는 `:::tabs`는 다음 내용 줄이 `@tab`일 때 이 형식이다. 옵션이 있으면 항상 이 형식이다. `::::tabs`와 `:::tab[이름]`을 쓰는 옛 형식, `:::platform`, `ui:tabs`는 그대로 동작한다.
+- 탭은 테마의 `Tabs` 구성 요소 하나가 그리고 선택 줄의 방향키·Home·End는 기존 스크립트가 처리한다. 모양은 테마의 탭 토큰이 정한다. `position-bottom`이면 선택 줄은 패널 뒤에 놓여 읽기 순서도 같다.
 
 ### 블록 폭
 

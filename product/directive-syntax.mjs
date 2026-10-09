@@ -14,6 +14,10 @@ const NAME = '[a-z][a-z0-9-]{0,23}';
 const OPEN = new RegExp(`^(:{3,})(${NAME})(?:\\[([^\\]\\n]*)\\])?(?:\\{(.*)\\})?\\s*$`);
 const LEAF = new RegExp(`^::(${NAME})(?:\\[([^\\]\\n]*)\\])?\\{(.*)\\}\\s*$`);
 const CLOSE = /^(:{3,})\s*$/;
+const END = /^:::end\s*$/;
+// `:::tabs frame-none position-bottom`처럼 이름 뒤에 공백으로 옵션을 적는 탭 묶음의 여는 줄. 대괄호·중괄호로 시작하면 옛 형식이다.
+const TABS_FORM = /^:::tabs[ \t]+(?![\[{])(\S.*?)\s*$/;
+const TAB_LINE = /^@tab(?:[ \t]+(.*?))?\s*$/;
 const KEY = /^[a-z][a-z0-9-]{0,23}/;
 const BARE = /^[^\s"'{}=\\]+/;
 const CONTROL = /[\u0000-\u001f\u007f]/u;
@@ -22,7 +26,10 @@ const LIMITS = { attributes: 12, value: 300, label: 80 };
 // 한 줄을 여는 줄, 닫는 줄, 리프 줄로 나눈다. 블록 줄처럼 보이지만 형식이 틀리면 'invalid'다.
 export function classifyLine(text) {
   if (!text.startsWith('::')) return { kind: 'text' };
-  let match = OPEN.exec(text);
+  if (END.test(text)) return { kind: 'end' };
+  let match = TABS_FORM.exec(text);
+  if (match) return { kind: 'tabs-form', colons: 3, name: 'tabs', options: match[1] };
+  match = OPEN.exec(text);
   if (match) return { kind: 'open', colons: match[1].length, name: match[2], label: match[3], source: match[4] };
   match = CLOSE.exec(text);
   if (match) return { kind: 'close', colons: match[1].length };
@@ -117,4 +124,33 @@ export function validateAttributes(raw, spec, fail, checks) {
     result[key] = value;
   }
   return result;
+}
+
+// `@tab 라벨` 줄. 라벨이 없으면 `{ label: undefined }`, 탭 줄이 아니면 null이다.
+export function parseTabLine(text) {
+  const match = TAB_LINE.exec(text);
+  return match ? { label: match[1] || undefined } : null;
+}
+
+export const TAB_OPTIONS = Object.freeze({
+  frame: ['panel', 'none'],
+  position: ['top', 'bottom'],
+  selector: ['buttons', 'segmented', 'numbers'],
+});
+
+// 탭 옵션: `frame-none position-bottom selector-segmented`(권장)와 `frame=none` 형식을 받는다. 같은 묶음은 한 번만, 모르는 옵션은 오류다.
+export function parseTabOptions(source = '', fail) {
+  const options = {};
+  const given = {};
+  const allowed = Object.entries(TAB_OPTIONS).flatMap(([group, values]) => values.map(value => `${group}-${value}`));
+  for (const token of source.split(/\s+/).filter(Boolean)) {
+    const match = /^(frame|position|selector)(?:-|=)([a-z]+)$/.exec(token);
+    if (!match || !TAB_OPTIONS[match[1]].includes(match[2])) fail(`알 수 없는 탭 옵션입니다: ${token} (사용할 수 있는 옵션: ${allowed.join(', ')})`);
+    const [, group, value] = match;
+    if (given[group] === token) fail(`탭 옵션이 겹칩니다: ${token}`);
+    if (given[group]) fail(`탭 옵션이 충돌합니다: ${given[group]}, ${token}`);
+    given[group] = token;
+    options[group] = value;
+  }
+  return options;
 }

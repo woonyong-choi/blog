@@ -59,6 +59,48 @@ Watch에서는 목록을 만들지 않고 iPhone에서 만든 목록을 읽기�
 :::
 ::::
 
+## 변경 전후를 탭으로 비교하기
+
+`:::tabs` 뒤에 옵션을 공백으로 적고, `@tab 이름` 줄마다 탭을 나눕니다. 탭 본문은 일반 Markdown이고 `:::end`로 닫습니다. 같은 크기의 그림 두 장과 캡션 문단으로 만든 예시입니다.
+
+:::tabs frame-none position-bottom selector-segmented
+@tab 변경 전
+
+![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
+
+기존 화면입니다.
+
+@tab 변경 후
+
+![변경 후 화면](/things/assets/repeating-comparison-2-io80.png)
+
+개선한 화면입니다.
+
+:::end
+
+위 탭의 원문입니다.
+
+````markdown
+:::tabs frame-none position-bottom selector-segmented
+@tab 변경 전
+
+![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)
+
+기존 화면입니다.
+
+@tab 변경 후
+
+![변경 후 화면](/things/assets/repeating-comparison-2-io80.png)
+
+개선한 화면입니다.
+
+:::end
+````
+
+- `frame-panel`(기본) 또는 `frame-none`: 탭 묶음 둘레의 상자
+- `position-top`(기본) 또는 `position-bottom`: 탭 선택 줄의 위치
+- `selector-buttons`(기본), `selector-segmented`, `selector-numbers`: 선택 줄의 모양. 번호 모양은 `@tab`의 이름을 생략할 수 있습니다.
+
 ## 화면을 차례로 보여 주기
 
 화면 여러 장을 번호 단추로 넘겨 보게 하려면 `:::gallery`에 `::slide`를 나열합니다. 자동으로 넘어가지 않고, 단추를 누르거나 키보드 화살표·Home·End로 고릅니다.

@@ -60,7 +60,7 @@ body > main, .app-support-shell { overflow-x: clip; }
 .app-canvas { background: var(--site-canvas); }
 .app-footer { background: var(--site-canvas); margin-top: var(--site-section); padding-block: var(--site-gap-lg); }
 .app-footer a { color: var(--site-muted); font-size: var(--site-small-text); }
-.app-footer-bar { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs) var(--site-gap); align-items: center; justify-content: space-between; border-top: var(--site-border) solid var(--site-line); padding-top: var(--site-gap); }
+.app-footer-bar { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs) var(--site-gap); align-items: center; justify-content: space-between; border-top: var(--site-border) solid var(--site-line); padding-top: calc(var(--site-gap) / 3); }
 .app-footer-copy { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .app-footer-links { display: flex; gap: var(--site-gap-sm); align-items: center; }
 .app-footer-links a { display: inline-flex; padding: var(--site-gap-xs); }
@@ -123,13 +123,26 @@ body > main, .app-support-shell { overflow-x: clip; }
 .app-play.is-playing:hover, .app-remote.is-playing:hover { background: var(--site-control-active); }
 .app-remote { display: inline-flex; align-items: center; gap: var(--site-gap-xs); font-weight: var(--site-weight-medium); }
 .app-remote img { width: var(--site-subtitle); height: var(--site-subtitle); }
-.app-tabs.is-platform { margin: 0 0 var(--site-prose-paragraph-gap); padding-inline: var(--site-platform-inset); border: 0; border-radius: var(--site-prose-pre-radius); background: var(--site-syntax-example-background); }
-.app-tabs.is-platform .app-tablist { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; margin: var(--site-platform-nav-margin); padding: 0; background: transparent; }
-.app-tabs.is-platform .app-tablist button { flex: none; margin: var(--site-platform-button-gap); padding: var(--site-platform-button-y) var(--site-platform-button-x); font-size: var(--site-platform-text); font-weight: var(--site-weight-medium); line-height: var(--site-platform-line); color: var(--site-platform-color); border-radius: var(--site-prose-pre-radius); background: var(--site-feature-tab-background); transition: box-shadow var(--site-platform-motion) var(--site-icon-easing); }
-.app-tabs.is-platform .app-tablist button:hover { background: var(--site-platform-hover); box-shadow: var(--site-platform-hover-shadow); }
-.app-tabs.is-platform .app-tablist button:active { background: var(--site-platform-active); box-shadow: var(--site-platform-active-shadow); }
-.app-tabs.is-platform .app-tablist button[aria-selected=true] { color: var(--site-card); background: var(--site-feature-tab-selected); cursor: default; }
-@media (prefers-reduced-motion: reduce) { .app-tabs.is-platform .app-tablist button { transition: none; } }
+.app-tabs:is(.is-platform, .is-frame-panel) { margin: 0 0 var(--site-prose-paragraph-gap); padding-inline: var(--site-platform-inset); border: var(--site-border) solid var(--site-syntax-example-border); border-radius: var(--site-prose-pre-radius); background: var(--site-syntax-example-background); }
+.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; margin: var(--site-platform-nav-margin); padding: 0; background: transparent; }
+.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button { flex: none; margin: var(--site-platform-button-gap); padding: var(--site-platform-button-y) var(--site-platform-button-x); font-size: var(--site-platform-text); font-weight: var(--site-weight-medium); line-height: var(--site-platform-line); color: var(--site-platform-color); border-radius: var(--site-prose-pre-radius); background: var(--site-feature-tab-background); transition: box-shadow var(--site-platform-motion) var(--site-icon-easing); }
+.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button:hover { background: var(--site-platform-hover); box-shadow: var(--site-platform-hover-shadow); }
+.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button:active { background: var(--site-platform-active); box-shadow: var(--site-platform-active-shadow); }
+.app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button[aria-selected=true] { color: var(--site-card); background: var(--site-feature-tab-selected); cursor: default; }
+@media (prefers-reduced-motion: reduce) { .app-tabs:is(.is-platform, .is-selector-buttons) .app-tablist button { transition: none; } }
+/* 탭 변형: frame(panel, none), position(top, bottom), selector(buttons, segmented, numbers). 옛 is-platform은 panel, top, buttons와 같다. */
+.app-tabs.is-frame-none { margin: 0 0 var(--site-prose-paragraph-gap); }
+.app-tabs.is-frame-none .app-tabpanel > :last-child { margin-bottom: 0; }
+.app-tabs.is-position-bottom .app-tablist { margin-top: var(--site-gap-sm); }
+.app-tabs.is-position-bottom.is-frame-none .app-tablist { margin-bottom: 0; }
+.app-tabs.is-selector-segmented .app-tablist { width: var(--site-feature-tab-width); max-width: 100%; gap: 0; padding: var(--site-feature-tab-inset); border-radius: var(--site-feature-tab-radius); background: var(--site-feature-tab-background); }
+.app-tabs.is-selector-segmented .app-tablist button { flex: 1; border: 0; padding: 0; font-size: var(--site-feature-tab-font); font-weight: var(--site-weight-medium); line-height: var(--site-feature-tab-height); border-radius: var(--site-feature-tab-button-radius); }
+.app-tabs.is-selector-segmented .app-tablist button[aria-selected=true] { background: var(--site-feature-tab-selected); box-shadow: var(--site-feature-tab-shadow); }
+.app-tabs.is-selector-numbers .app-tablist { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--site-gallery-row-gap) var(--site-gallery-gap); max-width: none; padding: 0; background: transparent; }
+.app-tabs.is-selector-numbers .app-tablist button { flex: none; min-width: var(--site-control); height: var(--site-control); padding: 0 var(--site-quote-credit-gap); border-radius: var(--site-pill); line-height: var(--site-control); font-weight: var(--site-gallery-weight); color: var(--site-ink); background: var(--site-gallery-background); }
+.app-tabs.is-selector-numbers .app-tablist button:hover { background: var(--site-gallery-hover); }
+.app-tabs.is-selector-numbers .app-tablist button:active { background: var(--site-gallery-active); }
+.app-tabs.is-selector-numbers .app-tablist button[aria-selected=true] { color: var(--site-card); background: var(--site-gallery-selected); cursor: default; }
 .app-primary-action { display: inline-block; padding: var(--site-newsletter-button-padding); background: var(--site-newsletter-button-color); color: var(--site-card); border: 0; border-radius: var(--site-newsletter-button-radius); font-weight: var(--site-weight-title); }
 .app-primary-action:hover { text-decoration: none; opacity: var(--site-player-opacity); }
 .app-primary-action:disabled { opacity: var(--site-landing-logo-opacity); cursor: default; }

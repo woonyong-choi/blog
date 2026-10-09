@@ -260,7 +260,7 @@ test('document_composition_example_renders_every_block_with_unique_ids', () => {
   assert.equal(related.length, 3);
   assert.ok(related.every(card => card.querySelector(':scope > .app-content-icon.is-medium') && card.querySelector(':scope > strong') && card.querySelector(':scope > span')));
   assert.equal(document.querySelectorAll('.is-centered, .app-inline-links').length, 0);
-  assert.equal(headings.length, 6);
+  assert.equal(headings.length, 7);
   assert.equal(document.querySelectorAll('.app-gallery .app-gallery-controls button').length, 7);
   const all = ids(html);
   assert.equal(new Set(all).size, all.length);
@@ -347,4 +347,134 @@ test('long_unbroken_code_keeps_the_exact_raw_text_for_copying', () => {
   assert.equal(document.querySelector('.app-code code').textContent, long);
   assert.ok(document.querySelector('.app-code-header [data-copy]'));
   assert.equal(document.querySelector('.app-code pre').getAttribute('style'), null);
+});
+
+const REQUESTED = [
+  ':::tabs frame-none position-bottom selector-segmented',
+  '@tab 변경 전', '', '![변경 전 화면](/things/assets/repeating-comparison-1-io80.png)', '', '기존 화면입니다.', '',
+  '@tab 변경 후', '', '![변경 후 화면](/things/assets/repeating-comparison-2-io80.png)', '', '개선한 화면입니다.', '',
+  ':::end', '',
+].join('\n');
+
+test('tabs_with_utility_header_and_at_tab_lines_render_the_one_shared_tabs_markup', () => {
+  const document = dom(render(REQUESTED));
+  const tabs = document.querySelector('section.app-tabs');
+  assert.deepEqual([...tabs.classList], ['app-tabs', 'is-frame-none', 'is-position-bottom', 'is-selector-segmented']);
+  const panels = [...tabs.querySelectorAll(':scope > [role=tabpanel]')];
+  const list = tabs.querySelector(':scope > [role=tablist]');
+  assert.equal(panels.length, 2);
+  assert.ok(panels.every(panel => list.compareDocumentPosition(panel) & 2), '탭 목록은 패널 뒤에 온다');
+  assert.deepEqual([...list.children].map(button => button.textContent), ['변경 전', '변경 후']);
+  panels.forEach((panel, index) => { assert.equal(panel.getAttribute('aria-labelledby'), list.children[index].id); assert.equal(list.children[index].getAttribute('aria-controls'), panel.id); });
+  assert.equal(panels[0].hidden, false);
+  assert.equal(panels[1].hidden, true);
+  assert.equal(panels[0].querySelector('p > img').getAttribute('alt'), '변경 전 화면');
+  assert.equal(panels[0].querySelector('img').getAttribute('src'), '/things/assets/repeating-comparison-1-io80.png');
+  assert.equal(panels[0].querySelector('img').getAttribute('width'), '1360');
+  assert.equal(panels[0].querySelectorAll('p')[1].textContent, '기존 화면입니다.');
+  assert.equal(document.querySelectorAll('figure').length, 0);
+});
+
+test('tabs_defaults_and_compat_key_value_header_match_the_utility_form', () => {
+  const body = '@tab A\n\n가\n\n@tab B\n\n나\n\n:::end\n';
+  const plain = dom(render(`:::tabs\n${body}`)).querySelector('.app-tabs');
+  assert.deepEqual([...plain.classList], ['app-tabs', 'is-frame-panel', 'is-position-top', 'is-selector-buttons']);
+  assert.equal(plain.firstElementChild.getAttribute('role'), 'tablist');
+  const utility = render(`:::tabs frame-none position-bottom selector-numbers\n${body}`);
+  const keyValue = render(`:::tabs frame=none position=bottom selector=numbers\n${body}`);
+  assert.equal(keyValue, utility);
+  assert.deepEqual([...dom(render(`:::tabs selector-segmented\n${body}`)).querySelector('.app-tabs').classList].slice(1), ['is-frame-panel', 'is-position-top', 'is-selector-segmented']);
+  // 옵션은 독립이고 순서와 상관없다.
+  assert.equal(render(`:::tabs position-bottom selector-numbers frame-none\n${body}`), utility);
+});
+
+test('numbers_selector_allows_unlabeled_tabs_with_numbered_buttons_and_accessible_names', () => {
+  const document = dom(render(':::tabs selector-numbers\n@tab\n\n하나\n\n@tab 둘째\n\n둘\n\n@tab\n\n셋\n\n:::end\n'));
+  const buttons = [...document.querySelectorAll('[role=tab]')];
+  assert.deepEqual(buttons.map(button => button.textContent), ['1', '2', '3']);
+  assert.deepEqual(buttons.map(button => button.getAttribute('aria-label')), ['탭 1', '둘째', '탭 3']);
+});
+
+test('tabs_grammar_rejects_unknown_conflicting_and_malformed_forms_with_lines', () => {
+  const body = '@tab A\n\n가\n\n@tab B\n\n나\n\n';
+  const cases = [
+    [`:::tabs frame-box\n${body}:::end\n`, /본문 1줄 :tabs: 알 수 없는 탭 옵션입니다: frame-box/],
+    [`:::tabs position-left\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: position-left/],
+    [`:::tabs selector-tiles\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: selector-tiles/],
+    [`:::tabs border-none\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: border-none/],
+    [`:::tabs frame-none frame-none\n${body}:::end\n`, /탭 옵션이 겹칩니다: frame-none/],
+    [`:::tabs frame-none frame-panel\n${body}:::end\n`, /탭 옵션이 충돌합니다: frame-none, frame-panel/],
+    [`:::tabs frame-none frame=panel\n${body}:::end\n`, /탭 옵션이 충돌합니다/],
+    [`:::tabs frame-none\n${body}`, /본문 1줄 :tabs: 닫는 :::end 줄이 없습니다/],
+    [`:::tabs frame-none\n${body}:::\n`, /1줄의 :tabs 묶음은 :::end 로 닫아야 합니다/],
+    [':::tabs frame-none\n:::end\n', /@tab 줄이 하나도 없습니다/],
+    [`:::tabs frame-none\n문단\n\n${body}:::end\n`, /첫 @tab 줄 앞에는 본문을 둘 수 없습니다/],
+    [':::tabs\n@tab\n\n가\n\n@tab B\n\n나\n\n:::end\n', /본문 2줄 :tabs: @tab 라벨이 필요합니다/],
+    [':::tabs\n@tab A\n\n@tab B\n\n나\n\n:::end\n', /본문 2줄 :tabs: 탭 본문이 비었습니다/],
+    [':::tabs\n@tab A\n\n가\n\n@tab a\n\n나\n\n:::end\n', /탭 이름이 겹칩니다: a/],
+    ['문단\n\n:::end\n', /본문 3줄: 여는 :::tabs 줄 없이 :::end 가 있습니다/],
+    [':::note\n본문\n:::end\n', /:::end 는 :::tabs 묶음만 닫습니다/],
+    [`:::note\n:::tabs\n${body}:::end\n:::\n`, /문서 바로 아래에서는 쓸 수 없습니다|:::note 안에서는 쓸 수 없습니다/],
+  ];
+  for (const [source, pattern] of cases) {
+    const error = failure(source);
+    assert.ok(error instanceof DirectiveError, source);
+    assert.match(error.message, pattern, source);
+  }
+});
+
+test('at_tab_and_end_markers_inside_code_fences_and_nested_blocks_do_not_split_or_close', () => {
+  const source = [
+    ':::tabs frame-none',
+    '@tab 원문', '', '```markdown', ':::tabs frame-none', '@tab 가짜', '', '내용', '', ':::end', '```', '',
+    '~~~text', '@tab 틸드', ':::end', '~~~', '',
+    '    @tab 들여쓴 코드', '',
+    ':::note', '@tab 안쪽 본문', ':::', '',
+    '@tab 두번째', '', '끝', '',
+    ':::end', '',
+  ].join('\n');
+  const document = dom(render(source));
+  assert.deepEqual([...document.querySelectorAll('[role=tab]')].map(button => button.textContent), ['원문', '두번째']);
+  const first = document.querySelector('[role=tabpanel]');
+  assert.match(first.querySelector('.app-code code').textContent, /^:::tabs frame-none\n@tab 가짜\n\n내용\n\n:::end\n$/);
+  assert.match(first.textContent, /@tab 틸드/);
+  assert.match(first.querySelector('.app-callout').textContent, /@tab 안쪽 본문/);
+  assert.equal(document.querySelectorAll('.app-tabs').length, 1);
+  // 코드 펜스 안에 있는 헤더는 아무것도 만들지 않는다.
+  assert.equal(dom(render('```markdown\n' + REQUESTED + '```\n')).querySelectorAll('.app-tabs').length, 0);
+});
+
+test('legacy_tab_forms_and_ui_tabs_keep_their_markup_and_can_share_a_page', () => {
+  const legacy = render('::::tabs\n:::tab[A]\n가\n:::\n:::tab[B]\n나\n:::\n::::\n');
+  assert.match(legacy, /^<section class="app-tabs" data-tabs><div class="app-tablist"/);
+  const threeColons = render(':::tabs\n:::tab[A]\n가\n:::\n:::tab[B]\n나\n:::\n:::\n');
+  assert.equal(threeColons.replace(/component-p-\d+/g, 'c'), legacy.replace(/component-p-\d+/g, 'c'));
+  assert.match(render('::::platform\n:::tab[Mac]\n가\n:::\n::::\n'), /^<section class="app-tabs is-platform" data-tabs data-platform>/);
+  assert.match(render('```ui:tabs\nitems:\n  - { label: A, body: 가 }\n  - { label: B, body: 나 }\n```\n'), /^<section class="app-tabs" data-tabs>/);
+  const mixed = dom(render(`${REQUESTED}\n::::tabs\n:::tab[A]\n가\n:::\n::::\n`));
+  assert.equal(mixed.querySelectorAll('.app-tabs').length, 2);
+  const ids = [...mixed.querySelectorAll('[id]')].map(node => node.id);
+  assert.equal(new Set(ids).size, ids.length);
+});
+
+test('bottom_selector_tabs_use_the_same_runtime_for_click_arrows_home_and_end', () => {
+  const window = new JSDOM(`<body>${render(':::tabs position-bottom\n@tab A\n\n가\n\n@tab B\n\n나\n\n@tab C\n\n다\n\n:::end\n')}</body>`, { runScripts: 'outside-only', url: 'https://example.com/' }).window;
+  window.eval(readFileSync(new URL('./document.js', import.meta.url), 'utf8'));
+  const buttons = [...window.document.querySelectorAll('[role=tab]')];
+  const visible = () => [...window.document.querySelectorAll('[role=tabpanel]')].findIndex(panel => !panel.hidden);
+  const press = (button, key) => button.dispatchEvent(new window.KeyboardEvent('keydown', { key, bubbles: true }));
+  assert.equal(visible(), 0);
+  buttons[1].click();
+  assert.equal(visible(), 1);
+  assert.equal(buttons[1].getAttribute('aria-selected'), 'true');
+  assert.equal(buttons[1].tabIndex, 0);
+  press(buttons[1], 'ArrowRight');
+  assert.equal(visible(), 2);
+  press(buttons[2], 'ArrowRight');
+  assert.equal(visible(), 0);
+  press(buttons[0], 'End');
+  assert.equal(visible(), 2);
+  press(buttons[2], 'Home');
+  assert.equal(visible(), 0);
+  assert.equal(window.document.activeElement, buttons[0]);
 });

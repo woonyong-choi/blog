@@ -1,6 +1,6 @@
 // markdown-it에 `:::` 블록과 `:이름[글]{속성}` 인라인 표기를 더한다. 정의는 directive-blocks.mjs에 있다.
 import { BLOCKS, INLINES } from './directive-blocks.mjs';
-import { DirectiveError, MAX_DEPTH, attributeEnd, classifyLine, parseAttributes, parseLabel, validateAttributes } from './directive-syntax.mjs';
+import { DirectiveError, MAX_DEPTH, attributeEnd, classifyLine, parseAttributes, parseLabel, parseTabLine, parseTabOptions, validateAttributes } from './directive-syntax.mjs';
 
 // 목록이나 인용 안에서는 닫는 줄의 위치를 들여쓰기로 판단할 수 없어 쓰지 못한다.
 const PARENT_TYPES = new Set(['root', 'directive', 'details']);
@@ -20,9 +20,19 @@ export function installDirectives(md, kit) {
   };
   const helpers = env => ({ ...kit, nextId: () => `component-${env.pageId ?? 'page'}-${env.componentCount = (env.componentCount ?? 0) + 1}` });
 
+  // 다음 비어 있지 않은 줄의 글자. 없으면 빈 문자열이다.
+  function nextContent(state, from, end) {
+    for (let at = from; at < end; at += 1) { const text = lineAt(state, at); if (text.trim()) return text; }
+    return '';
+  }
+  // 탭 묶음 여는 줄인가: `:::tabs 옵션` 이거나, 옵션 없는 `:::tabs` 다음 내용이 `@tab`이다.
+  const isTabsForm = (state, at, end, line) => line.kind === 'tabs-form' || (line.kind === 'open' && line.name === 'tabs' && line.colons === 3 && line.label === undefined && line.source === undefined && parseTabLine(nextContent(state, at + 1, end)) !== null);
+
   // 여는 줄에서 닫는 줄을 찾는다. 코드 펜스 안의 줄은 건너뛰고, 열린 블록은 스택으로 짝을 맞춘다.
+  // `:::end`로 닫는 탭 묶음이면 그 묶음의 바로 아래 `@tab` 줄 위치도 돌려준다.
   function findClose(state, start, end, opener, fail) {
     const stack = [{ ...opener, line: start + 1 }];
+    const marks = [];
     let fence = null;
     for (let at = start + 1; at < end; at += 1) {
       const text = lineAt(state, at);
@@ -33,18 +43,80 @@ export function installDirectives(md, kit) {
       }
       if (state.sCount[at] - state.blkIndent >= 4) continue;
       if (marker) { fence = marker; continue; }
+      if (stack.length === 1 && opener.closer === 'end') {
+        const tab = parseTabLine(text);
+        if (tab) { marks.push({ line: at, label: tab.label }); continue; }
+      }
       const line = classifyLine(text);
       if (line.kind === 'invalid') fail('블록 줄 형식이 잘못되었습니다. :::이름[라벨]{속성} 또는 닫는 :::만 쓸 수 있습니다', at + 1, line.name);
-      if (line.kind === 'open') stack.push({ ...line, line: at + 1 });
-      else if (line.kind === 'close') {
+      if (line.kind === 'open' || line.kind === 'tabs-form') stack.push({ ...line, closer: isTabsForm(state, at, end, line) ? 'end' : 'bare', line: at + 1 });
+      else if (line.kind === 'end') {
         const top = stack.at(-1);
+        if (top.closer !== 'end') fail(`:::end 는 :::tabs 묶음만 닫습니다. ${top.line}줄의 :${top.name} 블록은 ${':'.repeat(top.colons)}로 닫아야 합니다`, at + 1, top.name);
+        stack.pop();
+        if (!stack.length) return { close: at, marks };
+      } else if (line.kind === 'close') {
+        const top = stack.at(-1);
+        if (top.closer === 'end') fail(`${top.line}줄의 :tabs 묶음은 :::end 로 닫아야 합니다`, at + 1, top.name);
         if (line.colons !== top.colons) fail(`닫는 줄의 콜론 수(${line.colons})가 ${top.line}줄의 :${top.name} 여는 줄(${top.colons})과 다릅니다`, at + 1, top.name);
         stack.pop();
-        if (!stack.length) return at;
+        if (!stack.length) return { close: at, marks };
       }
     }
     const top = stack.at(-1);
-    return fail(`닫는 ${':'.repeat(top.colons)} 줄이 없습니다`, top.line, top.name);
+    return fail(top.closer === 'end' ? `닫는 :::end 줄이 없습니다` : `닫는 ${':'.repeat(top.colons)} 줄이 없습니다`, top.line, top.name);
+  }
+
+  // `@tab` 줄로 나뉜 탭 묶음을 같은 탭 토큰(directive_open/close)으로 바꾼다. 출력은 정의표의 tabs·tab과 테마의 Tabs가 만든다.
+  function tabsBlock(state, startLine, endLine, found, fail) {
+    if (!PARENT_TYPES.has(state.parentType)) fail('목록이나 인용 안에서는 블록을 쓸 수 없습니다');
+    const stack = state.env.directiveStack ??= [];
+    const parent = stack.at(-1)?.name ?? 'root';
+    if (stack.length >= MAX_DEPTH) fail(`블록 중첩은 ${MAX_DEPTH}단계까지 쓸 수 있습니다`);
+    if (!BLOCKS.tabs.within.includes(parent)) fail(`${parent === 'root' ? '문서 바로 아래' : `:::${parent} 안`}에서는 쓸 수 없습니다. 쓸 수 있는 곳: 문서 바로 아래`);
+    // 이 형식은 옵션을 하나도 쓰지 않아도 기본값(panel, top, buttons)을 분명히 정한다.
+    const options = { frame: 'panel', position: 'top', selector: 'buttons', ...parseTabOptions(found.options ?? '', fail) };
+    const { close, marks } = findClose(state, startLine, endLine, { ...found, name: 'tabs', closer: 'end' }, fail);
+    if (!marks.length) fail('@tab 줄이 하나도 없습니다. 예: @tab 변경 전');
+    for (let at = startLine + 1; at < marks[0].line; at += 1) if (lineAt(state, at).trim()) fail('첫 @tab 줄 앞에는 본문을 둘 수 없습니다', at + 1);
+    const numbers = options.selector === 'numbers';
+    const seen = new Set();
+    const labels = marks.map(mark => {
+      const label = mark.label === undefined ? undefined : parseLabel(mark.label, (message) => fail(message, mark.line + 1));
+      if (label === undefined) {
+        if (!numbers) fail('@tab 라벨이 필요합니다. 예: @tab 변경 전 (라벨을 생략할 수 있는 것은 selector-numbers뿐입니다)', mark.line + 1);
+        return undefined;
+      }
+      if (seen.has(label.toLowerCase())) fail(`탭 이름이 겹칩니다: ${label}`, mark.line + 1);
+      seen.add(label.toLowerCase());
+      return label;
+    });
+    const meta = { name: 'tabs', label: undefined, attrs: {}, options, tabs: labels, id: helpers(state.env).nextId() };
+    const open = state.push('directive_open', '', 1);
+    Object.assign(open, { meta, block: true, map: [startLine, close] });
+    const [oldMax, oldParent] = [state.lineMax, state.parentType];
+    stack.push({ name: 'tabs' });
+    state.parentType = 'directive';
+    try {
+      marks.forEach((mark, index) => {
+        const stop = index + 1 < marks.length ? marks[index + 1].line : close;
+        if (!Array.from({ length: stop - mark.line - 1 }, (_, at) => lineAt(state, mark.line + 1 + at)).some(text => text.trim())) fail('탭 본문이 비었습니다', mark.line + 1);
+        const tabMeta = { name: 'tab', label: labels[index], attrs: {}, group: meta.id, index };
+        const tabOpen = state.push('directive_open', '', 1);
+        Object.assign(tabOpen, { meta: tabMeta, block: true, map: [mark.line, stop] });
+        stack.push({ name: 'tab' });
+        state.lineMax = stop;
+        try { state.md.block.tokenize(state, mark.line + 1, stop); } finally { stack.pop(); }
+        Object.assign(state.push('directive_close', '', -1), { meta: tabMeta, block: true });
+      });
+    } finally {
+      state.lineMax = oldMax;
+      state.parentType = oldParent;
+      stack.pop();
+    }
+    Object.assign(state.push('directive_close', '', -1), { meta, block: true });
+    state.line = close + 1;
+    return true;
   }
 
   function checkBody(spec, children, fail) {
@@ -62,8 +134,10 @@ export function installDirectives(md, kit) {
     if (state.sCount[startLine] - state.blkIndent >= 4) return false;
     const found = classifyLine(lineAt(state, startLine));
     if (found.kind === 'text') return false;
-    if (silent) return found.kind === 'open' || found.kind === 'leaf';
+    if (silent) return found.kind === 'open' || found.kind === 'leaf' || found.kind === 'tabs-form';
     const fail = failer(state.env, startLine + 1, found.name);
+    if (found.kind === 'end') fail('여는 :::tabs 줄 없이 :::end 가 있습니다');
+    if (found.kind === 'tabs-form' || isTabsForm(state, startLine, endLine, found)) return tabsBlock(state, startLine, endLine, found, fail);
     if (found.kind === 'close') fail('여는 줄 없이 닫는 줄이 있습니다');
     if (found.kind === 'invalid') fail('블록 줄 형식이 잘못되었습니다. :::이름[라벨]{속성} 또는 닫는 :::만 쓸 수 있습니다');
     if (!PARENT_TYPES.has(state.parentType)) fail('목록이나 인용 안에서는 블록을 쓸 수 없습니다');
@@ -86,7 +160,7 @@ export function installDirectives(md, kit) {
       state.line = startLine + 1;
       return true;
     }
-    const close = findClose(state, startLine, endLine, found, fail);
+    const { close } = findClose(state, startLine, endLine, { ...found, closer: 'bare' }, fail);
     const open = state.push('directive_open', '', 1);
     Object.assign(open, { meta, block: true, map: [startLine, close] });
     const first = state.tokens.length;

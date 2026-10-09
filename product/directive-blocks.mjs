@@ -21,8 +21,8 @@ function tabSet(platform) {
       });
       meta.tabs = children.map(child => child.meta.label);
     },
-    open: (meta, { ui }) => ui.Tabs.open({ id: meta.id, label: meta.label ?? (platform ? '기기별 안내' : '탭'), platform, labels: meta.tabs }),
-    close: (meta, { ui }) => ui.Tabs.close(),
+    open: (meta, { ui }) => ui.Tabs.open({ id: meta.id, label: meta.label, platform, labels: meta.tabs, ...meta.options }),
+    close: (meta, { ui }) => ui.Tabs.close({ id: meta.id, label: meta.label, platform, labels: meta.tabs, ...meta.options }),
   };
 }
 
