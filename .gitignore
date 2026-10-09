@@ -10,3 +10,4 @@ __pycache__/
 *.pyc
 
 dist/
+product/interviews.local.json

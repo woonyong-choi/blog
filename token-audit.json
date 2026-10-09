@@ -252,7 +252,14 @@
     "product/assets/getting-started-with-things-io55.jpg": "28e12c6615261e6674db3e16742c64875694fa62e6ed268bde07e4dfdf8b3db6",
     "product/assets/arrivals-planelanding.svg": "c59e46479169b4cb2c86f421ca443db308c01898c242b3ffb186cc19b5659f5e",
     "product/assets/keycommand-keyboard-io40.png": "403e9200aecc963ee744d8f5429a1fd294a16919a835b13171d04c6d8adfb99b",
-    "product/assets/fancysection-icon-appstore-io70.png": "478c5e73d4729dbebede9700693dd99eb317aad42ad1c08d79f1142f897922a8"
+    "product/assets/fancysection-icon-appstore-io70.png": "478c5e73d4729dbebede9700693dd99eb317aad42ad1c08d79f1142f897922a8",
+    "product/assets/company-j2ysoft.png": "174afa9f0335f9ac7d280b94cea751042570316f2be7be6c0c8c7e81dd1844eb",
+    "product/assets/company-nexon.png": "17f4778b6848d320aeca26cce9e523772c9e34467c8f561d84f21ac659d1bcca",
+    "product/assets/company-neople.png": "94aca470cf0e7dc023295f86400a5d41d1f258fd865720a2427065167150c3de",
+    "product/assets/company-roborobo.png": "bb663eed1f19c5fa11f07e0147c331c50f86418789c6403689c4411c8680b066",
+    "product/assets/company-jusin.png": "2b4f35861aa5b0e63ca45cc2f9551f4e75e19ddf1ef0f4f75ce91d1fe8d2f80d",
+    "product/assets/company-neople-background.png": "88f02f56a677e1c693fdb9917ccb97657f14ce791f08131816ac227fc428f469",
+    "product/assets/company-jusin-background.png": "beeb8cd0064d308c920446f07112547a33291da6bf39b40bb648104ca2561296"
   },
   "generated": [
     "theme.css",

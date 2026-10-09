@@ -53,7 +53,7 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const diagrams = documents.some(page => (page.leadHtml + page.html).includes('data-mermaid')) ? mermaidScripts(ROOT) : { files: new Map(), hashes: {} };
   const identity = siteIdentity(readFileSync(join(THEME, SITE_ICON.slice('/theme/'.length))), readFileSync(join(THEME, 'assets/controls/LICENSE')));
   const context = { config: CONFIG, topics: TOPICS, topicTrees, origin, preview, identity, commentsStatus: comments.status, themeHash: MANIFEST.contentHash, scriptHash: digest([...scripts.values()].join('\n')), scriptHashes: diagrams.hashes, math: mathAssets() };
-  context.home = loadHomeConfig(new Set(BRAND_NAMES));
+  context.home = loadHomeConfig(new Set(BRAND_NAMES), ROOT, { preview });
   context.interviewExamples = JSON.parse(readFileSync(join(ROOT, 'interview-examples.json')));
   const output = new Map();
   const add = (route, title, body, metadata = {}) => {

@@ -7,6 +7,7 @@ import { SOCIAL_ICONS } from './publication-footer.mjs';
 import { summaryParts } from './interviews.mjs';
 
 export const HOME_CONFIG = 'home.config.yaml';
+export const LOCAL_INTERVIEWS = 'interviews.local.json';
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const RESERVED_IDS = ['main'];
 const IMAGE_TYPES = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.avif'];
@@ -166,7 +167,7 @@ const SECTIONS = {
       if (interview.example !== undefined && typeof interview.example !== 'boolean') fail(`${where}.example`, 'true 또는 false여야 합니다');
       // 카드 아래는 이미지, 제목, 부제목 세 자리다. 회사, 플랫폼 같은 의미는 설정이 정한다.
       const profile = interview.profile === undefined ? undefined : record(interview.profile, `${where}.profile`, ['image', 'title', 'subtitle']);
-      if (interview.url !== undefined && !profile) fail(`${where}.url`, 'url을 연결할 profile.title이 필요합니다');
+      if (interview.url !== undefined && !profile) fail(`${where}.url`, '카드 링크를 설명할 profile.title이 필요합니다');
       return {
         id, example: interview.example === true,
         summary: summary(interview.summary, `${where}.summary`),
@@ -240,6 +241,16 @@ export function parseHomeConfig(source, { technologies = new Set(), exists = () 
   });
 }
 
-export function loadHomeConfig(technologies, root = ROOT) {
-  return parseHomeConfig(readFileSync(join(root, HOME_CONFIG), 'utf8'), { technologies, exists: path => existsSync(join(root, path)) });
+export function loadHomeConfig(technologies, root = ROOT, { preview = false } = {}) {
+  const options = { technologies, exists: path => existsSync(join(root, path)) };
+  const sections = parseHomeConfig(readFileSync(join(root, HOME_CONFIG), 'utf8'), options);
+  const local = join(root, LOCAL_INTERVIEWS);
+  if (!preview || !existsSync(local)) return sections;
+  const interviews = sections.filter(section => section.type === 'interviews');
+  if (interviews.length !== 1) throw new Error(`${LOCAL_INTERVIEWS}: 활성 인터뷰 섹션이 하나여야 합니다`);
+  let items;
+  try { items = JSON.parse(readFileSync(local, 'utf8')); }
+  catch { throw new Error(`${LOCAL_INTERVIEWS}: JSON을 읽을 수 없습니다`); }
+  const replacement = { ...interviews[0], items };
+  return parseHomeConfig(JSON.stringify({ sections: sections.map(section => section === interviews[0] ? replacement : section) }), options);
 }

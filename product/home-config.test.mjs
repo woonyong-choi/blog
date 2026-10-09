@@ -1,9 +1,18 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { parseHomeConfig } from './home-config.mjs';
+import { fileURLToPath } from 'node:url';
+import { loadHomeConfig, parseHomeConfig } from './home-config.mjs';
 
 const parse = (yaml, options = {}) => parseHomeConfig(yaml, { technologies: new Set(['python']), ...options });
 const rejects = (yaml, pattern, options) => assert.throws(() => parse(yaml, options), pattern);
+
+test('private_interviews_replace_only_preview_content_and_never_public_content', () => {
+  const root = fileURLToPath(new URL('./fixtures/home-local-preview/', import.meta.url));
+  const load = options => loadHomeConfig(new Set(), root, options)[0].items.map(item => item.summary);
+  assert.deepEqual(load(), ['공개된 예시 평가']);
+  assert.deepEqual(load({ preview: false }), ['공개된 예시 평가']);
+  assert.deepEqual(load({ preview: true }), ['비공개 검토용 예시 평가']);
+});
 
 test('errors_name_the_file_and_the_exact_path', () => {
   rejects('sections:\n  - { id: a, type: banner }', /home\.config\.yaml sections\[0\]\.type: .*banner/);

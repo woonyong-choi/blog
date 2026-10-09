@@ -918,13 +918,14 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-flow-track { display: flex; flex: none; gap: inherit; align-items: inherit; }
 .app-flow-group { display: flex; flex: none; gap: var(--site-gap); margin: 0; padding: 0; list-style: none; }
 .app-interview-card { display: flex; flex-direction: column; flex: none; box-sizing: border-box; width: calc((100cqw - var(--site-landing-review-font)) / 2); max-width: calc(100vw - var(--site-gap-lg)); padding: var(--site-landing-review-padding); border-radius: var(--site-landing-review-radius); background: var(--site-card); color: var(--site-ink); box-shadow: var(--site-landing-review-shadow); font-size: var(--site-landing-review-font); line-height: var(--site-feature-line); }
-.app-interview-summary { margin: 0; padding-bottom: var(--site-landing-review-copy-bottom); font-size: var(--site-landing-review-copy); word-break: keep-all; overflow-wrap: anywhere; }
-.app-interview-summary a { color: var(--site-landing-review-link-ink); }
+.app-interview-summary { margin: 0; padding-bottom: var(--site-landing-review-copy-bottom); font-size: var(--site-landing-review-copy); word-break: normal; overflow-wrap: anywhere; text-wrap: wrap; }
+.app-interview-card-link { position: absolute; z-index: 1; inset: 0; border-radius: inherit; }
+.app-interview-summary a { position: relative; z-index: 1; color: var(--site-landing-review-link-ink); }
 .app-interview-summary a:hover { text-decoration: underline; }
 .app-interview-summary:last-child { padding-bottom: 0; }
 .app-interview-meta { display: flex; gap: var(--site-interview-meta-gap); margin: auto 0 0; font-size: var(--site-landing-review-meta); line-height: var(--site-line-compact); color: var(--site-landing-review-meta-ink); text-align: left; }
 .app-interview-avatar { display: block; flex: none; width: var(--site-landing-review-avatar); height: var(--site-landing-review-avatar); }
-.app-interview-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--site-landing-review-avatar-radius); }
+.app-interview-avatar img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: var(--site-landing-review-avatar-radius); }
 .app-interview-lines { min-width: 0; }
 .app-interview-avatar + .app-interview-lines { padding-top: var(--site-interview-meta-offset); }
 .app-interview-lines > * { display: block; overflow-wrap: anywhere; }

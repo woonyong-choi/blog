@@ -30,16 +30,18 @@ export function publicInterviews(entries, preview = false) {
   return entries.filter(entry => preview || !entry.example);
 }
 
-// 카드 아래는 이미지, 제목, 부제목 세 자리뿐이다. url은 제목에 연결하고 별도 줄을 만들지 않는다.
-function profileLine({ profile, url }) {
+// 카드 아래는 이미지, 제목, 부제목 세 자리뿐이다.
+function profileLine({ profile }) {
   if (!profile) return '';
   const { image, title, subtitle } = profile;
-  const heading = url ? `<a href="${escape(url)}">${escape(title)}</a>` : escape(title);
   const picture = image ? `<span class="app-interview-avatar"><img src="${escape(image.src)}" alt="${escape(image.alt)}" loading="lazy" decoding="async"></span>` : '';
-  return `<div class="app-interview-meta">${picture}<div class="app-interview-lines"><strong>${heading}</strong>${subtitle ? `<span>${escape(subtitle)}</span>` : ''}</div></div>`;
+  return `<div class="app-interview-meta">${picture}<div class="app-interview-lines"><strong>${escape(title)}</strong>${subtitle ? `<span>${escape(subtitle)}</span>` : ''}</div></div>`;
 }
 
 // href는 설정 검증과 같은 주소 검사 함수다.
 export function interviewCards(entries, href) {
-  return entries.map(entry => `<li class="app-interview-card"><p class="app-interview-summary">${summaryHtml(entry.summary, href)}</p>${profileLine(entry)}</li>`).join('');
+  return entries.map(entry => {
+    const link = entry.url ? `<a class="app-interview-card-link" href="${escape(entry.url)}" aria-label="${escape([entry.profile.title, entry.profile.subtitle, '인터뷰 보기'].filter(Boolean).join(' '))}"></a>` : '';
+    return `<li class="app-interview-card">${link}<p class="app-interview-summary">${summaryHtml(entry.summary, href)}</p>${profileLine(entry)}</li>`;
+  }).join('');
 }

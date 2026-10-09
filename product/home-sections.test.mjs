@@ -71,8 +71,9 @@ test('interview_cards_show_summary_and_exactly_the_image_title_subtitle_slots', 
   assert.match(plain, /<p class="app-interview-summary">요약<\/p><div class="app-interview-meta"><div class="app-interview-lines"><strong>회사명<\/strong><span>직무<\/span><\/div><\/div>/);
   assert.doesNotMatch(plain, /<a href|app-interview-avatar|undefined/);
   const linked = render(item(', url: "https://example.com/talk"'), false);
-  assert.match(linked, /<strong><a href="https:\/\/example.com\/talk">회사명<\/a><\/strong><span>직무<\/span>/);
-  assert.equal((linked.match(/<a href="https:\/\/example.com\/talk"/g) ?? []).length, 1);
+  assert.match(linked, /<a class="app-interview-card-link" href="https:\/\/example.com\/talk" aria-label="회사명 직무 인터뷰 보기"><\/a>/);
+  assert.match(linked, /<strong>회사명<\/strong><span>직무<\/span>/);
+  assert.equal((linked.match(/<a[^>]+href="https:\/\/example.com\/talk"/g) ?? []).length, 1);
   const picture = render(item('').replace('profile: {', 'profile: { image: { src: /assets/tweetgrid-avatar-default.png }, '), false);
   assert.match(picture, /<div class="app-interview-meta"><span class="app-interview-avatar"><img src="\/assets\/tweetgrid-avatar-default\.png" alt=""[^>]*><\/span><div class="app-interview-lines">/);
   const bare = render('sections:\n  - { id: interviews, type: interviews, items: [{ id: a, summary: <b>요약</b> }, { id: b, summary: 둘, profile: { title: "<i>제목</i>" } }] }', false);
@@ -158,7 +159,7 @@ test('newsletter_without_endpoint_keeps_controls_disabled_and_never_posts', () =
 test('the_shipped_interviews_section_shows_its_title_description_and_two_social_links', () => {
   const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
   const interviews = loadHomeConfig(new Set(brands)).find(section => section.type === 'interviews');
-  assert.equal(interviews.description, '동료평가 소개 섹션입니다.');
+  assert.equal(interviews.description, '함께 일한 동료들의 이야기입니다.');
   assert.equal(interviews.title, '사람들이 하는 말');
   assert.deepEqual(interviews.links.map(item => [item.icon, Boolean(item.href)]), [['github', true], ['linkedin', true]]);
   assert.match(personalHome({ config: { name: '이름' }, home: [interviews], interviewExamples: [], preview: true }) || '', /^<main/);

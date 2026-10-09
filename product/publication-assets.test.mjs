@@ -60,6 +60,8 @@ test('used_licensed_assets_include_notices_and_unused_assets_do_not', () => {
     ['/theme/assets/fonts/pretendard-variable.woff2', '/theme/assets/fonts/pretendard-license.txt'],
     ['/theme/assets/fonts/jetbrains-mono-regular.woff2', '/theme/assets/fonts/jetbrains-mono-license.txt'],
     ['/theme/assets/icons/brands/python.svg', '/theme/assets/icons/brands/LICENSE'],
+    ['/assets/company-j2ysoft.png', '/assets/company-logos-NOTICE.txt'],
+    ['/assets/company-neople-background.png', '/assets/company-logos-NOTICE.txt'],
     ['/media/manta-code-blocks-intro-web.mp4', '/media/manta-code-blocks-LICENSE.txt'],
     ['/media/manta-code-blocks-poster.png', '/media/manta-code-blocks-LICENSE.txt'],
   ];
