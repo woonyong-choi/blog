@@ -123,7 +123,7 @@ body > main, .app-support-shell { overflow-x: clip; }
 .app-play.is-playing:hover, .app-remote.is-playing:hover { background: var(--site-control-active); }
 .app-remote { display: inline-flex; align-items: center; gap: var(--site-gap-xs); font-weight: var(--site-weight-medium); }
 .app-remote img { width: var(--site-subtitle); height: var(--site-subtitle); }
-.app-tabs.is-platform { margin: 0 0 var(--site-prose-paragraph-gap); padding-inline: var(--site-platform-inset); border: var(--site-border) solid var(--site-syntax-example-border); border-radius: var(--site-prose-pre-radius); background: var(--site-syntax-example-background); }
+.app-tabs.is-platform { margin: 0 0 var(--site-prose-paragraph-gap); padding-inline: var(--site-platform-inset); border: 0; border-radius: var(--site-prose-pre-radius); background: var(--site-syntax-example-background); }
 .app-tabs.is-platform .app-tablist { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; margin: var(--site-platform-nav-margin); padding: 0; background: transparent; }
 .app-tabs.is-platform .app-tablist button { flex: none; margin: var(--site-platform-button-gap); padding: var(--site-platform-button-y) var(--site-platform-button-x); font-size: var(--site-platform-text); font-weight: var(--site-weight-medium); line-height: var(--site-platform-line); color: var(--site-platform-color); border-radius: var(--site-prose-pre-radius); background: var(--site-feature-tab-background); transition: box-shadow var(--site-platform-motion) var(--site-icon-easing); }
 .app-tabs.is-platform .app-tablist button:hover { background: var(--site-platform-hover); box-shadow: var(--site-platform-hover-shadow); }
