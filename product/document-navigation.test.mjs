@@ -20,6 +20,9 @@ test('document_navigation_tracks_subheadings_and_preserves_mobile_disclosure_cho
   const panes = [...layout.querySelectorAll('aside')];
   panes.forEach(pane => { pane.style.position = 'sticky'; });
   const panels = [...layout.querySelectorAll('[data-document-panel]')];
+  assert.equal(panels.length, 1);
+  assert.equal(layout.querySelector('.app-document-outline > nav').getAttribute('aria-label'), '본문 목차');
+  assert.equal(layout.querySelector('.app-document-outline summary'), null);
   let scheduled;
   dom.window.requestAnimationFrame = callback => { scheduled = callback; return 1; };
   const tops = [0, 100, 200];

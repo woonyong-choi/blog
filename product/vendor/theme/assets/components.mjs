@@ -312,7 +312,7 @@ export function DocumentNavigation({ label, nodes }) {
 
 export function DocumentOutline({ sections }) {
   if (!sections.length) return out('');
-  return out(`<details class="app-document-nav" data-document-panel open><summary aria-label="본문 목차"><svg class="app-document-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg></summary><nav aria-label="본문 목차"><ol>${sections.map(section => `<li${section.level === 3 ? ' class="is-subsection"' : ''}><a href="#${escape(section.id)}" data-heading-level="${section.level}">${escape(section.title)}</a></li>`).join('')}</ol></nav></details>`);
+  return out(`<nav class="app-document-nav" aria-label="본문 목차"><ol>${sections.map(section => `<li${section.level === 3 ? ' class="is-subsection"' : ''}><a href="#${escape(section.id)}" data-heading-level="${section.level}">${escape(section.title)}</a></li>`).join('')}</ol></nav>`);
 }
 
 /** 같은 주제에서 이어 읽을 문서. 없는 방향은 빈 링크를 만들지 않는다. */

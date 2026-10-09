@@ -585,8 +585,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-document-layout .app-document { width: 100%; margin-top: 0; --site-width-wide: min(var(--site-page), 100cqw); }
 .app-document-nav { max-width: var(--site-body-width); margin-inline: auto; font-size: var(--site-small-text); color: var(--site-muted); }
 .app-document-nav > summary { padding: var(--site-gap-sm); border: var(--site-border) solid var(--site-help-border); border-radius: var(--site-button-radius); background: var(--site-help-bg); cursor: pointer; }
-.app-document-toggle { display: inline-block; width: var(--site-icon); height: var(--site-icon); vertical-align: middle; stroke-width: var(--site-underline); }
-.app-document-nav > nav { padding-block: var(--site-gap-sm); }
+.app-document-nav > nav, .app-document-outline > .app-document-nav { padding-block: var(--site-gap-sm); }
 .app-document-nav :is(ul, ol) { margin: 0; padding: 0; list-style: none; }
 .app-document-nav ul ul { padding-left: var(--site-gap-sm); border-left: var(--site-border) solid var(--site-line); margin-left: var(--site-gap-xs); }
 .app-document-nav li { margin: 0; min-width: 0; }
@@ -612,9 +611,12 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
   .app-document-sidebar .app-document-nav > summary { display: none; }
 }
 @media (min-width: breakpoint(document-outline)) {
-  .app-document-layout, .app-document-layout:has(.app-document-outline) { grid-template-columns: var(--site-sidebar-width) minmax(0, 1fr) var(--site-sidebar-width); grid-template-areas: "tree content outline"; }
+  .app-document-shell:has(.app-document-outline) { max-width: none; }
+  .app-document-layout { grid-template-columns: var(--site-sidebar-width) minmax(0, 1fr) var(--site-sidebar-width); grid-template-areas: "tree content outline"; }
+  .app-document-layout:has(.app-document-outline) { grid-template-columns: minmax(var(--site-sidebar-width), 1fr) minmax(0, var(--site-page)) minmax(var(--site-sidebar-width), 1fr); grid-template-areas: "tree content outline"; }
+  .app-document-sidebar { justify-self: end; width: 100%; max-width: var(--site-sidebar-width); }
+  .app-document-outline > .app-document-nav { max-width: none; }
   .app-document-outline { position: sticky; top: var(--site-gap-lg); max-height: calc(100vh - 2 * var(--site-gap-lg)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
-  .app-document-outline .app-document-nav > summary { display: none; }
 }
 /* 지원·위키 화면: 지원 그룹과 격자, 지식 목록, 키보드 단축키 표. */
 .app-support-group { margin-bottom: var(--site-support-gap); }
