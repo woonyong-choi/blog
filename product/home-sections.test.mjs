@@ -169,8 +169,8 @@ test('the_shipped_home_config_omits_projects_from_the_visible_sections', () => {
   const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
   const home = loadHomeConfig(new Set(brands));
   assert.deepEqual(home.map(section => section.type), ['hero', 'technologies', 'interviews', 'contact']);
-  assert.equal(home[1].title, '함께 쓰는 기술');
-  assert.equal(home[1].description, '기술별 기록을 모았습니다.');
+  assert.equal(home[1].title, '기술과 생각');
+  assert.equal(home[1].description, '언어의 문법과 개념부터 도구의 사용법까지 정리했습니다.');
 });
 
 test('the_shipped_hero_plays_the_web_compatible_video_that_exists_beside_the_preserved_original', () => {
