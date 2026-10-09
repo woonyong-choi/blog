@@ -788,7 +788,7 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-hero-panorama-extension { position: absolute; top: 0; bottom: 0; left: 100%; right: var(--site-landing-panorama-outset); background: url('../assets/meettheallnewthings2-ext-right-io50.jpg') left center / auto 100% no-repeat; }
 .app-landing-section { padding-block: var(--site-landing-section); background: var(--site-card); }
 .app-landing-heading { width: var(--site-landing-heading-width); max-width: var(--site-landing-heading-max); margin: var(--site-landing-heading-space) auto; text-align: center; }
-.app-landing-heading :is(h1,h2) { margin: var(--site-landing-heading-margin) 0; font-size: var(--site-section-title); line-height: var(--site-landing-title-line); font-weight: var(--site-weight-title); color: var(--site-ink); }
+.app-landing-heading :is(h1,h2) { margin: var(--site-landing-heading-margin) 0; font-size: var(--site-section-title); line-height: var(--site-landing-title-line); font-weight: var(--site-weight-title); color: var(--site-ink); word-break: keep-all; }
 .app-landing-heading :is(h1,h2) img { display: inline-block; width: var(--site-landing-icon); height: auto; margin-left: var(--site-landing-icon-left); margin-bottom: var(--site-landing-icon-bottom); margin-right: var(--site-landing-icon-right); }
 .app-landing-heading > p { color: var(--site-description-color); margin: var(--site-landing-description-margin) auto; font-size: var(--site-landing-intro); line-height: var(--site-feature-line); }
 .app-landing-action { display: inline-block; padding: var(--site-platform-button-gap) var(--site-platform-button-y); border-radius: var(--site-tab-button-inset); font-weight: var(--site-weight-medium); color: var(--site-control-link); }
@@ -933,8 +933,9 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-landing-interviews .app-flow-viewport, .app-landing-interviews .app-flow-group { gap: var(--site-landing-review-font); align-items: flex-end; }
 .app-landing-section .app-flow-viewport { margin-top: calc(var(--site-gap-xs) * -1); padding-bottom: var(--site-landing-heading-space); }
 .app-interview-rows { display: flex; flex-direction: column; }
-.app-landing-interviews .app-interview-rows > :first-child .app-flow-viewport { padding-bottom: var(--site-gap-xs); }
+.app-landing-interviews .app-interview-rows > :first-child .app-flow-viewport { padding-bottom: var(--site-gap); }
 .app-landing-interviews .app-interview-rows > :last-child .app-flow-viewport { margin-top: 0; }
+.app-landing-interviews .app-interview-rows > :last-child:not(:first-child) .app-flow-viewport { margin-top: calc(var(--site-gap-xs) - var(--site-gap)); }
 /* 원본 tweetgrid처럼 줄 너비에서 열 수와 간격을 계산한다. 740px부터 4열, 740~1001px은 좌우 20px 안쪽 여백. */
 .app-interviews { container-type: inline-size; }
 @media (min-width: 740px) {
@@ -959,7 +960,17 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-flow-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--site-gap-sm); }
 .app-flow-footer .app-caption { margin: 0; color: var(--site-muted); }
 .app-technology { display: flex; flex-direction: column; align-items: center; flex: none; width: calc(var(--icon-size-card) + var(--site-gap)); gap: var(--site-gap-sm); color: var(--site-muted); font-size: var(--site-small-text); }
+.app-technology > a { display: flex; justify-content: center; width: 100%; padding-block: var(--site-gap-xs); border-radius: var(--site-help-radius); }
 .app-technology img { display: block; width: var(--icon-size-medium); height: var(--icon-size-medium); object-fit: contain; }
+.app-technology > a, .app-interview-card { position: relative; transition: background-color var(--site-help-motion) var(--site-icon-easing), box-shadow var(--site-help-motion) var(--site-icon-easing), transform var(--site-help-motion) var(--site-icon-easing); }
+.app-technology > a:focus-visible, .app-interview-card:focus-within { background: var(--site-help-hover); box-shadow: var(--site-help-hover-shadow); }
+@media (hover: hover) and (pointer: fine) {
+  .app-technology > a:hover, .app-interview-card:hover { z-index: 1; background: var(--site-help-hover); outline: var(--site-border) solid var(--site-help-hover-border); outline-offset: calc(var(--site-border) * -1); box-shadow: var(--site-help-hover-shadow); transform: translateY(var(--site-help-lift)) scale(var(--site-icon-scale)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-technology > a, .app-interview-card { transition: none; }
+  .app-technology > a:hover, .app-interview-card:hover { transform: none; }
+}
 .app-home-contact { padding: var(--site-landing-section) var(--site-gap) var(--site-section); text-align: center; background: var(--site-card); }
 .app-home-contact h2 { font-size: var(--site-section-title); line-height: var(--site-line-title); margin: 0 0 var(--site-gap); }
 .app-home-contact > p { color: var(--site-muted); margin: 0 0 var(--site-gap); word-break: keep-all; }

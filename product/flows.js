@@ -10,7 +10,7 @@ for (const [scope, rails] of scopes) {
   const shared = scope.hasAttribute('data-flow-rows');
   const durationValue = getComputedStyle(rails[0]).getPropertyValue('--site-motion-rail').trim();
   const duration = parseFloat(durationValue) * (durationValue.endsWith('ms') ? 1 : 1000) * 2;
-  let hovering = false; let focused = false; let manual = false; let suspended = false;
+  let focused = false; let manual = false; let suspended = false;
   const rows = rails.map(rail => ({
     viewport: rail.querySelector('[data-flow-viewport]'), track: rail.querySelector('[data-flow-track]'),
     group: rail.querySelector('[data-flow-group]'), reverse: rail.dataset.flowDirection === 'right',
@@ -29,7 +29,7 @@ for (const [scope, rails] of scopes) {
   }
 
   function update() {
-    const interacting = hovering || focused || manual || reduced.matches;
+    const interacting = focused || manual || reduced.matches;
     const running = rows.some(row => row.visible) && !document.hidden && !suspended;
     // 길이가 다른 두 줄도 같은 픽셀 속도로 흐르게 한다.
     const longest = Math.max(...rows.map(row => row.distance));
@@ -79,8 +79,7 @@ for (const [scope, rails] of scopes) {
   }
 
   const area = shared ? scope : rows[0].viewport;
-  area.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; update(); } });
-  area.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse') { hovering = false; manual = false; update(); } });
+  area.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse' && manual) { manual = false; update(); } });
   area.addEventListener('pointerdown', event => { if (event.pointerType !== 'mouse') { manual = true; update(); } });
   area.addEventListener('wheel', event => { if (event.deltaX) { manual = true; update(); } }, { passive: true });
   area.addEventListener('focusin', () => {

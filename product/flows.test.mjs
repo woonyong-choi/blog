@@ -49,7 +49,7 @@ function run(cards, directions = [], shared = true) {
     const live = row.animations.findLast(item => item.playState !== 'idle');
     return live ? live.effect.getComputedTiming().progress * row.width : row.viewport.scrollLeft;
   };
-  return { rows, listeners, motion, document, resize: () => resize.forEach(fn => fn()), visibility, offset, advance: ms => { now += ms; } };
+  return { rows, scope, listeners, motion, document, resize: () => resize.forEach(fn => fn()), visibility, offset, advance: ms => { now += ms; } };
 }
 
 const near = (value, expected) => assert.ok(Math.abs(value - expected) < 1e-8, `${value} ≠ ${expected}`);
@@ -77,10 +77,28 @@ test('reverse_flow_has_equal_speed_and_both_rows_join_the_next_cycle_without_a_g
   near(state.offset(state.rows[1]), 100);
 });
 
-test('hover_hands_both_rows_to_native_scrolling_and_resumes_from_the_reading_position', () => {
+test('hover_keeps_each_flow_running_without_restarting_its_animation', () => {
+  for (const state of [run([10], ['right'], false), run([3, 2], [undefined, 'right'])]) {
+    state.advance(100);
+    const animations = state.rows.map(row => row.animations.at(-1));
+    const positions = state.rows.map(state.offset);
+    state.listeners.pointerenter?.({ pointerType: 'mouse' });
+    state.advance(300);
+    const step = Math.max(...state.rows.map(row => row.width)) * 300 / 2000;
+    state.rows.forEach((row, index) => {
+      near(state.offset(row), positions[index] + (row.rail.dataset.flowDirection === 'right' ? -step : step));
+      assert.equal(row.animations.at(-1), animations[index]);
+      assert.equal(animations[index].playState, 'running');
+    });
+    state.listeners.pointerleave({ pointerType: 'mouse' });
+    state.rows.forEach((row, index) => assert.equal(row.animations.at(-1), animations[index]));
+  }
+});
+
+test('horizontal_scrolling_pauses_both_rows_and_resumes_from_the_reading_position', () => {
   const state = run([3, 2]);
   state.advance(100);
-  state.listeners.pointerenter({ pointerType: 'mouse' });
+  state.listeners.wheel({ deltaX: 40 });
   state.advance(300);
   state.rows.forEach(row => near(state.offset(row), 15));
   state.rows[0].viewport.scrollLeft = 65;
@@ -88,6 +106,17 @@ test('hover_hands_both_rows_to_native_scrolling_and_resumes_from_the_reading_pos
   state.advance(100);
   near(state.offset(state.rows[0]), 80);
   near(state.offset(state.rows[1]), 30);
+});
+
+test('keyboard_focus_pauses_both_rows_until_focus_leaves_the_region', () => {
+  const state = run([3, 2]);
+  state.advance(100);
+  state.scope.querySelector = () => ({});
+  state.listeners.focusin(); state.advance(300);
+  state.rows.forEach(row => near(state.offset(row), 15));
+  state.scope.querySelector = () => null;
+  state.listeners.focusout(); state.advance(100);
+  state.rows.forEach(row => near(state.offset(row), 30));
 });
 
 test('reduced_motion_visibility_and_page_lifecycle_pause_without_catching_up', () => {

@@ -300,11 +300,11 @@
     "assets/icons/team.svg": "8e68695132860c9b6d7d0e7baecab82185bf7f6c92aa65108cc00bc7f414dd9b",
     "assets/icons/terminal.svg": "6b693572610ad42f784f2b418526b7a0f9c51fa41b6aa1135fa514b0d556d5c0",
     "assets/icons/testing.svg": "2cbba40f5c42fea9156bd8de0e2d36d53f77aa4808f51ebd1ef9b4b92edba113",
-    "styles.css": "1758274d95a1a2751360e5a678212017665a5afbec2e0674cbbe4065127fa8ca",
-    "styles.source.css": "87f96e20258f6fb24434759fd582aeaceda7b5d86c90d2b9362ac69e626b4a5f",
+    "styles.css": "f0f2ba7905fd2dd80c65aecdb91d6594d0326af5d9f7bc056311ffb2efaa91d8",
+    "styles.source.css": "daa942184a38f3b428b889510fa9f2088c48c2bcbb1b14a7c7d873d9226930ac",
     "theme.css": "62a13077d297b398c21ef2d73d32cdd88cddb76963ff88d54d1fe51e227f4bdc",
     "tokens.json": "91e7af6ca16794785528d250a336507072a14a54cdcb2e9752ad97f45e4dad76",
     "tokens.light.json": "91e7af6ca16794785528d250a336507072a14a54cdcb2e9752ad97f45e4dad76"
   },
-  "contentHash": "83945fbc446de9fb68825a4f8b251e3392bbdf9b6e329bb51d8a65fcc21d8bb0"
+  "contentHash": "831ea26f348438d8918515d30f73e02dc2773f41805623ff32d44196498f6b99"
 }
