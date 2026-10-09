@@ -159,7 +159,7 @@ test('newsletter_without_endpoint_keeps_controls_disabled_and_never_posts', () =
 test('the_shipped_interviews_section_shows_its_title_description_and_two_social_links', () => {
   const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
   const interviews = loadHomeConfig(new Set(brands)).find(section => section.type === 'interviews');
-  assert.equal(interviews.description, '함께 일한 동료들이 전하는, 저의 일하는 방식과 협업에 대한 이야기입니다.');
+  assert.equal(interviews.description, '함께 일한 동료들의 이야기입니다.');
   assert.equal(interviews.title, '사람들이 하는 말');
   assert.deepEqual(interviews.links.map(item => [item.icon, Boolean(item.href)]), [['github', true], ['linkedin', true]]);
   assert.match(personalHome({ config: { name: '이름' }, home: [interviews], interviewExamples: [], preview: true }) || '', /^<main/);
