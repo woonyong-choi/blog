@@ -191,11 +191,11 @@ export function Device({ screen, overlay, label, figure = false }) {
   return out(figure ? `<figure class="app-device">${inner}</figure>` : `<div class="app-device">${inner}</div>`);
 }
 export const MediaControls = ({ remote }) => out(`<div class="app-media-controls">${slot(remote, 'remote')}</div>`);
-/** 영상 한 장: 플레이어(선택: 기기 틀) + 캡션 + 재생 단추. */
-export function Video({ id: target, src, poster, title, caption, playerWidth, playerHeight, controls = false, playerWide = false, frame, remoteIcon, deviceOverlay, width, wide, size }) {
-  const view = Player({ id: target, src, poster, title, width: playerWidth, height: playerHeight, controls, wide: playerWide });
+/** 본문 영상: 내부 재생 조작과 선택 캡션. 홈의 외부 재생 링크는 RemoteLink가 맡는다. */
+export function Video({ id: target, src, poster, title, caption, playerWidth, playerHeight, playerWide = false, frame, deviceOverlay, width, wide, size }) {
+  const view = Player({ id: target, src, poster, title, width: playerWidth, height: playerHeight, controls: true, wide: playerWide });
   const media = frame === 'iphone' ? Device({ screen: view, overlay: deviceOverlay }) : view;
-  return Figure({ media, caption, controls: MediaControls({ remote: RemoteButton({ id: target, icon: remoteIcon }) }), width, wide, size });
+  return Figure({ media, caption, width, wide, size });
 }
 
 export const FIGURE_CLASS = 'app-figure';

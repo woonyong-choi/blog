@@ -14,7 +14,7 @@
     "version": "0.1.1"
   },
   "files": {
-    "assets/components.mjs": "c6d9af8afb2207b73169268a5ddc9f6df523418161df18018f6cd86c4c95fa8b",
+    "assets/components.mjs": "f04dd8c781543dbec87bd2f1416f6c6ea645548e173eb45e8540ec3a80ec106c",
     "assets/controls/chevron.svg": "8d0fc193c581d4f1e88f31efdee8629290fd4138b76f522847e2cc2e38165c32",
     "assets/controls/clear.svg": "4bebfceefe1c3a156ec9b36dcdf6f471cf1cbd4dc35f8bb851389485b63086c4",
     "assets/controls/copy-done.svg": "1fac46f55516e5b0c642e98dbe8b3055a1f00bed90dcb791b3ed745280ecb608",
@@ -306,5 +306,5 @@
     "tokens.json": "fc2627ecfec6de7e9ad95e931b375a52da470a8a05b0eb545e4a133d4529e4b9",
     "tokens.light.json": "fc2627ecfec6de7e9ad95e931b375a52da470a8a05b0eb545e4a133d4529e4b9"
   },
-  "contentHash": "a66b2889df627d8c17d36aee7b2a8048f48600d3e4d355b5b4d35989c170b727"
+  "contentHash": "5f28e8eef34baa8f86aff832a88ec7217fa6603007efb89d39e4811650099341"
 }

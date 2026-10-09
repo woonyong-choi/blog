@@ -25,39 +25,36 @@
 
 ## 기기를 먼저 고르게 하기
 
-같은 작업도 기기에 따라 순서가 다릅니다. `::::platform`으로 기기 탭을 만들고, 탭마다 단계와 영상을 넣습니다. 한 문서에 기기 탭이 여럿이면 한 곳에서 고른 기기가 아래 탭에도 따라갑니다.
+같은 작업도 기기에 따라 순서가 다릅니다. `:::platform`으로 기기 탭을 만들고, 탭마다 단계와 영상을 넣습니다. 한 문서에 기기 탭이 여럿이면 한 곳에서 고른 기기가 아래 탭에도 따라갑니다. 탭은 `@tab 이름`으로 나누고 묶음은 `:::end`로 닫습니다.
 
-::::platform
-:::tab[Mac]
+:::platform
+@tab Mac
 :::steps
 1. 메뉴 막대에서 :menu[파일]을 열고 :menu[새 목록]을 고릅니다.
 2. 이름을 입력하고 :kbd[⌘ Return]을 누릅니다.
 3. 사이드바에서 :icon[document] 표시가 붙은 항목이 새 목록입니다.
-:::
+:::end
 
-::video{src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt="Mac에서 예정 목록을 쓰는 화면" caption="(1) 항목을 만들고 (2) 날짜를 옮기고 (3) 지웁니다." controls}
+::video src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt="Mac에서 예정 목록을 쓰는 화면"
 
 :::fineprint
 :kbd[⌘ Return] 대신 화면의 완료 버튼을 눌러도 됩니다.
-:::
-:::
-:::tab[iPhone & iPad]
+:::end
+@tab iPhone & iPad
 :::steps
 1. 목록 화면에서 오른쪽 아래의 더하기 버튼을 누릅니다.
 2. 이름을 입력하고 키보드의 완료를 누릅니다.
 3. 목록 상단의 :icon[document] 표시로 새 목록을 구분합니다.
-:::
+:::end
 
-::video{src=3-upcoming-iphone.mp4 poster=3-upcoming-iphone.png alt="iPhone에서 예정 목록을 쓰는 화면" caption="같은 흐름을 손가락으로 진행합니다." frame=iphone controls}
+::video src=3-upcoming-iphone.mp4 poster=3-upcoming-iphone.png alt="iPhone에서 예정 목록을 쓰는 화면" frame-iphone
 
 :::note[알아 두기]
 가로 모드에서는 목록과 상세가 나란히 보입니다. 단계는 같습니다.
-:::
-:::
-:::tab[Watch]
+:::end
+@tab Watch
 Watch에서는 목록을 만들지 않고 iPhone에서 만든 목록을 읽기만 합니다. 위의 **iPhone & iPad** 탭을 먼저 따라 하세요.
-:::
-::::
+:::end
 
 ## 변경 전후를 탭으로 비교하기
 
@@ -159,7 +156,7 @@ iPhone에서 만든 목록을 읽기만 합니다.
 - `segmented`, `numbers`: 선택 줄 모양(기본은 둥근 단추). 번호 모양은 `@tab` 이름을 생략할 수 있습니다.
 - `w-wide`: 탭 묶음 전체를 넓은 미디어 폭으로 펼칩니다. 바깥 문단은 본문 폭입니다.
 
-이 이름들은 이 문서 문법의 옵션이고 실제 Tailwind 클래스가 아닙니다. 긴 이름(`frame-panel`, `position-top`, `selector-segmented`, `width-wide`)도 같은 뜻으로 받습니다.
+옵션은 모든 구성 블록과 코드 펜스에서 공백으로 조합합니다. 기본값은 생략하고, 주소나 제목 같은 내용은 `src=파일`, `alt="화면 설명"`처럼 적습니다. 이 이름들은 이 문서 문법의 옵션이고 실제 Tailwind 클래스가 아닙니다.
 
 ## 화면을 차례로 보여 주기
 
@@ -168,23 +165,23 @@ iPhone에서 만든 목록을 읽기만 합니다.
 :::tabs numbers
 @tab 오늘 목록
 
-::figure{src=2-today-mac.png alt="오늘 목록 화면" caption="오늘 할 일을 한곳에 모읍니다."}
+::figure src=2-today-mac.png alt="오늘 목록 화면" caption="오늘 할 일을 한곳에 모읍니다."
 
 @tab 예정 목록
 
-::figure{src=3-upcoming-mac-2.png alt="예정 목록 화면" caption="날짜가 정해진 항목을 날짜순으로 봅니다."}
+::figure src=3-upcoming-mac-2.png alt="예정 목록 화면" caption="날짜가 정해진 항목을 날짜순으로 봅니다."
 
 @tab 소제목
 
-::figure{src=4-headings-mac.png alt="소제목으로 나눈 목록" caption="긴 목록은 소제목으로 나눕니다."}
+::figure src=4-headings-mac.png alt="소제목으로 나눈 목록" caption="긴 목록은 소제목으로 나눕니다."
 
 @tab 체크리스트
 
-::figure{src=5-checklists-mac-2.png alt="체크리스트 화면" caption="항목 안에 세부 단계를 둡니다."}
+::figure src=5-checklists-mac-2.png alt="체크리스트 화면" caption="항목 안에 세부 단계를 둡니다."
 
 @tab 빠른 찾기
 
-::figure{src=7-quickfind-mac.png alt="빠른 찾기 화면" caption="이름을 입력해 바로 이동합니다."}
+::figure src=7-quickfind-mac.png alt="빠른 찾기 화면" caption="이름을 입력해 바로 이동합니다."
 
 :::end
 
@@ -192,34 +189,34 @@ iPhone에서 만든 목록을 읽기만 합니다.
 
 그림, 영상, 탭, 코드는 폭을 고를 수 있습니다. 문단은 항상 본문 폭입니다.
 
-기본(`content`)은 본문 폭입니다.
+폭 옵션을 생략하면 본문 폭입니다.
 
-::figure{src=2-today-mac.png alt="본문 폭 그림" caption="width=content(기본)"}
+::figure src=2-today-mac.png alt="본문 폭 그림" caption="폭 옵션 생략: 본문 폭"
 
-`narrow`는 본문보다 좁게 가운데에 둡니다.
+`w-narrow`는 본문보다 좁게 가운데에 둡니다.
 
-::figure{src=4-headings-mac.png alt="좁은 그림" caption="width=narrow" width=narrow}
+::figure src=4-headings-mac.png alt="좁은 그림" caption="w-narrow" w-narrow
 
-`wide`는 본문 밖으로 넓게 펼칩니다. 탭은 `w-wide` 옵션, 코드는 `width=wide`입니다.
+`w-wide`는 본문 밖으로 넓게 펼칩니다. 그림·영상·탭·코드블록 모두 같은 옵션을 씁니다.
 
 :::tabs numbers w-wide
 @tab 예정 목록
 
-::figure{src=3-upcoming-mac-2.png alt="예정 목록" caption="w-wide 탭"}
+::figure src=3-upcoming-mac-2.png alt="예정 목록" caption="w-wide 탭"
 
 @tab 체크리스트
 
-::figure{src=5-checklists-mac-2.png alt="체크리스트" caption="같은 폭 규칙"}
+::figure src=5-checklists-mac-2.png alt="체크리스트" caption="같은 폭 규칙"
 
 :::end
 
-```bash width=wide
+```bash w-wide
 curl --silent --show-error --location --header "Accept: application/json" "https://example.com/api/lists/today/items?include=reminders&sort=due&limit=200&cursor=ZXhhbXBsZS1jdXJzb3ItdmFsdWUtdGhhdC1pcy1jb21wbGV0ZWx5LXVubGlrZWx5LXRvLWZpdC1vbi1vbmUtbGluZS1vbi1hLXBob25l"
 ```
 
 코드는 가로 스크롤 없이 폭에 맞춰 줄바꿈하고, 공백 없는 긴 낱말도 잘리지 않습니다. 복사하면 줄바꿈 없는 원문이 그대로 들어갑니다.
 
-```text width=narrow
+```text w-narrow
 ThisIsAnUnbrokenIdentifierThatKeepsGoingAndGoingWithoutAnySpacesToProveThatLongTokensWrapInsideTheBlockInsteadOfScrolling_0123456789_0123456789_0123456789
 ```
 
@@ -229,7 +226,7 @@ ThisIsAnUnbrokenIdentifierThatKeepsGoingAndGoingWithoutAnySpacesToProveThatLongT
 
 :::warning
 동기화를 끄고 앱을 지우면 기기에만 있던 항목은 복구할 수 없습니다.
-:::
+:::end
 
 설정은 아래와 같이 JSON으로도 내보낼 수 있습니다. 오른쪽 위의 복사 버튼은 코드 원문을 그대로 복사합니다.
 
@@ -251,13 +248,13 @@ ThisIsAnUnbrokenIdentifierThatKeepsGoingAndGoingWithoutAnySpacesToProveThatLongT
 : 사라지지 않습니다. 새 기기에서 같은 계정으로 로그인하면 목록이 내려받아집니다.
 
 영상이 재생되지 않아요.
-: 화면 아래의 재생 버튼을 누르세요. 영상은 불러오기 전까지 첫 장면 그림만 보여 줍니다.
-:::
+: 영상 안의 재생 버튼을 누르세요. 재생 전에는 미리보기 그림을 보여 줍니다.
+:::end
 
 ## 이어서 읽을 글
 
-:::cards{variant=related}
-::card{title="Markdown 문법 전체 보기" href=/articles/markdown-guide/ icon=document}
-::card{title="큐에 경계 두기" href=/articles/bounded-queue/ icon=queue}
-::card{title="증거로 원인 좁히기" href=/articles/diagnosis-evidence/ icon=search}
-:::
+:::cards related
+::card title="Markdown 문법 전체 보기" href=/articles/markdown-guide/ icon=document
+::card title="큐에 경계 두기" href=/articles/bounded-queue/ icon=queue
+::card title="증거로 원인 좁히기" href=/articles/diagnosis-evidence/ icon=search
+:::end

@@ -113,10 +113,10 @@ test('figure_video_and_cards_use_explicit_attributes', () => {
   const videos = [...document.querySelectorAll('[data-player]')];
   assert.equal(videos.length, 2);
   assert.ok(videos[0].closest('.app-device'));
-  assert.ok(videos[0].classList.contains('has-controls') && !videos[1].classList.contains('has-controls'));
+  assert.ok(videos.every(video => video.classList.contains('has-controls')));
   assert.equal(videos[0].querySelector('video').getAttribute('poster'), '/things/assets/3-upcoming-iphone.png');
-  const remotes = [...document.querySelectorAll('[data-remote]')].map(node => node.dataset.remote);
-  assert.deepEqual(remotes, videos.map(node => node.id));
+  assert.equal(document.querySelectorAll('[data-remote]').length, 0);
+  assert.ok(videos.every(video => video.querySelector('video[data-native-controls]') && video.querySelector('[data-player-play]')));
   const cards = [...document.querySelectorAll('.app-support-grid.is-pair > a.app-help-card.is-centered')];
   assert.equal(cards.length, 2);
   assert.ok(cards[0].querySelector('.app-content-icon') && cards[1].classList.contains('has-no-icon'));
@@ -251,6 +251,7 @@ test('document_composition_example_renders_every_block_with_unique_ids', () => {
   assert.ok(document.querySelector('.app-steps li kbd') && document.querySelector('.app-steps li .app-menu-label'));
   assert.equal(document.querySelectorAll('[data-player]').length, 2);
   assert.ok(document.querySelector('.app-device [data-player]'));
+  assert.equal(document.querySelectorAll('.app-tabpanel [data-remote], .app-tabpanel figure:has(video) > figcaption').length, 0);
   assert.ok(document.querySelector('p.app-fineprint'));
   assert.ok(document.querySelector('.app-callout.is-warning') && document.querySelector('.app-tabpanel .app-callout'));
   assert.ok(document.querySelector('p button.app-tooltip + .app-tooltip-bubble'));
@@ -368,7 +369,7 @@ test('width_errors_name_the_block_and_line', () => {
   assert.match(failure('::figure{src=2-today-mac.png alt=a width=huge}\n').message, /width는 content, narrow, wide 중 하나/);
   assert.match(failure('문단\n\n::figure{src=2-today-mac.png alt=a width=narrow wide}\n').message, /본문 3줄 :figure: Conflicting width/);
   assert.match(failure('::video{src=3-upcoming-mac-2.mp4 poster=3-upcoming-mac-2.png alt=a height=10}\n').message, /허용하지 않는 속성입니다: height/);
-  assert.match(failure('문단\n\n```js width=huge\nx\n```\n').message, /본문 3줄: 코드 블록 Unknown width: huge/);
+  assert.match(failure('문단\n\n```js width=huge\nx\n```\n').message, /본문 3줄 :code: width는 content, narrow, wide 중 하나/);
 });
 
 test('long_unbroken_code_keeps_the_exact_raw_text_for_copying', () => {
@@ -442,15 +443,15 @@ test('numbers_selector_allows_unlabeled_tabs_with_numbered_buttons_and_accessibl
 test('tabs_grammar_rejects_unknown_conflicting_and_malformed_forms_with_lines', () => {
   const body = '@tab A\n\n가\n\n@tab B\n\n나\n\n';
   const cases = [
-    [`:::tabs frame-box\n${body}:::end\n`, /본문 1줄 :tabs: 알 수 없는 탭 옵션입니다: frame-box/],
-    [`:::tabs position-left\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: position-left/],
-    [`:::tabs selector-tiles\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: selector-tiles/],
-    [`:::tabs border-none\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: border-none/],
-    [`:::tabs width-huge\n${body}:::end\n`, /알 수 없는 탭 옵션입니다: width-huge/],
-    [`:::tabs width-wide width=content\n${body}:::end\n`, /탭 옵션이 충돌합니다/],
-    [`:::tabs frame-none frame-none\n${body}:::end\n`, /탭 옵션이 겹칩니다: frame-none/],
-    [`:::tabs frame-none frame-panel\n${body}:::end\n`, /탭 옵션이 충돌합니다: frame-none, frame-panel/],
-    [`:::tabs frame-none frame=panel\n${body}:::end\n`, /탭 옵션이 충돌합니다/],
+    [`:::tabs frame-box\n${body}:::end\n`, /본문 1줄 :tabs: 허용하지 않는 속성입니다: frame-box/],
+    [`:::tabs position-left\n${body}:::end\n`, /허용하지 않는 속성입니다: position-left/],
+    [`:::tabs selector-tiles\n${body}:::end\n`, /허용하지 않는 속성입니다: selector-tiles/],
+    [`:::tabs border-none\n${body}:::end\n`, /허용하지 않는 속성입니다: border-none/],
+    [`:::tabs width-huge\n${body}:::end\n`, /허용하지 않는 속성입니다: width-huge/],
+    [`:::tabs width-wide width=content\n${body}:::end\n`, /옵션이 충돌합니다/],
+    [`:::tabs frame-none frame-none\n${body}:::end\n`, /속성이 겹칩니다: frame-none/],
+    [`:::tabs frame-none frame-panel\n${body}:::end\n`, /옵션이 충돌합니다: frame-none, frame-panel/],
+    [`:::tabs frame-none frame=panel\n${body}:::end\n`, /옵션이 충돌합니다/],
     [`:::tabs frame-none\n${body}`, /본문 1줄 :tabs: 닫는 :::end 줄이 없습니다/],
     [`:::tabs frame-none\n${body}:::\n`, /1줄의 :tabs 묶음은 :::end 로 닫아야 합니다/],
     [':::tabs frame-none\n:::end\n', /@tab 줄이 하나도 없습니다/],
@@ -458,8 +459,7 @@ test('tabs_grammar_rejects_unknown_conflicting_and_malformed_forms_with_lines', 
     [':::tabs\n@tab\n\n가\n\n@tab B\n\n나\n\n:::end\n', /본문 2줄 :tabs: @tab 라벨이 필요합니다/],
     [':::tabs\n@tab A\n\n@tab B\n\n나\n\n:::end\n', /본문 2줄 :tabs: 탭 본문이 비었습니다/],
     [':::tabs\n@tab A\n\n가\n\n@tab a\n\n나\n\n:::end\n', /탭 이름이 겹칩니다: a/],
-    ['문단\n\n:::end\n', /본문 3줄: 여는 :::tabs 줄 없이 :::end 가 있습니다/],
-    [':::note\n본문\n:::end\n', /:::end 는 :::tabs 묶음만 닫습니다/],
+    ['문단\n\n:::end\n', /본문 3줄: 여는 블록 없이 :::end 가 있습니다/],
     [`:::note\n:::tabs\n${body}:::end\n:::\n`, /문서 바로 아래에서는 쓸 수 없습니다|:::note 안에서는 쓸 수 없습니다/],
   ];
   for (const [source, pattern] of cases) {
@@ -566,19 +566,62 @@ test('short_utility_aliases_resolve_through_the_same_option_registry_as_long_and
   assert.equal(out('frame-none position-bottom selector-buttons width-content'), render(`:::tabs\n${body}`));
   // 같은 묶음을 짧은 이름·긴 이름으로 섞어 두 번 쓰면 거부한다: 같은 값은 겹침, 다른 값은 충돌.
   const failures = [
-    ['box frame-panel', /탭 옵션이 겹칩니다: box, frame-panel/],
-    ['segmented selector=segmented', /탭 옵션이 겹칩니다: segmented, selector=segmented/],
-    ['top top', /탭 옵션이 겹칩니다: top, top/],
-    ['top position-bottom', /탭 옵션이 충돌합니다: top, position-bottom/],
-    ['box frame=none', /탭 옵션이 충돌합니다: box, frame=none/],
-    ['segmented numbers', /탭 옵션이 충돌합니다: segmented, numbers/],
-    ['numbers selector-buttons', /탭 옵션이 충돌합니다: numbers, selector-buttons/],
-    ['w-wide width-content', /탭 옵션이 충돌합니다: w-wide, width-content/],
+    ['box frame-panel', /옵션이 겹칩니다: box, frame-panel/],
+    ['segmented selector=segmented', /옵션이 겹칩니다: segmented, selector/],
+    ['top top', /속성이 겹칩니다: top/],
+    ['top position-bottom', /옵션이 충돌합니다: top, position-bottom/],
+    ['box frame=none', /옵션이 충돌합니다: box, frame/],
+    ['segmented numbers', /옵션이 충돌합니다: segmented, numbers/],
+    ['numbers selector-buttons', /옵션이 충돌합니다: numbers, selector-buttons/],
+    ['w-wide width-content', /옵션이 충돌합니다: w-wide, width-content/],
   ];
   for (const [options, pattern] of failures) assert.match(failure(`:::tabs ${options}\n${body}`).message, pattern, options);
   // 임의의 동의어는 만들지 않는다.
-  for (const token of ['panel', 'frame', 'bottom', 'buttons', 'wide', 'none', 'w-content', 'w-narrow', 'segment', 'number', 'Box', 'width-narrow', 'w-wide=1']) {
-    assert.match(failure(`:::tabs ${token}\n${body}`).message, new RegExp(`알 수 없는 탭 옵션입니다: ${token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} `), token);
+  for (const token of ['panel', 'bottom', 'buttons', 'wide', 'none', 'w-content', 'segment', 'number', 'w-wide=1']) {
+    assert.match(failure(`:::tabs ${token}\n${body}`).message, new RegExp(`허용하지 않는 속성입니다: ${token.split('=')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} `), token);
   }
-  assert.match(failure(`:::tabs bogus\n${body}`).message, /사용할 수 있는 옵션: box, top, segmented, numbers, w-wide, frame-none/);
+  assert.match(failure(`:::tabs bogus\n${body}`).message, /허용하지 않는 속성입니다: bogus/);
+});
+
+// #107: 표시 옵션은 같은 해석기를 쓰며 기존 Markdown 출력과 내용 값을 보존한다.
+test('utility_options_across_components_preserve_legacy_output_and_content', () => {
+  const pairs = [
+    ['::figure w-narrow rounded src=2-today-mac.png alt="오늘 화면" caption="w-wide는 캡션의 글자"', '::figure{width=narrow rounded src=2-today-mac.png alt="오늘 화면" caption="w-wide는 캡션의 글자"}'],
+    ['::video w-wide frame-iphone controls src=3-upcoming-iphone.mp4 poster=3-upcoming-iphone.png alt="아이폰 화면"', '::video{width=wide frame=iphone controls src=3-upcoming-iphone.mp4 poster=3-upcoming-iphone.png alt="아이폰 화면"}'],
+    [':::cards centered cols-2\n::card title="제목 & <b>" href=/articles/markdown-guide/ icon=document\n:::end', ':::cards{variant=centered columns=2}\n::card{title="제목 & <b>" href=/articles/markdown-guide/ icon=document}\n:::'],
+    [':::gallery w-narrow title="오늘 화면"\n::slide src=2-today-mac.png alt=오늘 caption="작은 그림"\n:::end', ':::gallery{width=narrow title="오늘 화면"}\n::slide{src=2-today-mac.png alt=오늘 caption="작은 그림"}\n:::'],
+    ['```js w-wide filename="w-narrow file.js"\nconst value = "raw text";\n```', '```js width=wide filename="w-narrow file.js"\nconst value = "raw text";\n```'],
+    [':::tabs w-narrow\n@tab 첫째\n본문\n:::end', ':::tabs width=narrow\n@tab 첫째\n본문\n:::end'],
+    [':::platform[기기]\n@tab Mac\n:::note[제목]\n**본문**\n:::end\n@tab Watch\n다른 본문\n:::end', '::::platform[기기]\n:::tab[Mac]\n:::note[제목]\n**본문**\n:::\n:::\n:::tab[Watch]\n다른 본문\n:::\n::::'],
+  ];
+  for (const [source, legacy] of pairs) assert.equal(render(source), render(legacy), source);
+  for (const variant of ['centered', 'grouped', 'inline', 'related']) {
+    assert.equal(render(`:::cards ${variant}\n::card title=글 href=/articles/markdown-guide/\n:::end`), render(`:::cards{variant=${variant}}\n::card{title=글 href=/articles/markdown-guide/}\n:::`));
+  }
+  assert.equal(dom(render('::hello world::')).querySelector('mark').textContent, 'hello world');
+});
+
+test('shared_utility_validation_rejects_conflicts_unknowns_and_unsafe_values_with_location', () => {
+  const cases = [
+    ['::figure w-wide w-narrow src=2-today-mac.png alt=가', /옵션이 충돌합니다/],
+    ['::figure w-wide width=wide src=2-today-mac.png alt=가', /옵션이 겹칩니다/],
+    ['::figure numbers src=2-today-mac.png alt=가', /허용하지 않는 속성입니다: selector/],
+    ['::figure w-full src=2-today-mac.png alt=가', /허용하지 않는 속성입니다: w-full/],
+    ['::figure w-wide src=2-today-mac.png alt=가 href="javascript:alert(1)"', /href: https/],
+    ['::video frame-iphone frame=none src=3-upcoming-iphone.mp4 poster=3-upcoming-iphone.png alt=가', /옵션이 충돌합니다/],
+    ['::video controls=false src=3-upcoming-iphone.mp4 poster=3-upcoming-iphone.png alt=가', /재생 조작은 숨길 수 없습니다/],
+    [':::cards cols-1 cols-2\n::card title=글 href=/x/\n:::end', /옵션이 충돌합니다/],
+    ['```js w-wide w-narrow\nx\n```', /옵션이 충돌합니다/],
+    ['```js w-wide width=wide\nx\n```', /옵션이 겹칩니다/],
+    ['```js box\nx\n```', /허용하지 않는 속성입니다: frame/],
+    ['```js w-full\nx\n```', /허용하지 않는 속성입니다: w-full/],
+    ['```js filename="닫히지 않은 이름\nx\n```', /따옴표가 닫히지/],
+  ];
+  for (const [source, expected] of cases) {
+    const error = failure(`문단\n\n${source}\n`);
+    assert.ok(error instanceof DirectiveError, source);
+    assert.equal(error.page, 'p');
+    assert.equal(error.line, 3);
+    assert.match(error.message, expected, source);
+  }
 });

@@ -1,4 +1,5 @@
-// `:::이름[라벨]{속성}` 블록 문법의 줄 분류와 속성 읽기. markdown-it에 의존하지 않는다.
+// Markdown 구성 블록과 코드 펜스가 공유하는 옵션 문법.
+import { WIDTHS } from './vendor/theme/assets/components.mjs';
 export const MAX_DEPTH = 3;
 
 export class DirectiveError extends Error {
@@ -15,8 +16,7 @@ const OPEN = new RegExp(`^(:{3,})(${NAME})(?:\\[([^\\]\\n]*)\\])?(?:\\{(.*)\\})?
 const LEAF = new RegExp(`^::(${NAME})(?:\\[([^\\]\\n]*)\\])?\\{(.*)\\}\\s*$`);
 const CLOSE = /^(:{3,})\s*$/;
 const END = /^:::end\s*$/;
-// `:::tabs frame-none position-bottom`처럼 이름 뒤에 공백으로 옵션을 적는 탭 묶음의 여는 줄. 대괄호·중괄호로 시작하면 옛 형식이다.
-const TABS_FORM = /^:::tabs[ \t]+(?![\[{])(\S.*?)\s*$/;
+const FLAT = new RegExp(`^(:{2,})(${NAME})(?:\\[([^\\]\\n]*)\\])?[ \\t]+(?![\\[{])(\\S.*?)\\s*$`);
 const TAB_LINE = /^@tab(?:[ \t]+(.*?))?\s*$/;
 const KEY = /^[a-z][a-z0-9-]{0,23}/;
 const BARE = /^[^\s"'{}=\\]+/;
@@ -27,14 +27,14 @@ const LIMITS = { attributes: 12, value: 300, label: 80 };
 export function classifyLine(text) {
   if (!text.startsWith('::')) return { kind: 'text' };
   if (END.test(text)) return { kind: 'end' };
-  let match = TABS_FORM.exec(text);
-  if (match) return { kind: 'tabs-form', colons: 3, name: 'tabs', options: match[1] };
-  match = OPEN.exec(text);
+  let match = OPEN.exec(text);
   if (match) return { kind: 'open', colons: match[1].length, name: match[2], label: match[3], source: match[4] };
   match = CLOSE.exec(text);
   if (match) return { kind: 'close', colons: match[1].length };
   match = LEAF.exec(text);
   if (match) return { kind: 'leaf', name: match[1], label: match[2], source: match[3] };
+  match = FLAT.exec(text);
+  if (match) return { kind: match[1].length === 2 ? 'leaf' : 'open', colons: match[1].length, name: match[2], label: match[3], source: match[4], flat: true };
   return text.startsWith(':::') ? { kind: 'invalid' } : { kind: 'text' };
 }
 
@@ -132,36 +132,49 @@ export function parseTabLine(text) {
   return match ? { label: match[1] || undefined } : null;
 }
 
-export const TAB_OPTIONS = Object.freeze({
-  frame: ['none', 'panel'],
-  position: ['bottom', 'top'],
-  selector: ['buttons', 'segmented', 'numbers'],
-  width: ['content', 'wide'],
+export const WIDTH_OPTION = Object.freeze({ type: 'enum', values: WIDTHS });
+export const TAB_ATTRIBUTES = Object.freeze({
+  frame: { type: 'enum', values: ['none', 'panel'] },
+  position: { type: 'enum', values: ['bottom', 'top'] },
+  selector: { type: 'enum', values: ['buttons', 'segmented', 'numbers'] },
+  width: WIDTH_OPTION,
 });
 
-// 탭 옵션 등록부. 짧은 이름(권장), 긴 이름(`frame-panel`), `이름=값` 형식이 모두 같은 (묶음, 값)으로 풀린다.
-// 짧은 이름은 이 Markdown 문법의 유틸리티이고 Tailwind CSS 클래스가 아니다. 기본값에는 짧은 이름이 없다(생략하면 기본).
-const SHORT_TAB_OPTIONS = Object.freeze({ box: ['frame', 'panel'], top: ['position', 'top'], segmented: ['selector', 'segmented'], numbers: ['selector', 'numbers'], 'w-wide': ['width', 'wide'] });
+// 표시 옵션은 구성 요소별 속성 명세를 거쳐 같은 의미와 값으로 정규화한다.
+const UTILITIES = Object.freeze({
+  'w-narrow': ['width', 'narrow'],
+  'w-wide': ['width', 'wide'],
+  box: ['frame', 'panel'],
+  top: ['position', 'top'],
+  segmented: ['selector', 'segmented'],
+  numbers: ['selector', 'numbers'],
+  centered: ['variant', 'centered'],
+  grouped: ['variant', 'grouped'],
+  inline: ['variant', 'inline'],
+  related: ['variant', 'related'],
+  'cols-1': ['columns', '1'],
+  'cols-2': ['columns', '2'],
+  'frame-iphone': ['frame', 'iphone'],
+});
 
-function resolveTabOption(token) {
-  if (Object.hasOwn(SHORT_TAB_OPTIONS, token)) return SHORT_TAB_OPTIONS[token];
-  const match = /^(frame|position|selector|width)(?:-|=)([a-z]+)$/.exec(token);
-  return match && TAB_OPTIONS[match[1]].includes(match[2]) ? [match[1], match[2]] : null;
+function optionEntry(key, value, spec) {
+  if (value !== true) return [key, value];
+  if (Object.hasOwn(UTILITIES, key)) return UTILITIES[key];
+  const legacy = /^(frame|position|selector|width)-([a-z]+)$/.exec(key);
+  if (legacy && spec[legacy[1]]?.values?.includes(legacy[2])) return legacy.slice(1);
+  return [key, value];
 }
 
-// 탭 옵션: `segmented top w-wide`(권장), `selector-segmented`(긴 이름), `selector=segmented`를 받는다. 같은 묶음은 한 번만, 모르는 옵션은 오류다.
-// 기본값(frame-none, position-bottom, selector-buttons, width-content)은 긴 이름으로만 받고 쓰지 않은 것과 같다. 쓰지 않은 묶음은 결과에 없다.
-export function parseTabOptions(source = '', fail) {
-  const options = {};
-  const given = {};
-  const allowed = [...Object.keys(SHORT_TAB_OPTIONS), ...Object.entries(TAB_OPTIONS).flatMap(([group, values]) => values.map(value => `${group}-${value}`))];
-  for (const token of source.split(/\s+/).filter(Boolean)) {
-    const resolved = resolveTabOption(token);
-    if (!resolved) fail(`알 수 없는 탭 옵션입니다: ${token} (사용할 수 있는 옵션: ${allowed.join(', ')})`);
-    const [group, value] = resolved;
-    if (given[group]) fail(options[group] === value ? `탭 옵션이 겹칩니다: ${given[group]}, ${token}` : `탭 옵션이 충돌합니다: ${given[group]}, ${token}`);
-    given[group] = token;
-    options[group] = value;
+export function parseOptions(source, spec, fail, checks = {}) {
+  const attrs = Object.create(null);
+  const given = Object.create(null);
+  for (const [token, value] of Object.entries(parseAttributes(source, fail))) {
+    const [key, resolved] = optionEntry(token, value, spec);
+    if (Object.hasOwn(attrs, key)) fail(`옵션이 ${attrs[key] === resolved ? '겹칩니다' : '충돌합니다'}: ${given[key]}, ${token}`);
+    attrs[key] = resolved;
+    given[key] = token;
   }
-  return options;
+  return validateAttributes(attrs, spec, fail, checks);
 }
+
+export const parseTabOptions = (source, fail) => parseOptions(source, TAB_ATTRIBUTES, fail);

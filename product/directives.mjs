@@ -1,6 +1,6 @@
 // markdown-it에 `:::` 블록과 `:이름[글]{속성}` 인라인 표기를 더한다. 정의는 directive-blocks.mjs에 있다.
 import { BLOCKS, INLINES } from './directive-blocks.mjs';
-import { DirectiveError, MAX_DEPTH, attributeEnd, classifyLine, parseAttributes, parseLabel, parseTabLine, parseTabOptions, validateAttributes } from './directive-syntax.mjs';
+import { DirectiveError, MAX_DEPTH, attributeEnd, classifyLine, parseLabel, parseOptions, parseTabLine, parseTabOptions } from './directive-syntax.mjs';
 
 // 목록이나 인용 안에서는 닫는 줄의 위치를 들여쓰기로 판단할 수 없어 쓰지 못한다.
 const PARENT_TYPES = new Set(['root', 'directive', 'details']);
@@ -25,11 +25,11 @@ export function installDirectives(md, kit) {
     for (let at = from; at < end; at += 1) { const text = lineAt(state, at); if (text.trim()) return text; }
     return '';
   }
-  // 탭 묶음 여는 줄인가: `:::tabs 옵션` 이거나, 옵션 없는 `:::tabs` 다음 내용이 `@tab`이다.
-  const isTabsForm = (state, at, end, line) => line.kind === 'tabs-form' || (line.kind === 'open' && line.name === 'tabs' && line.colons === 3 && line.label === undefined && line.source === undefined && parseTabLine(nextContent(state, at + 1, end)) !== null);
+  // tabs와 platform은 공백 옵션이나 다음 @tab 줄로 새 문법을 판별한다.
+  const isTabsForm = (state, at, end, line) => line.kind === 'open' && ['tabs', 'platform'].includes(line.name) && line.colons === 3 && (line.flat || parseTabLine(nextContent(state, at + 1, end)) !== null);
 
   // 여는 줄에서 닫는 줄을 찾는다. 코드 펜스 안의 줄은 건너뛰고, 열린 블록은 스택으로 짝을 맞춘다.
-  // `:::end`로 닫는 탭 묶음이면 그 묶음의 바로 아래 `@tab` 줄 위치도 돌려준다.
+  // 탭 묶음 바로 아래의 @tab 줄 위치도 돌려준다. :::end는 가장 안쪽 블록을 닫는다.
   function findClose(state, start, end, opener, fail) {
     const stack = [{ ...opener, line: start + 1 }];
     const marks = [];
@@ -48,11 +48,10 @@ export function installDirectives(md, kit) {
         if (tab) { marks.push({ line: at, label: tab.label }); continue; }
       }
       const line = classifyLine(text);
-      if (line.kind === 'invalid') fail('블록 줄 형식이 잘못되었습니다. :::이름[라벨]{속성} 또는 닫는 :::만 쓸 수 있습니다', at + 1, line.name);
-      if (line.kind === 'open' || line.kind === 'tabs-form') stack.push({ ...line, closer: isTabsForm(state, at, end, line) ? 'end' : 'bare', line: at + 1 });
+      if (line.kind === 'invalid') fail('블록 줄 형식이 잘못되었습니다. :::이름 옵션 또는 닫는 :::end를 쓰세요', at + 1, line.name);
+      if (line.kind === 'open') stack.push({ ...line, closer: isTabsForm(state, at, end, line) ? 'end' : 'bare', line: at + 1 });
       else if (line.kind === 'end') {
         const top = stack.at(-1);
-        if (top.closer !== 'end') fail(`:::end 는 :::tabs 묶음만 닫습니다. ${top.line}줄의 :${top.name} 블록은 ${':'.repeat(top.colons)}로 닫아야 합니다`, at + 1, top.name);
         stack.pop();
         if (!stack.length) return { close: at, marks };
       } else if (line.kind === 'close') {
@@ -73,10 +72,10 @@ export function installDirectives(md, kit) {
     const stack = state.env.directiveStack ??= [];
     const parent = stack.at(-1)?.name ?? 'root';
     if (stack.length >= MAX_DEPTH) fail(`블록 중첩은 ${MAX_DEPTH}단계까지 쓸 수 있습니다`);
-    if (!BLOCKS.tabs.within.includes(parent)) fail(`${parent === 'root' ? '문서 바로 아래' : `:::${parent} 안`}에서는 쓸 수 없습니다. 쓸 수 있는 곳: 문서 바로 아래`);
+    if (!BLOCKS[found.name].within.includes(parent)) fail(`${parent === 'root' ? '문서 바로 아래' : `:::${parent} 안`}에서는 쓸 수 없습니다. 쓸 수 있는 곳: 문서 바로 아래`);
     // 쓰지 않은 옵션은 테마 Tabs의 기본값(frame none, position bottom, selector buttons, width content)이다.
-    const options = parseTabOptions(found.options ?? '', fail);
-    const { close, marks } = findClose(state, startLine, endLine, { ...found, name: 'tabs', closer: 'end' }, fail);
+    const options = parseTabOptions(found.source ?? '', fail);
+    const { close, marks } = findClose(state, startLine, endLine, { ...found, closer: 'end' }, fail);
     if (!marks.length) fail('@tab 줄이 하나도 없습니다. 예: @tab 변경 전');
     for (let at = startLine + 1; at < marks[0].line; at += 1) if (lineAt(state, at).trim()) fail('첫 @tab 줄 앞에는 본문을 둘 수 없습니다', at + 1);
     const numbers = options.selector === 'numbers';
@@ -84,18 +83,18 @@ export function installDirectives(md, kit) {
     const labels = marks.map(mark => {
       const label = mark.label === undefined ? undefined : parseLabel(mark.label, (message) => fail(message, mark.line + 1));
       if (label === undefined) {
-        if (!numbers) fail('@tab 라벨이 필요합니다. 예: @tab 변경 전 (라벨을 생략할 수 있는 것은 selector-numbers뿐입니다)', mark.line + 1);
+        if (!numbers) fail('@tab 라벨이 필요합니다. 예: @tab 변경 전 (라벨을 생략할 수 있는 것은 numbers뿐입니다)', mark.line + 1);
         return undefined;
       }
       if (seen.has(label.toLowerCase())) fail(`탭 이름이 겹칩니다: ${label}`, mark.line + 1);
       seen.add(label.toLowerCase());
       return label;
     });
-    const meta = { name: 'tabs', label: undefined, attrs: {}, options, tabs: labels, id: helpers(state.env).nextId() };
+    const meta = { name: found.name, label: parseLabel(found.label, fail), attrs: {}, options, tabs: labels, id: helpers(state.env).nextId() };
     const open = state.push('directive_open', '', 1);
     Object.assign(open, { meta, block: true, map: [startLine, close] });
     const [oldMax, oldParent] = [state.lineMax, state.parentType];
-    stack.push({ name: 'tabs' });
+    stack.push({ name: found.name });
     state.parentType = 'directive';
     try {
       marks.forEach((mark, index) => {
@@ -134,16 +133,17 @@ export function installDirectives(md, kit) {
     if (state.sCount[startLine] - state.blkIndent >= 4) return false;
     const found = classifyLine(lineAt(state, startLine));
     if (found.kind === 'text') return false;
-    if (silent) return found.kind === 'open' || found.kind === 'leaf' || found.kind === 'tabs-form';
+    if (silent) return found.kind === 'open' || found.kind === 'leaf';
     const fail = failer(state.env, startLine + 1, found.name);
-    if (found.kind === 'end') fail('여는 :::tabs 줄 없이 :::end 가 있습니다');
-    if (found.kind === 'tabs-form' || isTabsForm(state, startLine, endLine, found)) return tabsBlock(state, startLine, endLine, found, fail);
+    if (found.kind === 'end') fail('여는 블록 없이 :::end 가 있습니다');
+    if (isTabsForm(state, startLine, endLine, found)) return tabsBlock(state, startLine, endLine, found, fail);
     if (found.kind === 'close') fail('여는 줄 없이 닫는 줄이 있습니다');
-    if (found.kind === 'invalid') fail('블록 줄 형식이 잘못되었습니다. :::이름[라벨]{속성} 또는 닫는 :::만 쓸 수 있습니다');
+    if (found.kind === 'invalid') fail('블록 줄 형식이 잘못되었습니다. :::이름 옵션 또는 닫는 :::end를 쓰세요');
     if (!PARENT_TYPES.has(state.parentType)) fail('목록이나 인용 안에서는 블록을 쓸 수 없습니다');
     const spec = Object.hasOwn(BLOCKS, found.name) ? BLOCKS[found.name] : null;
+    if (found.kind === 'leaf' && found.flat && lineAt(state, startLine).endsWith('::')) return false;
     if (!spec) fail(`알 수 없는 블록입니다. 사용할 수 있는 이름: ${Object.keys(BLOCKS).join(', ')}`);
-    if ((found.kind === 'leaf') !== Boolean(spec.leaf)) fail(spec.leaf ? '본문이 없는 블록입니다. ::이름{속성} 한 줄로 쓰세요' : '본문이 있는 블록입니다. :::이름 … ::: 로 쓰세요');
+    if ((found.kind === 'leaf') !== Boolean(spec.leaf)) fail(spec.leaf ? '본문이 없는 블록입니다. ::이름 옵션 한 줄로 쓰세요' : '본문이 있는 블록입니다. :::이름 … :::end 로 쓰세요');
     const stack = state.env.directiveStack ??= [];
     const parent = stack.at(-1)?.name ?? 'root';
     if (!spec.leaf && stack.length >= MAX_DEPTH) fail(`블록 중첩은 ${MAX_DEPTH}단계까지 쓸 수 있습니다`);
@@ -151,7 +151,7 @@ export function installDirectives(md, kit) {
     const label = parseLabel(found.label, fail);
     if (spec.label === 'none' && label !== undefined) fail('라벨을 받지 않는 블록입니다');
     if (spec.label === 'required' && label === undefined) fail('라벨이 필요합니다. 예: :::tab[macOS]');
-    const attrs = validateAttributes(parseAttributes(found.source, fail), spec.attrs, fail, checks);
+    const attrs = parseOptions(found.source, spec.attrs, fail, checks);
     try { spec.check?.(attrs, kit); } catch (error) { fail(error.message); }
     const meta = { name: found.name, label, attrs };
     if (spec.leaf) {
@@ -193,14 +193,14 @@ export function installDirectives(md, kit) {
     let end = state.pos + match[0].length;
     let attrs = Object.create(null);
     if (Object.keys(spec.attrs).length) {
-      let raw = Object.create(null);
+      let source = '';
       if (state.src[end] === '{') {
         const close = attributeEnd(state.src, end);
         if (close < 0) fail('{ 속성이 닫히지 않았습니다');
-        raw = parseAttributes(state.src.slice(end + 1, close - 1), fail);
+        source = state.src.slice(end + 1, close - 1);
         end = close;
       }
-      attrs = validateAttributes(raw, spec.attrs, fail, checks);
+      attrs = parseOptions(source, spec.attrs, fail, checks);
     }
     if (spec.label === 'icon' && checks.icon(label)) fail(checks.icon(label));
     if (!silent) state.push('html_inline', '', 0).content = spec.render(label, attrs, helpers(state.env));

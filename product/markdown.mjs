@@ -11,7 +11,7 @@ import hljs from 'highlight.js';
 import { parse } from 'yaml';
 import { contentIcon, iconLab } from './content-icons.mjs';
 import { installDirectives } from './directives.mjs';
-import { DirectiveError } from './directive-syntax.mjs';
+import { DirectiveError, parseOptions, WIDTH_OPTION } from './directive-syntax.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 
 const IMAGE_SIZES = JSON.parse(readFileSync(new URL('./image-sizes.json', import.meta.url)));
@@ -23,8 +23,7 @@ export function asset(name) {
   return `/things/assets/${name}`;
 }
 const LANGUAGE_NAME = /^[\w+#.-]+$/;
-const FILENAME = /\bfilename=(?:"([^"]+)"|(\S+))/;
-const WIDTH = /\bwidth=(\S+)/;
+const CODE_ATTRIBUTES = Object.freeze({ width: WIDTH_OPTION, filename: { type: 'text' } });
 // 정보 문자열의 첫 낱말이 등록된 언어나 별칭이면 그 언어로, 아니면 원문 그대로 plaintext로 다룬다.
 export function codeLanguage(info = '') {
   const word = info.trim().split(/\s+/)[0].toLowerCase();
@@ -48,7 +47,7 @@ export const player = (data, id, controls = false) => String(ui.Player({ id, src
 export const remote = (id, src = '') => String(ui.RemoteButton({ id, src: src ? asset(src) : undefined, icon: trusted(controlImage('play')) }));
 
 // 영상 입력을 구성 요소 속성으로 옮긴다. ui:video(`width`·`height`·`wide`는 플레이어 값)와 ::video(`width`는 블록 폭)가 같이 쓴다.
-export const videoOf = (data, id) => String(ui.Video({ id, src: asset(data.src), poster: asset(data.poster), title: data.title, caption: data.caption ?? '', controls: data.controls === true, frame: data.frame === 'iphone' ? 'iphone' : undefined, playerWidth: data.playerWidth, playerHeight: data.playerHeight, playerWide: data.playerWide, width: data.width, wide: data.wide, size: data.size, remoteIcon: trusted(controlImage('play')), deviceOverlay: trusted(image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')) }));
+export const videoOf = (data, id) => String(ui.Video({ id, src: asset(data.src), poster: asset(data.poster), title: data.title, caption: data.caption ?? '', frame: data.frame === 'iphone' ? 'iphone' : undefined, playerWidth: data.playerWidth, playerHeight: data.playerHeight, playerWide: data.playerWide, width: data.width, wide: data.wide, size: data.size, deviceOverlay: trusted(image('bezel-iphone6-overlay.svg', '', 'app-device-overlay')) }));
 
 // 같은 낱말 표식 `::강조::`, `==강조==`로 mark를 만든다. 공백으로 시작하거나 끝나는 표식은 글자 그대로 둔다.
 function markRule(marker) {
@@ -181,10 +180,10 @@ export function renderGallery(data, id) {
 }
 const DIRECTIVE_KIT = Object.freeze({ escape, safeUrl, image, contentIcon, trusted, controlImage, card: cardSlot, figureOf, videoOf, asset, gallery: renderGallery, ui, assetExists: name => existsSync(new URL(`./assets/${name}`, import.meta.url)) });
 
-function fenceWidth(width, token, env) {
-  if (width === undefined) return undefined;
-  try { ui.contentWidth({ width }); } catch (error) { throw new DirectiveError(`코드 블록 ${error.message} (content, narrow, wide 중 하나)`, { page: env.pageId, line: (token.map?.[0] ?? 0) + 1 }); }
-  return width;
+function fenceOptions(info, token, env) {
+  const source = info.replace(/^\S+\s*/, '');
+  const fail = message => { throw new DirectiveError(message, { page: env.pageId, line: (token.map?.[0] ?? 0) + 1, name: 'code' }); };
+  return parseOptions(source, CODE_ATTRIBUTES, fail);
 }
 
 export function createMarkdown() {
@@ -238,9 +237,9 @@ export function createMarkdown() {
     }
     if (kind.split(/\s+/)[0].toLowerCase() === 'mermaid') return diagram(token.content, env);
     const { id, label } = codeLanguage(kind);
-    const filename = FILENAME.exec(kind);
+    const codeOptions = fenceOptions(kind, token, env);
     const value = id === 'plaintext' ? escape(token.content) : hljs.highlight(token.content, { language: id, ignoreIllegals: true }).value;
-    return codeBlock(`<code class="language-${id}">${value}</code>`, { language: label, filename: filename?.[1] ?? filename?.[2] ?? '', width: fenceWidth(WIDTH.exec(kind)?.[1], token, env) });
+    return codeBlock(`<code class="language-${id}">${value}</code>`, { language: label, ...codeOptions });
   };
   // 문서 최상위에서 이미지 하나(또는 링크로 감싼 이미지 하나)만 있는 문단은 원본 글처럼 figure로 그린다.
   md.core.ruler.after('inline', 'standalone-figure', (state) => {
@@ -325,7 +324,7 @@ function component(kind, data, md, env) {
       return String(ui.FigureGrid({ columns: data.columns, size: data.size, figures: data.items.map(item => figureOf(item)) }));
     }
     case 'video':
-      return videoOf({ src: data.src, poster: data.poster, title: data.title, caption: data.caption, controls: data.controls, playerWidth: data.width, playerHeight: data.height, playerWide: data.wide }, id);
+      return videoOf({ src: data.src, poster: data.poster, title: data.title, caption: data.caption, playerWidth: data.width, playerHeight: data.height, playerWide: data.wide }, id);
     case 'gallery': return renderGallery(data, id);
     case 'platform':
     case 'tabs': {
