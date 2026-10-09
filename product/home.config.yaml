@@ -26,12 +26,12 @@ sections:
     action:
       label: 프로젝트 영상 보기
 
-  # 프로젝트: items에 항목을 추가하면 같은 모양의 소개 구간이 늘어난다. 지금은 더미 2개다.
+  # 프로젝트: 예시 2개와 섹션 구조는 보관하고 화면에서는 숨긴다. 실제 내용을 채운 뒤 enabled를 켠다.
   # 링크 문구는 link.label, 이동 주소는 link.href이다. 예: label: 기능 보기, href: /docs/
   # 이미지와 아이콘은 자체 placeholder이므로 실제 프로젝트 자산으로 바꾼다.
   - id: projects
     type: projects
-    enabled: true
+    enabled: false
     items:
       - title: 더미 제목
         description: 프로젝트 내용을 설명하세요.

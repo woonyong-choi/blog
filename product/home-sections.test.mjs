@@ -164,15 +164,12 @@ test('the_shipped_interviews_section_shows_its_title_description_and_two_social_
   assert.match(personalHome({ config: { name: '이름' }, home: [interviews], interviewExamples: [], preview: true }) || '', /^<main/);
 });
 
-test('the_shipped_home_config_builds_two_dummy_projects_in_the_default_order', () => {
+test('the_shipped_home_config_omits_projects_from_the_visible_sections', () => {
   const brands = JSON.parse(readFileSync(new URL('./vendor/theme/assets/icons/brands/catalog.json', import.meta.url))).icons.map(item => item.name);
   const home = loadHomeConfig(new Set(brands));
-  assert.deepEqual(home.map(section => section.type), ['hero', 'projects', 'technologies', 'interviews', 'contact']);
-  assert.equal(home[1].items.length, 2);
-  for (const project of home[1].items) assert.deepEqual([project.title, project.description, project.link.label, project.image.alt], ['더미 제목', '프로젝트 내용을 설명하세요.', '자세히 보기', '더미 프로젝트 이미지']);
-  assert.deepEqual(home[1].items.map(project => project.link.href), ['/docs/', '/blog/']);
-  assert.equal(home[2].title, '함께 쓰는 기술');
-  assert.equal(home[2].description, '기술별 기록을 모았습니다.');
+  assert.deepEqual(home.map(section => section.type), ['hero', 'technologies', 'interviews', 'contact']);
+  assert.equal(home[1].title, '함께 쓰는 기술');
+  assert.equal(home[1].description, '기술별 기록을 모았습니다.');
 });
 
 test('the_shipped_hero_plays_the_web_compatible_video_that_exists_beside_the_preserved_original', () => {
