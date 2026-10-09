@@ -48,7 +48,7 @@ export function tagLinks(page, tags, limit = Infinity) {
   return String(ui.TagList({ tags: page.tags.map(id => ({ href: `/tags/${id}/`, label: tags[id].label })), limit }));
 }
 
-export function wikiCard(page, title = page.title, level = 3) {
+export function documentCard(page, title = page.title, level = 3) {
   return String(ui.Card({ href: page.route, title, description: page.description, icon: ui.trusted(subjectIcon(page.contentIcon)), headingLevel: level }));
 }
 
@@ -62,7 +62,7 @@ export function knowledgeFields(documents, topics, field) {
     if (!entries.length) return '';
     const shown = field ? entries : entries.slice(0, 6);
     const level = field ? 2 : 3;
-    return `<section class="app-support-group"><h${level}>${FIELD_NAMES[value]}</h${level}>${ui.CardGroup({ columns: shown.length === 2 || shown.length === 4 ? 2 : 1, cards: shown.map(topic => ui.trusted(wikiCard(topic.page, topic.label, level + 1))) })}${!field && entries.length > 6 ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
+    return `<section class="app-support-group"><h${level}>${FIELD_NAMES[value]}</h${level}>${ui.CardGroup({ columns: shown.length === 2 || shown.length === 4 ? 2 : 1, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1))) })}${!field && entries.length > 6 ? `<p><a href="/wiki/${value}/">전체 보기</a></p>` : ''}</section>`;
   }).join('');
 }
 
@@ -82,8 +82,8 @@ export function personalHome(context) {
 
 export function wikiLanding(documents, context, field, recent = '') {
   const fields = knowledgeFields(documents, context.topics, field);
-  if (field) return `<main id="main" class="app-shell">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/wiki/">← Notes</a>${fields}</main>`;
-  return `<main id="main" class="app-shell">${searchBox({ large: true })}<h1 class="app-sr">Notes</h1>${recent}<section aria-labelledby="wiki-heading"><h2 class="app-page-heading" id="wiki-heading">Wiki</h2>${fields}</section></main>`;
+  if (field) return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-page-heading">${FIELD_NAMES[field]}</h1><a class="app-back-link" href="/wiki/">← Notes</a>${fields}</main>`;
+  return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Notes</h1>${recent}<section aria-labelledby="wiki-heading"><h2 class="app-page-heading" id="wiki-heading">Wiki</h2>${fields}</section></main>`;
 }
 
 export function projectSection(projects, hasMore = false) {

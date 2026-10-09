@@ -50,7 +50,7 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const output = new Map();
   const add = (route, title, body, metadata = {}) => output.set(route, documentShell({ route, title, ...metadata }, body, context));
   add('/', CONFIG.name, personalHome(context));
-  add('/wiki/', 'Wiki', wikiLanding(documents, context, undefined, recentBlog(posts, TOPICS)));
+  add('/wiki/', 'Wiki', wikiLanding(documents, context, undefined, recentBlog(posts)));
   for (const field of FIELDS) add(`/wiki/${field}/`, field, wikiLanding(documents, context, field));
   add('/projects/', 'Projects', `<main class="app-shell" id="main"><h1 class="app-page-heading">Projects</h1>${projectSection(CONFIG.projects)}</main>`);
   if (preview) for (const page of iconAuditPages()) add(page.route, '아이콘 검증', page.body);

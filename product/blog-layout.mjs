@@ -1,7 +1,7 @@
-// 같은 발행 글을 세 편 미리보기, 카드 목록, 네 편 본문 피드로 보여준다.
+// 같은 발행 글을 두 편 미리보기, 카드 목록, 네 편 본문 피드로 보여준다.
 import { escape } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
-import { subjectIcon, tagLinks, dateLine, searchBox } from './publication-layout.mjs';
+import { subjectIcon, tagLinks, dateLine, searchBox, documentCard } from './publication-layout.mjs';
 import { PAGE_SIZES, paginate } from './content-model.mjs';
 import { postArticle } from './post-article.mjs';
 
@@ -13,9 +13,10 @@ export function blogCard(page, tags, level = 3) {
   return String(ui.BlogCard({ href: page.route, title: page.title, level, cover: ui.trusted(cover), tags: ui.trusted(tagLinks(page, tags, 3)) }));
 }
 
-export function recentBlog(posts, tags) {
+export function recentBlog(posts) {
   if (!posts.length) return '';
-  return `<section class="app-knowledge-section app-support-group"><h2 class="app-page-heading">Blog</h2><div class="app-blog-grid">${posts.slice(0, PAGE_SIZES.preview).map(page => blogCard(page, tags)).join('')}</div>${posts.length > PAGE_SIZES.preview ? '<p><a href="/blog/all/">전체 보기</a></p>' : ''}</section>`;
+  const cards = posts.slice(0, PAGE_SIZES.preview).map(page => ui.trusted(documentCard(page)));
+  return `<section class="app-knowledge-section app-support-group"><h2 class="app-page-heading">Blog</h2>${ui.CardGroup({ columns: 2, cards })}${posts.length > PAGE_SIZES.preview ? '<p><a href="/blog/all/">전체 보기</a></p>' : ''}</section>`;
 }
 
 export function blogArchive(posts, tags, page) {
