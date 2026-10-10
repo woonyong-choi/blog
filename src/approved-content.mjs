@@ -5,6 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { readContentFile } from './content-files.mjs';
+import { DOCUMENT_ID } from './content-model.mjs';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const APPROVALS = 'config/homepage-approvals.json';
@@ -169,6 +170,11 @@ function managedFiles(root) {
 // vars: b = 기존 발행 목록의 바이트 수, n = 기존 항목과 새 항목 수
 // basis: estimate
 function createPublicationManifest(path, documents) {
+  for (const key of ['id', 'slug']) {
+    const values = documents.map(document => document[key]);
+    if (values.some(value => typeof value !== 'string' || !DOCUMENT_ID.test(value))) throw new Error(`invalid publication ${key}`);
+    if (new Set(values).size !== values.length) throw new Error(`duplicate publication ${key}`);
+  }
   const manifest = existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : { source: 'https://docs.woonyong.com' };
   const order = new Map((manifest.documents ?? []).map((document, index) => [document.id, index]));
   manifest.documents = documents.sort((left, right) => (order.get(left.id) ?? Infinity) - (order.get(right.id) ?? Infinity) || left.id.localeCompare(right.id));
