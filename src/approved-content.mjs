@@ -5,7 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { readContentFile } from './content-files.mjs';
-import { DOCUMENT_ID } from './content-model.mjs';
+import { isDocumentId } from './content-model.mjs';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 const APPROVALS = 'config/homepage-approvals.json';
@@ -172,7 +172,7 @@ function managedFiles(root) {
 function createPublicationManifest(path, documents) {
   for (const key of ['id', 'slug']) {
     const values = documents.map(document => document[key]);
-    if (values.some(value => typeof value !== 'string' || !DOCUMENT_ID.test(value))) throw new Error(`invalid publication ${key}`);
+    if (values.some(value => !isDocumentId(value))) throw new Error(`invalid publication ${key}`);
     if (new Set(values).size !== values.length) throw new Error(`duplicate publication ${key}`);
   }
   const manifest = existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : { source: 'https://docs.woonyong.com' };
