@@ -80,7 +80,7 @@ const HOME_SECTIONS = {
   hero: heroSection,
   projects: projectsSection,
   technologies: section => technologySection(section, BRANDS),
-  interviews: (section, context) => interviewsSection(section, { examples: context.interviewExamples, preview: context.preview }),
+  interviews: (section, context) => interviewsSection(section, { preview: context.preview }),
   contact: contactSection,
 };
 
@@ -96,11 +96,11 @@ export function wikiLanding(documents, context, field, recent = '') {
   return `<main id="main" class="app-shell app-body">${searchBox({ large: true })}<h1 class="app-sr">Search</h1>${recent}${projects}${fields}</main>`;
 }
 
-export function projectSection(projects, hasMore = false) {
-  return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>개발 프로젝트</h2>${hasMore ? ui.NavigationLink({ href: '/projects/', text: '전체 보기' }) : ''}</div><div class="app-project-grid">${projects.map(project => `<article class="app-project-entry"><a class="app-knowledge-card" href="${escape(project.href)}">${subjectIcon(project.icon)}<h3>${escape(project.title)}</h3><p>${escape(project.description)}</p></a><div class="app-project-links">${project.links.map(link => `<a href="${escape(link.href)}">${escape(link.title)} →</a>`).join('')}</div></article>`).join('')}</div></section>`;
+export function projectSection(projects) {
+  return `<section class="app-knowledge-section"><div class="app-section-heading"><h2>개발 프로젝트</h2></div><div class="app-project-grid">${projects.map(project => `<article class="app-project-entry"><a class="app-knowledge-card" href="${escape(project.href)}">${subjectIcon(project.icon)}<h3>${escape(project.title)}</h3><p>${escape(project.description)}</p></a><div class="app-project-links">${project.links.map(link => `<a href="${escape(link.href)}">${escape(link.title)} →</a>`).join('')}</div></article>`).join('')}</div></section>`;
 }
 
-export function articlePage(page, documents, context, comments = '') {
+export function articlePage(page, context, comments = '') {
   const source = `${page.sourceUrl ? `<p class="app-source-link"><a href="${escape(page.sourceUrl)}">공개 원문</a></p>` : ''}`;
   const tail = `${source}${comments}`;
   const example = page.example ? '<p class="app-example-notice">화면 검증을 위한 예시 글입니다. 실제 운영 성과를 나타내지 않습니다.</p>' : '';
@@ -108,7 +108,7 @@ export function articlePage(page, documents, context, comments = '') {
     const updated = page.updatedAt && page.updatedAt !== page.publishedAt ? dateLine({ updatedAt: page.updatedAt }) : '';
     return `<main id="main" class="app-shell">${postArticle(page, { detail: true, tags: tagLinks(page, context.tags ?? context.topics), footer: `${updated}${example}`, after: tail })}</main>`;
   }
-  const pager = documentPager(page, context, candidate => ui.trusted(subjectIcon(candidate.contentIcon, 'small')));
+  const pager = documentPager(page, context);
   const content = ui.DocumentArticle({ title: page.title, icon: ui.trusted(subjectIcon(page.contentIcon, 'medium')), lead: ui.trusted(page.leadHtml ?? escape(page.description)), metadata: ui.trusted(dateLine(page) + tagLinks(page, context.tags ?? context.topics) + example), body: ui.trusted(shiftHeadings(page.html, detailLevels)), after: ui.trusted(source + pager + comments) });
   return `<main id="main" class="app-shell app-document-shell">${searchBox()}${ui.DocumentLayout({ navigation: documentNavigation(page, context), outline: documentOutline(page.headings), content })}</main>`;
 }

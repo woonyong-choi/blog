@@ -241,7 +241,7 @@ test('article_lead_and_toc_are_unchanged_when_directives_follow_the_lead', () =>
 });
 
 test('document_composition_example_renders_every_block_with_unique_ids', () => {
-  const text = readFileSync(new URL('./examples/software-design/document-composition.md', import.meta.url), 'utf8');
+  const text = readFileSync(new URL('../content/docs/software-design/document-composition.md', import.meta.url), 'utf8');
   const meta = parse(/^---\n([\s\S]*?)\n---\n/.exec(text)[1]);
   const body = text.replace(/^---\n[\s\S]*?\n---\n/, '');
   assert.equal(meta.slug, 'document-composition');
@@ -295,9 +295,8 @@ test('article_pages_have_no_automatic_related_section_or_edit_suggestion_but_kee
   const topics = { python: { label: 'Python' } };
   for (const type of ['wiki', 'blog']) {
     const page = mk(type);
-    const other = { ...page, id: 'b', route: '/articles/b/', title: '같은 태그 글' };
-    const html = articlePage(page, [page, other], { topics, repositoryUrl: 'https://github.com/example/repo' });
-    assert.doesNotMatch(html, /함께 읽기|수정 제안|app-related"|issues\/new|같은 태그 글/, type);
+    const html = articlePage(page, { topics, repositoryUrl: 'https://github.com/example/repo' });
+    assert.doesNotMatch(html, /함께 읽기|수정 제안|app-related"|issues\/new/, type);
     const document = dom(html);
     // 직접 쓴 목록과 각주는 그대로다.
     assert.equal(document.querySelectorAll('.app-related-grid > a.app-related-link').length, 1, type);
