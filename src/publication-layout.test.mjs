@@ -26,7 +26,7 @@ test('tag_page_keeps_static_reading_separate_from_filtered_results', () => {
   assert.match(tagPage('javascript', [], tags), /이 태그로 발행한 글이 없습니다/);
 });
 
-test('topic_preview_keeps_two_rows_and_cs_full_names_use_three_columns', () => {
+test('topic_preview_keeps_two_rows_and_the_same_entry_width_for_cs_and_tech', () => {
   for (const [group, limit] of [['cs', 6], ['tech', 8]]) for (const count of [0, 1, limit, limit + 1]) {
     const documents = Array.from({ length: count }, (_, i) => ({ id: `p${i}`, slug: `p${i}`, route: `/articles/p${i}/`, category: `t${i}`, type: 'wiki', title: `주제 ${i}`, description: '내용', contentIcon: { name: 'processor' } }));
     const topics = Object.fromEntries(documents.map((p, i) => [`t${i}`, { field: 'cs', group, icon: 'processor', label: p.title, article: p.slug }]));
@@ -47,7 +47,7 @@ test('topic_preview_keeps_two_rows_and_cs_full_names_use_three_columns', () => {
         assert.match(all, /class="app-support-grid is-five"/);
       } else {
         assert.match(preview, /class="app-support-grid"/);
-        assert.match(all, /class="app-support-grid"/);
+        assert.match(all, /class="app-support-grid is-four"/);
       }
     }
   }

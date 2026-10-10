@@ -68,7 +68,7 @@ export function knowledgeFields(documents, topics, field) {
     if (!entries.length) return '';
     const limit = value === 'tech' ? 8 : 6;
     const previewColumns = value === 'tech' ? 4 : 3;
-    const columns = field && value === 'tech' ? 5 : previewColumns;
+    const columns = field ? previewColumns + 1 : previewColumns;
     const shown = field ? entries : entries.slice(0, limit);
     const level = field ? 1 : 2;
     return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p>${ui.NavigationLink({ href: `/docs/topics/${value}/`, text: '전체 보기' })}</p>` : ''}</section>`;
