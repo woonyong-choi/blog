@@ -95,7 +95,7 @@ function scriptRule(marker, tag) {
 const DETAILS_OPEN = /^<details(\s+open)?>\s*$/i;
 const DETAILS_SUMMARY = /^<summary>([^<>\n]+)<\/summary>\s*$/i;
 const DETAILS_CLOSE = /^<\/details>\s*$/i;
-// 속성이 없는 `<details>`와 글자만 있는 `<summary>`만 접힘 블록으로 받아들이고 나머지 HTML은 계속 글자로 둔다.
+// `<details>`의 open과 태그 없는 `<summary>`의 Markdown을 허용하며 나머지 HTML은 글자로 둔다.
 function detailsBlock(state, startLine, endLine, silent) {
   if (state.sCount[startLine] - state.blkIndent >= 4) return false;
   const line = index => state.src.slice(state.bMarks[index] + state.tShift[index], state.eMarks[index]);
@@ -215,7 +215,7 @@ export function createMarkdown() {
   md.renderer.rules.fence = (tokens, index, options, env) => {
     const token = tokens[index];
     const kind = token.info.trim();
-    if (/^dap(?:\s|$)/.test(kind)) {
+    if (/^thinkflow(?:\s|$)/.test(kind)) {
       const diagramOptions = fenceOptions(kind, token, env, DIAGRAM_ATTRIBUTES);
       env.diagramSources?.set(token.content, env.pageId);
       const diagram = env.diagrams?.get(token.content);

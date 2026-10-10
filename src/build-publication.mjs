@@ -1,7 +1,7 @@
 // 공개 입력을 정적 페이지와 검색 색인으로 만들며 깨진 내부 연결을 차단한다.
 import { verifyDesign } from './vendor/theme/ui/build/verify.mjs';
 import { createHash } from 'node:crypto';
-import { readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
@@ -15,9 +15,9 @@ import { recentBlog, blogArchive, blogFeed } from './blog-layout.mjs';
 import { commentsSection, commentThemeUrl } from './comments.mjs';
 import { readCommentCounts } from './comment-counts.mjs';
 import { getIconCatalog } from './vendor/theme/ui/build/icons.mjs';
-import { publicationAssets, clientEntrypoints } from './publication-assets.mjs';
+import { publicationAssets } from './publication-assets.mjs';
 import { loadHomeContent } from './home-content.mjs';
-import { createTopicTrees } from './topic-navigation.mjs';
+import { createTopicTrees, navigationDocuments } from './topic-navigation.mjs';
 import { browserScripts } from './browser-scripts.mjs';
 import { mathAssets } from './math-assets.mjs';
 import { compileDiagrams } from './diagrams.mjs';
@@ -48,7 +48,7 @@ export async function buildPublication({ origin = '', preview = true } = {}) {
   const entries = ['docs', 'blog'].flatMap(folder => markdownFiles(join(CONTENT, folder)))
     .sort().map(file => readDocument(readFileSync(file, 'utf8'), TAGS, new Date(), TOPICS));
   entries.sort((left, right) => Number(Boolean(left.example)) - Number(Boolean(right.example)));
-  const documents = publicDocuments(entries, { includeExamples: preview });
+  const documents = navigationDocuments(publicDocuments(entries, { includeExamples: preview }), TOPICS);
   const posts = blogDocuments(documents);
   const comments = readCommentCounts(posts, CONFIG);
   for (const post of posts) {
