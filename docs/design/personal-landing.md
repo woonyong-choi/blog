@@ -3,7 +3,7 @@
 | 항목 | 값 |
 |---|---|
 | 상태 | 더미 콘텐츠 시안 구현 |
-| 추적 | [개인 랜딩 페이지 방향 결정](https://github.com/woonyong-choi/blog/issues/13) |
+| 추적 | [개인 랜딩 페이지 방향 결정](https://github.com/woonyong-choi/homepage/issues/13) |
 
 최신 기록 탐색과 보존 영역의 결정은 [기록 탐색과 화면 구성](knowledge-navigation.md)을 따른다. 아래 랜딩 시안의 내용과 충돌하면 해당 문서를 우선한다.
 
@@ -151,7 +151,7 @@ Refero의 공개 검색에서 영상·추천글 사례를 찾았으며 상세 �
 
 ## 미해결 질문
 
-- 위키의 실제 동료 평가 문서와 사용자 출연 영상 원본 위치 확인이 필요하다 ([#13](https://github.com/woonyong-choi/blog/issues/13)).
-- 동료 추천 원문과 공개 가능한 이름·역할·인용 범위가 준비되어 있는지 ([#13](https://github.com/woonyong-choi/blog/issues/13)).
-- 동시 재생 개수와 미디어 용량을 휴대폰·데스크톱에서 어느 수준으로 수용할지 ([#13](https://github.com/woonyong-choi/blog/issues/13)).
-- 후속 구현은 미디어 상태 처리와 랜딩 UI를 포함한다. 공개 데모·추천 자료가 정해지면 별도 구현 이슈로 연결한다 ([#13](https://github.com/woonyong-choi/blog/issues/13)).
+- 위키의 실제 동료 평가 문서와 사용자 출연 영상 원본 위치 확인이 필요하다 ([#13](https://github.com/woonyong-choi/homepage/issues/13)).
+- 동료 추천 원문과 공개 가능한 이름·역할·인용 범위가 준비되어 있는지 ([#13](https://github.com/woonyong-choi/homepage/issues/13)).
+- 동시 재생 개수와 미디어 용량을 휴대폰·데스크톱에서 어느 수준으로 수용할지 ([#13](https://github.com/woonyong-choi/homepage/issues/13)).
+- 후속 구현은 미디어 상태 처리와 랜딩 UI를 포함한다. 공개 데모·추천 자료가 정해지면 별도 구현 이슈로 연결한다 ([#13](https://github.com/woonyong-choi/homepage/issues/13)).

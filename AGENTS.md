@@ -1,4 +1,4 @@
-# blog
+# homepage
 
 ## 목적
 

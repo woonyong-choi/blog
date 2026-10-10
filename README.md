@@ -1,17 +1,29 @@
-# Blog
+# Homepage
 
-개인 사이트로 발전시키는 Markdown 기반 블로그입니다. 현재 화면은 Supabase Docs를 참고한 문서 UI이며, 메뉴·본문은 예제 콘텐츠를 포함합니다.
+Markdown 기반 개인 홈페이지입니다. 소개·프로젝트·문서·블로그를 함께 제공합니다.
 
-## 개인 사이트 메인 시안
+소스와 콘텐츠는 이 저장소에서 관리하며, 공통 디자인은 design-tokens 저장소에서 가져옵니다.
+
+## 홈페이지 실행
+
+```sh
+cd /Users/woonyong/workspace/homepage
+npm ci
+npm run dev:site
+```
+
+브라우저에서 <http://localhost:8796/>을 엽니다. `npm run build:site`는 검색 제외 미리보기를 생성합니다. 운영 주소와 배포는 별도로 설정합니다. 현재 홈페이지의 구성과 발행 방식은 [개인 사이트 발행](docs/design/publication.md)을 따릅니다. 아래의 문서 UI와 메인 시안은 이전 구현 기록입니다.
+
+## 이전 메인 시안
 
 `preview/index.html`은 기존 위키 메인의 CSS와 배치를 그대로 사용하고 소개, 프로젝트, 글, 위키와 실제 기술 로고로 내용을 교체한 시안이다. 항목은 예시 상세 대화상자로 연결되며 실제 이력서·위키 원문을 공개하지 않는다. 기존 메인은 유지한다.
 
 `node scripts/build-preview.mjs <output-directory>`는 시안 HTML·스크립트·공통 CSS·필요한 글꼴과 아이콘만 내보낸다. 해당 출력 폴더만 정적 서버로 제공한다. 공개 미리보기에는 검색 제외 표시를 넣으며 개인정보 보호 수단으로 간주하지 않는다.
 
-## 실행
+## 이전 문서 UI 실행
 
 ```sh
-cd /Users/woonyong/workspace/local/blog
+cd /Users/woonyong/workspace/homepage
 node build.mjs
 python3 -m http.server 8768 --bind 127.0.0.1
 ```

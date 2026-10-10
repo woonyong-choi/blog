@@ -89,7 +89,7 @@ origin이 지정되면 [Open Graph](https://ogp.me/)의 제목·설명·정식 �
 
 단일 컨테이너를 찾는 외부 client.js를 여러 번 주입하지 않고 [giscus 공식 클라이언트](https://github.com/giscus/giscus/blob/main/client.ts)의 widget URL·세션·메시지 형식에 맞춰 iframe을 글별로 연결한다. 토론 고정 ID, 고유 앵커, 글 상세 backlink를 전달하고 message의 origin과 source를 모두 확인한다. 높이·오류·토론 URL은 해당 iframe에만 적용한다. 로그인 반환값은 주소에서 제거하고 같은 출처 저장소에 유지하며 저장소가 차단되면 현재 화면에서만 유지한다. 로그아웃·세션 만료는 로드된 댓글 전체에 반영한다. 처음 페이지에 있는 댓글은 스크롤 전에 모두 연결하고, 다음 글은 한 화면 앞에서 미리 가져와 추가된 댓글도 즉시 연결한다. 시간 초과·실패 시 재시도와 GitHub 링크를 제공한다. 처음 댓글이 없는 상태는 오류로 취급하지 않는다.
 
-giscus 설치에 blog 저장소를 연결했고 실제 첫 댓글·새로고침·답글 저장을 확인했다. 검증 토론은 [댓글 연결 검증](https://github.com/woonyong-choi/blog/discussions/29)에 있다. 위키는 `comments: true`인 글만 댓글 영역을 연다. 수정 제안 링크는 표시하지 않는다.
+giscus 설치에 homepage 저장소를 연결했고 실제 첫 댓글·새로고침·답글 저장을 확인했다. 검증 토론은 [댓글 연결 검증](https://github.com/woonyong-choi/homepage/discussions/29)에 있다. 위키는 `comments: true`인 글만 댓글 영역을 연다. 수정 제안 링크는 표시하지 않는다.
 
 댓글의 기본 GitHub 탭 바와 이중 테두리는 제거하고 기존 입력·버튼 역할을 적용한다. 댓글·답글·미리보기 본문은 모두 18px, 작성자·날짜·조작은 15px, 입력창의 곡률은 12px다. 댓글의 외곽 테두리·회색 패널은 없고 답글은 들여쓰기와 얇은 구분선으로 구별한다. 입력 초점은 textarea 안쪽에 한 번만 표시해 iframe 경계에서 잘리지 않게 한다. 답글 연결선은 아바타 중심 아래에 두고 본문과 분리한다. 고정폭 글꼴 버튼과 Markdown 안내는 숨기고, GitHub 직접 열기는 로딩 오류 또는 JavaScript 미사용 시에만 표시한다. 테마 변수를 치환하는 것만으로 적용 여부를 판정하지 않고 실제 iframe의 계산 스타일을 확인한다. iframe 높이 알림은 기존 댓글 수를 초기화하지 않는다.
 

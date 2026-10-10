@@ -3,7 +3,7 @@
 | 항목 | 값 |
 |---|---|
 | 상태 | 결정된 탐색 구조, 세부 콘텐츠는 제안 |
-| 추적 | [개인 레이아웃](https://github.com/woonyong-choi/blog/issues/19) |
+| 추적 | [개인 레이아웃](https://github.com/woonyong-choi/homepage/issues/19) |
 
 ## 요약
 
@@ -74,4 +74,4 @@ Support형 화면을 통합 기록의 입구로 사용한다. 기술 기록의 �
 
 - NAV-1과 NAV-3은 승인한 카드 수·순서·메뉴·모바일 문서 목록 계약으로 확정했다.
 - NAV-2: 현재 공개 입력에서 AI·머신러닝과 시스템 설계는 CS에 연결한다. 관련 분야에서도 같은 문서 ID를 참조한다.
-- 운영 발행 주소와 최종 디자인 차이의 수용 검증은 [통합 검증](https://github.com/woonyong-choi/blog/issues/28)에서 추적한다.
+- 운영 발행 주소와 최종 디자인 차이의 수용 검증은 [통합 검증](https://github.com/woonyong-choi/homepage/issues/28)에서 추적한다.
