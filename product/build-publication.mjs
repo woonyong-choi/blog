@@ -25,6 +25,9 @@ import { siteOrigin, SITE_ICON } from './publication-metadata.mjs';
 import { siteIdentity } from './site-identity.mjs';
 import { legacyRoutes, redirectPage } from './publication-routes.mjs';
 import { markdownFiles } from './content-files.mjs';
+import { verifyApprovedContent } from './approved-content.mjs';
+
+verifyApprovedContent();
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT = fileURLToPath(new URL('../dist/site/', import.meta.url));

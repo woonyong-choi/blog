@@ -7,12 +7,16 @@ Markdown 기반 개인 홈페이지입니다. 소개·프로젝트·문서·블�
 ## 홈페이지 실행
 
 ```sh
-cd /Users/woonyong/workspace/homepage
+cd /Users/woonyong/workspace/homepage/homepage
 npm ci
 npm run dev:site
 ```
 
 브라우저에서 <http://localhost:8796/>을 엽니다. `npm run build:site`는 검색 제외 미리보기를 생성합니다. 운영 주소와 배포는 별도로 설정합니다. 현재 홈페이지의 구성과 발행 방식은 [개인 사이트 발행](docs/design/publication.md)을 따릅니다. 아래의 문서 UI와 메인 시안은 이전 구현 기록입니다.
+
+## 문서 원문과 공개 사본
+
+문서 원문은 비공개 자료 저장소에서 관리합니다. 이 저장소의 문서 사본은 직접 편집하지 않습니다. 원문을 수정한 뒤 `npm run content:approve -- <assets-root> <source-file>`로 공개할 내용을 승인하고 `npm run content:sync -- <assets-root>`로 가져옵니다. 새 문서와 바뀐 원문은 재승인 전까지 공개되지 않습니다. [원문과 공개 승인](docs/design/publication.md#원문과-공개-승인)에 내보내기와 승인 해제 절차를 설명합니다.
 
 ## 이전 메인 시안
 
@@ -23,7 +27,7 @@ npm run dev:site
 ## 이전 문서 UI 실행
 
 ```sh
-cd /Users/woonyong/workspace/homepage
+cd /Users/woonyong/workspace/homepage/homepage
 node build.mjs
 python3 -m http.server 8768 --bind 127.0.0.1
 ```

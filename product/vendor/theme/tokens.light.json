@@ -8944,8 +8944,8 @@
     },
     "prose-pre-background": {
       "$type": "color",
-      "$value": "{primitive.simple.search-bg}",
-      "$description": "블록 코드의 헤더와 본문에 쓰는 불투명 회색 면. 인라인 코드와 분리하고 기존 회색 값을 재사용한다."
+      "$value": "{primitive.simple.help-bg}",
+      "$description": "블록 코드의 헤더와 본문은 기존 카드의 옅은 회색 면을 공유한다. 인라인 코드 배경과 분리해 긴 코드의 시각적 무게를 줄인다."
     },
     "prose-pre-padding": {
       "$type": "string",
@@ -9479,6 +9479,11 @@
     "blog-cover-ratio": {
       "$type": "string",
       "$value": "{primitive.simple.ratio-banner}"
+    },
+    "code-copy-hover": {
+      "$type": "color",
+      "$value": "{primitive.simple.control-play-ink}",
+      "$description": "복사 버튼의 호버와 키보드 초점 배경. 사용자가 지정한 재생 버튼의 파랑을 재사용하며 흰 아이콘과 함께 쓴다."
     }
   },
   "icon": {

@@ -3,6 +3,9 @@ import { execFileSync } from "node:child_process";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import MarkdownIt from "./assets/vendor/markdown-it.mjs";
+import { verifyApprovedContent } from './product/approved-content.mjs';
+
+verifyApprovedContent();
 
 const root = new URL(".", import.meta.url).pathname;
 execFileSync("node", ["scripts/build-tokens.mjs"], { cwd: root, stdio: "inherit" });

@@ -25,7 +25,7 @@ test('vendored_theme_is_exactly_the_manifest_and_matches_canonical_output_when_p
   for (const name of listed) assert.equal(sha(readFileSync(join(vendor, name))), manifest.files[name], name);
   const extra = files(vendor).filter(name => name !== 'theme.json' && !listed.includes(name));
   assert.deepEqual(extra, [], '소비자가 가져온 테마 폴더에 정본에 없는 파일을 두면 안 된다');
-  const canonical = fileURLToPath(new URL('../../oss/design-tokens/dist/simple/', import.meta.url));
+  const canonical = fileURLToPath(new URL('../../../design-tokens/design-tokens/dist/simple/', import.meta.url));
   if (!existsSync(canonical)) return t.skip('design-tokens 작업본이 없어 정본 비교는 건너뜀');
   assert.equal(sha(readFileSync(join(vendor, 'theme.json'))), sha(readFileSync(join(canonical, 'theme.json'))), '가져온 테마가 정본의 현재 빌드와 다르다. npm run theme:product로 다시 가져온다');
 });

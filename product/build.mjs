@@ -8,6 +8,9 @@ import { createMarkdown, escape, image } from './markdown.mjs';
 import * as ui from './vendor/theme/assets/components.mjs';
 import { socialProof, socialLinks, newsletter, productCards } from './home.mjs';
 import { layout, article, blogPost, home, search, products } from './layout.mjs';
+import { verifyApprovedContent } from './approved-content.mjs';
+
+verifyApprovedContent();
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const OUTPUT = resolve(ROOT, '../dist/things');

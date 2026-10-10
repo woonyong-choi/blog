@@ -438,10 +438,11 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-code { font-size: var(--site-prose-code-size); display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; margin-block: 0 var(--site-prose-paragraph-gap); overflow: hidden; background: var(--site-prose-pre-background); border: var(--site-border) solid var(--site-prose-code-border); border-radius: var(--site-prose-pre-radius); color: var(--site-prose-code-color); }
 .app-code-header { display: flex; gap: var(--site-gap-xs); align-items: center; justify-content: space-between; min-width: 0; padding: var(--site-prose-pre-padding); line-height: var(--site-feature-body-line); color: var(--site-muted); }
 .app-code-language { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.app-code-header button { flex: none; box-sizing: border-box; width: var(--site-icon); height: var(--site-icon); padding: 0; border: 0; border-radius: var(--site-help-inline-no-icon); font-size: 0; background: url('./assets/controls/copy.svg') center / contain no-repeat; cursor: pointer; }
-.app-code-header button:hover { background-color: var(--site-help-hover); }
-.app-code-header button[data-state=copied] { background-image: url('./assets/controls/copy-done.svg'); }
-.app-code-header button[data-state=failed] { background-image: url('./assets/controls/copy-failed.svg'); }
+.app-code-header button { display: grid; flex: none; place-items: center; box-sizing: border-box; width: calc(var(--site-icon) + var(--site-gap-xs)); height: calc(var(--site-icon) + var(--site-gap-xs)); padding: 0; border: 0; border-radius: var(--site-help-inline-no-icon); font-size: 0; color: var(--site-muted); background: transparent; cursor: pointer; }
+.app-code-header button::before { content: ''; display: block; width: var(--site-icon); height: var(--site-icon); background: currentColor; mask: url('./assets/controls/copy.svg') center / contain no-repeat; }
+.app-code-header button:hover, .app-code-header button:focus-visible { color: var(--color-on-action); background-color: var(--site-code-copy-hover); }
+.app-code-header button[data-state=copied]::before { mask-image: url('./assets/controls/copy-done.svg'); }
+.app-code-header button[data-state=failed]::before { mask-image: url('./assets/controls/copy-failed.svg'); }
 .app-code-header button[hidden] { display: none; }
 .app-code pre { min-width: 0; margin: 0; padding: var(--site-prose-pre-padding); overflow: visible; background: transparent; color: inherit; font-family: var(--site-prose-code-font); font-size: inherit; line-height: var(--site-feature-body-line); tab-size: var(--site-prose-tab-size); white-space: pre-wrap; overflow-wrap: anywhere; }
 .app-code code { padding: 0; border: 0; border-radius: 0; background: transparent; color: inherit; font: inherit; white-space: inherit; overflow-wrap: inherit; }

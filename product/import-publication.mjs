@@ -24,13 +24,14 @@ const TOPICS = [
   ['data', 'infrastructure', 'database', ['데이터']], ['projects', 'cs', 'project', ['프로젝트']],
 ];
 
-export function importPublication(sourceRoot) {
+export function importPublication(sourceRoot, assetsRoot) {
+  if (!assetsRoot || resolve(assetsRoot).startsWith(resolve(ROOT, '..'))) throw new Error('a separate private assets root is required');
   const validator = join(sourceRoot, 'scripts/check-public-projection.mjs');
   if (!existsSync(validator)) throw new Error('missing public projection validator');
   const checked = spawnSync(process.execPath, [validator], { cwd: sourceRoot, encoding: 'utf8' });
   if (checked.status !== 0) throw new Error(`public projection validation failed: ${checked.stderr}`);
   const input = join(sourceRoot, 'generated/public-content');
-  const output = join(ROOT, 'publication');
+  const output = join(assetsRoot, 'wiki');
   const existing = existsSync(output) ? markdownFiles(output).map(readContentFile) : [];
   const existingById = new Map(existing.map(entry => [entry.metadata.id, entry.metadata]));
   const documents = readdirSync(input).filter(name => name.endsWith('.md') && name !== 'README.md').map(name => {
@@ -64,7 +65,7 @@ export function importPublication(sourceRoot) {
       parent: existingById.get(parentId)?.slug ?? parent?.slug ?? null }, existingById.get(id));
     entries.push({ metadata, body: `\n${body}\n` });
   }
-  const previousPath = join(ROOT, 'publication-manifest.json');
+  const previousPath = join(assetsRoot, 'imports/publication-manifest.json');
   const previous = existsSync(previousPath) ? JSON.parse(readFileSync(previousPath)).documents : [];
   const imported = new Set(previous.map(page => page.id));
   const incoming = new Set(entries.map(entry => entry.metadata.id));
@@ -73,8 +74,9 @@ export function importPublication(sourceRoot) {
   for (const { metadata } of entries) {
     manifest.documents.push({ id: metadata.id, slug: metadata.slug, file: paths.get(metadata.id), sourceUrl: metadata.sourceUrl, sourceHash: metadata.sourceHash });
   }
-  writeFileSync(join(ROOT, 'topics.json'), JSON.stringify(topics, null, 2) + '\n');
-  writeFileSync(join(ROOT, 'publication-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
+  mkdirSync(join(assetsRoot, 'imports'), { recursive: true });
+  writeFileSync(join(assetsRoot, 'imports/topics.json'), JSON.stringify(topics, null, 2) + '\n');
+  writeFileSync(previousPath, JSON.stringify(manifest, null, 2) + '\n');
   return manifest.documents.length;
 }
 
@@ -111,6 +113,6 @@ function excerpt(value) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  if (!process.argv[2]) throw new Error('usage: import-publication.mjs <approved-public-site-root>');
-  console.log(`Imported ${importPublication(resolve(process.argv[2]))} approved public documents`);
+  if (!process.argv[2] || !process.argv[3]) throw new Error('usage: import-publication.mjs <approved-public-site-root> <private-assets-root>');
+  console.log(`Imported ${importPublication(resolve(process.argv[2]), resolve(process.argv[3]))} sources for review; no homepage approval was changed`);
 }

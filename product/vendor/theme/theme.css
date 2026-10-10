@@ -1811,7 +1811,7 @@
   --site-prose-code-color: var(--primitive-simple-prose-code-color);
   --site-prose-code-border: var(--primitive-simple-prose-code-border);
   --site-prose-code-background: var(--primitive-simple-prose-code-background);
-  --site-prose-pre-background: var(--primitive-simple-search-bg);
+  --site-prose-pre-background: var(--primitive-simple-help-bg);
   --site-prose-pre-padding: var(--primitive-simple-prose-pre-padding);
   --site-prose-pre-radius: var(--primitive-simple-prose-pre-radius);
   --site-prose-quote-margin: var(--primitive-simple-prose-quote-margin);
@@ -1940,6 +1940,7 @@
   --site-syntax-punctuation: var(--color-syntax-punctuation);
   --site-card-summary-lines: var(--primitive-simple-card-summary-lines);
   --site-blog-cover-ratio: var(--primitive-simple-ratio-banner);
+  --site-code-copy-hover: var(--primitive-simple-control-play-ink);
   --icon-paper: var(--color-gray-0);
   --icon-outline: var(--primitive-simple-icon-outline);
   --icon-detail: var(--primitive-simple-icon-detail);
