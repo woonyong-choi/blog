@@ -17,7 +17,7 @@
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",
     "@vscode/markdown-it-katex": "^1.1.2",
-    "daphnis": "github:woonyong-choi/daphnis#27a24ee8854b4d5fa91d8c0f3c4a4f48348b1114",
+    "daphnis": "github:woonyong-choi/daphnis#e6bb7467f8747a017616a0d436dbdd5aced9b8ae",
     "esbuild": "0.28.2",
     "highlight.js": "^11.12.0",
     "jsdom": "^30.1.2",
