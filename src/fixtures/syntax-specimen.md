@@ -99,7 +99,7 @@ npm run build:product
 
 ## Images and captions
 
-![일정 아이콘](/assets/symbols-things3-today.svg)
+![문서 아이콘](/theme/assets/icons/small/document.svg)
 
 ```ui:figure
 {
@@ -181,24 +181,24 @@ npm run build:product
   "title": "다섯 단계 예시",
   "slides": [
     {
-      "src": "os27-siriai-1-io65.jpg",
-      "alt": "음성 입력 단계 1"
+      "src": "2-today-mac.png",
+      "alt": "앱 화면 1"
     },
     {
-      "src": "os27-siriai-2-io65.jpg",
-      "alt": "음성 입력 단계 2"
+      "src": "3-upcoming-mac-2.png",
+      "alt": "앱 화면 2"
     },
     {
-      "src": "os27-siriai-3-io65.jpg",
-      "alt": "음성 입력 단계 3"
+      "src": "4-headings-mac.png",
+      "alt": "앱 화면 3"
     },
     {
-      "src": "os27-siriai-4-io65.jpg",
-      "alt": "음성 입력 단계 4"
+      "src": "5-checklists-mac-2.png",
+      "alt": "앱 화면 4"
     },
     {
-      "src": "os27-siriai-5-io65.jpg",
-      "alt": "음성 입력 단계 5"
+      "src": "7-quickfind-mac.png",
+      "alt": "앱 화면 5"
     }
   ]
 }
@@ -230,8 +230,8 @@ npm run build:product
 
 ```ui:video
 {
-  "src": "meettheallnewthings.mp4",
-  "poster": "meettheallnewthings-poster-e.jpg",
+  "src": "3-upcoming-mac-2.mp4",
+  "poster": "3-upcoming-mac-2.png",
   "title": "기능 소개 영상"
 }
 ```
@@ -343,7 +343,7 @@ body: "[지원 문서로 돌아가기](/things/support/)"
 
 ```ui:feature
 title: A reusable feature
-icon: fancysection-icon-design-io70.png
+icon: fancysection-icon-whatpeoplearesaying-io70.png
 description: 기능 소개 페이지와 같은 문법으로 섹션을 작성합니다.
 body: "[전체 기능 페이지](/things/features/)에서 영상과 기기 탭을 확인하세요."
 left: 왼쪽 설명에는 기능의 목적을 적습니다.
@@ -353,7 +353,7 @@ right: 오른쪽 설명에는 사용 흐름을 적습니다.
 ## Device frame
 
 ```ui:device
-src: 2-today-iphone.png
+src: 3-upcoming-iphone.png
 title: 실제 기기 프레임에 맞춘 화면
 ```
 
@@ -363,17 +363,14 @@ title: 실제 기기 프레임에 맞춘 화면
 
 ```ui:demos
 title: 여러 동작의 공유 플레이어
-poster: 6-magicplus-1.png
+poster: 3-upcoming-iphone.png
 items:
-  - title: Create To-Dos
+  - title: iPhone
     body: 첫 번째 동작을 선택합니다.
-    src: 6-magicplus-1.mp4
-  - title: Create Headings
+    src: 3-upcoming-iphone.mp4
+  - title: Mac
     body: 같은 화면에서 다음 동작으로 전환합니다.
-    src: 6-magicplus-2.mp4
-  - title: Drop to Inbox
-    body: 세 번째 동작을 재생합니다.
-    src: 6-magicplus-3.mp4
+    src: 3-upcoming-mac-2.mp4
 ```
 
 
