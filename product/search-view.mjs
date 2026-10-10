@@ -37,7 +37,7 @@ export function renderResults(root, result, state, tags) {
   if (state.query || state.tags.length) summary.append(link('조건 초기화', '/docs/'));
   const output = root.querySelector('[data-full-results]');
   output.classList.add('app-search-panel');
-  output.replaceChildren(...result.entries.map(entry => resultRow(entry, tags, state.query)));
+  output.replaceChildren(...result.entries.map(entry => resultRow(entry, tags, state)));
   if (!result.entries.length) {
     output.append(element('p', '조건에 맞는 글이 없습니다. 검색어나 태그를 줄여 보세요.', 'app-search-message'));
   }
@@ -66,14 +66,14 @@ function resultLink(entry, query) {
   }));
 }
 
-function resultRow(entry, tags, query) {
+function resultRow(entry, tags, state) {
   return nodeFrom(ui.SearchResult({
     href: entry.route,
     icon: ui.ContentIconImage({ src: entry.iconUrl }),
-    title: ui.Highlight({ text: entry.title, query }),
+    title: ui.Highlight({ text: entry.title, query: state.query }),
     example: entry.example,
-    description: ui.Highlight({ text: entry.excerpt ?? entry.description, query }),
-    tags: entry.tags.map(tag => ({ href: `/tags/${tag}/`, label: tags[tag].label })),
+    description: ui.Highlight({ text: entry.excerpt ?? entry.description, query: state.query }),
+    tags: entry.tags.map(tag => ({ href: searchUrl({ ...state, tags: [...new Set([...state.tags, tag])], page: 1 }), label: tags[tag].label })),
   }));
 }
 

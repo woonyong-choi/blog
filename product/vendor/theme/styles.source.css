@@ -304,6 +304,14 @@ button.app-tooltip { padding: 0; background: none; color: var(--site-control-lin
 .app-search-result-link + .app-search-result-link, .app-search-entry + .app-search-entry { border-top: var(--site-border) solid var(--site-search-result-line); }
 .app-search-result-note { margin-left: var(--site-gap-xs); font-size: var(--site-small-text); color: var(--site-search-result-muted); }
 .app-search-result-tags { display: flex; flex-wrap: wrap; gap: var(--site-gap-xs); padding: var(--site-search-result-padding); padding-top: 0; }
+.app-search-entry { position: relative; border-radius: var(--site-search-result-radius); isolation: isolate; }
+.app-search-entry:hover, .app-search-entry:focus-within { background: var(--site-search-hover); }
+.app-search-entry:active { background: var(--site-search-active); }
+.app-search-entry > .app-search-result-link { position: static; background: transparent; }
+.app-search-entry > .app-search-result-link::before { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.app-search-entry:has(> .app-search-result-link:focus-visible) { outline: var(--site-outline) solid var(--site-link); outline-offset: var(--site-outline); }
+.app-search-entry > .app-search-result-link:focus-visible { outline: none; }
+.app-search-result-tags > .app-tag { position: relative; z-index: var(--z-raised); }
 .app-search-panel mark { background: var(--site-search-match); color: inherit; }
 .app-search-choice { display: inline-block; margin: var(--site-search-results-padding); padding: var(--site-gap-xs); border-radius: var(--site-search-result-radius); color: var(--site-search-result-color); font-size: var(--site-small-text); text-decoration: none; }
 .app-suggestion-label { margin: var(--site-gap-sm) var(--site-search-results-padding) 0; color: var(--site-muted); font-size: var(--site-small-text); }
