@@ -51,6 +51,41 @@ test('syncApprovedContent_does_not_overwrite_unapproved_public_edits_or_accept_w
   assert.throws(() => verifyApprovedContent(f.site), /unapproved/);
 });
 
+// #164: 발행 목록 해석과 새 항목 생성은 공개 사본을 바꾸기 전에 끝나야 한다.
+test('syncApprovedContent_manifest_error_preserves_approved_inputs', async t => {
+  for (const problem of ['invalid JSON', 'invalid wiki metadata']) {
+    await t.test(problem, t => {
+      const f = fixture(t);
+      approveContent(f.source, [f.file]);
+      syncApprovedContent(f.source, f.site);
+      const snapshot = join(f.site, 'src/approved-content.json');
+      const manifest = join(f.site, 'src/publication-manifest.json');
+      const previous = [readFileSync(f.output), readFileSync(snapshot)];
+      writeFileSync(join(f.source, f.file), '---\nvisibility: public\n---\n# Changed\n');
+      const sources = [f.file];
+      if (problem === 'invalid JSON') writeFileSync(manifest, '{');
+      else {
+        mkdirSync(join(f.source, 'documents/wiki'));
+        for (const name of ['a', 'b']) {
+          const source = `documents/wiki/${name}.md`;
+          writeFileSync(join(f.source, source), '---\nvisibility: public\n---\n# Missing identity\n');
+          sources.push(source);
+        }
+      }
+      approveContent(f.source, sources);
+      const previousManifest = readFileSync(manifest);
+
+      assert.throws(() => syncApprovedContent(f.source, f.site));
+
+      assert.deepEqual(readFileSync(f.output), previous[0]);
+      assert.deepEqual(readFileSync(snapshot), previous[1]);
+      assert.deepEqual(readFileSync(manifest), previousManifest);
+      assert.equal(existsSync(join(f.site, 'src/publication/a.md')), false);
+      assert.equal(existsSync(join(f.site, 'src/publication/b.md')), false);
+    });
+  }
+});
+
 test('approveContent_rejects_private_paths_traversal_symlinks_drafts_and_duplicate_approvals', t => {
   const f = fixture(t);
   for (const path of ['archive/private.md', '../private.md', 'documents/examples/../../archive/private.md', '/documents/examples/a.md']) {
