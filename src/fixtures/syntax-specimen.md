@@ -324,7 +324,7 @@ body: "Hey Siri, create a sample task."
 
 ```ui:group
 title: Related reading
-body: "[문서 목록로 돌아가기](/docs/)"
+body: "[문서 목록으로 돌아가기](/docs/)"
 ```
 
 ## Feature section
@@ -561,7 +561,7 @@ items:
 
 ## Icon catalog
 
-문서 목록와 카드에서 사용하는 아이콘 전체입니다. 아이콘 이름으로 같은 자산을 재사용합니다.
+문서 목록과 카드에서 사용하는 아이콘 전체입니다. 아이콘 이름으로 같은 자산을 재사용합니다.
 
 ```ui:cards
 {
