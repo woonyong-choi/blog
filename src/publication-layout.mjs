@@ -56,7 +56,7 @@ export function documentCard(page, title = page.title, level = 3, variant) {
 function categoryEntries(documents, topics, field) {
   const bySlug = new Map(documents.map(page => [page.slug, page]));
   return Object.entries(topics).filter(([, topic]) => topic.group && (TOPIC_GROUPS.includes(field) ? topic.group === field : topic.field === field)).map(([id, topic]) => {
-      const article = bySlug.get(topic.article) ?? documents.filter(page => page.category === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
+      const article = bySlug.get(topic.article) ?? documents.filter(page => (page.topic ?? page.category) === id && page.type === 'wiki').sort((a, b) => a.id.localeCompare(b.id))[0];
       return article ? { ...topic, page: { ...article, description: topic.group === 'tech' ? '' : topic.description ?? article.description, contentIcon: { name: topic.icon } } } : null;
     }).filter(Boolean);
 }
@@ -68,7 +68,7 @@ export function knowledgeFields(documents, topics, field) {
     if (!entries.length) return '';
     const limit = value === 'tech' ? 8 : 6;
     const previewColumns = value === 'tech' ? 4 : 3;
-    const columns = field ? previewColumns + 1 : previewColumns;
+    const columns = field && value === 'tech' ? 5 : previewColumns;
     const shown = field ? entries : entries.slice(0, limit);
     const level = field ? 1 : 2;
     return `<section class="app-support-group">${field ? '' : `<h2>${FIELD_NAMES[value]}</h2>`}${ui.CardGroup({ columns, cards: shown.map(topic => ui.trusted(documentCard(topic.page, topic.label, level + 1, 'summary'))) })}${!field && entries.length > limit ? `<p>${ui.NavigationLink({ href: `/docs/topics/${value}/`, text: '전체 보기' })}</p>` : ''}</section>`;
